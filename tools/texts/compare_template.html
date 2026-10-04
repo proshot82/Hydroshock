@@ -1,0 +1,623 @@
+<title>Слепое сравнение Акта I</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Neucha&family=PT+Mono&family=PT+Sans:ital,wght@0,400;0,700;1,400&family=PT+Serif:ital@0;1&display=swap">
+<style>
+/* Раскладка: стол рецензента — одна колонка карточек-слотов; в каждой две панели
+   реплик, как диалоговое окно игры; сверху липкая полоса прогресса и счёта. */
+:root {
+  --tile: #eef3f2;       /* кафель номера 317 */
+  --panel: #ffffff;
+  --ink: #1b2528;
+  --muted: #5b6b6f;
+  --rule: #d3dcdb;
+  --brass: #8f6a1f;      /* латунь: Лапидус, действия */
+  --brass-soft: #f1e6c8;
+  --steel: #46667d;      /* сталь: Предок, как рамка подсказчика в серии */
+  --mauve: #7c4f68;      /* Изольда */
+  --paper: #fbf8f0;      /* бумага документов */
+  --good: #2f7a52;
+  --warn: #9a4b16;
+  --display: "Neucha", "Comic Sans MS", cursive;
+  --body: "PT Sans", "Segoe UI", system-ui, sans-serif;
+  --doc: "PT Serif", Georgia, "Times New Roman", serif;
+  --mono: "PT Mono", ui-monospace, "Cascadia Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --tile: #11181a; --panel: #192326; --ink: #e2e9e8; --muted: #93a3a5;
+    --rule: #2b383b; --brass: #d4ab52; --brass-soft: #3b3220; --steel: #8fb1c8;
+    --mauve: #d39cba; --paper: #20292b; --good: #74c79a; --warn: #e79a63;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --tile: #11181a; --panel: #192326; --ink: #e2e9e8; --muted: #93a3a5;
+  --rule: #2b383b; --brass: #d4ab52; --brass-soft: #3b3220; --steel: #8fb1c8;
+  --mauve: #d39cba; --paper: #20292b; --good: #74c79a; --warn: #e79a63;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--tile); color: var(--ink);
+  font: 16px/1.5 var(--body);
+  padding-inline: 16px; padding-block: 0 48px;
+}
+.wrap { max-width: 62rem; margin-inline: auto; display: flex; flex-direction: column; gap: 20px; }
+h1 { font: 2.4rem/1.1 var(--display); margin: 0; text-wrap: balance; }
+h2 { font: 700 1.25rem/1.25 var(--body); margin: 0; text-wrap: balance; scroll-margin-top: 140px; }
+.lede { max-width: 65ch; color: var(--ink); margin: 0; }
+.note { max-width: 65ch; color: var(--muted); font-size: .9rem; margin: 0; }
+header.top { padding-top: 28px; display: flex; flex-direction: column; gap: 10px; }
+
+.bar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  background: var(--tile); border-bottom: 1px solid var(--rule);
+  padding-block: 10px; display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center;
+}
+.progress { flex: 1 1 14rem; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.progress-label { font-size: .9rem; font-variant-numeric: tabular-nums; }
+.meter { height: 6px; border-radius: 3px; background: var(--rule); overflow: hidden; }
+.meter > span { display: block; height: 100%; width: 0; background: var(--brass); }
+.tools { display: flex; flex-wrap: wrap; gap: 6px; }
+button, .chip {
+  font: inherit; font-size: .9rem; color: var(--ink); background: var(--panel);
+  border: 1px solid var(--rule); border-radius: 6px; padding: 6px 10px; cursor: pointer;
+}
+button:hover { border-color: var(--brass); }
+button:focus-visible, input:focus-visible, .chip:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+button[aria-pressed="true"] { background: var(--brass-soft); border-color: var(--brass); font-weight: 700; }
+button.primary { background: var(--brass); color: var(--panel); border-color: var(--brass); font-weight: 700; }
+nav.secs { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { text-decoration: none; }
+.banner { border: 1px solid var(--warn); color: var(--warn); border-radius: 8px; padding: 10px 12px; font-size: .92rem; }
+.recover { border: 1px solid var(--brass); background: var(--panel); border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+.recover p { margin: 0; }
+#store-state.warn { color: var(--warn); font-weight: 700; }
+#store-state.ok { color: var(--good); }
+textarea.comment { font: .85rem/1.4 var(--mono); resize: vertical; }
+
+section.sec { display: flex; flex-direction: column; gap: 14px; }
+article.slot {
+  background: var(--panel); border: 1px solid var(--rule); border-radius: 10px;
+  padding: 14px 16px; display: flex; flex-direction: column; gap: 12px;
+}
+article.slot.done { border-color: color-mix(in srgb, var(--brass) 45%, var(--rule)); }
+.slot-head { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: baseline; }
+.sid { font: .85rem var(--mono); color: var(--muted); }
+.star { color: var(--brass); font-weight: 700; font-size: .85rem; letter-spacing: .04em; }
+.ctx { display: grid; gap: 4px; font-size: .9rem; color: var(--muted); max-width: 70ch; }
+.ctx b { color: var(--ink); font-weight: 700; }
+.pair { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); }
+.variant { min-width: 0; border: 1px solid var(--rule); border-radius: 8px; padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; }
+.variant.picked { border-color: var(--brass); box-shadow: inset 0 0 0 1px var(--brass); }
+.vlabel { font: 700 .8rem var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.vlabel .who { color: var(--brass); letter-spacing: .02em; text-transform: none; }
+.line { margin: 0; display: flex; flex-direction: column; gap: 1px; }
+.plate { font: 700 .74rem var(--body); letter-spacing: .07em; text-transform: uppercase; color: var(--muted); }
+.plate .emo { font-weight: 400; letter-spacing: 0; text-transform: none; }
+.plate.lap { color: var(--brass); }
+.plate.anc { color: var(--steel); }
+.plate.iz { color: var(--mauve); }
+.text { overflow-wrap: anywhere; }
+.cap .text { font-style: italic; color: var(--muted); }
+.choice .text { display: inline-block; border: 1px dashed var(--rule); border-radius: 6px; padding: 2px 8px; }
+.silence { margin: 0; color: var(--muted); font-style: italic; }
+pre.doc {
+  margin: 0; background: var(--paper); border: 1px solid var(--rule); border-radius: 4px;
+  padding: 10px 12px; font: .95rem/1.45 var(--doc); white-space: pre-wrap; overflow-x: auto;
+}
+.vote { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.vote .label { font-size: .85rem; color: var(--muted); margin-right: 4px; }
+.comment { width: 100%; font: inherit; font-size: .92rem; color: var(--ink); background: var(--tile); border: 1px solid var(--rule); border-radius: 6px; padding: 6px 8px; }
+.saved { font-size: .8rem; color: var(--muted); }
+
+.score { background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 14px; }
+.tiles { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr)); }
+.tile { border: 1px solid var(--rule); border-radius: 8px; padding: 10px 12px; }
+.tile .num { font: 2rem/1 var(--display); font-variant-numeric: tabular-nums; }
+.tile .cap2 { font-size: .85rem; color: var(--muted); }
+.tile.win { border-color: var(--brass); }
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: .9rem; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--rule); }
+th { color: var(--muted); font-weight: 700; }
+td.n { text-align: right; }
+.confirm { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+@media (prefers-reduced-motion: no-preference) { .meter > span { transition: width .3s ease; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <h1>Слепое сравнение Акта I</h1>
+    <p class="lede">«Латунный янычар: Гидроудар», Акт I «Комплимент от заведения». Две версии написаны по одному ТЗ: одна — Claude, другая — другой нейросетью. В каждом слоте варианты стоят в случайном порядке и без подписей. Выберите, какой смешнее при соблюдении правил, либо «Ничья» или «Оба слабые». В комментарии можно записать, что взять в итоговую версию.</p>
+    <p class="note" id="rules-note"></p>
+    <div id="store-banner" class="banner" hidden></div>
+    <div id="recover" class="recover" hidden>
+      <p id="recover-text"></p>
+      <div class="confirm">
+        <button type="button" id="btn-send" class="primary">Отправить голоса Claude</button>
+        <button type="button" id="btn-copy">Скопировать голоса</button>
+        <span id="recover-msg" class="saved" aria-live="polite"></span>
+      </div>
+      <label class="note" for="export">Если кнопки не помогают: выделите этот текст, скопируйте и вставьте в чат Claude.</label>
+      <textarea id="export" class="comment" rows="5" readonly></textarea>
+      <p class="note" id="recover-diag"></p>
+    </div>
+  </header>
+
+  <div class="bar" role="region" aria-label="Прогресс и фильтры">
+    <div class="progress">
+      <span class="progress-label"><span id="progress-label">Оценено 0</span> · <span id="store-state">сохранение: проверяю…</span></span>
+      <div class="meter" aria-hidden="true"><span id="meter"></span></div>
+    </div>
+    <div class="tools">
+      <button type="button" id="btn-next">Следующий без оценки</button>
+      <button type="button" id="btn-star" aria-pressed="false">Только ★</button>
+      <button type="button" id="btn-hide" aria-pressed="false">Скрыть оценённые</button>
+      <button type="button" id="btn-export">Голоса текстом</button>
+      <button type="button" id="btn-score" class="primary">Показать счёт</button>
+    </div>
+  </div>
+
+  <div id="confirm-box" class="banner confirm" hidden>
+    <span>Счёт раскроет, где чья версия. После этого голосовать можно, но уже не вслепую.</span>
+    <button type="button" id="btn-reveal" class="primary">Раскрыть</button>
+    <button type="button" id="btn-cancel">Отмена</button>
+  </div>
+
+  <section id="score" class="score" hidden aria-live="polite"></section>
+
+  <nav class="secs" id="secs" aria-label="Разделы"></nav>
+  <main id="slots" class="wrap"></main>
+</div>
+
+<script type="application/json" id="cmp-data">__DATA__</script>
+<script>
+(function () {
+  "use strict";
+  var DATA = JSON.parse(document.getElementById("cmp-data").textContent);
+  var SLOTS = DATA.slots;
+  var STORE_KEY = "hydroshock_act" + DATA.act + "_";
+  var raw = atob(DATA.k), CI = [];
+  for (var i = 0; i < raw.length; i++) CI.push(raw.charCodeAt(i) ^ 0x5A); // индекс варианта Claude
+
+  var PLATES = { lap: "Лапидус", iz: "Изольда Тихоновна", anc: "Предок", pa: "Громкая связь",
+    ans: "Автоответчик", guest: "Гость", guestf: "Гостья", waiter: "Официант",
+    cap: "Титр", choice: "Пункт меню", ui: "Надпись на кнопке" };
+  var EMO = { lap_soap_neutral: "нейтрально", lap_soap_tired: "устало", lap_soap_worried: "тревожно",
+    lap_soap_ashamed: "стыдно", lap_soap_angry: "зло", lap_soap_smug: "самодовольно",
+    lap_soap_inspired: "с азартом", lap_soap_panic: "в панике", lap_soap_triumphant: "торжествующе",
+    iz_formal: "казённо", iz_averted: "не глядя", iz_tired: "устало", iz_stern: "строго",
+    iz_flustered: "смущённо", anc_calm: "спокойно", anc_stern: "строго", anc_proud: "гордо",
+    anc_smug: "довольно" };
+
+  function ls(op, key, val) {
+    try {
+      if (op === "get") return window.localStorage.getItem(STORE_KEY + key);
+      window.localStorage.setItem(STORE_KEY + key, val);
+    } catch (e) { return null; }
+    return null;
+  }
+
+  // Две копии голосов: общее хранилище страницы (его читает Claude) и зеркало
+  // в этом браузере. Зеркало пишется всегда — так голос не теряется, даже
+  // если хранилище не ответило; то, чего в хранилище нет, можно переслать.
+  var state = {
+    dbVotes: {}, localVotes: {}, revealed: ls("get", "revealed") === "1",
+    onlyStar: false, hideDone: false, db: null, dbState: "wait", diag: ""
+  };
+  try { state.localVotes = JSON.parse(ls("get", "votes_local") || "{}") || {}; } catch (e) { state.localVotes = {}; }
+
+  var voting = SLOTS.filter(function (s) { return !s.auto.length; });
+  var autoSlots = SLOTS.filter(function (s) { return s.auto.length; });
+  document.getElementById("rules-note").textContent =
+    "Кавычки, тире и многоточия приведены к одному виду, буква «ё» заменена на «е» в обеих версиях — чтобы авторство не угадывалось по оформлению. " +
+    (autoSlots.length ? autoSlots.length + " слот(а) в голосовании не участвуют: по правилам ТЗ они решены автоматически и откроются вместе со счётом. " : "") +
+    "Голоса сохраняются сами.";
+
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+
+  function renderVariant(v, label) {
+    var box = el("div", "variant");
+    var lab = el("div", "vlabel");
+    lab.appendChild(document.createTextNode("Вариант " + label));
+    var who = el("span", "who");
+    lab.appendChild(who);
+    box.appendChild(lab);
+    if (v.doc) {
+      box.appendChild(el("pre", "doc", v.doc.join("\n")));
+    }
+    if (v.silence && !v.lines.length) box.appendChild(el("p", "silence", "тишина"));
+    v.lines.forEach(function (ln) {
+      var p = el("p", "line " + (ln.sp === "cap" ? "cap" : ln.sp === "choice" ? "choice" : ""));
+      var plate = el("span", "plate " + ln.sp);
+      plate.appendChild(document.createTextNode(PLATES[ln.sp] || ln.sp));
+      if (EMO[ln.em]) plate.appendChild(el("span", "emo", " · " + EMO[ln.em]));
+      p.appendChild(plate);
+      p.appendChild(el("span", "text", ln.t));
+      box.appendChild(p);
+    });
+    if (!v.doc && !v.silence && !v.lines.length) box.appendChild(el("p", "silence", "слот не заполнен"));
+    return { box: box, who: who };
+  }
+
+  var cards = {};
+  var PICKS = [["A", "A смешнее"], ["tie", "Ничья"], ["B", "B смешнее"], ["weak", "Оба слабые"]];
+
+  function pickToSide(idx, pick) {
+    if (pick === "claude") return CI[idx] === 0 ? "A" : "B";
+    if (pick === "other") return CI[idx] === 0 ? "B" : "A";
+    return pick || null;
+  }
+  function sideToPick(idx, side) {
+    if (side === "A") return CI[idx] === 0 ? "claude" : "other";
+    if (side === "B") return CI[idx] === 0 ? "other" : "claude";
+    return side;
+  }
+
+  function buildCard(s, idx) {
+    var art = el("article", "slot");
+    art.id = "s-" + s.id;
+    var head = el("div", "slot-head");
+    head.appendChild(el("span", "sid", s.id));
+    if (s.star) head.appendChild(el("span", "star", "★ ключевой"));
+    art.appendChild(head);
+    var ctx = el("div", "ctx");
+    var w = el("div"); w.appendChild(el("b", null, "Когда: ")); w.appendChild(document.createTextNode(s.when)); ctx.appendChild(w);
+    var m = el("div"); m.appendChild(el("b", null, "Обязано быть: ")); m.appendChild(document.createTextNode(s.must)); ctx.appendChild(m);
+    art.appendChild(ctx);
+    if (s.auto.length) {
+      var why = s.auto.map(function (a) {
+        return (a.who === "claude" ? "версия Claude" : "другая версия") + ": " + a.why;
+      }).join(" · ");
+      art.appendChild(el("div", "banner", "Решено по правилам ТЗ, в счёт идёт автоматически. Нарушение — " + why));
+    }
+    var pair = el("div", "pair");
+    var a = renderVariant(s.v[0], "A"), b = renderVariant(s.v[1], "B");
+    pair.appendChild(a.box); pair.appendChild(b.box);
+    art.appendChild(pair);
+    var vote = el("div", "vote");
+    vote.appendChild(el("span", "label", s.auto.length ? "Для итоговой версии:" : "Ваш выбор:"));
+    var btns = {};
+    PICKS.forEach(function (p) {
+      var bt = el("button", null, p[1]);
+      bt.type = "button";
+      bt.setAttribute("aria-pressed", "false");
+      bt.addEventListener("click", function () { choose(idx, p[0]); });
+      btns[p[0]] = bt;
+      vote.appendChild(bt);
+    });
+    var saved = el("span", "saved", "");
+    vote.appendChild(saved);
+    art.appendChild(vote);
+    var com = el("input", "comment");
+    com.type = "text";
+    com.id = "c-" + s.id;
+    com.placeholder = "Комментарий: что взять, что поправить (необязательно)";
+    com.setAttribute("aria-label", "Комментарий к слоту " + s.id);
+    var t = null;
+    com.addEventListener("input", function () { clearTimeout(t); t = setTimeout(function () { comment(idx, com.value); }, 900); });
+    com.addEventListener("change", function () { clearTimeout(t); comment(idx, com.value); });
+    art.appendChild(com);
+    cards[s.id] = { art: art, a: a, b: b, btns: btns, com: com, saved: saved, idx: idx };
+    return art;
+  }
+
+  var main = document.getElementById("slots"), nav = document.getElementById("secs");
+  var order = [];
+  SLOTS.forEach(function (s, idx) {
+    var shown = !s.auto.length || state.revealed;
+    if (order.indexOf(s.sec) < 0) order.push(s.sec);
+    var secId = "sec-" + order.indexOf(s.sec);
+    var sec = document.getElementById(secId);
+    if (!sec) {
+      sec = el("section", "sec");
+      sec.id = secId;
+      sec.appendChild(el("h2", null, s.sec));
+      main.appendChild(sec);
+      var chip = el("a", "chip", s.sec);
+      chip.href = "#" + secId;
+      nav.appendChild(chip);
+    }
+    var card = buildCard(s, idx);
+    if (!shown) card.hidden = true;
+    sec.appendChild(card);
+  });
+
+  function newer(a, b) {
+    if (!a) return b || null;
+    if (!b) return a;
+    return String(b.at || "") > String(a.at || "") ? b : a;
+  }
+  function voteOf(s) { return newer(state.dbVotes[s.id], state.localVotes[s.id]) || {}; }
+  function sameVote(a, b) {
+    return !!a && !!b && (a.pick || null) === (b.pick || null) && (a.comment || "") === (b.comment || "");
+  }
+  function pending() {
+    return SLOTS.filter(function (s) {
+      var l = state.localVotes[s.id];
+      if (!l || (!l.pick && !l.comment) || inflight[s.id] > 0) return false;
+      var d = state.dbVotes[s.id];
+      return !d || (!sameVote(l, d) && String(l.at || "") > String(d.at || ""));
+    });
+  }
+
+  function refreshCard(s) {
+    var c = cards[s.id], v = voteOf(s);
+    var side = pickToSide(c.idx, v.pick);
+    PICKS.forEach(function (p) { c.btns[p[0]].setAttribute("aria-pressed", side === p[0] ? "true" : "false"); });
+    c.a.box.classList.toggle("picked", side === "A");
+    c.b.box.classList.toggle("picked", side === "B");
+    c.art.classList.toggle("done", !!v.pick);
+    if (document.activeElement !== c.com) c.com.value = v.comment || "";
+    var claudeIsA = CI[c.idx] === 0;
+    c.a.who.textContent = state.revealed ? " · " + (claudeIsA ? "Claude" : "другая нейросеть") : "";
+    c.b.who.textContent = state.revealed ? " · " + (claudeIsA ? "другая нейросеть" : "Claude") : "";
+    c.art.hidden = !!((state.onlyStar && !s.star) || (state.hideDone && !!v.pick) || (s.auto.length && !state.revealed));
+  }
+
+  function refreshAll() {
+    SLOTS.forEach(refreshCard);
+    var done = voting.filter(function (s) { return !!voteOf(s).pick; }).length;
+    document.getElementById("progress-label").textContent = "Оценено " + done + " из " + voting.length;
+    document.getElementById("meter").style.width = (voting.length ? 100 * done / voting.length : 0) + "%";
+    if (state.revealed) renderScore();
+    refreshStore();
+  }
+
+  var queues = {}, inflight = {};
+  function saveMirror() { ls("set", "votes_local", JSON.stringify(state.localVotes)); }
+
+  function persist(idx, body) {
+    var s = SLOTS[idx];
+    state.localVotes[s.id] = body;
+    saveMirror();
+    inflight[s.id] = (inflight[s.id] || 0) + 1;   // пока запись в пути, голос не «потерян»
+    refreshAll();
+    var c = cards[s.id];
+    c.saved.textContent = "сохраняю…";
+    var prev = queues[s.id] || ready;
+    queues[s.id] = prev.then(function () {
+      if (!state.db) throw { code: "no_store" };
+      return state.db.doc("votes/" + s.id).set(body);
+    }).then(function () {
+      c.saved.textContent = "сохранено";
+    }).catch(function (err) {
+      var code = (err && err.code) || String(err);
+      if (code !== "no_store") { state.diag = "запись отклонена: " + code; state.dbState = "fail"; }
+      c.saved.textContent = "сохранено только в этом браузере";
+    }).then(function () {
+      inflight[s.id]--;
+      refreshStore();
+    });
+  }
+
+  function choose(idx, side) {
+    var s = SLOTS[idx], cur = voteOf(s);
+    var pick = sideToPick(idx, side);
+    var body = { pick: cur.pick === pick ? null : pick, comment: cur.comment || "", at: new Date().toISOString() };
+    persist(idx, body);
+  }
+  function comment(idx, text) {
+    var s = SLOTS[idx], cur = voteOf(s);
+    if ((cur.comment || "") === text) return;
+    persist(idx, { pick: cur.pick || null, comment: text, at: new Date().toISOString() });
+  }
+
+  function showBanner(msg) {
+    var b = document.getElementById("store-banner");
+    b.textContent = msg;
+    b.hidden = !msg;
+  }
+
+  function exportText() {
+    var rows = [];
+    SLOTS.forEach(function (s, idx) {
+      var v = voteOf(s);
+      if (!v.pick && !v.comment) return;
+      var side = pickToSide(idx, v.pick) || "-";
+      rows.push(s.id + "=" + side + (v.comment ? " | " + v.comment.replace(/\s+/g, " ") : ""));
+    });
+    return "ГОЛОСА АКТ I (" + rows.length + ")\n" + rows.join("\n") +
+      (state.diag ? "\nДИАГНОСТИКА: " + state.diag : "");
+  }
+
+  var forceExport = false;
+  function refreshStore() {
+    var st = document.getElementById("store-state");
+    var p = pending();
+    if (state.dbState === "ok" && !p.length) {
+      st.textContent = "сохраняется в хранилище страницы"; st.className = "ok";
+    } else if (state.dbState === "wait") {
+      st.textContent = "сохранение: проверяю…"; st.className = "";
+    } else {
+      st.textContent = "только в этом браузере"; st.className = "warn";
+    }
+    var box = document.getElementById("recover");
+    var show = p.length > 0 || forceExport;
+    box.hidden = !show;
+    if (!show) return;
+    var canSend = state.db && p.length > 0;
+    document.getElementById("btn-send").hidden = !canSend;
+    document.getElementById("recover-text").textContent = p.length
+      ? "В этом браузере сохранено голосов: " + p.length + ". В хранилище страницы их нет, Claude их не видит." +
+        (canSend ? " Нажмите «Отправить голоса Claude»." : " Хранилище здесь недоступно — скопируйте голоса и вставьте их в чат Claude.")
+      : "Голоса текстом — на случай, если их нужно передать Claude в чат.";
+    var ta = document.getElementById("export");
+    if (document.activeElement !== ta) ta.value = exportText();
+    document.getElementById("recover-diag").textContent = state.diag ? "Диагностика: " + state.diag : "";
+  }
+
+  document.getElementById("btn-export").addEventListener("click", function () {
+    forceExport = !forceExport;
+    refreshStore();
+    if (forceExport) document.getElementById("recover").scrollIntoView({ block: "start" });
+  });
+  document.getElementById("btn-copy").addEventListener("click", function () {
+    var ta = document.getElementById("export"), msg = document.getElementById("recover-msg");
+    ta.value = exportText();
+    function manual() { ta.focus(); ta.select(); msg.textContent = "Текст выделен — скопируйте его вручную."; }
+    try {
+      navigator.clipboard.writeText(ta.value).then(function () {
+        msg.textContent = "Скопировано. Вставьте в чат Claude.";
+      }, manual);
+    } catch (e) { manual(); }
+  });
+  document.getElementById("btn-send").addEventListener("click", function () {
+    var btn = this, msg = document.getElementById("recover-msg");
+    var list = pending();
+    if (!state.db || !list.length) return;
+    btn.disabled = true;
+    var sent = 0;
+    msg.textContent = "отправляю…";
+    list.reduce(function (chain, s) {
+      return chain.then(function () {
+        var body = state.localVotes[s.id];
+        return state.db.doc("votes/" + s.id).set(body).then(function () {
+          sent++;
+          state.dbVotes[s.id] = body;
+          msg.textContent = "отправлено " + sent + " из " + list.length;
+        });
+      });
+    }, Promise.resolve()).then(function () {
+      state.dbState = "ok"; state.diag = "";
+      msg.textContent = "Отправлено голосов: " + sent + ". Теперь Claude их видит.";
+      btn.disabled = false;
+      refreshAll();
+    }, function (err) {
+      state.dbState = "fail";
+      state.diag = "отправка остановлена: " + ((err && err.code) || String(err)) + ", отправлено " + sent;
+      msg.textContent = "Отправка не прошла. Скопируйте голоса и вставьте их в чат Claude.";
+      btn.disabled = false;
+      refreshAll();
+    });
+  });
+
+  function renderScore() {
+    var box = document.getElementById("score");
+    box.hidden = false;
+    box.textContent = "";
+    function count(list) {
+      var r = { claude: 0, other: 0, tie: 0, weak: 0, none: 0 };
+      list.forEach(function (s) {
+        var p = voteOf(s).pick;
+        if (p && r[p] != null) r[p]++; else r.none++;
+      });
+      return r;
+    }
+    var autoC = 0, autoO = 0;
+    autoSlots.forEach(function (s) {
+      var bad = s.auto.map(function (a) { return a.who; });
+      if (bad.indexOf("claude") < 0 && bad.indexOf("other") >= 0) autoC++;
+      if (bad.indexOf("other") < 0 && bad.indexOf("claude") >= 0) autoO++;
+    });
+    var all = count(voting), stars = count(voting.filter(function (s) { return s.star; }));
+    box.appendChild(el("h2", null, "Счёт"));
+    var tiles = el("div", "tiles");
+    function tile(num, cap, win) {
+      var t = el("div", "tile" + (win ? " win" : ""));
+      t.appendChild(el("div", "num", String(num)));
+      t.appendChild(el("div", "cap2", cap));
+      tiles.appendChild(t);
+    }
+    var c = all.claude + autoC, o = all.other + autoO;
+    tile(c, "Claude" + (autoC ? " (из них по правилам ТЗ: " + autoC + ")" : ""), c > o);
+    tile(o, "Другая нейросеть" + (autoO ? " (по правилам ТЗ: " + autoO + ")" : ""), o > c);
+    tile(all.tie, "Ничья", false);
+    tile(all.weak, "Оба слабые", false);
+    tile(all.none, "Без оценки", false);
+    box.appendChild(tiles);
+    box.appendChild(el("p", "note", "Ключевые слоты ★: Claude " + stars.claude + ", другая нейросеть " + stars.other +
+      ", ничья " + stars.tie + ", оба слабые " + stars.weak + ", без оценки " + stars.none + "."));
+    var wrap = el("div", "tablewrap"), tb = el("table");
+    var hr = el("tr");
+    ["Раздел", "Claude", "Другая", "Ничья", "Оба слабые", "Без оценки"].forEach(function (h) { hr.appendChild(el("th", null, h)); });
+    tb.appendChild(hr);
+    order.forEach(function (sec) {
+      var r = count(voting.filter(function (s) { return s.sec === sec; }));
+      var tr = el("tr");
+      tr.appendChild(el("td", null, sec));
+      [r.claude, r.other, r.tie, r.weak, r.none].forEach(function (n) { tr.appendChild(el("td", "n", String(n))); });
+      tb.appendChild(tr);
+    });
+    wrap.appendChild(tb);
+    box.appendChild(wrap);
+    if (autoSlots.length) {
+      box.appendChild(el("p", "note", "Слоты, решённые по правилам ТЗ, теперь показаны в своих разделах с пометкой о нарушении: " +
+        autoSlots.map(function (s) { return s.id; }).join(", ") + "."));
+    }
+    var hideBtn = el("button", null, "Скрыть авторов");
+    hideBtn.type = "button";
+    hideBtn.addEventListener("click", function () {
+      state.revealed = false; ls("set", "revealed", "0"); box.hidden = true; refreshAll();
+    });
+    box.appendChild(hideBtn);
+  }
+
+  document.getElementById("btn-star").addEventListener("click", function () {
+    state.onlyStar = !state.onlyStar;
+    this.setAttribute("aria-pressed", String(state.onlyStar));
+    refreshAll();
+  });
+  document.getElementById("btn-hide").addEventListener("click", function () {
+    state.hideDone = !state.hideDone;
+    this.setAttribute("aria-pressed", String(state.hideDone));
+    refreshAll();
+  });
+  document.getElementById("btn-next").addEventListener("click", function () {
+    var next = voting.filter(function (s) { return !voteOf(s).pick && (!state.onlyStar || s.star); })[0];
+    if (next) cards[next.id].art.scrollIntoView({ block: "start" });
+  });
+  document.getElementById("btn-score").addEventListener("click", function () {
+    if (state.revealed) { document.getElementById("score").scrollIntoView({ block: "start" }); return; }
+    document.getElementById("confirm-box").hidden = false;
+  });
+  document.getElementById("btn-cancel").addEventListener("click", function () {
+    document.getElementById("confirm-box").hidden = true;
+  });
+  document.getElementById("btn-reveal").addEventListener("click", function () {
+    state.revealed = true; ls("set", "revealed", "1");
+    document.getElementById("confirm-box").hidden = true;
+    refreshAll();
+    document.getElementById("score").scrollIntoView({ block: "start" });
+  });
+
+  var api = window.claude && typeof window.claude.use === "function" ? window.claude.use("db") : Promise.resolve(null);
+  // Голоса до ответа хранилища ждут его здесь; зеркало в браузере пишется сразу.
+  var ready = api.then(function (db) {
+    if (!db) {
+      state.dbState = "none";
+      state.diag = window.claude ? "хранилище не выдано этому окну" : "страница открыта вне просмотрщика claude.ai";
+      showBanner("Общее хранилище страницы недоступно в этом окне: голоса сохраняются только в этом браузере. Их можно передать Claude кнопкой «Голоса текстом».");
+      refreshAll();
+      return;
+    }
+    state.db = db;
+    db.collection("votes").onSnapshot(function (snap) {
+      var fresh = {};
+      snap.docs.forEach(function (d) { if (d.exists) fresh[d.id] = d.data(); });
+      state.dbVotes = fresh;
+      if (state.dbState === "wait") state.dbState = "ok";
+      refreshAll();
+    }, function (e) {
+      state.dbState = "fail";
+      state.diag = "подписка на хранилище оборвалась: " + ((e && e.code) || "unknown");
+      showBanner("Связь с хранилищем потеряна: новые голоса сохраняются в этом браузере. Перезагрузите страницу, затем нажмите «Отправить голоса Claude».");
+      refreshAll();
+    });
+  }, function (e) {
+    state.dbState = "none";
+    state.diag = "хранилище не подключилось: " + ((e && e.code) || String(e));
+    showBanner("Общее хранилище страницы недоступно: голоса сохраняются только в этом браузере.");
+    refreshAll();
+  });
+
+  refreshAll();
+})();
+</script>
