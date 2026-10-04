@@ -11,7 +11,7 @@
       "B02_inspect_drums",
       "B03_merge_requests",
       "B04_take_hotel_map",
-      "B05_load_projector",
+      "B05_lay_films",
       "B06_align_source",
       "B07_read_old_journal",
       "B08_open_vitrine",
@@ -31,7 +31,7 @@
       "B02_inspect_drums",
       "B03_merge_requests",
       "B04_take_hotel_map",
-      "B05_load_projector",
+      "B05_lay_films",
       "B06_align_source",
       "B07_read_old_journal",
       "B08_open_vitrine",
@@ -54,7 +54,7 @@
       ],
       [
         "B01_pump_cascade",
-        "B05_load_projector"
+        "B05_lay_films"
       ],
       [
         "B01_pump_cascade",
@@ -86,7 +86,7 @@
       ],
       [
         "B02_inspect_drums",
-        "B05_load_projector"
+        "B05_lay_films"
       ],
       [
         "B02_inspect_drums",
@@ -118,7 +118,7 @@
       ],
       [
         "B03_merge_requests",
-        "B05_load_projector"
+        "B05_lay_films"
       ],
       [
         "B03_merge_requests",
@@ -173,31 +173,31 @@
         "B13_read_layoff"
       ],
       [
-        "B05_load_projector",
+        "B05_lay_films",
         "B07_read_old_journal"
       ],
       [
-        "B05_load_projector",
+        "B05_lay_films",
         "B08_open_vitrine"
       ],
       [
-        "B05_load_projector",
+        "B05_lay_films",
         "B09_compare_plunger"
       ],
       [
-        "B05_load_projector",
+        "B05_lay_films",
         "B10_take_menu"
       ],
       [
-        "B05_load_projector",
+        "B05_lay_films",
         "B11_inspect_board"
       ],
       [
-        "B05_load_projector",
+        "B05_lay_films",
         "B12_scrape_plate"
       ],
       [
-        "B05_load_projector",
+        "B05_lay_films",
         "B13_read_layoff"
       ],
       [
