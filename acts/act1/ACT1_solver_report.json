@@ -4,21 +4,19 @@
   "errors": [],
   "warnings": [],
   "info": {
-    "states": 302,
-    "goal_states": 4,
+    "states": 792,
+    "goal_states": 8,
     "shortest_path": [
       "A01_take_plunger",
-      "A02_read_pictograms",
-      "A04_probe_mineral",
-      "A09_search_room",
-      "A10_try_skirt",
-      "A11_inspect_stars",
-      "A12_fold_stars",
-      "A13_peek_lobby",
-      "A14_drive_out",
-      "A15_cross_to_desk",
-      "A17_bump_flap",
-      "A18_talk_isolde_report"
+      "A02_probe_mineral",
+      "A03_call_reception",
+      "A04_try_skirt",
+      "A05_inspect_stars",
+      "A06_fold_stars",
+      "A07_peek_lobby",
+      "A08_drive_out",
+      "A09_shout_hot",
+      "A10_talk_isolde"
     ],
     "dead_end_states": 0,
     "removes_actions": [
@@ -27,152 +25,126 @@
     "removes_unsafe": [],
     "bottlenecks": [
       "A01_take_plunger",
-      "A02_read_pictograms",
-      "A09_search_room",
-      "A10_try_skirt",
-      "A11_inspect_stars",
-      "A12_fold_stars",
-      "A13_peek_lobby",
-      "A14_drive_out",
-      "A15_cross_to_desk",
-      "A17_bump_flap",
-      "A18_talk_isolde_report"
+      "A03_call_reception",
+      "A04_try_skirt",
+      "A05_inspect_stars",
+      "A06_fold_stars",
+      "A07_peek_lobby",
+      "A08_drive_out",
+      "A09_shout_hot",
+      "A10_talk_isolde"
     ],
     "free_pairs": [
       [
         "A01_take_plunger",
-        "A04_probe_mineral"
+        "A02_probe_mineral"
       ],
       [
         "A01_take_plunger",
-        "A09_search_room"
+        "A03_call_reception"
       ],
       [
         "A01_take_plunger",
-        "A10_try_skirt"
+        "A04_try_skirt"
       ],
       [
         "A01_take_plunger",
-        "A11_inspect_stars"
+        "A05_inspect_stars"
       ],
       [
         "A01_take_plunger",
-        "A12_fold_stars"
+        "A06_fold_stars"
       ],
       [
         "A01_take_plunger",
-        "A13_peek_lobby"
+        "A07_peek_lobby"
       ],
       [
-        "A02_read_pictograms",
-        "A04_probe_mineral"
+        "A02_probe_mineral",
+        "A03_call_reception"
       ],
       [
-        "A02_read_pictograms",
-        "A09_search_room"
+        "A02_probe_mineral",
+        "A04_try_skirt"
       ],
       [
-        "A02_read_pictograms",
-        "A10_try_skirt"
+        "A02_probe_mineral",
+        "A05_inspect_stars"
       ],
       [
-        "A02_read_pictograms",
-        "A11_inspect_stars"
+        "A02_probe_mineral",
+        "A06_fold_stars"
       ],
       [
-        "A02_read_pictograms",
-        "A12_fold_stars"
+        "A02_probe_mineral",
+        "A07_peek_lobby"
       ],
       [
-        "A02_read_pictograms",
-        "A13_peek_lobby"
+        "A03_call_reception",
+        "A04_try_skirt"
       ],
       [
-        "A04_probe_mineral",
-        "A09_search_room"
+        "A03_call_reception",
+        "A05_inspect_stars"
       ],
       [
-        "A04_probe_mineral",
-        "A10_try_skirt"
+        "A03_call_reception",
+        "A06_fold_stars"
       ],
       [
-        "A04_probe_mineral",
-        "A11_inspect_stars"
+        "A03_call_reception",
+        "A07_peek_lobby"
       ],
       [
-        "A04_probe_mineral",
-        "A12_fold_stars"
+        "A04_try_skirt",
+        "A05_inspect_stars"
       ],
       [
-        "A04_probe_mineral",
-        "A13_peek_lobby"
+        "A04_try_skirt",
+        "A06_fold_stars"
       ],
       [
-        "A09_search_room",
-        "A10_try_skirt"
+        "A04_try_skirt",
+        "A07_peek_lobby"
       ],
       [
-        "A09_search_room",
-        "A11_inspect_stars"
+        "A05_inspect_stars",
+        "A07_peek_lobby"
       ],
       [
-        "A09_search_room",
-        "A12_fold_stars"
-      ],
-      [
-        "A09_search_room",
-        "A13_peek_lobby"
-      ],
-      [
-        "A10_try_skirt",
-        "A11_inspect_stars"
-      ],
-      [
-        "A10_try_skirt",
-        "A12_fold_stars"
-      ],
-      [
-        "A10_try_skirt",
-        "A13_peek_lobby"
-      ],
-      [
-        "A11_inspect_stars",
-        "A13_peek_lobby"
-      ],
-      [
-        "A12_fold_stars",
-        "A13_peek_lobby"
+        "A06_fold_stars",
+        "A07_peek_lobby"
       ]
     ],
     "guaranteed_final_flags": [
       "bathday_done",
       "breakfast_on_trolley",
       "cascade_dry_seen",
+      "crowd_seen",
       "foam_active",
       "foam_class_closed",
       "foam_swollen",
       "iz_folder_seen",
       "iz_formal",
+      "iz_rule3_seen",
       "iz_rules_all_shown",
       "knows_bath_day",
-      "knows_flap_cycle",
       "knows_foam_flow",
       "knows_paper_soaks",
       "knows_soap_grip",
       "knows_stars_fold",
       "knows_trolley_chamber",
+      "knows_waiter_call",
       "minus_four_stars_said",
       "need_cover",
-      "pictogram_uncovered",
       "plate_revealed",
       "plunger_taken",
       "poster_seen",
-      "room_searched",
+      "reception_called",
       "shock_done",
       "shock_report_known",
       "stars_folded",
-      "trolley_at_desk",
-      "trolley_in_lobby",
+      "trolley_at_crowd",
       "trolley_present",
       "trolley_service_side",
       "voucher_read",
@@ -184,33 +156,35 @@
       "bathday_done",
       "breakfast_on_trolley",
       "cascade_dry_seen",
+      "crowd_seen",
       "foam_active",
       "foam_class_closed",
       "foam_swollen",
-      "iz_flap_hint",
+      "has_menu_card",
       "iz_folder_seen",
       "iz_formal",
+      "iz_rule3_seen",
       "iz_rules_all_shown",
       "knows_assortment",
       "knows_bath_day",
-      "knows_flap_cycle",
       "knows_foam_flow",
+      "knows_hot_warning",
       "knows_paper_soaks",
       "knows_soap_grip",
       "knows_stars_fold",
       "knows_trolley_chamber",
+      "knows_waiter_call",
       "minus_four_stars_said",
       "need_cover",
-      "pictogram_uncovered",
       "plate_revealed",
       "plunger_taken",
       "poster_seen",
-      "room_searched",
+      "reception_called",
+      "room_bare_seen",
       "shock_done",
       "shock_report_known",
       "stars_folded",
-      "trolley_at_desk",
-      "trolley_in_lobby",
+      "trolley_at_crowd",
       "trolley_present",
       "trolley_service_side",
       "voucher_read",
@@ -219,17 +193,16 @@
       "wet_ring_seen"
     ],
     "actions_total": 18,
-    "actions_required": 12,
+    "actions_required": 10,
     "rooms_used": [
       "W1",
       "W2"
     ],
     "required_by_type": {
       "take": 1,
-      "read": 1,
-      "use": 6,
-      "inspect": 3,
-      "talk": 1
+      "use": 5,
+      "inspect": 2,
+      "talk": 2
     }
   }
 }
