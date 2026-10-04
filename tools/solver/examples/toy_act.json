@@ -1,0 +1,28 @@
+{
+  "act": "TOY",
+  "assumptions": ["Учебный граф для проверки солвера. Не Акт I и не дизайн игры."],
+  "start_flags": ["at_start"],
+  "flags_glossary": {
+    "at_start": "старт",
+    "has_cup": "чашка на руках",
+    "has_water": "в чашке вода",
+    "knows_tap": "известно, где кран",
+    "has_note": "записка прочитана",
+    "plant_watered": "цветок полит",
+    "door_open": "дверь открыта"
+  },
+  "actions": [
+    {"id": "A01_take_cup", "name": "Взять чашку", "room": "W1", "type": "take",
+     "requires": ["at_start"], "adds": ["has_cup"], "removes": [], "optional": false},
+    {"id": "A02_read_note", "name": "Прочитать записку", "room": "W2", "type": "read",
+     "requires": ["at_start"], "adds": ["has_note", "knows_tap"], "removes": [], "optional": false},
+    {"id": "A03_fill_cup", "name": "Набрать воды", "room": "W2", "type": "use",
+     "requires": ["has_cup", "knows_tap"], "adds": ["has_water"], "removes": [], "optional": false},
+    {"id": "A04_water_plant", "name": "Полить цветок", "room": "W1", "type": "use",
+     "requires": ["has_water"], "adds": ["plant_watered"], "removes": ["has_water"], "optional": false},
+    {"id": "A05_open_door", "name": "Открыть дверь", "room": "W1", "type": "use",
+     "requires": ["plant_watered", "has_note"], "adds": ["door_open"], "removes": [], "optional": false}
+  ],
+  "rooms": ["W1 — комната", "W2 — кухня"],
+  "act_goal_flags": ["door_open"]
+}
