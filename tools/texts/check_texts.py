@@ -54,6 +54,7 @@ ANSWERING = "Спасибо! Ваше мнение очень важно для 
 MINERAL = "Вода питьевая очищенная, по мотивам исторической рецептуры"
 POT = "Осторожно, горячо!"
 HOT = "Осторожно, горячее!"
+STAFF_WORD = r"обслуживани|обслуживающ\w* персонал"
 
 # --- §7.3 ТЗ: запреты -------------------------------------------------------
 # Шаблоны применяются к тексту после norm_match(): нижний регистр, ё → е.
@@ -257,6 +258,8 @@ def parse_texts(path):
         if s in ("ПРОДОЛЖЕНИЕ СЛЕДУЕТ", "КОНЕЦ АКТА I"):
             cur = None
             continue
+        if s.startswith(">"):          # пояснение к слоту: источник, причина правки
+            continue
         s = re.sub(r"^[-*]\s+", "", s).strip("*` ")
         if s.lower() == "silence":
             cur["silence"] = True
@@ -456,9 +459,10 @@ def check(brief, texts, fmt_errors):
     require("SEQ.shout.1",
             any(same_line(t, HOT) for t in lines_of("SEQ.shout.1", "lap")),
             "нет крика «%s» отдельной репликой" % HOT)
+    # «обслуживание» в ТЗ v1; решение автора 04.10.2026 — «обслуживающий персонал»
     require("SEQ.shout.4",
-            any("обслуживани" in norm_match(t) for t in lines_of("SEQ.shout.4", "iz")),
-            "Изольда не говорит «обслуживание»")
+            any(re.search(STAFF_WORD, norm_match(t)) for t in lines_of("SEQ.shout.4", "iz")),
+            "Изольда не называет его обслуживающим персоналом")
     require("TALK.iz.open",
             any("во всем здании" in norm_match(t) for t in lines_of("TALK.iz.open", "iz")),
             "Изольда не говорит «во всём здании»")

@@ -61,3 +61,34 @@ class BuildTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class MergeTest(unittest.TestCase):
+    """Итоговая версия — генерируемый файл: она обязана совпадать со сборкой
+    из голосов и правок и проходить проверку по ТЗ."""
+
+    import merge_texts as mt  # noqa: E402
+
+    def build(self):
+        blocks, report = self.mt.merge(ct.DEFAULT_BRIEF, ACT / "ACT1_TEXTS_CLAUDE.md",
+                                       ACT / "ACT1_TEXTS_OTHER.md", ACT / "ACT1_VOTES.json",
+                                       ACT / "ACT1_TEXTS_EDITS.md")
+        return self.mt.HEADER + "\n" + "\n\n".join(blocks) + "\n\nКОНЕЦ АКТА I\n", report
+
+    def test_final_is_generated(self):
+        text, _ = self.build()
+        self.assertEqual(text, (ACT / "ACT1_TEXTS_FINAL.md").read_text(encoding="utf-8"),
+                         "ACT1_TEXTS_FINAL.md правили руками — правки вносятся в ACT1_TEXTS_EDITS.md")
+
+    def test_final_passes_brief(self):
+        brief = ct.parse_brief(ct.DEFAULT_BRIEF)
+        texts, fmt = ct.parse_texts(ACT / "ACT1_TEXTS_FINAL.md")
+        errs, _, stats = ct.check(brief, texts, fmt)
+        self.assertEqual(errs, [])
+        self.assertEqual(stats["slots"], 154)
+
+    def test_sources(self):
+        _, report = self.build()
+        self.assertEqual(sorted(report["rule"]), ["CHOICE.pass", "CHOICE.wait", "SEQ.peek.3_lobby"])
+        self.assertIn("OPEN.2_shower", report["edit"])
+        self.assertEqual(sum(len(v) for v in report.values()), 154)
