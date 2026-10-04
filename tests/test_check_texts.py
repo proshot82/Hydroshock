@@ -1,0 +1,176 @@
+"""Тесты проверки текстов акта (tools/texts/check_texts.py).
+
+Позитив: ТЗ разбирается, версия Claude проходит без ошибок.
+Негатив: каждая порча эталонного файла ловится своей ошибкой.
+"""
+
+import sys
+import tempfile
+import unittest
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "tools" / "texts"))
+
+import check_texts as ct  # noqa: E402
+
+BRIEF = ROOT / "texts" / "act1" / "BRIEF_ACT1_TEXTS.md"
+CLAUDE = ROOT / "texts" / "act1" / "ACT1_TEXTS_CLAUDE.md"
+
+
+def run_check(text):
+    with tempfile.TemporaryDirectory() as d:
+        p = Path(d) / "тексты акта.md"
+        p.write_text(text, encoding="utf-8")
+        brief = ct.parse_brief(BRIEF)
+        texts, fmt = ct.parse_texts(p)
+        return ct.check(brief, texts, fmt)
+
+
+def messages(errs):
+    return "\n".join("%s: %s" % (sid, msg) for sid, msg in errs)
+
+
+class BriefTest(unittest.TestCase):
+    def test_brief_parsed(self):
+        b = ct.parse_brief(BRIEF)
+        self.assertEqual(len(b), 154)
+        self.assertEqual(b["Z03.stars.look"]["min"], 2)
+        self.assertEqual(b["Z03.stars.look"]["max"], 2)
+        self.assertEqual(b["DOC.menu"]["kind"], "doc")
+        self.assertEqual(b["DOC.menu"]["doc_max"], 16)
+        self.assertEqual(b["CHOICE.pass"]["kind"], "choice")
+        self.assertEqual(b["Z03.stars.fold"]["speakers"], {"cap"})
+        self.assertTrue(b["PROBE.coffee"]["star"])
+
+    def test_range_parse(self):
+        self.assertEqual(ct.parse_range("1–3")["max"], 3)
+        self.assertEqual(ct.parse_range("метка + 2–5")["kind"], "choice")
+        self.assertEqual(ct.parse_range("док ≤4")["doc_max"], 4)
+        with self.assertRaises(ValueError):
+            ct.parse_range("много")
+
+
+class NormTest(unittest.TestCase):
+    def test_quotes_and_dashes(self):
+        self.assertEqual(ct.norm_typo('Он сказал "привет" - и ушёл...'),
+                         "Он сказал «привет» — и ушёл…")
+        self.assertEqual(ct.norm_typo("«Отель „Каскад“ — четыре звезды»"),
+                         "«Отель „Каскад“ — четыре звезды»")
+
+    def test_same_line_ignores_final_punct_and_yo(self):
+        self.assertTrue(ct.same_line("Осторожно, горячее", "Осторожно, горячее!"))
+        self.assertTrue(ct.same_line("Воды нет во всем здании.",
+                                     "Воды нет во всём здании"))
+
+
+class ClaudeVersionTest(unittest.TestCase):
+    def test_claude_version_passes(self):
+        errs, warns, stats = run_check(CLAUDE.read_text(encoding="utf-8"))
+        self.assertEqual(errs, [], messages(errs))
+        self.assertEqual(stats["slots"], 154)
+
+
+class NegativeTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.base = CLAUDE.read_text(encoding="utf-8")
+
+    def spoil(self, old, new):
+        self.assertIn(old, self.base)
+        return self.base.replace(old, new, 1)
+
+    def assertCaught(self, text, fragment):
+        errs, _, _ = run_check(text)
+        self.assertIn(fragment, messages(errs))
+
+    def test_missing_slot(self):
+        text = self.spoil("### UI.inventory\nui | none | STATE | ПРИ СЕБЕ\n", "")
+        self.assertCaught(text, "UI.inventory: слот отсутствует")
+
+    def test_unknown_slot(self):
+        text = self.base + "\n### W9.ghost.look\nlap | lap_soap_neutral | CLUE | Призрак.\n"
+        self.assertCaught(text, "лишний слот")
+
+    def test_owner_line_changed(self):
+        text = self.spoil("это МИНУС четыре звезды.", "это минус четыре звезды.")
+        self.assertCaught(text, "нет owner-canon реплики")
+
+    def test_answering_machine_changed(self):
+        text = self.spoil("ans | none | STATE,JOKE | Спасибо! Ваше мнение очень важно для нас, оставайтесь на линии.",
+                          "ans | none | STATE,JOKE | Спасибо! Ваше мнение важно для нас.")
+        self.assertCaught(text, "нет строки автоответчика")
+
+    def test_joke_only_line(self):
+        text = self.spoil("lap | lap_soap_neutral | CLUE,JOKE | Матрас без простыни.",
+                          "lap | lap_soap_neutral | JOKE | Матрас без простыни.")
+        self.assertCaught(text, "только с JOKE")
+
+    def test_wrong_emotion(self):
+        text = self.spoil("lap | lap_soap_neutral | CLUE,JOKE | Матрас без простыни.",
+                          "lap | lap_happy | CLUE,JOKE | Матрас без простыни.")
+        self.assertCaught(text, "не из реестра lap")
+
+    def test_speaker_not_allowed(self):
+        text = self.spoil("### W1.bed\nlap |", "### W1.bed\niz |")
+        self.assertCaught(text, "не разрешён")
+
+    def test_isolde_first_person(self):
+        text = self.spoil("Это обслуживание.", "Я считаю, это обслуживание.")
+        self.assertCaught(text, "нет «я»")
+
+    def test_isolde_simultaneously(self):
+        text = self.spoil("Воды нет во всём здании.", "Воды нет во всём здании одновременно.")
+        self.assertCaught(text, "«одновременно»")
+
+    def test_banned_tech_word(self):
+        text = self.spoil("Труба пуста до самого низа.", "Стояк пуст до самого низа.")
+        self.assertCaught(text, "«стояк»")
+
+    def test_eto_ne_eto(self):
+        text = self.spoil("Ни надеть, ни вытереться.", "Это не юбка, это дверца.")
+        self.assertCaught(text, "«это не …, это …»")
+
+    def test_kefir_outside(self):
+        text = self.spoil("Ни одной бутылки без концепции.", "Кефира нет.")
+        self.assertCaught(text, "«кефир» вне разрешённых слотов")
+
+    def test_mat_limit_and_speaker(self):
+        text = self.spoil("Не по адресу.", "Бля, не по адресу.")
+        text = text.replace("Можно. Но зачем?", "Бля. Бля. Зачем?", 1)
+        self.assertCaught(text, "мат: 3 случаев")
+        text = self.spoil("Ноги стоят.", "Ноги стоят.")
+        text = text.replace("guestf | none | CHAR | Не толкайтесь", "guestf | none | CHAR | Бля, не толкайтесь", 1)
+        self.assertCaught(text, "мат у guestf")
+
+    def test_doc_too_long(self):
+        text = self.spoil("1908 годъ\n", "1908 годъ\nлишняя строка\n")
+        self.assertCaught(text, "документ длиннее 4 строк")
+
+    def test_waiter_free_text(self):
+        text = self.spoil("waiter | none | CLUE | Осторожно, горячее!",
+                          "waiter | none | CLUE | Посторонитесь!")
+        self.assertCaught(text, "официант говорит только")
+
+    def test_silence_where_lines_required(self):
+        text = self.spoil("### W1.hooks\nlap | lap_soap_neutral | CLUE,CHAR | Крючки для халата и полотенца. Крепёж надёжный. Висеть на нём нечему.",
+                          "### W1.hooks\nsilence")
+        self.assertCaught(text, "тишина недопустима")
+
+    def test_hint_level_emotion(self):
+        text = self.spoil("anc | anc_calm | CLUE | Тележка шире двери.",
+                          "anc | anc_smug | CLUE | Тележка шире двери.")
+        self.assertCaught(text, "ступень подсказки требует anc_calm")
+
+    def test_line_too_long(self):
+        long = "Очень " * 40
+        text = self.spoil("Не по адресу.", long.strip())
+        self.assertCaught(text, "предел для lap")
+
+    def test_bad_format_line(self):
+        text = self.spoil("### FB.generic.2\n", "### FB.generic.2\nпросто текст без разметки\n")
+        self.assertCaught(text, "не по формату")
+
+
+if __name__ == "__main__":
+    unittest.main()
