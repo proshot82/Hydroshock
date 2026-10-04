@@ -71,6 +71,11 @@ button.primary { background: var(--brass); color: var(--panel); border-color: va
 nav.secs { display: flex; flex-wrap: wrap; gap: 6px; }
 .chip { text-decoration: none; }
 .banner { border: 1px solid var(--warn); color: var(--warn); border-radius: 8px; padding: 10px 12px; font-size: .92rem; }
+.recover { border: 1px solid var(--brass); background: var(--panel); border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+.recover p { margin: 0; }
+#store-state.warn { color: var(--warn); font-weight: 700; }
+#store-state.ok { color: var(--good); }
+textarea.comment { font: .85rem/1.4 var(--mono); resize: vertical; }
 
 section.sec { display: flex; flex-direction: column; gap: 14px; }
 article.slot {
@@ -128,17 +133,29 @@ td.n { text-align: right; }
     <p class="lede">«Латунный янычар: Гидроудар», Акт I «Комплимент от заведения». Две версии написаны по одному ТЗ: одна — Claude, другая — другой нейросетью. В каждом слоте варианты стоят в случайном порядке и без подписей. Выберите, какой смешнее при соблюдении правил, либо «Ничья» или «Оба слабые». В комментарии можно записать, что взять в итоговую версию.</p>
     <p class="note" id="rules-note"></p>
     <div id="store-banner" class="banner" hidden></div>
+    <div id="recover" class="recover" hidden>
+      <p id="recover-text"></p>
+      <div class="confirm">
+        <button type="button" id="btn-send" class="primary">Отправить голоса Claude</button>
+        <button type="button" id="btn-copy">Скопировать голоса</button>
+        <span id="recover-msg" class="saved" aria-live="polite"></span>
+      </div>
+      <label class="note" for="export">Если кнопки не помогают: выделите этот текст, скопируйте и вставьте в чат Claude.</label>
+      <textarea id="export" class="comment" rows="5" readonly></textarea>
+      <p class="note" id="recover-diag"></p>
+    </div>
   </header>
 
   <div class="bar" role="region" aria-label="Прогресс и фильтры">
     <div class="progress">
-      <span class="progress-label" id="progress-label">Оценено 0</span>
+      <span class="progress-label"><span id="progress-label">Оценено 0</span> · <span id="store-state">сохранение: проверяю…</span></span>
       <div class="meter" aria-hidden="true"><span id="meter"></span></div>
     </div>
     <div class="tools">
       <button type="button" id="btn-next">Следующий без оценки</button>
       <button type="button" id="btn-star" aria-pressed="false">Только ★</button>
       <button type="button" id="btn-hide" aria-pressed="false">Скрыть оценённые</button>
+      <button type="button" id="btn-export">Голоса текстом</button>
       <button type="button" id="btn-score" class="primary">Показать счёт</button>
     </div>
   </div>
@@ -183,11 +200,14 @@ td.n { text-align: right; }
     return null;
   }
 
+  // Две копии голосов: общее хранилище страницы (его читает Claude) и зеркало
+  // в этом браузере. Зеркало пишется всегда — так голос не теряется, даже
+  // если хранилище не ответило; то, чего в хранилище нет, можно переслать.
   var state = {
-    votes: {}, revealed: ls("get", "revealed") === "1",
-    onlyStar: false, hideDone: false, db: null, local: false
+    dbVotes: {}, localVotes: {}, revealed: ls("get", "revealed") === "1",
+    onlyStar: false, hideDone: false, db: null, dbState: "wait", diag: ""
   };
-  try { state.votes = JSON.parse(ls("get", "votes_local") || "{}") || {}; } catch (e) { state.votes = {}; }
+  try { state.localVotes = JSON.parse(ls("get", "votes_local") || "{}") || {}; } catch (e) { state.localVotes = {}; }
 
   var voting = SLOTS.filter(function (s) { return !s.auto.length; });
   var autoSlots = SLOTS.filter(function (s) { return s.auto.length; });
@@ -310,7 +330,23 @@ td.n { text-align: right; }
     sec.appendChild(card);
   });
 
-  function voteOf(s) { return state.votes[s.id] || {}; }
+  function newer(a, b) {
+    if (!a) return b || null;
+    if (!b) return a;
+    return String(b.at || "") > String(a.at || "") ? b : a;
+  }
+  function voteOf(s) { return newer(state.dbVotes[s.id], state.localVotes[s.id]) || {}; }
+  function sameVote(a, b) {
+    return !!a && !!b && (a.pick || null) === (b.pick || null) && (a.comment || "") === (b.comment || "");
+  }
+  function pending() {
+    return SLOTS.filter(function (s) {
+      var l = state.localVotes[s.id];
+      if (!l || (!l.pick && !l.comment) || inflight[s.id] > 0) return false;
+      var d = state.dbVotes[s.id];
+      return !d || (!sameVote(l, d) && String(l.at || "") > String(d.at || ""));
+    });
+  }
 
   function refreshCard(s) {
     var c = cards[s.id], v = voteOf(s);
@@ -332,28 +368,33 @@ td.n { text-align: right; }
     document.getElementById("progress-label").textContent = "Оценено " + done + " из " + voting.length;
     document.getElementById("meter").style.width = (voting.length ? 100 * done / voting.length : 0) + "%";
     if (state.revealed) renderScore();
+    refreshStore();
   }
 
-  var queues = {};
+  var queues = {}, inflight = {};
+  function saveMirror() { ls("set", "votes_local", JSON.stringify(state.localVotes)); }
+
   function persist(idx, body) {
     var s = SLOTS[idx];
-    state.votes[s.id] = body;
+    state.localVotes[s.id] = body;
+    saveMirror();
+    inflight[s.id] = (inflight[s.id] || 0) + 1;   // пока запись в пути, голос не «потерян»
     refreshAll();
     var c = cards[s.id];
     c.saved.textContent = "сохраняю…";
     var prev = queues[s.id] || ready;
     queues[s.id] = prev.then(function () {
-      if (state.db && !state.local) return state.db.doc("votes/" + s.id).set(body);
-      ls("set", "votes_local", JSON.stringify(state.votes));
+      if (!state.db) throw { code: "no_store" };
+      return state.db.doc("votes/" + s.id).set(body);
     }).then(function () {
-      c.saved.textContent = state.local ? "сохранено в этом браузере" : "сохранено";
+      c.saved.textContent = "сохранено";
     }).catch(function (err) {
-      if (err && err.code === "invalid_argument") {
-        state.local = true;
-        showBanner("Нет права записи в общее хранилище страницы: голоса сохраняются только в этом браузере.");
-      }
-      ls("set", "votes_local", JSON.stringify(state.votes));
+      var code = (err && err.code) || String(err);
+      if (code !== "no_store") { state.diag = "запись отклонена: " + code; state.dbState = "fail"; }
       c.saved.textContent = "сохранено только в этом браузере";
+    }).then(function () {
+      inflight[s.id]--;
+      refreshStore();
     });
   }
 
@@ -372,8 +413,91 @@ td.n { text-align: right; }
   function showBanner(msg) {
     var b = document.getElementById("store-banner");
     b.textContent = msg;
-    b.hidden = false;
+    b.hidden = !msg;
   }
+
+  function exportText() {
+    var rows = [];
+    SLOTS.forEach(function (s, idx) {
+      var v = voteOf(s);
+      if (!v.pick && !v.comment) return;
+      var side = pickToSide(idx, v.pick) || "-";
+      rows.push(s.id + "=" + side + (v.comment ? " | " + v.comment.replace(/\s+/g, " ") : ""));
+    });
+    return "ГОЛОСА АКТ I (" + rows.length + ")\n" + rows.join("\n") +
+      (state.diag ? "\nДИАГНОСТИКА: " + state.diag : "");
+  }
+
+  var forceExport = false;
+  function refreshStore() {
+    var st = document.getElementById("store-state");
+    var p = pending();
+    if (state.dbState === "ok" && !p.length) {
+      st.textContent = "сохраняется в хранилище страницы"; st.className = "ok";
+    } else if (state.dbState === "wait") {
+      st.textContent = "сохранение: проверяю…"; st.className = "";
+    } else {
+      st.textContent = "только в этом браузере"; st.className = "warn";
+    }
+    var box = document.getElementById("recover");
+    var show = p.length > 0 || forceExport;
+    box.hidden = !show;
+    if (!show) return;
+    var canSend = state.db && p.length > 0;
+    document.getElementById("btn-send").hidden = !canSend;
+    document.getElementById("recover-text").textContent = p.length
+      ? "В этом браузере сохранено голосов: " + p.length + ". В хранилище страницы их нет, Claude их не видит." +
+        (canSend ? " Нажмите «Отправить голоса Claude»." : " Хранилище здесь недоступно — скопируйте голоса и вставьте их в чат Claude.")
+      : "Голоса текстом — на случай, если их нужно передать Claude в чат.";
+    var ta = document.getElementById("export");
+    if (document.activeElement !== ta) ta.value = exportText();
+    document.getElementById("recover-diag").textContent = state.diag ? "Диагностика: " + state.diag : "";
+  }
+
+  document.getElementById("btn-export").addEventListener("click", function () {
+    forceExport = !forceExport;
+    refreshStore();
+    if (forceExport) document.getElementById("recover").scrollIntoView({ block: "start" });
+  });
+  document.getElementById("btn-copy").addEventListener("click", function () {
+    var ta = document.getElementById("export"), msg = document.getElementById("recover-msg");
+    ta.value = exportText();
+    function manual() { ta.focus(); ta.select(); msg.textContent = "Текст выделен — скопируйте его вручную."; }
+    try {
+      navigator.clipboard.writeText(ta.value).then(function () {
+        msg.textContent = "Скопировано. Вставьте в чат Claude.";
+      }, manual);
+    } catch (e) { manual(); }
+  });
+  document.getElementById("btn-send").addEventListener("click", function () {
+    var btn = this, msg = document.getElementById("recover-msg");
+    var list = pending();
+    if (!state.db || !list.length) return;
+    btn.disabled = true;
+    var sent = 0;
+    msg.textContent = "отправляю…";
+    list.reduce(function (chain, s) {
+      return chain.then(function () {
+        var body = state.localVotes[s.id];
+        return state.db.doc("votes/" + s.id).set(body).then(function () {
+          sent++;
+          state.dbVotes[s.id] = body;
+          msg.textContent = "отправлено " + sent + " из " + list.length;
+        });
+      });
+    }, Promise.resolve()).then(function () {
+      state.dbState = "ok"; state.diag = "";
+      msg.textContent = "Отправлено голосов: " + sent + ". Теперь Claude их видит.";
+      btn.disabled = false;
+      refreshAll();
+    }, function (err) {
+      state.dbState = "fail";
+      state.diag = "отправка остановлена: " + ((err && err.code) || String(err)) + ", отправлено " + sent;
+      msg.textContent = "Отправка не прошла. Скопируйте голоса и вставьте их в чат Claude.";
+      btn.disabled = false;
+      refreshAll();
+    });
+  });
 
   function renderScore() {
     var box = document.getElementById("score");
@@ -465,27 +589,33 @@ td.n { text-align: right; }
   });
 
   var api = window.claude && typeof window.claude.use === "function" ? window.claude.use("db") : Promise.resolve(null);
-  // Голоса до ответа хранилища ждут его здесь, а не уходят молча в браузер.
+  // Голоса до ответа хранилища ждут его здесь; зеркало в браузере пишется сразу.
   var ready = api.then(function (db) {
     if (!db) {
-      state.local = true;
-      showBanner("Общее хранилище страницы недоступно: голоса сохраняются только в этом браузере, и Claude их не увидит. Откройте страницу в claude.ai под своим аккаунтом.");
+      state.dbState = "none";
+      state.diag = window.claude ? "хранилище не выдано этому окну" : "страница открыта вне просмотрщика claude.ai";
+      showBanner("Общее хранилище страницы недоступно в этом окне: голоса сохраняются только в этом браузере. Их можно передать Claude кнопкой «Голоса текстом».");
+      refreshAll();
       return;
     }
     state.db = db;
     db.collection("votes").onSnapshot(function (snap) {
       var fresh = {};
       snap.docs.forEach(function (d) { if (d.exists) fresh[d.id] = d.data(); });
-      Object.keys(state.votes).forEach(function (id) { if (!fresh[id] && queues[id]) fresh[id] = state.votes[id]; });
-      state.votes = fresh;
+      state.dbVotes = fresh;
+      if (state.dbState === "wait") state.dbState = "ok";
       refreshAll();
-    }, function () {
-      state.local = true;
-      showBanner("Связь с хранилищем потеряна: новые голоса сохраняются только в этом браузере. Перезагрузите страницу.");
+    }, function (e) {
+      state.dbState = "fail";
+      state.diag = "подписка на хранилище оборвалась: " + ((e && e.code) || "unknown");
+      showBanner("Связь с хранилищем потеряна: новые голоса сохраняются в этом браузере. Перезагрузите страницу, затем нажмите «Отправить голоса Claude».");
+      refreshAll();
     });
-  }, function () {
-    state.local = true;
+  }, function (e) {
+    state.dbState = "none";
+    state.diag = "хранилище не подключилось: " + ((e && e.code) || String(e));
     showBanner("Общее хранилище страницы недоступно: голоса сохраняются только в этом браузере.");
+    refreshAll();
   });
 
   refreshAll();
