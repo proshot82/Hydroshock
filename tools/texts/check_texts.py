@@ -579,7 +579,8 @@ def check_act2_fixed(texts, lines_of, require, err):
         for sub in subs:
             require(sid, norm_match(sub) in joined, "в документе нет «%s»" % sub)
         for line in exact:
-            require(sid, any(same_line(l, line) for l in doc),
+            # нумерация пункта («2. …») строку не портит
+            require(sid, any(same_line(re.sub(r"^\s*\d+[.)]\s*", "", l), line) for l in doc),
                     "нет строки «%s» отдельной строкой" % line)
     for sid in ACT2_SIGNED:
         doc = [l.strip() for l in ((texts.get(sid) or {}).get("doc") or []) if l.strip()]

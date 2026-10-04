@@ -59,8 +59,17 @@ class BuildTest(unittest.TestCase):
         self.assertEqual(bc.blind('Ещё "путёвка" - и всё...'), "Еще «путевка» — и все…")
 
 
-if __name__ == "__main__":
-    unittest.main()
+class BuildAct2Test(unittest.TestCase):
+    def test_act2_page(self):
+        a2 = ROOT / "texts" / "act2"
+        data = bc.build(a2 / "BRIEF_ACT2_TEXTS.md", a2 / "ACT2_TEXTS_CLAUDE.md",
+                        a2 / "ACT2_TEXTS_OTHER.md")
+        self.assertEqual((data["act"], data["title"]), ("II", "Старший по воде"))
+        self.assertEqual(len(data["slots"]), 165)
+        auto = {s["id"]: [a["who"] for a in s["auto"]] for s in data["slots"] if s["auto"]}
+        self.assertEqual(set(auto), {"TALK.iz.open", "TALK.iz.seal", "TALK.iz.plate",
+                                     "TALK.iz.signature", "TALK.iz.layoff"})
+        self.assertTrue(all(w == ["other"] for w in auto.values()))
 
 
 class MergeTest(unittest.TestCase):
@@ -92,3 +101,7 @@ class MergeTest(unittest.TestCase):
         self.assertEqual(sorted(report["rule"]), ["CHOICE.pass", "CHOICE.wait", "SEQ.peek.3_lobby"])
         self.assertIn("OPEN.2_shower", report["edit"])
         self.assertEqual(sum(len(v) for v in report.values()), 154)
+
+
+if __name__ == "__main__":
+    unittest.main()
