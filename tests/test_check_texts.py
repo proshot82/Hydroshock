@@ -245,8 +245,12 @@ class Act2Test(unittest.TestCase):
         self.assertIn("Старший по воде — тов. К.", msg)
 
     def test_pa_three_services(self):
-        msg = self.spoil("и «textile care» приносят", "приносят")
-        self.assertIn("textile care", msg)
+        msg = self.spoil("и «текстильная забота» приносят", "приносят")
+        self.assertIn("текстильная забота", msg)
+
+    def test_no_english(self):
+        msg = self.spoil("Три эпохи, одна труба.", "Три эпохи, одна труба, wellness.")
+        self.assertIn("английское слово", msg)
 
     def test_debt_banned(self):
         msg = self.spoil("Три эпохи, одна труба.", "Три эпохи, один долг.")

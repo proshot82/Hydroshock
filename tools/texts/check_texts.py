@@ -448,6 +448,9 @@ def check(brief, texts, fmt_errors, act=1):
                     err(sid, "четвёртая стена — %s (запрет автора): %s" % (name, txt.strip()[:80]))
             if act == 1 and "кефир" in low and sid not in KEFIR_OK:
                 err(sid, "«кефир» вне разрешённых слотов: %s" % txt.strip()[:80])
+            if act >= 2 and re.search(r"[a-z]{2,}", low):
+                err(sid, "английское слово (решение автора — английских слов в игре нет): %s"
+                    % txt.strip()[:80])
             if act == 2 and sid != ACT2_READINGS_SLOT:
                 for pat, name in ACT2_READINGS:
                     if re.search(pat, low):
@@ -536,7 +539,7 @@ MANAGER_SIGNATURE = ["Ваш комфорт — наша концепция.", "
 ACT2_LINE_RULES = [
     # (слот, спикер, обязательные подстроки)
     ("OPEN.requests", "ans", ["заявка принята, ожидайте"]),
-    ("OPEN.pa", "pa", ["душевой комфорт", "lobby water feature", "textile care"]),
+    ("OPEN.pa", "pa", ["душевой комфорт", "водный акцент холла", "текстильная забота"]),
     ("TALK.iz.vitrine", "iz", ["не запирается"]),
     ("TALK.iz.layoff", "iz", ["поставщик"]),
     ("TALK.iz.ladder", "iz", ["стремянк"]),
@@ -555,7 +558,7 @@ ACT2_DOC_RULES = [
     ("DOC.paint_act", ["табличка", "и. т."], []),
     ("DOC.photo", ["четвергъ"], []),
     ("DOC.token", ["на одно погруженiе"], []),
-    ("DOC.map_hotel", ["wellness-стойка"], []),
+    ("DOC.map_hotel", ["стойка благополучия"], []),
     ("DOC.map_1908", ["грузовой подъёмникъ"], []),
 ]
 ACT2_SIGNED = ["DOC.layoff", "DOC.exhibit", "DOC.regulation"]
