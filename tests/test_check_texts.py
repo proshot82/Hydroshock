@@ -84,6 +84,12 @@ class NegativeTest(unittest.TestCase):
         errs, _, _ = run_check(text)
         self.assertIn(fragment, messages(errs))
 
+    def assertWarned(self, text, fragment):
+        """Правила тона — предупреждение, не ошибка (решение автора 04.10.2026)."""
+        errs, warns, _ = run_check(text)
+        self.assertIn(fragment, messages(warns))
+        self.assertNotIn(fragment, messages(errs))
+
     def test_missing_slot(self):
         text = self.spoil("### UI.inventory\nui | none | STATE | ПРИ СЕБЕ\n", "")
         self.assertCaught(text, "UI.inventory: слот отсутствует")
@@ -138,10 +144,13 @@ class NegativeTest(unittest.TestCase):
     def test_mat_limit_and_speaker(self):
         text = self.spoil("Не по адресу.", "Бля, не по адресу.")
         text = text.replace("Можно. Но зачем?", "Бля. Бля. Зачем?", 1)
-        self.assertCaught(text, "мат: 3 случаев")
-        text = self.spoil("Ноги стоят.", "Ноги стоят.")
-        text = text.replace("guestf | none | CHAR | Не толкайтесь", "guestf | none | CHAR | Бля, не толкайтесь", 1)
-        self.assertCaught(text, "мат у guestf")
+        self.assertWarned(text, "мат: 3 случаев")
+        text = self.spoil("guestf | none | CHAR | Не толкайтесь", "guestf | none | CHAR | Бля, не толкайтесь")
+        self.assertWarned(text, "мат у guestf")
+
+    def test_fourth_wall_is_a_warning(self):
+        text = self.spoil("Не по адресу.", "Не по адресу, дорогой игрок.")
+        self.assertWarned(text, "четвёртая стена")
 
     def test_doc_too_long(self):
         text = self.spoil("1908 годъ\n", "1908 годъ\nлишняя строка\n")
