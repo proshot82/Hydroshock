@@ -35,6 +35,20 @@
 | `tools/gen_puzzles.py` | CLI `--pin` / `--new-answers --force` (защита ответов) | граф и ответы BJ2 |
 | `tools/build_web.py`, `web/index.html`, `tools/web_smoke.js`, `.github/workflows/web.yml` | веб-сборка love.js, Telegram, сейв в IndexedDB | имена, текст оболочки, координаты кнопок BJ2. В §14 handoff веб не упомянут — переносить только по решению автора |
 
+## Портреты (решение автора 04.10.2026: «часть портретов можно взять готовыми из BJ2»)
+
+В BJ2 портрет — PNG 512×512 RGBA, на экране он рисуется в масштабе 0,5 (`src/ui.lua` L317). Имя файла — `port_<спикер>_<эмоция>.png`. Поверх портрета Лапидуса по флагу рисуется отдельный слой `port_crown_overlay.png` (L322-325). Тем же приёмом в BJ3 делается пена.
+
+| Портрет BJ3 | Что есть в BJ2 | Как берём |
+|---|---|---|
+| Предок: `anc_calm`, `anc_stern`, `anc_proud`, `anc_smug` | `port_anc_calm/stern/proud/smug.png` | как есть, 4 из 4 |
+| Лапидус: `lap_soap_neutral`, `_tired`, `_worried`, `_angry`, `_smug`, `_inspired`, `_panic`, `_triumphant` | `port_lap_*` — те же 8 эмоций | лица — основа. На них пиджак, рубашка и галстук, а герой BJ3 гол: плечи перерисовать без одежды |
+| Лапидус: `lap_soap_ashamed` | нет | новый, по лицу из BJ2 |
+| Пена Лапидуса | приём уже есть: слой короны | два новых слоя поверх портрета — обычная пена и раздутая «шапка». Без слоя — сухая голова во вступлении (`OPEN.1_voucher`) |
+| Изольда, Кухтулху | нет | новые |
+
+Переносятся на этапе ASSET_SPEC, вместе с соглашением об именах файлов BJ3.
+
 ## Не переносится
 
 `gen_scene.py`, `gen_texts.py`, `gen_walkthrough.py`, `gen_gallery.py`, `gen_video_script.py` (данные и маршруты BJ2 внутри скриптов), разовые ассет-скрипты `gen_garland.py`, `gen_keypad_digits.py`, `gen_r9_cutouts.py`, `gen_r10_assets.py`, `gen_vents_r7.py`, `inspect_art.py`. Генераторы BJ3 пишутся заново по GDD; из `gen_texts.py` полезен счётчик мата L698-712.
