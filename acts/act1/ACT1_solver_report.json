@@ -1,0 +1,235 @@
+{
+  "act": "ACT1",
+  "ok": true,
+  "errors": [],
+  "warnings": [],
+  "info": {
+    "states": 302,
+    "goal_states": 4,
+    "shortest_path": [
+      "A01_take_plunger",
+      "A02_read_pictograms",
+      "A04_probe_mineral",
+      "A09_search_room",
+      "A10_try_skirt",
+      "A11_inspect_stars",
+      "A12_fold_stars",
+      "A13_peek_lobby",
+      "A14_drive_out",
+      "A15_cross_to_desk",
+      "A17_bump_flap",
+      "A18_talk_isolde_report"
+    ],
+    "dead_end_states": 0,
+    "removes_actions": [
+      "A01_take_plunger"
+    ],
+    "removes_unsafe": [],
+    "bottlenecks": [
+      "A01_take_plunger",
+      "A02_read_pictograms",
+      "A09_search_room",
+      "A10_try_skirt",
+      "A11_inspect_stars",
+      "A12_fold_stars",
+      "A13_peek_lobby",
+      "A14_drive_out",
+      "A15_cross_to_desk",
+      "A17_bump_flap",
+      "A18_talk_isolde_report"
+    ],
+    "free_pairs": [
+      [
+        "A01_take_plunger",
+        "A04_probe_mineral"
+      ],
+      [
+        "A01_take_plunger",
+        "A09_search_room"
+      ],
+      [
+        "A01_take_plunger",
+        "A10_try_skirt"
+      ],
+      [
+        "A01_take_plunger",
+        "A11_inspect_stars"
+      ],
+      [
+        "A01_take_plunger",
+        "A12_fold_stars"
+      ],
+      [
+        "A01_take_plunger",
+        "A13_peek_lobby"
+      ],
+      [
+        "A02_read_pictograms",
+        "A04_probe_mineral"
+      ],
+      [
+        "A02_read_pictograms",
+        "A09_search_room"
+      ],
+      [
+        "A02_read_pictograms",
+        "A10_try_skirt"
+      ],
+      [
+        "A02_read_pictograms",
+        "A11_inspect_stars"
+      ],
+      [
+        "A02_read_pictograms",
+        "A12_fold_stars"
+      ],
+      [
+        "A02_read_pictograms",
+        "A13_peek_lobby"
+      ],
+      [
+        "A04_probe_mineral",
+        "A09_search_room"
+      ],
+      [
+        "A04_probe_mineral",
+        "A10_try_skirt"
+      ],
+      [
+        "A04_probe_mineral",
+        "A11_inspect_stars"
+      ],
+      [
+        "A04_probe_mineral",
+        "A12_fold_stars"
+      ],
+      [
+        "A04_probe_mineral",
+        "A13_peek_lobby"
+      ],
+      [
+        "A09_search_room",
+        "A10_try_skirt"
+      ],
+      [
+        "A09_search_room",
+        "A11_inspect_stars"
+      ],
+      [
+        "A09_search_room",
+        "A12_fold_stars"
+      ],
+      [
+        "A09_search_room",
+        "A13_peek_lobby"
+      ],
+      [
+        "A10_try_skirt",
+        "A11_inspect_stars"
+      ],
+      [
+        "A10_try_skirt",
+        "A12_fold_stars"
+      ],
+      [
+        "A10_try_skirt",
+        "A13_peek_lobby"
+      ],
+      [
+        "A11_inspect_stars",
+        "A13_peek_lobby"
+      ],
+      [
+        "A12_fold_stars",
+        "A13_peek_lobby"
+      ]
+    ],
+    "guaranteed_final_flags": [
+      "bathday_done",
+      "breakfast_on_trolley",
+      "cascade_dry_seen",
+      "foam_active",
+      "foam_class_closed",
+      "foam_swollen",
+      "iz_folder_seen",
+      "iz_formal",
+      "iz_rules_all_shown",
+      "knows_bath_day",
+      "knows_flap_cycle",
+      "knows_foam_flow",
+      "knows_paper_soaks",
+      "knows_soap_grip",
+      "knows_stars_fold",
+      "knows_trolley_chamber",
+      "minus_four_stars_said",
+      "need_cover",
+      "pictogram_uncovered",
+      "plate_revealed",
+      "plunger_taken",
+      "poster_seen",
+      "room_searched",
+      "shock_done",
+      "shock_report_known",
+      "stars_folded",
+      "trolley_at_desk",
+      "trolley_in_lobby",
+      "trolley_present",
+      "trolley_service_side",
+      "voucher_read",
+      "w3_open",
+      "w4_open",
+      "wet_ring_seen"
+    ],
+    "possible_final_flags": [
+      "bathday_done",
+      "breakfast_on_trolley",
+      "cascade_dry_seen",
+      "foam_active",
+      "foam_class_closed",
+      "foam_swollen",
+      "iz_flap_hint",
+      "iz_folder_seen",
+      "iz_formal",
+      "iz_rules_all_shown",
+      "knows_assortment",
+      "knows_bath_day",
+      "knows_flap_cycle",
+      "knows_foam_flow",
+      "knows_paper_soaks",
+      "knows_soap_grip",
+      "knows_stars_fold",
+      "knows_trolley_chamber",
+      "minus_four_stars_said",
+      "need_cover",
+      "pictogram_uncovered",
+      "plate_revealed",
+      "plunger_taken",
+      "poster_seen",
+      "room_searched",
+      "shock_done",
+      "shock_report_known",
+      "stars_folded",
+      "trolley_at_desk",
+      "trolley_in_lobby",
+      "trolley_present",
+      "trolley_service_side",
+      "voucher_read",
+      "w3_open",
+      "w4_open",
+      "wet_ring_seen"
+    ],
+    "actions_total": 18,
+    "actions_required": 12,
+    "rooms_used": [
+      "W1",
+      "W2"
+    ],
+    "required_by_type": {
+      "take": 1,
+      "read": 1,
+      "use": 6,
+      "inspect": 3,
+      "talk": 1
+    }
+  }
+}
