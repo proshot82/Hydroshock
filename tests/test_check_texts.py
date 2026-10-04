@@ -148,9 +148,9 @@ class NegativeTest(unittest.TestCase):
         text = self.spoil("guestf | none | CHAR | Не толкайтесь", "guestf | none | CHAR | Бля, не толкайтесь")
         self.assertWarned(text, "мат у guestf")
 
-    def test_fourth_wall_is_a_warning(self):
+    def test_fourth_wall_is_an_error(self):
         text = self.spoil("Не по адресу.", "Не по адресу, дорогой игрок.")
-        self.assertWarned(text, "четвёртая стена")
+        self.assertCaught(text, "четвёртая стена")
 
     def test_doc_too_long(self):
         text = self.spoil("1908 годъ\n", "1908 годъ\nлишняя строка\n")
