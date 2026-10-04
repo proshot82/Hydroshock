@@ -183,3 +183,71 @@ class NegativeTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+# --- Акт II -----------------------------------------------------------------
+
+BRIEF2 = ROOT / "texts" / "act2" / "BRIEF_ACT2_TEXTS.md"
+CLAUDE2 = ROOT / "texts" / "act2" / "ACT2_TEXTS_CLAUDE.md"
+
+
+def run_check2(text):
+    with tempfile.TemporaryDirectory() as d:
+        p = Path(d) / "тексты акта 2.md"
+        p.write_text(text, encoding="utf-8")
+        brief = ct.parse_brief(BRIEF2)
+        texts, fmt = ct.parse_texts(p)
+        return ct.check(brief, texts, fmt, act=2)
+
+
+class Act2Test(unittest.TestCase):
+    def setUp(self):
+        self.base = CLAUDE2.read_text(encoding="utf-8")
+
+    def test_detect_act(self):
+        self.assertEqual(ct.detect_act(BRIEF), 1)
+        self.assertEqual(ct.detect_act(BRIEF2), 2)
+
+    def test_claude_version_clean(self):
+        errs, _, stats = run_check2(self.base)
+        self.assertEqual(errs, [], messages(errs))
+        self.assertEqual(stats["slots"], 165)
+
+    def spoil(self, old, new):
+        self.assertIn(old, self.base)
+        errs, _, _ = run_check2(self.base.replace(old, new, 1))
+        return messages(errs)
+
+    def test_reading_outside_end(self):
+        msg = self.spoil("Три эпохи, одна труба.", "Три эпохи, одна оплата.")
+        self.assertIn("только в END.act2", msg)
+
+    def test_end_needs_both_readings(self):
+        msg = self.spoil("Подношение это или оплата", "Это или то")
+        self.assertIn("два прочтения", msg)
+
+    def test_owner_canon_ladder_banned(self):
+        msg = self.spoil("Три эпохи, одна труба.", "Я держала стремянку.")
+        self.assertIn("owner-canon Акта III", msg)
+
+    def test_isolde_no_first_person(self):
+        msg = self.spoil("iz | iz_formal | CHAR | Табличка не соответствовала дизайн-коду.",
+                         "iz | iz_formal | CHAR | Мне табличка не нравилась.")
+        self.assertIn("нет «я»", msg)
+
+    def test_manager_signature(self):
+        msg = self.spoil("за ненадобностью.\nВаш комфорт — наша концепция.",
+                         "за ненадобностью.\nС уважением.")
+        self.assertIn("подписи управляющего", msg)
+
+    def test_fixed_plate(self):
+        msg = self.spoil("Старший по воде — тов. К.\n```", "Старший по воде — тов. Ка.\n```")
+        self.assertIn("Старший по воде — тов. К.", msg)
+
+    def test_pa_three_services(self):
+        msg = self.spoil("и «textile care» приносят", "приносят")
+        self.assertIn("textile care", msg)
+
+    def test_debt_banned(self):
+        msg = self.spoil("Три эпохи, одна труба.", "Три эпохи, один долг.")
+        self.assertIn("«долг»", msg)

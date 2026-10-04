@@ -12,7 +12,8 @@
 скелетом выхода, иначе файл не записывается.
 
 Запуск:
-    python tools/texts/import_texts.py СЫРОЙ.md ВЫХОД.md
+    python tools/texts/import_texts.py СЫРОЙ.md ВЫХОД.md [ТЗ.md]
+    (ТЗ по умолчанию — Акта I; для Акта II: texts/act2/BRIEF_ACT2_TEXTS.md)
 """
 
 import re
@@ -53,7 +54,8 @@ def convert(raw, brief):
         if spec and spec["kind"] == "doc" and not has_fence:
             tail = []
             while body and (not body[-1].strip()
-                            or body[-1].strip() in ("КОНЕЦ АКТА I", "ПРОДОЛЖЕНИЕ СЛЕДУЕТ")):
+                            or body[-1].strip() == "ПРОДОЛЖЕНИЕ СЛЕДУЕТ"
+                            or re.match(r"^КОНЕЦ АКТА [IV]+$", body[-1].strip())):
                 tail.insert(0, body.pop())
             while body and not body[0].strip():
                 body.pop(0)
@@ -68,7 +70,7 @@ def convert(raw, brief):
         else:
             for l in body:
                 s = l.strip()
-                # строка «ui | … | В РУКАХ» и сразу «КОНЕЦ АКТА I» — разные строки
+                # строка «ui | … | В РУКАХ» и сразу «КОНЕЦ АКТА …» — разные строки
                 out.append(s if s else "")
     return "\n".join(out).rstrip("\n") + "\n"
 
@@ -84,12 +86,13 @@ def skeleton(text):
 
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
-    if len(argv) != 2:
+    if len(argv) not in (2, 3):
         print(__doc__)
         return 2
     src, dst = Path(argv[0]), Path(argv[1])
     raw = src.read_text(encoding="utf-8-sig")
-    brief = ct.parse_brief(ct.DEFAULT_BRIEF)
+    # третий аргумент — ТЗ акта (по умолчанию — ТЗ Акта I)
+    brief = ct.parse_brief(argv[2] if len(argv) == 3 else ct.DEFAULT_BRIEF)
     res = convert(raw, brief)
     if skeleton(raw) != skeleton(res):
         print("Отказ: после импорта изменился сам текст, файл не записан.")
