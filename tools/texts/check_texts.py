@@ -571,7 +571,7 @@ MANAGER_SIGNATURE = ["Ваш комфорт — наша концепция.", "
 ACT2_LINE_RULES = [
     # (слот, спикер, обязательные подстроки)
     ("OPEN.requests", "ans", ["заявка принята, ожидайте"]),
-    ("OPEN.pa", "pa", ["душевой комфорт", "водный акцент холла", "текстильная забота"]),
+    ("OPEN.pa", "pa", ["влажное наслаждение", "влажное наваждение", "влажное очищение"]),
     ("TALK.iz.vitrine", "iz", ["не запирается"]),
     ("TALK.iz.layoff", "iz", ["поставщик"]),
     ("TALK.iz.ladder", "iz", ["стремянк"]),
@@ -595,6 +595,18 @@ ACT2_DOC_RULES = [
     ("DOC.map_soviet", ["зал оздоровления"], []),
 ]
 ACT2_SIGNED = ["DOC.layoff", "DOC.exhibit", "DOC.regulation"]
+ACT2_EXACT_LINES = [
+    # (слот, спикер, строка автора дословно)
+    ("Z12.seal.tear", "lap",
+     "Пломбы срывают воры и дураки. Я, в первую очередь, инженер. А уж потом всё остальное."),
+]
+# Службы управляющего (решение автора 05.10.2026): где-нибудь в акте — реплика или
+# строка документа, где названа служба и сказано, что это такое.
+ACT2_SERVICES = [
+    (r"влажн\w* наслаждени", r"\bдуш", "«Влажное наслаждение» — душ в номерах"),
+    (r"влажн\w* наваждени", r"каскад|фонтан", "«Влажное наваждение» — каскад в холле"),
+    (r"влажн\w* очищени", r"прачечн|стирк", "«Влажное очищение» — прачечная"),
+]
 
 
 def check_act2_fixed(texts, lines_of, require, err):
@@ -623,6 +635,14 @@ def check_act2_fixed(texts, lines_of, require, err):
         ok = len(doc) >= 2 and same_line(doc[-2], MANAGER_SIGNATURE[0]) \
             and same_line(doc[-1], MANAGER_SIGNATURE[1])
         require(sid, ok, "в конце нет подписи управляющего (две строки дословно)")
+    for sid, sp, line in ACT2_EXACT_LINES:
+        require(sid, any(same_line(t, line) for t in lines_of(sid, sp)),
+                "нет строки автора «%s»" % line)
+    every = [norm_match(l["text"]) for s in texts.values() for l in s["lines"]] + \
+            [norm_match(l) for s in texts.values() for l in (s["doc"] or [])]
+    for name, what, label in ACT2_SERVICES:
+        require("OPEN.requests", any(re.search(name, t) and re.search(what, t) for t in every),
+                "нигде не сказано, что такое служба: нужна строка вида %s" % label)
     end = [norm_match(t) for t in lines_of("END.act2")]
     for pat, name in ACT2_READINGS:
         require("END.act2", any(re.search(pat, g) for g in end),

@@ -245,8 +245,19 @@ class Act2Test(unittest.TestCase):
         self.assertIn("Старший по воде — тов. К.", msg)
 
     def test_pa_three_services(self):
-        msg = self.spoil("и «текстильная забота» приносят", "приносят")
-        self.assertIn("текстильная забота", msg)
+        msg = self.spoil("и «Влажное очищение» приносят", "приносят")
+        self.assertIn("влажное очищение", msg)
+
+    def test_author_seal_line(self):
+        msg = self.spoil("Я, в первую очередь, инженер.", "Я инженер.")
+        self.assertIn("нет строки автора", msg)
+
+    def test_services_explained(self):
+        """Решение автора 05.10.2026: где-то в акте сказано, что такое каждая служба."""
+        msg = self.spoil("«Влажное наслаждение» — душ в номерах.", "«Влажное наслаждение».")
+        self.assertIn("«Влажное наслаждение» — душ в номерах", msg)
+        msg = self.spoil("Третья — «Влажное очищение», прачечная.", "Третья тоже.")
+        self.assertIn("«Влажное очищение» — прачечная", msg)
 
     def test_no_english(self):
         msg = self.spoil("Три эпохи, одна труба.", "Три эпохи, одна труба, wellness.")
@@ -258,6 +269,12 @@ class Act2Test(unittest.TestCase):
 
 
 class Act2FinalTest(unittest.TestCase):
+    def test_final_body_equals_claude(self):
+        claude = CLAUDE2.read_text(encoding="utf-8")
+        final = (ROOT / "texts" / "act2" / "ACT2_TEXTS_FINAL.md").read_text(encoding="utf-8")
+        key = "### OPEN.counter"
+        self.assertEqual(final[final.index(key):], claude[claude.index(key):])
+
     def test_final_passes_brief(self):
         brief = ct.parse_brief(BRIEF2)
         texts, fmt = ct.parse_texts(ROOT / "texts" / "act2" / "ACT2_TEXTS_FINAL.md")

@@ -96,6 +96,8 @@ article.slot {
   padding: 14px 16px; display: flex; flex-direction: column; gap: 12px;
 }
 article.slot.noted { border-color: var(--brass); box-shadow: inset 3px 0 0 var(--brass); }
+article.slot.noted.applied { border-color: var(--good); box-shadow: inset 3px 0 0 var(--good); }
+.applied .saved { color: var(--good); }
 .slot-head { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: baseline; }
 .sid { font: .85rem var(--mono); color: var(--muted); }
 .star { color: var(--brass); font-weight: 700; font-size: .85rem; letter-spacing: .04em; }
@@ -356,6 +358,10 @@ button.next { align-self: flex-start; font-weight: 700; }
   function refreshCard(key) {
     var c = cards[key], n = noteOf(key), has = hasNote(key);
     c.art.classList.toggle("noted", has);
+    // Claude помечает внесённую правку полем applied; новая правка автора его снимает.
+    var applied = has && !!n.applied && !inflight[key];
+    c.art.classList.toggle("applied", applied);
+    if (applied) c.saved.textContent = "Внесено в текст " + n.applied + ".";
     if (document.activeElement !== c.ta && c.ta.value !== (n.text || "")) {
       c.ta.value = n.text || "";
       grow(c.ta);
