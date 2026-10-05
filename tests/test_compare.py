@@ -119,7 +119,7 @@ class ReadTest(unittest.TestCase):
         self.assertEqual(self.data["built"], "05.10.2026")
         self.assertEqual([a["act"] for a in acts], ["II", "III"])
         self.assertEqual([len(a["slots"]) for a in acts], [164, 110])
-        self.assertEqual([a["status"] for a in acts], ["заморожен автором", "ждёт чтения автора"])
+        self.assertEqual([a["status"] for a in acts], ["заморожен автором", "принят автором"])
         self.assertTrue(all(s["sec"] for a in acts for s in a["slots"]))
 
     def test_texts_verbatim(self):
