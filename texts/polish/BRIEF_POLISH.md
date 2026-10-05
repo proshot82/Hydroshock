@@ -8,7 +8,7 @@
 
 ## Для автора проекта
 
-Акт IV в слое — в том виде, в каком он ждёт чтения автора (05.10.2026). Если автор сначала правит Акт IV, слой пересобирается одной командой: `python tools/texts/build_layer.py texts/TEXT_LAYER.md texts/act1/ACT1_TEXTS_FINAL.md texts/act1/BRIEF_ACT1_TEXTS.md texts/act2/ACT2_TEXTS_FINAL.md texts/act2/BRIEF_ACT2_TEXTS.md texts/act3/ACT3_TEXTS_FINAL.md texts/act3/BRIEF_ACT3_TEXTS.md texts/act4/ACT4_TEXTS_FINAL.md texts/act4/BRIEF_ACT4_TEXTS.md`.
+Акт IV идёт в редактуру вместе с остальными, без отдельного чтения автором (решение автора 05.10.2026): автор прочтёт его в слепом сравнении и в общем ревью. Если тексты Акта IV всё же поменяются до отдачи, слой пересобирается одной командой: `python tools/texts/build_layer.py texts/TEXT_LAYER.md texts/act1/ACT1_TEXTS_FINAL.md texts/act1/BRIEF_ACT1_TEXTS.md texts/act2/ACT2_TEXTS_FINAL.md texts/act2/BRIEF_ACT2_TEXTS.md texts/act3/ACT3_TEXTS_FINAL.md texts/act3/BRIEF_ACT3_TEXTS.md texts/act4/ACT4_TEXTS_FINAL.md texts/act4/BRIEF_ACT4_TEXTS.md`.
 
 1. Открой чат другой нейросети. Первым сообщением вставь это ТЗ целиком и приложи файл `texts/TEXT_LAYER.md`. Если файлы не принимаются, вставь его текст следом: сначала Акт I (от строки `# АКТ I` до `КОНЕЦ АКТА I`), остальные акты — когда она до них дойдёт.
 2. Напиши: «Начинай с Акта I». Если ответ оборвался на строке `ПРОДОЛЖЕНИЕ СЛЕДУЕТ`, напиши «дальше». После строки `КОНЕЦ АКТА I` напиши «Акт II», потом «Акт III», потом «Акт IV».
