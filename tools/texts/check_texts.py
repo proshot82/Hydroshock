@@ -558,8 +558,8 @@ ACT2_DOC_RULES = [
     ("DOC.paint_act", ["табличка", "и. т."], []),
     ("DOC.photo", ["четвергъ"], []),
     ("DOC.token", ["на одно погруженiе"], []),
-    ("DOC.map_hotel", ["стойка благополучия"], []),
-    ("DOC.map_1908", ["грузовой подъёмникъ"], []),
+    ("DOC.map_hotel", ["зеркало благополучия"], []),
+    ("DOC.map_1908", ["пріёмный пунктъ"], []),
 ]
 ACT2_SIGNED = ["DOC.layoff", "DOC.exhibit", "DOC.regulation"]
 
