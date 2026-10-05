@@ -255,3 +255,12 @@ class Act2Test(unittest.TestCase):
     def test_debt_banned(self):
         msg = self.spoil("Три эпохи, одна труба.", "Три эпохи, один долг.")
         self.assertIn("«долг»", msg)
+
+
+class Act2FinalTest(unittest.TestCase):
+    def test_final_passes_brief(self):
+        brief = ct.parse_brief(BRIEF2)
+        texts, fmt = ct.parse_texts(ROOT / "texts" / "act2" / "ACT2_TEXTS_FINAL.md")
+        errs, _, stats = ct.check(brief, texts, fmt, act=2)
+        self.assertEqual(errs, [], messages(errs))
+        self.assertEqual(stats["slots"], 165)
