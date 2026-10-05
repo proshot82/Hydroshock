@@ -1,4 +1,4 @@
-<title>Слепое сравнение Акта I</title>
+<title>Слепое сравнение Акта __ACT__</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Neucha&family=PT+Mono&family=PT+Sans:ital,wght@0,400;0,700;1,400&family=PT+Serif:ital@0;1&display=swap">
@@ -129,8 +129,8 @@ td.n { text-align: right; }
 
 <div class="wrap">
   <header class="top">
-    <h1>Слепое сравнение Акта I</h1>
-    <p class="lede">«Латунный янычар: Гидроудар», Акт I «Комплимент от заведения». Две версии написаны по одному ТЗ: одна — Claude, другая — другой нейросетью. В каждом слоте варианты стоят в случайном порядке и без подписей. Выберите, какой смешнее при соблюдении правил, либо «Ничья» или «Оба слабые». В комментарии можно записать, что взять в итоговую версию.</p>
+    <h1>Слепое сравнение Акта __ACT__</h1>
+    <p class="lede">«Латунный янычар: Гидроудар», Акт __ACT__ «__TITLE__». Две версии написаны по одному ТЗ: одна — Claude, другая — другой нейросетью. В каждом слоте варианты стоят в случайном порядке и без подписей. Выберите, какой смешнее при соблюдении правил, либо «Ничья» или «Оба слабые». В комментарии можно записать, что взять в итоговую версию.</p>
     <p class="note" id="rules-note"></p>
     <div id="store-banner" class="banner" hidden></div>
     <div id="recover" class="recover" hidden>
@@ -424,7 +424,7 @@ td.n { text-align: right; }
       var side = pickToSide(idx, v.pick) || "-";
       rows.push(s.id + "=" + side + (v.comment ? " | " + v.comment.replace(/\s+/g, " ") : ""));
     });
-    return "ГОЛОСА АКТ I (" + rows.length + ")\n" + rows.join("\n") +
+    return "ГОЛОСА АКТ " + DATA.act + " (" + rows.length + ")\n" + rows.join("\n") +
       (state.diag ? "\nДИАГНОСТИКА: " + state.diag : "");
   }
 

@@ -59,8 +59,11 @@ class BuildTest(unittest.TestCase):
         self.assertEqual(bc.blind('Ещё "путёвка" - и всё...'), "Еще «путевка» — и все…")
 
 
-if __name__ == "__main__":
-    unittest.main()
+class BuildAct2Test(unittest.TestCase):
+    def test_act_and_title_from_brief(self):
+        brief = ROOT / "texts" / "act2" / "BRIEF_ACT2_TEXTS.md"
+        self.assertEqual(ct.detect_act(brief), 2)
+        self.assertEqual(bc.act_title(brief), "Старший по воде")
 
 
 class MergeTest(unittest.TestCase):
@@ -92,3 +95,7 @@ class MergeTest(unittest.TestCase):
         self.assertEqual(sorted(report["rule"]), ["CHOICE.pass", "CHOICE.wait", "SEQ.peek.3_lobby"])
         self.assertIn("OPEN.2_shower", report["edit"])
         self.assertEqual(sum(len(v) for v in report.values()), 154)
+
+
+if __name__ == "__main__":
+    unittest.main()

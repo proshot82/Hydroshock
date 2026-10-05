@@ -12,7 +12,8 @@ HTML-страницу. Порядок вариантов A/B в каждом с�
 показываются только после раскрытия счёта.
 
 Запуск:
-    python tools/texts/build_compare.py ВЕРСИЯ_CLAUDE.md ДРУГАЯ.md ВЫХОД.html
+    python tools/texts/build_compare.py ВЕРСИЯ_CLAUDE.md ДРУГАЯ.md ВЫХОД.html [ТЗ.md]
+    (ТЗ по умолчанию — Акта I; акт и название берутся из заголовка ТЗ)
 """
 
 import base64
@@ -71,13 +72,23 @@ def strip_md(s):
     return s.replace("`", "")
 
 
+ROMAN = {1: "I", 2: "II", 3: "III", 4: "IV"}
+
+
+def act_title(brief_path):
+    head = Path(brief_path).read_text(encoding="utf-8").splitlines()[0]
+    m = re.search(r"«([^»]+)»", head)
+    return m.group(1) if m else ""
+
+
 def build(brief_path, claude_path, other_path):
     brief = ct.parse_brief(brief_path)
+    act = ct.detect_act(brief_path)
     secs = sections(brief_path)
     versions = []
     for p in (claude_path, other_path):
         texts, fmt = ct.parse_texts(p)
-        errs, _, _ = ct.check(brief, texts, fmt)
+        errs, _, _ = ct.check(brief, texts, fmt, act)
         versions.append((texts, errs))
     rnd = random.Random(SEED)
     slots, key = [], bytearray()
@@ -100,7 +111,7 @@ def build(brief_path, claude_path, other_path):
     common = [m for s, m in versions[1][1] if s is None] + \
              [m for s, m in versions[0][1] if s is None]
     return {
-        "act": "I", "title": "Комплимент от заведения",
+        "act": ROMAN[act], "title": act_title(brief_path),
         "slots": slots, "k": base64.b64encode(bytes(key)).decode(),
         "globalErrors": common,
     }
@@ -111,12 +122,14 @@ TEMPLATE = Path(__file__).with_name("compare_template.html")
 
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
-    if len(argv) != 3:
+    if len(argv) not in (3, 4):
         print(__doc__)
         return 2
-    data = build(ct.DEFAULT_BRIEF, argv[0], argv[1])
+    data = build(argv[3] if len(argv) == 4 else ct.DEFAULT_BRIEF, argv[0], argv[1])
     payload = json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
-    html = TEMPLATE.read_text(encoding="utf-8").replace("__DATA__", payload)
+    html = (TEMPLATE.read_text(encoding="utf-8")
+            .replace("__ACT__", data["act"]).replace("__TITLE__", data["title"])
+            .replace("__DATA__", payload))
     Path(argv[2]).write_text(html, encoding="utf-8")
     n_auto = sum(1 for s in data["slots"] if s["auto"])
     print("Страница: %s; слотов %d, в голосовании %d, по правилам ТЗ решено %d"

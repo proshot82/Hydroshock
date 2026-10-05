@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Проверка текстов акта по ТЗ (texts/act1/BRIEF_ACT1_TEXTS.md).
+"""Проверка текстов акта по ТЗ (texts/actN/BRIEF_ACTN_TEXTS.md; акт — по заголовку ТЗ).
 
 Список слотов, допустимые спикеры и число реплик берутся из таблиц §9 ТЗ.
 Фиксированные строки и запреты — из §5 и §7 ТЗ (продублированы ниже,
@@ -7,6 +7,7 @@
 
 Запуск:
     python tools/texts/check_texts.py texts/act1/ACT1_TEXTS_CLAUDE.md
+    python tools/texts/check_texts.py texts/act2/ACT2_TEXTS_CLAUDE.md --brief texts/act2/BRIEF_ACT2_TEXTS.md
     python tools/texts/check_texts.py ФАЙЛ --json разбор.json
 
 Код выхода: 0 — ошибок нет, 1 — есть ошибки, 2 — файл не прочитан.
@@ -59,7 +60,7 @@ STAFF_WORD = r"обслуживани|обслуживающ\w* персонал
 # --- §7.3 ТЗ: запреты -------------------------------------------------------
 # Шаблоны применяются к тексту после norm_match(): нижний регистр, ё → е.
 
-BANNED = [
+BANNED_COMMON = [
     (r"гидрофор", "техжаргон «гидрофор»"),
     (r"мембран", "техжаргон «мембрана»"),
     (r"предзаряд", "техжаргон «предзарядка»"),
@@ -76,11 +77,26 @@ BANNED = [
     (r"кухтулх", "раньше времени: «Кухтулху»"),
     (r"ктулх", "раньше времени: «Ктулху»"),
     (r"щупальц", "раньше времени: «щупальца»"),
-    (r"старш\w* по вод", "раньше времени: «старший по воде»"),
-    (r"подношени", "раньше времени: «подношение»"),
     (r"задолженност", "раньше времени: «задолженность»"),
-    (r"до выяснения", "раньше времени: «до выяснения» (формула Кухтулху)"),
 ]
+BANNED_BY_ACT = {
+    1: [
+        (r"старш\w* по вод", "раньше времени: «старший по воде»"),
+        (r"подношени", "раньше времени: «подношение»"),
+        (r"до выяснения", "раньше времени: «до выяснения» (формула Кухтулху)"),
+    ],
+    2: [
+        (r"\bдолг(?:а|у|ом|и|ов|е)?\b", "раньше времени: «долг»"),
+        (r"\bпени\b", "раньше времени: «пени»"),
+        (r"я держала стремянку", "owner-canon Акта III: «Я держала стремянку»"),
+    ],
+}
+BANNED = BANNED_COMMON + BANNED_BY_ACT[1]   # Акт I — как было
+
+# Акт II: два прочтения (подношение или оплата) живут до P12 — оба слова
+# звучат только вместе, в итоговой реплике акта (ТЗ Акта II §7.3).
+ACT2_READINGS = [(r"оплат", "«оплата»"), (r"подношени", "«подношение»")]
+ACT2_READINGS_SLOT = "END.act2"
 
 # Решения автора 04.10.2026: «по правилам тона — всё можно, лишь бы было
 # остроумно и смешно», но «ломка четвёртой стены — нет». Поэтому мат сверх
@@ -263,7 +279,7 @@ def parse_texts(path):
             continue
         if not s or s == "---" or s.startswith("## ") or s.startswith("# "):
             continue
-        if s in ("ПРОДОЛЖЕНИЕ СЛЕДУЕТ", "КОНЕЦ АКТА I"):
+        if s == "ПРОДОЛЖЕНИЕ СЛЕДУЕТ" or re.match(r"^КОНЕЦ АКТА [IV]+$", s):
             cur = None
             continue
         if s.startswith(">"):          # пояснение к слоту: источник, причина правки
@@ -292,8 +308,9 @@ def parse_texts(path):
 
 # --- проверки ---------------------------------------------------------------
 
-def check(brief, texts, fmt_errors):
+def check(brief, texts, fmt_errors, act=1):
     errs, warns = [], []
+    banned = BANNED_COMMON + BANNED_BY_ACT[act]
 
     def err(sid, msg):
         errs.append((sid, msg))
@@ -385,7 +402,7 @@ def check(brief, texts, fmt_errors):
                 err(sid, "%s: строка только с JOKE запрещена" % where)
             if not txt:
                 err(sid, "%s: пустой текст" % where)
-            owner = sid == "Z03.stars.look" and same_line(txt, OWNER_STARS)
+            owner = act == 1 and sid == "Z03.stars.look" and same_line(txt, OWNER_STARS)
             if len(txt) > MAX_LEN[sp] and not owner:
                 err(sid, "%s: %d знаков, предел для %s — %d"
                     % (where, len(txt), sp, MAX_LEN[sp]))
@@ -400,7 +417,7 @@ def check(brief, texts, fmt_errors):
             low = norm_match(txt)
             if sp == "iz":
                 if re.search(IZ_FIRST_PERSON, low):
-                    err(sid, "%s: у Изольды в Акте I нет «я»: %s" % (where, txt))
+                    err(sid, "%s: у Изольды до Акта III нет «я»: %s" % (where, txt))
                 for pat, name in IZ_BANNED:
                     if re.search(pat, low):
                         err(sid, "%s: Изольда не говорит %s" % (where, name))
@@ -423,14 +440,22 @@ def check(brief, texts, fmt_errors):
             texts_all += slot["doc"]
         for txt in texts_all:
             low = norm_match(txt)
-            for pat, name in BANNED:
+            for pat, name in banned:
                 if re.search(pat, low):
                     err(sid, "запрет — %s: %s" % (name, txt.strip()[:80]))
             for pat, name in FOURTH_WALL:
                 if re.search(pat, low):
                     err(sid, "четвёртая стена — %s (запрет автора): %s" % (name, txt.strip()[:80]))
-            if "кефир" in low and sid not in KEFIR_OK:
+            if act == 1 and "кефир" in low and sid not in KEFIR_OK:
                 err(sid, "«кефир» вне разрешённых слотов: %s" % txt.strip()[:80])
+            if act >= 2 and re.search(r"[a-z]{2,}", low):
+                err(sid, "английское слово (решение автора — английских слов в игре нет): %s"
+                    % txt.strip()[:80])
+            if act == 2 and sid != ACT2_READINGS_SLOT:
+                for pat, name in ACT2_READINGS:
+                    if re.search(pat, low):
+                        err(sid, "%s — только в %s, вместе со вторым прочтением: %s"
+                            % (name, ACT2_READINGS_SLOT, txt.strip()[:80]))
             if slot["doc"] and txt in slot["doc"]:
                 for pat in MAT:
                     if re.search(pat, low):
@@ -445,38 +470,41 @@ def check(brief, texts, fmt_errors):
         if sid in texts and not cond:
             err(sid, msg)
 
-    require("Z03.stars.look",
-            any(same_line(t, OWNER_STARS) for t in lines_of("Z03.stars.look", "lap")),
-            "нет owner-canon реплики дословно одной репликой")
-    doc_v = (texts.get("DOC.voucher") or {}).get("doc") or []
-    require("DOC.voucher",
-            any(norm_match(VOUCHER_LINE) in norm_match(l) for l in doc_v),
-            "нет строки «%s»" % VOUCHER_LINE)
-    require("Z02.phone.call",
-            any(same_line(t, ANSWERING) for t in lines_of("Z02.phone.call", "ans")),
-            "нет строки автоответчика дословно")
-    ans_n = len(lines_of("Z02.phone.call", "ans"))
-    if "Z02.phone.call" in texts and ans_n > 2:
-        err("Z02.phone.call", "у автоответчика больше двух реплик (%d)" % ans_n)
-    require("Z02.mineral.look",
-            any(norm_match(MINERAL) in norm_match(t) for t in lines_of("Z02.mineral.look")),
-            "нет строки этикетки «%s»" % MINERAL)
-    require("Z03.pot.look",
-            any(norm_match(POT) in norm_match(t) for t in lines_of("Z03.pot.look")),
-            "нет надписи «%s»" % POT)
-    require("SEQ.peek.4_waiter",
-            any(same_line(t, HOT) for t in lines_of("SEQ.peek.4_waiter", "waiter")),
-            "нет фразы официанта «%s»" % HOT)
-    require("SEQ.shout.1",
-            any(same_line(t, HOT) for t in lines_of("SEQ.shout.1", "lap")),
-            "нет крика «%s» отдельной репликой" % HOT)
-    # «обслуживание» в ТЗ v1; решение автора 04.10.2026 — «обслуживающий персонал»
-    require("SEQ.shout.4",
-            any(re.search(STAFF_WORD, norm_match(t)) for t in lines_of("SEQ.shout.4", "iz")),
-            "Изольда не называет его обслуживающим персоналом")
-    require("TALK.iz.open",
-            any("во всем здании" in norm_match(t) for t in lines_of("TALK.iz.open", "iz")),
-            "Изольда не говорит «во всём здании»")
+    if act == 1:
+        require("Z03.stars.look",
+                any(same_line(t, OWNER_STARS) for t in lines_of("Z03.stars.look", "lap")),
+                "нет owner-canon реплики дословно одной репликой")
+        doc_v = (texts.get("DOC.voucher") or {}).get("doc") or []
+        require("DOC.voucher",
+                any(norm_match(VOUCHER_LINE) in norm_match(l) for l in doc_v),
+                "нет строки «%s»" % VOUCHER_LINE)
+        require("Z02.phone.call",
+                any(same_line(t, ANSWERING) for t in lines_of("Z02.phone.call", "ans")),
+                "нет строки автоответчика дословно")
+        ans_n = len(lines_of("Z02.phone.call", "ans"))
+        if "Z02.phone.call" in texts and ans_n > 2:
+            err("Z02.phone.call", "у автоответчика больше двух реплик (%d)" % ans_n)
+        require("Z02.mineral.look",
+                any(norm_match(MINERAL) in norm_match(t) for t in lines_of("Z02.mineral.look")),
+                "нет строки этикетки «%s»" % MINERAL)
+        require("Z03.pot.look",
+                any(norm_match(POT) in norm_match(t) for t in lines_of("Z03.pot.look")),
+                "нет надписи «%s»" % POT)
+        require("SEQ.peek.4_waiter",
+                any(same_line(t, HOT) for t in lines_of("SEQ.peek.4_waiter", "waiter")),
+                "нет фразы официанта «%s»" % HOT)
+        require("SEQ.shout.1",
+                any(same_line(t, HOT) for t in lines_of("SEQ.shout.1", "lap")),
+                "нет крика «%s» отдельной репликой" % HOT)
+        # «обслуживание» в ТЗ v1; решение автора 04.10.2026 — «обслуживающий персонал»
+        require("SEQ.shout.4",
+                any(re.search(STAFF_WORD, norm_match(t)) for t in lines_of("SEQ.shout.4", "iz")),
+                "Изольда не называет его обслуживающим персоналом")
+        require("TALK.iz.open",
+                any("во всем здании" in norm_match(t) for t in lines_of("TALK.iz.open", "iz")),
+                "Изольда не говорит «во всём здании»")
+    else:
+        check_act2_fixed(texts, lines_of, require, err)
     if texts and not any(re.search(PA_REQUIRED, norm_match(t)) for t in pa_texts):
         err(None, "громкая связь ни разу не сказала «плановые улучшения»")
     if guest_lines > MAX_GUEST_LINES:
@@ -494,7 +522,7 @@ def check(brief, texts, fmt_errors):
     # подпись управляющего: общая строка в меню и объявлении
     menu = [l.strip() for l in (texts.get("DOC.menu") or {}).get("doc") or [] if l.strip()]
     bath = [l.strip() for l in (texts.get("DOC.bathday") or {}).get("doc") or [] if l.strip()]
-    if menu and bath:
+    if act == 1 and menu and bath:
         common = {norm_match(l) for l in menu} & {norm_match(l) for l in bath}
         if not any(len(c) >= 8 for c in common):
             warn("DOC.menu", "нет общей строки-подписи в DOC.menu и DOC.bathday")
@@ -503,6 +531,75 @@ def check(brief, texts, fmt_errors):
              "lines": sum(len(t["lines"]) for t in texts.values()),
              "mat": len(real_mat), "guest_lines": guest_lines}
     return errs, warns, stats
+
+
+# --- Акт II: фиксированные строки (ТЗ Акта II §7.2) -------------------------
+
+MANAGER_SIGNATURE = ["Ваш комфорт — наша концепция.", "Управляющий"]
+ACT2_LINE_RULES = [
+    # (слот, спикер, обязательные подстроки)
+    ("OPEN.requests", "ans", ["заявка принята, ожидайте"]),
+    ("OPEN.pa", "pa", ["душевой комфорт", "водный акцент холла", "текстильная забота"]),
+    ("TALK.iz.vitrine", "iz", ["не запирается"]),
+    ("TALK.iz.layoff", "iz", ["поставщик"]),
+    ("TALK.iz.ladder", "iz", ["стремянк"]),
+]
+ACT2_DOC_RULES = [
+    # (слот, обязательные подстроки, точные строки)
+    ("DOC.plate_k", [], ["Старший по воде — тов. К."]),
+    ("DOC.notice_counter", ["[оттиск]"], ["Подача приостановлена до выяснения"]),
+    ("DOC.notice_door", ["[оттиск]"], ["Подача приостановлена до выяснения",
+                                       "Приём — в установленном порядке"]),
+    ("DOC.exhibit", ["не трогать"], []),
+    ("DOC.journal", ["принялъ", "[оттиск]"], []),
+    ("DOC.instr1908", [], ["Передъ пускомъ — доложиться старшему по водѣ"]),
+    ("DOC.memo", [], ["Перед пуском уведомить ответственное лицо"]),
+    ("DOC.layoff", ["избыточных ритуалов", "не передавать"], []),
+    ("DOC.paint_act", ["табличка", "и. т."], []),
+    ("DOC.photo", ["четвергъ"], []),
+    ("DOC.token", ["на одно погруженiе"], []),
+    ("DOC.map_hotel", ["стойка благополучия"], []),
+    ("DOC.map_1908", ["грузовой подъёмникъ"], []),
+]
+ACT2_SIGNED = ["DOC.layoff", "DOC.exhibit", "DOC.regulation"]
+
+
+def check_act2_fixed(texts, lines_of, require, err):
+    for sid, sp, subs in ACT2_LINE_RULES:
+        got = [norm_match(t) for t in lines_of(sid, sp)]
+        for sub in subs:
+            require(sid, any(norm_match(sub) in g for g in got),
+                    "нет «%s» в реплике %s" % (sub, sp))
+    got = [norm_match(t) for t in lines_of("TALK.iz.key", "iz")]
+    require("TALK.iz.key", any(re.search(r"обслуживающ\w* персонал", g) for g in got),
+            "Изольда не называет его обслуживающим персоналом")
+    ans_n = len(lines_of("OPEN.requests", "ans"))
+    if "OPEN.requests" in texts and ans_n > 2:
+        err("OPEN.requests", "у автоответчика больше двух реплик (%d)" % ans_n)
+    for sid, subs, exact in ACT2_DOC_RULES:
+        doc = [l for l in ((texts.get(sid) or {}).get("doc") or []) if l.strip()]
+        joined = norm_match("\n".join(doc))
+        for sub in subs:
+            require(sid, norm_match(sub) in joined, "в документе нет «%s»" % sub)
+        for line in exact:
+            # нумерация пункта («2. …») строку не портит
+            require(sid, any(same_line(re.sub(r"^\s*\d+[.)]\s*", "", l), line) for l in doc),
+                    "нет строки «%s» отдельной строкой" % line)
+    for sid in ACT2_SIGNED:
+        doc = [l.strip() for l in ((texts.get(sid) or {}).get("doc") or []) if l.strip()]
+        ok = len(doc) >= 2 and same_line(doc[-2], MANAGER_SIGNATURE[0]) \
+            and same_line(doc[-1], MANAGER_SIGNATURE[1])
+        require(sid, ok, "в конце нет подписи управляющего (две строки дословно)")
+    end = [norm_match(t) for t in lines_of("END.act2")]
+    for pat, name in ACT2_READINGS:
+        require("END.act2", any(re.search(pat, g) for g in end),
+                "в итоге акта нет %s: два прочтения звучат вместе" % name)
+
+
+def detect_act(brief_path):
+    head = Path(brief_path).read_text(encoding="utf-8").splitlines()[0]
+    m = re.search(r"Акта\s+([IV]+)\b", head)
+    return {"I": 1, "II": 2}.get(m.group(1), 1) if m else 1
 
 
 def to_json(texts):
@@ -530,7 +627,7 @@ def main(argv=None):
     except (OSError, ValueError) as e:
         print("Не прочитано: %s" % e)
         return 2
-    errs, warns, stats = check(brief, texts, fmt_errors)
+    errs, warns, stats = check(brief, texts, fmt_errors, detect_act(args.brief))
     print("Файл: %s" % args.texts)
     print("Слотов в ТЗ: %d; заполнено: %d; реплик: %d; мат: %d; реплик гостей: %d"
           % (len(brief), stats["slots"], stats["lines"], stats["mat"],
