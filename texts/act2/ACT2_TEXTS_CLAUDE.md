@@ -354,19 +354,16 @@ iz | iz_formal | STATE | Обслуживающий персонал свобо�
 cap | none | STATE | Ключ поворачивается. За дверью — узкая лестница вниз.
 lap | lap_soap_neutral | STATE | Ключ оставлю в замке. Назад тоже надо.
 
-### W5.enter
-lap | lap_soap_neutral | CLUE | Нижний предбанник. Приёмный пункт: в полу латунные рельсы, старые следы колёс. Сыро.
-lap | lap_soap_neutral | CLUE | На стене инструкция. А в дальнем конце — дверь конторы.
-
-### Z12.point.look
-lap | lap_soap_neutral | CLUE | Рельсы под латунные полозья уходят под решётку в стене.
-lap | lap_soap_worried | CLUE | Решётка не открывается. За ней пустой колодец, сверху темно.
+### Z12.enter
+lap | lap_soap_neutral | CLUE,JOKE | Лестница винтовая, узкая. Сантехник, видимо, был худой.
+lap | lap_soap_neutral | CLUE | Внизу — площадка и одна дверь. На стене инструкция.
 
 ### Z12.instr.look
 lap | lap_soap_neutral | CLUE | Девятьсот восьмой год. Порядок пуска.
 
 ### Z12.door.look
 lap | lap_soap_neutral | CLUE | То же уведомление, что под папкой. Та же лучистая пломба.
+lap | lap_soap_neutral | CLUE | По плану за этой дверью — контора и приёмный пункт.
 lap | lap_soap_tired | CHAR | «В установленном порядке». А порядок мне никто не устанавливал.
 
 ### Z12.door.knock

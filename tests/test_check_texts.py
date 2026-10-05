@@ -211,7 +211,7 @@ class Act2Test(unittest.TestCase):
     def test_claude_version_clean(self):
         errs, _, stats = run_check2(self.base)
         self.assertEqual(errs, [], messages(errs))
-        self.assertEqual(stats["slots"], 165)
+        self.assertEqual(stats["slots"], 164)  # редакция 2: слот Z12.point.look снят (решение автора 05.10.2026)
 
     def spoil(self, old, new):
         self.assertIn(old, self.base)
@@ -263,4 +263,4 @@ class Act2FinalTest(unittest.TestCase):
         texts, fmt = ct.parse_texts(ROOT / "texts" / "act2" / "ACT2_TEXTS_FINAL.md")
         errs, _, stats = ct.check(brief, texts, fmt, act=2)
         self.assertEqual(errs, [], messages(errs))
-        self.assertEqual(stats["slots"], 165)
+        self.assertEqual(stats["slots"], 164)  # редакция 2: слот Z12.point.look снят (решение автора 05.10.2026)
