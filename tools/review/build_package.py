@@ -4,9 +4,9 @@
 Собирает в один ZIP все действующие документы в порядке чтения: ТЗ ревью,
 библии, канон с поправками, промпт, скелет с поправками, сдачи актов с графами
 и отчётами солвера, текстовый слой, стиль автора, ТЗ текстов актов, статус
-проекта и handoff. Рядом в ZIP кладёт REVIEW_PACKAGE.md — те же файлы подряд
-одним текстом (для нейросетей, которые принимают один файл); JSON графов и
-отчётов в общий текст не входят — они есть в ZIP отдельно.
+проекта и handoff. Рядом с ZIP и внутри него кладёт REVIEW_PACKAGE.md — все те
+же файлы подряд одним текстом, включая графы и отчёты солвера (JSON — блоками
+кода). Этот один файл и отдаётся рецензенту.
 
 История (acts/*/rev1, acts/*/alt, docs/history) в пакет не входит.
 
@@ -59,7 +59,6 @@ FILES = [
     ("11", "PROJECT_STATUS_HYDROUDAR.md"),
     ("12", "BJ3_HANDOFF.md"),
 ]
-TEXT_SUFFIXES = {".md"}
 
 
 def arcname(num, rel):
@@ -69,14 +68,16 @@ def arcname(num, rel):
 def combined(present):
     out = ["# «Латунный янычар: Гидроудар» — пакет материалов для полного ревью",
            "",
-           "Собрано %s скриптом `tools/review/build_package.py`. Файлы идут в порядке чтения из ТЗ ревью (§2); "
-           "перед каждым — строка `===== ФАЙЛ: имя =====`. Графы и отчёты солвера (JSON) — только в ZIP." % date.today().strftime("%d.%m.%Y"),
+           "Собрано %s скриптом `tools/review/build_package.py`. Все файлы комплекта идут в порядке чтения из ТЗ ревью (§2); "
+           "перед каждым — строка `===== ФАЙЛ: имя =====`. Графы и отчёты солвера (JSON) — блоками кода." % date.today().strftime("%d.%m.%Y"),
            ""]
     for num, rel in present:
-        if Path(rel).suffix not in TEXT_SUFFIXES:
-            continue
+        body = (ROOT / rel).read_text(encoding="utf-8").rstrip("\n")
         out += ["", "", "===== ФАЙЛ: %s (%s) =====" % (arcname(num, rel), rel), ""]
-        out.append((ROOT / rel).read_text(encoding="utf-8").rstrip("\n"))
+        if Path(rel).suffix == ".json":
+            out += ["```json", body, "```"]
+        else:
+            out.append(body)
     return "\n".join(out) + "\n"
 
 
@@ -89,12 +90,14 @@ def main(argv=None):
         return 1
     out.parent.mkdir(parents=True, exist_ok=True)
     text = combined(FILES)
+    md = out.with_suffix(".md")
+    md.write_text(text, encoding="utf-8")
     with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as z:
         for num, rel in FILES:
             z.write(ROOT / rel, arcname(num, rel))
         z.writestr("REVIEW_PACKAGE.md", text)
-    print("Файлов: %d (+ REVIEW_PACKAGE.md, %d знаков)" % (len(FILES), len(text)))
-    print("Пакет: %s (%d байт)" % (out, out.stat().st_size))
+    print("Файлов: %d; всё одним файлом — %s (%d знаков)" % (len(FILES), md, len(text)))
+    print("Те же файлы по отдельности: %s (%d байт)" % (out, out.stat().st_size))
     return 0
 
 
