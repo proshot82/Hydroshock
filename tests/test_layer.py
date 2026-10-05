@@ -15,7 +15,9 @@ import check_texts as ct  # noqa: E402
 T = ROOT / "texts"
 PAIRS = [(T / "act1" / "ACT1_TEXTS_FINAL.md", T / "act1" / "BRIEF_ACT1_TEXTS.md"),
          (T / "act2" / "ACT2_TEXTS_FINAL.md", T / "act2" / "BRIEF_ACT2_TEXTS.md"),
-         (T / "act3" / "ACT3_TEXTS_FINAL.md", T / "act3" / "BRIEF_ACT3_TEXTS.md")]
+         (T / "act3" / "ACT3_TEXTS_FINAL.md", T / "act3" / "BRIEF_ACT3_TEXTS.md"),
+         (T / "act4" / "ACT4_TEXTS_FINAL.md", T / "act4" / "BRIEF_ACT4_TEXTS.md")]
+ROMANS = ["I", "II", "III", "IV"]
 
 
 def parse(text):
@@ -42,11 +44,12 @@ class LayerTest(unittest.TestCase):
     def test_committed_layer_is_generated(self):
         self.assertEqual((T / "TEXT_LAYER.md").read_text(encoding="utf-8"), self.text)
 
-    def test_split_gives_three_acts(self):
-        self.assertEqual(sorted(self.parts), ["I", "II", "III"])
+    def test_split_gives_four_acts(self):
+        self.assertEqual(sorted(self.parts), sorted(ROMANS))
+        self.assertNotIn("Акт IV ещё не написан", self.text)
 
     def test_round_trip_keeps_every_line(self):
-        for (final, brief), roman in zip(PAIRS, ["I", "II", "III"]):
+        for (final, brief), roman in zip(PAIRS, ROMANS):
             src, _ = ct.parse_texts(final)
             got, fmt = parse(self.parts[roman])
             self.assertEqual(fmt, [])
@@ -70,6 +73,9 @@ class LayerTest(unittest.TestCase):
         part = self.parts["I"].replace(" Не хватает корицы.", "")
         texts, _ = parse(part)
         self.assertEqual([s for s, _ in bl.check_locks("I", texts)], ["PROBE.coffee"])
+        part = self.parts["IV"].replace("Хороший Лапидус — чистый Лапидус.", "Чистый Лапидус — хороший Лапидус.")
+        texts, _ = parse(part)
+        self.assertEqual([s for s, _ in bl.check_locks("IV", texts)], ["SEQ.finale"])
 
     def test_split_survives_broken_answer(self):
         raw = ("Вот ответ.\n**# АКТ II «Старший по воде»**\n### OPEN.counter\nlap | lap_soap_neutral | PLOT | Раз.\n"
