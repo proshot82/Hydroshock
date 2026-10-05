@@ -10,9 +10,15 @@
 
 История (acts/*/rev1, acts/*/alt, docs/history) в пакет не входит.
 
+По умолчанию пакет облегчённый: без ТЗ текстов четырёх актов (их требования
+к слотам уже стоят в текстовом слое строками «Обязано быть» и «Обязательно»)
+и без журнала проекта (решения автора перечислены в §3 ТЗ ревью). Это около
+четверти объёма — меньше расход токенов в чате. Флаг --full кладёт всё.
+
 Запуск:
-    python tools/review/build_package.py                 # review/REVIEW_PACKAGE.zip
-    python tools/review/build_package.py ПУТЬ/К/ФАЙЛУ.zip
+    python tools/review/build_package.py                 # review/REVIEW_PACKAGE.zip, облегчённый
+    python tools/review/build_package.py --full          # весь комплект §2
+    python tools/review/build_package.py ПУТЬ/К/ФАЙЛУ.zip [--full]
 
 Код выхода: 0 — собрано; 1 — не хватает файлов из списка.
 Только стандартная библиотека Python 3.8+.
@@ -60,17 +66,31 @@ FILES = [
     ("12", "BJ3_HANDOFF.md"),
 ]
 TEXT_SUFFIXES = {".md"}
+# Только в полном пакете (--full): дублируют то, что уже есть в слое и в §3 ТЗ.
+FULL_ONLY = {
+    "texts/act1/BRIEF_ACT1_TEXTS.md",
+    "texts/act2/BRIEF_ACT2_TEXTS.md",
+    "texts/act3/BRIEF_ACT3_TEXTS.md",
+    "texts/act4/BRIEF_ACT4_TEXTS.md",
+    "PROJECT_STATUS_HYDROUDAR.md",
+}
+
+
+def selected(full=False):
+    return [(num, rel) for num, rel in FILES if full or rel not in FULL_ONLY]
 
 
 def arcname(num, rel):
     return "%s_%s" % (num, Path(rel).name)
 
 
-def combined(present):
+def combined(present, full=False):
+    kind = "полный" if full else "облегчённый (без ТЗ текстов актов и журнала проекта — см. §2 ТЗ)"
     out = ["# «Латунный янычар: Гидроудар» — пакет материалов для полного ревью",
            "",
-           "Собрано %s скриптом `tools/review/build_package.py`. Файлы идут в порядке чтения из ТЗ ревью (§2); "
-           "перед каждым — строка `===== ФАЙЛ: имя =====`. Графы и отчёты солвера (JSON) — только в ZIP." % date.today().strftime("%d.%m.%Y"),
+           "Собрано %s скриптом `tools/review/build_package.py`, пакет %s. Файлы идут в порядке чтения из ТЗ ревью (§2); "
+           "перед каждым — строка `===== ФАЙЛ: имя =====`. Графы и отчёты солвера (JSON) — только в ZIP."
+           % (date.today().strftime("%d.%m.%Y"), kind),
            ""]
     for num, rel in present:
         if Path(rel).suffix not in TEXT_SUFFIXES:
@@ -82,19 +102,25 @@ def combined(present):
 
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
-    out = Path(argv[0]) if argv else DEFAULT_OUT
+    full = "--full" in argv
+    rest = [a for a in argv if a != "--full"]
+    out = Path(rest[0]) if rest else DEFAULT_OUT
     missing = [rel for _, rel in FILES if not (ROOT / rel).is_file()]
     if missing:
         print("Не хватает файлов:\n  " + "\n  ".join(missing))
         return 1
+    files = selected(full)
     out.parent.mkdir(parents=True, exist_ok=True)
-    text = combined(FILES)
+    text = combined(files, full)
+    md = out.with_suffix(".md")
+    md.write_text(text, encoding="utf-8")
     with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as z:
-        for num, rel in FILES:
+        for num, rel in files:
             z.write(ROOT / rel, arcname(num, rel))
         z.writestr("REVIEW_PACKAGE.md", text)
-    print("Файлов: %d (+ REVIEW_PACKAGE.md, %d знаков)" % (len(FILES), len(text)))
-    print("Пакет: %s (%d байт)" % (out, out.stat().st_size))
+    print("Пакет %s: файлов %d; общий текст — %d знаков" % ("полный" if full else "облегчённый", len(files), len(text)))
+    print("ZIP: %s (%d байт)" % (out, out.stat().st_size))
+    print("Один файл для чата: %s" % md)
     return 0
 
 
