@@ -4,7 +4,9 @@
 раскладку A/B при каждом запуске и выносить нарушения ТЗ из голосования.
 """
 
+import datetime
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -12,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools" / "texts"))
 
 import build_compare as bc  # noqa: E402
+import build_read as br  # noqa: E402
 import check_texts as ct  # noqa: E402
 import import_texts as it  # noqa: E402
 
@@ -99,3 +102,47 @@ class MergeTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ReadTest(unittest.TestCase):
+    """Страница чтения: все слоты, тексты без изменений, не прошедший ТЗ файл не берётся."""
+
+    @classmethod
+    def setUpClass(cls):
+        t = ROOT / "texts"
+        cls.pairs = [(t / "act2" / "ACT2_TEXTS_FINAL.md", t / "act2" / "BRIEF_ACT2_TEXTS.md"),
+                     (t / "act3" / "ACT3_TEXTS_FINAL.md", t / "act3" / "BRIEF_ACT3_TEXTS.md")]
+        cls.data = br.build(cls.pairs, datetime.date(2026, 10, 5))
+
+    def test_acts_slots_and_status(self):
+        acts = self.data["acts"]
+        self.assertEqual(self.data["built"], "05.10.2026")
+        self.assertEqual([a["act"] for a in acts], ["II", "III"])
+        self.assertEqual([len(a["slots"]) for a in acts], [164, 110])
+        self.assertEqual([a["status"] for a in acts], ["заморожен автором", "принят автором"])
+        self.assertTrue(all(s["sec"] for a in acts for s in a["slots"]))
+
+    def test_texts_verbatim(self):
+        for (final, _), act in zip(self.pairs, self.data["acts"]):
+            texts, _ = ct.parse_texts(final)
+            for s in act["slots"]:
+                src = texts[s["id"]]
+                self.assertEqual([l["t"] for l in s["lines"]], [l["text"] for l in src["lines"]])
+                if src["doc"] is not None:
+                    self.assertEqual(s["doc"], src["doc"][:len(s["doc"])])
+        note = next(s for s in self.data["acts"][1]["slots"] if s["id"] == "DOC.note")
+        self.assertIn("Платить МНѢ водой??? Да я васъ всѣхъ въ канализацію смою!", note["doc"])
+
+    def test_render_keeps_scripts_closed(self):
+        html = br.render(self.data)
+        self.assertNotIn("__DATA__", html)
+        self.assertEqual(html.count("</script>"), 2)
+
+    def test_broken_final_is_refused(self):
+        final, brief = self.pairs[1]
+        text = final.read_text(encoding="utf-8").replace("МНѢ водой", "мне водой")
+        with tempfile.TemporaryDirectory() as d:
+            bad = Path(d) / "ACT3_TEXTS_FINAL.md"
+            bad.write_text(text, encoding="utf-8")
+            with self.assertRaises(ValueError):
+                br.build_act(bad, brief)

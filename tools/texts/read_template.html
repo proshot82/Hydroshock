@@ -1,0 +1,560 @@
+<title>Сценарий Гидроудара</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Neucha&family=PT+Mono&family=PT+Sans:ital,wght@0,400;0,700;1,400&family=PT+Serif:ital@0;1&display=swap">
+<style>
+/* Раскладка: та же, что у слепого сравнения, — одна колонка карточек-слотов, в каждой
+   окно реплик, как диалоговое окно игры. Сверху — переключатель актов и фильтры. */
+:root {
+  --tile: #eef3f2;       /* кафель номера 317 */
+  --panel: #ffffff;
+  --ink: #1b2528;
+  --muted: #5b6b6f;
+  --rule: #d3dcdb;
+  --brass: #8f6a1f;      /* латунь: Лапидус, действия */
+  --brass-soft: #f1e6c8;
+  --steel: #46667d;      /* сталь: Предок, как рамка подсказчика в серии */
+  --mauve: #7c4f68;      /* Изольда */
+  --paper: #fbf8f0;      /* бумага документов */
+  --good: #2f7a52;
+  --warn: #9a4b16;
+  --display: "Neucha", "Comic Sans MS", cursive;
+  --body: "PT Sans", "Segoe UI", system-ui, sans-serif;
+  --doc: "PT Serif", Georgia, "Times New Roman", serif;
+  --mono: "PT Mono", ui-monospace, "Cascadia Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --tile: #11181a; --panel: #192326; --ink: #e2e9e8; --muted: #93a3a5;
+    --rule: #2b383b; --brass: #d4ab52; --brass-soft: #3b3220; --steel: #8fb1c8;
+    --mauve: #d39cba; --paper: #20292b; --good: #74c79a; --warn: #e79a63;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --tile: #11181a; --panel: #192326; --ink: #e2e9e8; --muted: #93a3a5;
+  --rule: #2b383b; --brass: #d4ab52; --brass-soft: #3b3220; --steel: #8fb1c8;
+  --mauve: #d39cba; --paper: #20292b; --good: #74c79a; --warn: #e79a63;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }  /* иначе display: flex у карточек перебивает hidden */
+body {
+  background: var(--tile); color: var(--ink);
+  font: 16px/1.5 var(--body);
+  padding-inline: 16px; padding-block: 0 48px;
+}
+.wrap { max-width: 62rem; margin-inline: auto; display: flex; flex-direction: column; gap: 20px; }
+h1 { font: 2.4rem/1.1 var(--display); margin: 0; text-wrap: balance; }
+h2 { font: 1.9rem/1.15 var(--display); margin: 0; text-wrap: balance; }
+h3 { font: 700 1.25rem/1.25 var(--body); margin: 0; text-wrap: balance; }
+.lede { max-width: 65ch; margin: 0; }
+.note { max-width: 65ch; color: var(--muted); font-size: .9rem; margin: 0; }
+header.top { padding-top: 28px; display: flex; flex-direction: column; gap: 10px; }
+
+.bar {
+  background: var(--tile); border-bottom: 1px solid var(--rule); z-index: 5;
+  padding-block: 10px; display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center;
+}
+@media (min-width: 48rem) {
+  .bar { position: sticky; top: env(safe-area-inset-top, 0px); }
+  section.sec, .act-head, article.slot { scroll-margin-top: 130px; }
+}
+.tabs { flex: 1 1 20rem; min-width: 0; display: grid; gap: 6px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr)); }
+.tab { display: flex; flex-direction: column; align-items: flex-start; gap: 0; text-align: left; }
+.tab-act { font-weight: 700; }
+.tab-name { font-size: .85rem; }
+.tab-st { font-size: .78rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.side { display: flex; flex-direction: column; gap: 6px; flex: 2 1 22rem; min-width: 0; }
+.state { font-size: .9rem; font-variant-numeric: tabular-nums; }
+.tools { display: flex; flex-wrap: wrap; gap: 6px; }
+button, .chip {
+  font: inherit; font-size: .9rem; color: var(--ink); background: var(--panel);
+  border: 1px solid var(--rule); border-radius: 6px; padding: 6px 10px; cursor: pointer;
+}
+button:hover, .chip:hover { border-color: var(--brass); }
+button:focus-visible, textarea:focus-visible, .chip:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+button[aria-pressed="true"] { background: var(--brass-soft); border-color: var(--brass); }
+button[aria-pressed="true"] .tab-st { color: var(--ink); }
+button.primary { background: var(--brass); color: var(--panel); border-color: var(--brass); font-weight: 700; }
+nav.secs { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { text-decoration: none; }
+.banner { border: 1px solid var(--warn); color: var(--warn); border-radius: 8px; padding: 10px 12px; font-size: .92rem; }
+.recover { border: 1px solid var(--brass); background: var(--panel); border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+.recover p { margin: 0; }
+.confirm { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+#store-state.warn { color: var(--warn); font-weight: 700; }
+#store-state.ok { color: var(--good); }
+textarea.export { width: 100%; font: .85rem/1.4 var(--mono); color: var(--ink); background: var(--tile); border: 1px solid var(--rule); border-radius: 6px; padding: 6px 8px; resize: vertical; }
+
+.act { display: flex; flex-direction: column; gap: 20px; }
+.act-head { display: flex; flex-direction: column; gap: 8px; padding-top: 6px; }
+.meta { margin: 0; color: var(--muted); font-size: .92rem; font-variant-numeric: tabular-nums; }
+section.sec { display: flex; flex-direction: column; gap: 14px; }
+article.slot {
+  background: var(--panel); border: 1px solid var(--rule); border-radius: 10px;
+  padding: 14px 16px; display: flex; flex-direction: column; gap: 12px;
+}
+article.slot.noted { border-color: var(--brass); box-shadow: inset 3px 0 0 var(--brass); }
+article.slot.noted.applied { border-color: var(--good); box-shadow: inset 3px 0 0 var(--good); }
+.applied .saved { color: var(--good); }
+.slot-head { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: baseline; }
+.sid { font: .85rem var(--mono); color: var(--muted); }
+.star { color: var(--brass); font-weight: 700; font-size: .85rem; letter-spacing: .04em; }
+.ctx { display: grid; gap: 4px; font-size: .9rem; color: var(--muted); max-width: 70ch; }
+.ctx b { color: var(--ink); font-weight: 700; }
+.no-ctx .ctx { display: none; }
+.script { min-width: 0; border: 1px solid var(--rule); border-radius: 8px; padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; }
+.line { margin: 0; display: flex; flex-direction: column; gap: 1px; }
+.plate { font: 700 .74rem var(--body); letter-spacing: .07em; text-transform: uppercase; color: var(--muted); }
+.plate .emo { font-weight: 400; letter-spacing: 0; text-transform: none; }
+.plate.lap { color: var(--brass); }
+.plate.anc { color: var(--steel); }
+.plate.iz, .plate.paiz { color: var(--mauve); }
+.text { overflow-wrap: anywhere; }
+.cap .text { font-style: italic; color: var(--muted); }
+.choice .text { display: inline-block; border: 1px dashed var(--rule); border-radius: 6px; padding: 2px 8px; }
+.silence { margin: 0; color: var(--muted); font-style: italic; }
+pre.doc {
+  margin: 0; background: var(--paper); border: 1px solid var(--rule); border-radius: 4px;
+  padding: 10px 12px; font: .95rem/1.45 var(--doc); white-space: pre-wrap; overflow-x: auto;
+}
+.edit-row { display: flex; flex-direction: column; gap: 4px; }
+textarea.edit {
+  width: 100%; font: inherit; font-size: .92rem; color: var(--ink); background: var(--tile);
+  border: 1px solid var(--rule); border-radius: 6px; padding: 6px 8px; resize: vertical;
+  field-sizing: content; min-height: 2.3em; max-height: 18em;
+}
+.saved { font-size: .8rem; color: var(--muted); min-height: 1em; }
+.empty { margin: 0; color: var(--muted); font-style: italic; }
+button.next { align-self: flex-start; font-weight: 700; }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <h1>Сценарий «Гидроудара»</h1>
+    <p class="lede">«Латунный янычар: Гидроудар» — итоговые тексты актов в том виде, в каком они пойдут в игру: реплики с плашкой говорящего и его выражением лица, титры, пункты меню, документы на бумаге. Над каждым слотом — когда он срабатывает и что в нём обязано быть по ТЗ.</p>
+    <p class="note">Под каждым слотом — поле правки: напишите, что поменять, или свою строку. Правки сохраняются сами, Claude их читает. <span id="built"></span></p>
+    <div id="store-banner" class="banner" hidden></div>
+    <div id="recover" class="recover" hidden>
+      <p id="recover-text"></p>
+      <div class="confirm">
+        <button type="button" id="btn-send" class="primary">Отправить правки Claude</button>
+        <button type="button" id="btn-copy">Скопировать правки</button>
+        <span id="recover-msg" class="saved" aria-live="polite"></span>
+      </div>
+      <label class="note" for="export">Если кнопки не помогают: выделите этот текст, скопируйте и вставьте в чат Claude.</label>
+      <textarea id="export" class="export" rows="5" readonly></textarea>
+      <p class="note" id="recover-diag"></p>
+    </div>
+  </header>
+
+  <div class="bar" role="region" aria-label="Акты и фильтры">
+    <div class="tabs" id="tabs" aria-label="Акты"></div>
+    <div class="side">
+      <span class="state"><span id="count-label">Правок нет</span> · <span id="store-state">сохранение: проверяю…</span></span>
+      <div class="tools">
+        <button type="button" id="btn-star" aria-pressed="false">Только ★</button>
+        <button type="button" id="btn-ctx" aria-pressed="false">Без пояснений</button>
+        <button type="button" id="btn-mine" aria-pressed="false">Только с правками</button>
+        <button type="button" id="btn-export">Правки текстом</button>
+      </div>
+    </div>
+  </div>
+
+  <main id="acts" class="wrap"></main>
+</div>
+
+<script type="application/json" id="read-data">__DATA__</script>
+<script>
+(function () {
+  "use strict";
+  var DATA = JSON.parse(document.getElementById("read-data").textContent);
+  var ACTS = DATA.acts;
+  var STORE_KEY = "hydroshock_read_";
+
+  var PLATES = { lap: "Лапидус", iz: "Изольда Тихоновна", anc: "Предок", pa: "Громкая связь",
+    paiz: "Громкая связь (Изольда)", ans: "Автоответчик", guest: "Гость", guestf: "Гостья",
+    waiter: "Официант", cap: "Титр", choice: "Пункт меню", ui: "Надпись на кнопке" };
+  var EMO = { lap_soap_neutral: "нейтрально", lap_soap_tired: "устало", lap_soap_worried: "тревожно",
+    lap_soap_ashamed: "стыдно", lap_soap_angry: "зло", lap_soap_smug: "самодовольно",
+    lap_soap_inspired: "с азартом", lap_soap_panic: "в панике", lap_soap_triumphant: "торжествующе",
+    iz_formal: "казённо", iz_averted: "не глядя", iz_tired: "устало", iz_stern: "строго",
+    iz_flustered: "смущённо", iz_confess: "срывается, признаётся", iz_looks: "впервые смотрит на героя",
+    anc_calm: "спокойно", anc_stern: "строго", anc_proud: "гордо", anc_smug: "довольно" };
+
+  function ls(op, key, val) {
+    try {
+      if (op === "get") return window.localStorage.getItem(STORE_KEY + key);
+      window.localStorage.setItem(STORE_KEY + key, val);
+    } catch (e) { return null; }
+    return null;
+  }
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+
+  // Две копии правок: общее хранилище страницы (его читает Claude) и зеркало
+  // в этом браузере. Зеркало пишется всегда — правка не теряется, даже если
+  // хранилище не ответило; то, чего в хранилище нет, можно переслать.
+  var savedAct = ls("get", "act");
+  var state = {
+    dbNotes: {}, localNotes: {}, db: null, dbState: "wait", diag: "",
+    act: ACTS.some(function (A) { return A.act === savedAct; }) ? savedAct : ACTS[0].act,
+    onlyStar: false, noCtx: ls("get", "noctx") === "1", onlyNotes: false
+  };
+  try { state.localNotes = JSON.parse(ls("get", "notes_local") || "{}") || {}; } catch (e) { state.localNotes = {}; }
+  if (DATA.built) document.getElementById("built").textContent = "Тексты на " + DATA.built + ".";
+
+  var GROW = !(window.CSS && CSS.supports && CSS.supports("field-sizing", "content"));
+  function grow(ta) {
+    if (!GROW || !ta.offsetParent) return;
+    ta.style.height = "auto";
+    ta.style.height = (ta.scrollHeight + 2) + "px";
+  }
+
+  function renderScript(s) {
+    var box = el("div", "script");
+    if (s.doc) box.appendChild(el("pre", "doc", s.doc.join("\n")));
+    if (s.silence && !s.lines.length) box.appendChild(el("p", "silence", "тишина"));
+    s.lines.forEach(function (ln) {
+      var p = el("p", "line" + (ln.sp === "cap" ? " cap" : ln.sp === "choice" ? " choice" : ""));
+      var plate = el("span", "plate " + ln.sp);
+      plate.appendChild(document.createTextNode(PLATES[ln.sp] || ln.sp));
+      if (EMO[ln.em]) plate.appendChild(el("span", "emo", " · " + EMO[ln.em]));
+      p.appendChild(plate);
+      p.appendChild(el("span", "text", ln.t));
+      box.appendChild(p);
+    });
+    if (!s.doc && !s.silence && !s.lines.length) box.appendChild(el("p", "silence", "слот не заполнен"));
+    return box;
+  }
+
+  var cards = {}, acts = {}, tabs = {};
+
+  function buildCard(A, s) {
+    var key = A.act + ":" + s.id;
+    var art = el("article", "slot");
+    art.id = "a" + A.act + "-" + s.id;
+    var head = el("div", "slot-head");
+    head.appendChild(el("span", "sid", s.id));
+    if (s.star) head.appendChild(el("span", "star", "★ ключевой"));
+    art.appendChild(head);
+    var ctx = el("div", "ctx");
+    var w = el("div"); w.appendChild(el("b", null, "Когда: ")); w.appendChild(document.createTextNode(s.when)); ctx.appendChild(w);
+    var m = el("div"); m.appendChild(el("b", null, "Обязано быть: ")); m.appendChild(document.createTextNode(s.must)); ctx.appendChild(m);
+    art.appendChild(ctx);
+    art.appendChild(renderScript(s));
+    var row = el("div", "edit-row");
+    var ta = el("textarea", "edit");
+    ta.rows = 1;
+    ta.placeholder = "Правка: что поменять или своя строка (необязательно)";
+    ta.setAttribute("aria-label", "Правка к слоту " + s.id + ", Акт " + A.act);
+    var saved = el("span", "saved", "");
+    saved.setAttribute("aria-live", "polite");
+    row.appendChild(ta);
+    row.appendChild(saved);
+    art.appendChild(row);
+    var t = null;
+    ta.addEventListener("input", function () {
+      grow(ta);
+      clearTimeout(t);
+      t = setTimeout(function () { note(key, A, s, ta.value); }, 900);
+    });
+    ta.addEventListener("change", function () { clearTimeout(t); note(key, A, s, ta.value); });
+    cards[key] = { art: art, ta: ta, saved: saved, s: s, act: A.act };
+    return key;
+  }
+
+  function switchAct(act, scroll) {
+    state.act = act;
+    ls("set", "act", act);
+    ACTS.forEach(function (A) {
+      acts[A.act].box.hidden = A.act !== act;
+      tabs[A.act].setAttribute("aria-pressed", A.act === act ? "true" : "false");
+    });
+    refreshAll();
+    Object.keys(cards).forEach(function (k) { if (cards[k].act === act) grow(cards[k].ta); });
+    if (scroll) acts[act].head.scrollIntoView({ block: "start" });
+  }
+
+  var root = document.getElementById("acts"), tabBar = document.getElementById("tabs");
+  ACTS.forEach(function (A, ai) {
+    var box = el("div", "act");
+    box.id = "act-" + A.act;
+    var head = el("header", "act-head");
+    head.appendChild(el("h2", null, "Акт " + A.act + " «" + A.title + "»"));
+    var stars = A.slots.filter(function (s) { return s.star; }).length;
+    head.appendChild(el("p", "meta", [A.status, A.slots.length + " слотов", A.lines + " реплик",
+      "ключевых ★ " + stars].filter(Boolean).join(" · ")));
+    if (A.status.indexOf("заморожен") === 0) {
+      head.appendChild(el("p", "note", "Тексты акта заморожены. Правки к ним тоже можно оставить — Claude внесёт их, когда вы решите."));
+    }
+    var nav = el("nav", "secs");
+    nav.setAttribute("aria-label", "Разделы Акта " + A.act);
+    head.appendChild(nav);
+    box.appendChild(head);
+    var empty = el("p", "empty", "Правок в этом акте пока нет.");
+    empty.hidden = true;
+    box.appendChild(empty);
+    var secs = [];
+    A.slots.forEach(function (s) {
+      var sec = secs.length && secs[secs.length - 1].name === s.sec ? secs[secs.length - 1] : null;
+      if (!sec) {
+        sec = { name: s.sec, keys: [], box: el("section", "sec") };
+        sec.box.id = "a" + A.act + "-sec-" + secs.length;
+        sec.box.appendChild(el("h3", null, s.sec || "Без раздела"));
+        sec.chip = el("a", "chip", s.sec || "Без раздела");
+        sec.chip.href = "#" + sec.box.id;
+        nav.appendChild(sec.chip);
+        box.appendChild(sec.box);
+        secs.push(sec);
+      }
+      var key = buildCard(A, s);
+      sec.keys.push(key);
+      sec.box.appendChild(cards[key].art);
+    });
+    if (ai + 1 < ACTS.length) {
+      var N = ACTS[ai + 1];
+      var nb = el("button", "next", "Дальше — Акт " + N.act + " «" + N.title + "» →");
+      nb.type = "button";
+      nb.addEventListener("click", function () { switchAct(N.act, true); });
+      box.appendChild(nb);
+    }
+    root.appendChild(box);
+    acts[A.act] = { box: box, head: head, secs: secs, empty: empty };
+
+    var tab = el("button", "tab");
+    tab.type = "button";
+    tab.appendChild(el("span", "tab-act", "Акт " + A.act));
+    tab.appendChild(el("span", "tab-name", "«" + A.title + "»"));
+    tab.appendChild(el("span", "tab-st", A.status));
+    tab.addEventListener("click", function () { switchAct(A.act, false); });
+    tabBar.appendChild(tab);
+    tabs[A.act] = tab;
+  });
+
+  function newer(a, b) {
+    if (!a) return b || null;
+    if (!b) return a;
+    return String(b.at || "") > String(a.at || "") ? b : a;
+  }
+  function noteOf(key) { return newer(state.dbNotes[key], state.localNotes[key]) || {}; }
+  function hasNote(key) { return !!(noteOf(key).text || "").trim(); }
+
+  var queues = {}, inflight = {};
+  function pending() {
+    return Object.keys(state.localNotes).filter(function (k) {
+      var l = state.localNotes[k], d = state.dbNotes[k];
+      if (!l || !cards[k] || inflight[k] > 0) return false;
+      if (!d) return !!(l.text || "").trim();
+      return (l.text || "") !== (d.text || "") && String(l.at || "") > String(d.at || "");
+    });
+  }
+
+  function refreshCard(key) {
+    var c = cards[key], n = noteOf(key), has = hasNote(key);
+    c.art.classList.toggle("noted", has);
+    // Claude помечает внесённую правку полем applied; новая правка автора его снимает.
+    var applied = has && !!n.applied && !inflight[key];
+    c.art.classList.toggle("applied", applied);
+    if (applied) c.saved.textContent = "Внесено в текст " + n.applied + ".";
+    if (document.activeElement !== c.ta && c.ta.value !== (n.text || "")) {
+      c.ta.value = n.text || "";
+      grow(c.ta);
+    }
+    c.art.hidden = !!((state.onlyStar && !c.s.star) || (state.onlyNotes && !has));
+  }
+
+  function refreshAll() {
+    document.body.classList.toggle("no-ctx", state.noCtx);
+    Object.keys(cards).forEach(refreshCard);
+    var total = 0;
+    ACTS.forEach(function (A) {
+      var a = acts[A.act], shown = 0, n = 0;
+      a.secs.forEach(function (sec) {
+        var vis = sec.keys.filter(function (k) { return !cards[k].art.hidden; }).length;
+        n += sec.keys.filter(hasNote).length;
+        sec.box.hidden = vis === 0;
+        sec.chip.hidden = vis === 0;
+        shown += vis;
+      });
+      a.empty.hidden = shown > 0;
+      a.empty.textContent = state.onlyNotes ? "Правок в этом акте пока нет." : "Под эти фильтры в этом акте ничего не подходит.";
+      total += n;
+      tabs[A.act].lastChild.textContent = A.status + (n ? " · правок " + n : "");
+    });
+    document.getElementById("count-label").textContent = total ? "Правок: " + total : "Правок нет";
+    refreshStore();
+  }
+
+  function saveMirror() { ls("set", "notes_local", JSON.stringify(state.localNotes)); }
+
+  function persist(key, body) {
+    state.localNotes[key] = body;
+    saveMirror();
+    inflight[key] = (inflight[key] || 0) + 1;   // пока запись в пути, правка не «потеряна»
+    var c = cards[key];
+    c.saved.textContent = "сохраняю…";
+    refreshAll();
+    var prev = queues[key] || ready;
+    queues[key] = prev.then(function () {
+      if (!state.db) throw { code: "no_store" };
+      return state.db.doc("notes/" + key).set(body);
+    }).then(function () {
+      c.saved.textContent = "сохранено";
+    }, function (err) {
+      var code = (err && err.code) || String(err);
+      if (code !== "no_store") { state.diag = "запись отклонена: " + code; state.dbState = "fail"; }
+      c.saved.textContent = "сохранено только в этом браузере";
+    }).then(function () {
+      inflight[key]--;
+      refreshStore();
+    });
+  }
+
+  function note(key, A, s, text) {
+    if ((noteOf(key).text || "") === text) return;
+    persist(key, { act: A.act, slot: s.id, text: text, at: new Date().toISOString() });
+  }
+
+  function showBanner(msg) {
+    var b = document.getElementById("store-banner");
+    b.textContent = msg;
+    b.hidden = !msg;
+  }
+
+  function exportText() {
+    var rows = [];
+    ACTS.forEach(function (A) {
+      A.slots.forEach(function (s) {
+        var key = A.act + ":" + s.id, t = (noteOf(key).text || "").trim();
+        if (t) rows.push(key + " = " + t.replace(/\s*\n\s*/g, " / ").replace(/[ \t]+/g, " "));
+      });
+    });
+    return "ПРАВКИ К СЦЕНАРИЮ (" + rows.length + ")\n" + rows.join("\n") +
+      (state.diag ? "\nДИАГНОСТИКА: " + state.diag : "");
+  }
+
+  var forceExport = false;
+  function refreshStore() {
+    var st = document.getElementById("store-state");
+    var p = pending();
+    if (state.dbState === "ok" && !p.length) {
+      st.textContent = "сохраняются в хранилище страницы"; st.className = "ok";
+    } else if (state.dbState === "wait") {
+      st.textContent = "сохранение: проверяю…"; st.className = "";
+    } else {
+      st.textContent = "только в этом браузере"; st.className = "warn";
+    }
+    var box = document.getElementById("recover");
+    var show = p.length > 0 || forceExport;
+    box.hidden = !show;
+    if (!show) return;
+    var canSend = !!state.db && p.length > 0;
+    document.getElementById("btn-send").hidden = !canSend;
+    document.getElementById("recover-text").textContent = p.length
+      ? "В этом браузере сохранено правок: " + p.length + ". В хранилище страницы их нет, Claude их не видит." +
+        (canSend ? " Нажмите «Отправить правки Claude»." : " Хранилище здесь недоступно — скопируйте правки и вставьте их в чат Claude.")
+      : "Правки текстом — на случай, если их нужно передать Claude в чат.";
+    var ta = document.getElementById("export");
+    if (document.activeElement !== ta) ta.value = exportText();
+    document.getElementById("recover-diag").textContent = state.diag ? "Диагностика: " + state.diag : "";
+  }
+
+  document.getElementById("btn-export").addEventListener("click", function () {
+    forceExport = !forceExport;
+    this.setAttribute("aria-pressed", String(forceExport));
+    refreshStore();
+    if (forceExport) document.getElementById("recover").scrollIntoView({ block: "start" });
+  });
+  document.getElementById("btn-copy").addEventListener("click", function () {
+    var ta = document.getElementById("export"), msg = document.getElementById("recover-msg");
+    ta.value = exportText();
+    function manual() { ta.focus(); ta.select(); msg.textContent = "Текст выделен — скопируйте его вручную."; }
+    try {
+      navigator.clipboard.writeText(ta.value).then(function () {
+        msg.textContent = "Скопировано. Вставьте в чат Claude.";
+      }, manual);
+    } catch (e) { manual(); }
+  });
+  document.getElementById("btn-send").addEventListener("click", function () {
+    var btn = this, msg = document.getElementById("recover-msg");
+    var list = pending();
+    if (!state.db || !list.length) return;
+    btn.disabled = true;
+    var sent = 0;
+    msg.textContent = "отправляю…";
+    list.reduce(function (chain, k) {
+      return chain.then(function () {
+        var body = state.localNotes[k];
+        return state.db.doc("notes/" + k).set(body).then(function () {
+          sent++;
+          state.dbNotes[k] = body;
+          msg.textContent = "отправлено " + sent + " из " + list.length;
+        });
+      });
+    }, Promise.resolve()).then(function () {
+      state.dbState = "ok"; state.diag = "";
+      msg.textContent = "Отправлено правок: " + sent + ". Теперь Claude их видит.";
+      btn.disabled = false;
+      refreshAll();
+    }, function (err) {
+      state.dbState = "fail";
+      state.diag = "отправка остановлена: " + ((err && err.code) || String(err)) + ", отправлено " + sent;
+      msg.textContent = "Отправка не прошла. Скопируйте правки и вставьте их в чат Claude.";
+      btn.disabled = false;
+      refreshAll();
+    });
+  });
+
+  function toggle(id, field, remember) {
+    var btn = document.getElementById(id);
+    btn.setAttribute("aria-pressed", String(state[field]));
+    btn.addEventListener("click", function () {
+      state[field] = !state[field];
+      btn.setAttribute("aria-pressed", String(state[field]));
+      if (remember) ls("set", remember, state[field] ? "1" : "0");
+      refreshAll();
+    });
+  }
+  toggle("btn-star", "onlyStar");
+  toggle("btn-ctx", "noCtx", "noctx");
+  toggle("btn-mine", "onlyNotes");
+
+  var api = window.claude && typeof window.claude.use === "function" ? window.claude.use("db") : Promise.resolve(null);
+  // Правки до ответа хранилища ждут его здесь; зеркало в браузере пишется сразу.
+  var ready = api.then(function (db) {
+    if (!db) {
+      state.dbState = "none";
+      state.diag = window.claude ? "хранилище не выдано этому окну" : "страница открыта вне просмотрщика claude.ai";
+      showBanner("Общее хранилище страницы недоступно в этом окне: правки сохраняются только в этом браузере. Их можно передать Claude кнопкой «Правки текстом».");
+      refreshAll();
+      return;
+    }
+    state.db = db;
+    db.collection("notes").onSnapshot(function (snap) {
+      var fresh = {};
+      snap.docs.forEach(function (d) { if (d.exists) fresh[d.id] = d.data(); });
+      state.dbNotes = fresh;
+      if (state.dbState === "wait") state.dbState = "ok";
+      refreshAll();
+    }, function (e) {
+      state.dbState = "fail";
+      state.diag = "подписка на хранилище оборвалась: " + ((e && e.code) || "unknown");
+      showBanner("Связь с хранилищем потеряна: новые правки сохраняются в этом браузере. Перезагрузите страницу, затем нажмите «Отправить правки Claude».");
+      refreshAll();
+    });
+  }, function (e) {
+    state.dbState = "none";
+    state.diag = "хранилище не подключилось: " + ((e && e.code) || String(e));
+    showBanner("Общее хранилище страницы недоступно: правки сохраняются только в этом браузере.");
+    refreshAll();
+  });
+
+  switchAct(state.act, false);
+})();
+</script>

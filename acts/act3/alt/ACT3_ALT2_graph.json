@@ -1,0 +1,479 @@
+{
+  "act": "ACT3",
+  "assumptions": [
+    "NS1. Зум Z14 не нужен, все действия ложатся в существующие зумы.",
+    "NS2. Документ Кухтулху напечатан на полупрозрачной влагостойкой кальке/полимере, поэтому зеркальный оттиск мела читается с лицевой стороны.",
+    "NS3. Тележка перемещается между W2, W4 и W5 как передвижной инвентарь, служащий укрытием."
+  ],
+  "start_flags": [
+    "bathday_done",
+    "breakfast_on_trolley",
+    "cascade_dry_seen",
+    "cascade_pump_dry",
+    "clothes_locked_seen",
+    "counter_notice_read",
+    "crowd_seen",
+    "drums_same_time",
+    "foam_active",
+    "foam_class_closed",
+    "foam_swollen",
+    "has_hotel_map",
+    "has_menu_card",
+    "has_stairs_key",
+    "iz_admits_facts",
+    "iz_folder_seen",
+    "iz_formal",
+    "iz_rule3_seen",
+    "iz_rules_all_shown",
+    "iz_stepladder_minimized",
+    "journal_old_read",
+    "kefir_in_drawer_seen",
+    "knows_assortment",
+    "knows_bath_day",
+    "knows_chalk_author",
+    "knows_counter_on_line",
+    "knows_counterweight_w3",
+    "knows_dock_below",
+    "knows_foam_flow",
+    "knows_handover_gap",
+    "knows_map_lies",
+    "knows_office_by_source",
+    "knows_paint_fresh",
+    "knows_paper_soaks",
+    "knows_plate_under_paint",
+    "knows_platform_under_stand",
+    "knows_push_latch",
+    "knows_service_stairs",
+    "knows_soap_grip",
+    "knows_stars_fold",
+    "knows_supplier_exists",
+    "knows_supply_cut",
+    "knows_thursday_plumber",
+    "knows_trolley_chamber",
+    "knows_waiter_call",
+    "layoff_read",
+    "menu_smeared",
+    "meter_seal_seen",
+    "midpoint_known",
+    "minus_four_stars_said",
+    "name_revealed",
+    "need_cover",
+    "office_notice_read",
+    "overlay_by_frame",
+    "paint_act_read",
+    "photo_seen",
+    "plate_revealed",
+    "plunger_taken",
+    "poster_seen",
+    "reception_called",
+    "requests_stapled",
+    "seal_is_mark",
+    "shock_done",
+    "shock_report_known",
+    "stars_folded",
+    "topology_known",
+    "trolley_at_crowd",
+    "trolley_present",
+    "trolley_service_side",
+    "vitrine_open",
+    "voucher_read",
+    "w3_open",
+    "w4_open",
+    "w5_open",
+    "wet_ring_seen"
+  ],
+  "flags_glossary": {
+    "bathday_done": "банный день прошёл: весь съёмный текстиль в стоящей прачечной",
+    "breakfast_on_trolley": "на столешнице нетронутый завтрак",
+    "cascade_dry_seen": "декоративный каскад вестибюля сух",
+    "cascade_pump_dry": "насос гудит вхолостую, каскад цел, но сух",
+    "clothes_locked_seen": "одежда Лапидуса видна за стеклом люка",
+    "counter_notice_read": "влагостойкое уведомление под папкой Изольды",
+    "crowd_seen": "у стойки толпа жалующихся гостей",
+    "drums_same_time": "все барабаны прачечной стоят на одном времени",
+    "foam_active": "на голове Лапидуса активна пена-концентрат",
+    "foam_class_closed": "класс 'смыть чем-нибудь в номере' закрыт",
+    "foam_swollen": "пена раздута до предельного состояния",
+    "has_hotel_map": "у Лапидуса прозрачная карта отеля",
+    "has_menu_card": "у Лапидуса ламинированное меню",
+    "has_stairs_key": "ключ от служебной лестницы",
+    "iz_admits_facts": "Изольда перешла из казённого режима в признание фактов",
+    "iz_folder_seen": "правило Изольды: накрыла папкой мокрый круг",
+    "iz_formal": "Изольда на стойке в казённом режиме",
+    "iz_rule3_seen": "правило Изольды: гость заметил кого-то под тележкой",
+    "iz_rules_all_shown": "правило Изольды показано трижды",
+    "iz_stepladder_minimized": "свою роль в покраске Изольда свела к 'подержала стремянку'",
+    "journal_old_read": "старый журнал приёмки прочитан",
+    "kefir_in_drawer_seen": "в ящике Изольды — бутылка кефира",
+    "knows_assortment": "прочитано меню мини-бара",
+    "knows_bath_day": "известно про банный день",
+    "knows_chalk_author": "Изольда: сантехник всё подписывал мелом",
+    "knows_counter_on_line": "стойка Изольды и счётчик стоят на старой линии",
+    "knows_counterweight_w3": "в шахте прачечной W3 — противовес подъёмника",
+    "knows_dock_below": "под шахтой подъёмника — приёмный док",
+    "knows_foam_flow": "пена снимается только непрерывной струёй",
+    "knows_handover_gap": "новым сантехникам про четверги не передали",
+    "knows_map_lies": "карта отеля нарисована для красоты",
+    "knows_office_by_source": "у источника под зданием — контора",
+    "knows_paint_fresh": "краска свежая и мягкая",
+    "knows_paper_soaks": "бумага в мыльных руках раскисает",
+    "knows_plate_under_paint": "под краской проступают края таблички",
+    "knows_platform_under_stand": "wellness-стойка стоит на платформе",
+    "knows_push_latch": "Изольда открыла ящик нажатием колена",
+    "knows_service_stairs": "из wellness-зала вниз ведёт служебная лестница",
+    "knows_soap_grip": "мыльный хват показан",
+    "knows_stars_fold": "у звёзд видны петли",
+    "knows_supplier_exists": "Изольда признала: поставщик есть",
+    "knows_supply_cut": "подачу резко остановили выше",
+    "knows_thursday_plumber": "сантехник носил кефир по четвергам",
+    "knows_trolley_chamber": "юбка на жёсткой раме, внутри пустота",
+    "knows_waiter_call": "официант крикнул, толпа расступилась",
+    "layoff_read": "распоряжение о сокращении сантехника",
+    "menu_smeared": "кромка меню в бежевой краске",
+    "meter_seal_seen": "на счётчике свежая лучистая пломба",
+    "midpoint_known": "midpoint пройден",
+    "minus_four_stars_said": "отложенный панч прозвучал",
+    "name_revealed": "открылось: Старший по воде — тов. К.",
+    "need_cover": "вестибюль людный, голым не пройти",
+    "office_notice_read": "уведомление на двери конторы прочитано",
+    "overlay_by_frame": "три плёнки сложены по рамкам",
+    "paint_act_read": "акт малярной приёмки прочитан",
+    "photo_seen": "фото тележки на платформе",
+    "plate_revealed": "инвентарная пластина открылась",
+    "plunger_taken": "вантуз у Лапидуса",
+    "poster_seen": "объявление банного дня",
+    "reception_called": "звонок на стойку",
+    "requests_stapled": "Изольда скрепила заявки",
+    "seal_is_mark": "лучистый круг — рабочий оттиск",
+    "shock_done": "гидроудар состоялся",
+    "shock_report_known": "Изольда сообщила: воды нет",
+    "stars_folded": "звёзды сложены внутрь",
+    "topology_known": "плёнки совмещены",
+    "trolley_at_crowd": "тележка упёрлась в толпу",
+    "trolley_present": "историческая латунная тележка в наличии",
+    "trolley_service_side": "тележка с Лапидусом на служебной стороне",
+    "vitrine_open": "витрина экспоната открыта",
+    "voucher_read": "путёвка прочитана",
+    "w3_open": "доступна прачечная",
+    "w4_open": "доступен wellness-зал",
+    "w5_open": "доступен нижний предбанник",
+    "wet_ring_seen": "круглый влажный след присоски",
+    "shaft_w3_open": "панель шахты откинута, виден противовес",
+    "foam_in_clamp": "пена набита в механизм фиксатора в W5",
+    "trolley_at_w4": "тележка перемещена в W4",
+    "clamp_broken": "фиксатор платформы разорван пеной",
+    "stand_pushed": "стойка благополучия сброшена с платформы",
+    "button_washed": "кнопка пуска очищена от краски",
+    "trolley_at_w5": "тележка спустилась в W5",
+    "trolley_in_dock": "тележка стоит в доке W5 у двери конторы",
+    "debt_known": "получен влагостойкий акт сверки",
+    "lowest_point": "пройдена низшая точка: подношение оказалось оплатой",
+    "trolley_back_w2": "тележка возвращена в W2",
+    "chalk_exposed": "наклейка снята, виден мел НАШЕ",
+    "plunger_inked": "на вантузе зеркальный отпечаток мела НАШЕ",
+    "debt_stamped": "на акте сверки отпечатано НАШЕ",
+    "iz_confessed": "Изольда призналась и добровольно отдала кефир с накладной",
+    "payment_ready": "кефир и накладная с печатью на столе",
+    "bottle_loaded": "кефир погружен на тележку",
+    "invoice_loaded": "накладная погружена на тележку",
+    "payment_on_trolley": "на тележке оплата и завтрак",
+    "lap_under_trolley": "Лапидус снова под тележкой перед дверью конторы",
+    "iz_reported_pa": "Изольда доложила по громкой связи",
+    "kuh_name_known": "имя Кухтулху прозвучало",
+    "office_open": "дверь конторы открыта по процедуре"
+  },
+  "actions": [
+    {
+      "id": "N01_open_shaft",
+      "name": "Использовать вантуз на декоративной стене шахты",
+      "room": "W3",
+      "type": "use",
+      "requires": [
+        "knows_counterweight_w3",
+        "plunger_taken"
+      ],
+      "adds": [
+        "shaft_w3_open"
+      ],
+      "removes": [],
+      "optional": false
+    },
+    {
+      "id": "N02_move_trolley_w4",
+      "name": "Дотолкать тележку до W4",
+      "room": "W4",
+      "type": "use",
+      "requires": [
+        "trolley_service_side"
+      ],
+      "adds": [
+        "trolley_at_w4"
+      ],
+      "removes": [],
+      "optional": false
+    },
+    {
+      "id": "N03_pack_foam",
+      "name": "Набить пену с рук в заржавевший фиксатор платформы",
+      "room": "W5",
+      "type": "use",
+      "requires": [
+        "w5_open",
+        "foam_active",
+        "knows_platform_under_stand"
+      ],
+      "adds": [
+        "foam_in_clamp"
+      ],
+      "removes": [],
+      "optional": false
+    },
+    {
+      "id": "N04_pour_coffee",
+      "name": "Вылить кофе с тележки в щель платформы вниз на фиксатор",
+      "room": "W4",
+      "type": "use",
+      "requires": [
+        "trolley_at_w4",
+        "foam_in_clamp",
+        "breakfast_on_trolley"
+      ],
+      "adds": [
+        "clamp_broken"
+      ],
+      "removes": [],
+      "optional": false
+    },
+    {
+      "id": "N05_push_stand",
+      "name": "Сбросить откреплённую стойку благополучия с платформы",
+      "room": "W4",
+      "type": "use",
+      "requires": [
+        "clamp_broken"
+      ],
+      "adds": [
+        "stand_pushed"
+      ],
+      "removes": [],
+      "optional": false
+    },
+    {
+      "id": "N06_wash_button",
+      "name": "Смыть бежевую краску с кнопки мыльными пальцами",
+      "room": "W4",
+      "type": "use",
+      "requires": [
+        "knows_paint_fresh",
+        "foam_active"
+      ],
+      "adds": [
+        "button_washed"
+      ],
+      "removes": [],
+      "optional": false
+    },
+    {
+      "id": "N07_send_down",
+      "name": "Закатить тележку на платформу и нажать кнопку пуска",
+      "room": "W4",
+      "type": "use",
+      "requires": [
+        "stand_pushed",
+        "button_washed",
+        "trolley_at_w4",
+        "shaft_w3_open"
+      ],
+      "adds": [
+        "trolley_at_w5"
+      ],
+      "removes": [],
+      "optional": false
+    },
+    {
+      "id": "N08_dock_trolley",
+      "name": "Закатить тележку в пазы дока перед дверью",
+      "room": "W5",
+      "type": "use",
+      "requires": [
+        "trolley_at_w5"
+      ],
+      "adds": [
+        "trolley_in_dock",
+        "debt_known",
+        "lowest_point"
+      ],
+      "removes": [],
+      "optional": false
+    },
+    {
+      "id": "N09_return_trolley",
+      "name": "Вернуть тележку через подъёмник обратно в W2",
+      "room": "W5",
+      "type": "use",
+      "requires": [
+        "trolley_in_dock"
+      ],
+      "adds": [
+        "trolley_back_w2"
+      ],
+      "removes": [],
+      "optional": false
+    },
+    {
+      "id": "N10_scrape_sticker",
+      "name": "Соскоблить меню-картой наклейку со сброшенной стойки",
+      "room": "W4",
+      "type": "use",
+      "requires": [
+        "stand_pushed",
+        "has_menu_card"
+      ],
+      "adds": [
+        "chalk_exposed"
+      ],
+      "removes": [],
+      "optional": false
+    },
+    {
+      "id": "N11_lift_chalk",
+      "name": "Прижать мокрый вантуз к меловой надписи 'НАШЕ'",
+      "room": "W4",
+      "type": "use",
+      "requires": [
+        "chalk_exposed",
+        "plunger_taken"
+      ],
+      "adds": [
+        "plunger_inked"
+      ],
+      "removes": [],
+      "optional": false
+    },
+    {
+      "id": "N12_stamp_debt",
+      "name": "Шлёпнуть вантузом по полупрозрачному акту сверки",
+      "room": "W2",
+      "type": "use",
+      "requires": [
+        "plunger_inked",
+        "debt_known"
+      ],
+      "adds": [
+        "debt_stamped"
+      ],
+      "removes": [],
+      "optional": false
+    },
+    {
+      "id": "N13_drawer_trap",
+      "name": "Подсунуть акт в приоткрытый ящик Изольды снизу",
+      "room": "W2",
+      "type": "use",
+      "requires": [
+        "debt_stamped",
+        "knows_push_latch"
+      ],
+      "adds": [
+        "iz_confessed",
+        "payment_ready"
+      ],
+      "removes": [],
+      "optional": false
+    },
+    {
+      "id": "N14_load_bottle",
+      "name": "Присосать вантуз к бутылке кефира и перенести на тележку",
+      "room": "W2",
+      "type": "use",
+      "requires": [
+        "payment_ready",
+        "trolley_back_w2"
+      ],
+      "adds": [
+        "bottle_loaded"
+      ],
+      "removes": [],
+      "optional": false
+    },
+    {
+      "id": "N15_load_invoice",
+      "name": "Поддеть накладную ламинированным меню и сбросить на тележку",
+      "room": "W2",
+      "type": "use",
+      "requires": [
+        "payment_ready",
+        "trolley_back_w2",
+        "has_menu_card"
+      ],
+      "adds": [
+        "invoice_loaded"
+      ],
+      "removes": [],
+      "optional": false
+    },
+    {
+      "id": "N16_final_descent",
+      "name": "Укатить гружёную тележку на подъёмник, спустить и поставить в док",
+      "room": "W4",
+      "type": "use",
+      "requires": [
+        "bottle_loaded",
+        "invoice_loaded"
+      ],
+      "adds": [
+        "payment_on_trolley",
+        "lap_under_trolley"
+      ],
+      "removes": [],
+      "optional": false
+    },
+    {
+      "id": "N17_izolda_pa",
+      "name": "Громкая связь (срабатывает при финальном спуске)",
+      "room": "W2",
+      "type": "talk",
+      "requires": [
+        "lap_under_trolley"
+      ],
+      "adds": [
+        "iz_reported_pa",
+        "kuh_name_known"
+      ],
+      "removes": [],
+      "optional": false
+    },
+    {
+      "id": "N18_office_opens",
+      "name": "Дверь конторы принимает оплату и открывается",
+      "room": "W5",
+      "type": "use",
+      "requires": [
+        "iz_reported_pa"
+      ],
+      "adds": [
+        "office_open"
+      ],
+      "removes": [],
+      "optional": false
+    }
+  ],
+  "rooms": [
+    "W1 — Номер 317",
+    "W2 — Вестибюль и стойка Изольды",
+    "W3 — Прачечная и служебная шахта",
+    "W4 — Зал благополучия (бывшая водолечебница)",
+    "W5 — Нижний предбанник источника"
+  ],
+  "act_goal_flags": [
+    "office_open",
+    "trolley_in_dock",
+    "payment_on_trolley",
+    "lap_under_trolley",
+    "iz_confessed",
+    "iz_reported_pa",
+    "debt_known",
+    "kuh_name_known",
+    "lowest_point"
+  ]
+}

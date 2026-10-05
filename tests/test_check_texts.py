@@ -211,7 +211,7 @@ class Act2Test(unittest.TestCase):
     def test_claude_version_clean(self):
         errs, _, stats = run_check2(self.base)
         self.assertEqual(errs, [], messages(errs))
-        self.assertEqual(stats["slots"], 165)
+        self.assertEqual(stats["slots"], 164)  # редакция 2: слот Z12.point.look снят (решение автора 05.10.2026)
 
     def spoil(self, old, new):
         self.assertIn(old, self.base)
@@ -245,8 +245,19 @@ class Act2Test(unittest.TestCase):
         self.assertIn("Старший по воде — тов. К.", msg)
 
     def test_pa_three_services(self):
-        msg = self.spoil("и «текстильная забота» приносят", "приносят")
-        self.assertIn("текстильная забота", msg)
+        msg = self.spoil("и «Влажное очищение» приносят", "приносят")
+        self.assertIn("влажное очищение", msg)
+
+    def test_author_seal_line(self):
+        msg = self.spoil("Я, в первую очередь, инженер.", "Я инженер.")
+        self.assertIn("нет строки автора", msg)
+
+    def test_services_explained(self):
+        """Решение автора 05.10.2026: где-то в акте сказано, что такое каждая служба."""
+        msg = self.spoil("«Влажное наслаждение» — душ в номерах.", "«Влажное наслаждение».")
+        self.assertIn("«Влажное наслаждение» — душ в номерах", msg)
+        msg = self.spoil("Третья — «Влажное очищение», прачечная.", "Третья тоже.")
+        self.assertIn("«Влажное очищение» — прачечная", msg)
 
     def test_no_english(self):
         msg = self.spoil("Три эпохи, одна труба.", "Три эпохи, одна труба, wellness.")
@@ -258,9 +269,128 @@ class Act2Test(unittest.TestCase):
 
 
 class Act2FinalTest(unittest.TestCase):
+    def test_final_body_equals_claude(self):
+        claude = CLAUDE2.read_text(encoding="utf-8")
+        final = (ROOT / "texts" / "act2" / "ACT2_TEXTS_FINAL.md").read_text(encoding="utf-8")
+        key = "### OPEN.counter"
+        self.assertEqual(final[final.index(key):], claude[claude.index(key):])
+
     def test_final_passes_brief(self):
         brief = ct.parse_brief(BRIEF2)
         texts, fmt = ct.parse_texts(ROOT / "texts" / "act2" / "ACT2_TEXTS_FINAL.md")
         errs, _, stats = ct.check(brief, texts, fmt, act=2)
         self.assertEqual(errs, [], messages(errs))
-        self.assertEqual(stats["slots"], 165)
+        self.assertEqual(stats["slots"], 164)  # редакция 2: слот Z12.point.look снят (решение автора 05.10.2026)
+
+
+BRIEF3 = ROOT / "texts" / "act3" / "BRIEF_ACT3_TEXTS.md"
+CLAUDE3 = ROOT / "texts" / "act3" / "ACT3_TEXTS_CLAUDE.md"
+
+
+def run_check3(text):
+    with tempfile.TemporaryDirectory() as d:
+        p = Path(d) / "тексты акта 3.md"
+        p.write_text(text, encoding="utf-8")
+        brief = ct.parse_brief(BRIEF3)
+        texts, fmt = ct.parse_texts(p)
+        return ct.check(brief, texts, fmt, act=3)
+
+
+class Act3Test(unittest.TestCase):
+    def setUp(self):
+        self.base = CLAUDE3.read_text(encoding="utf-8")
+
+    def test_detect_act(self):
+        self.assertEqual(ct.detect_act(BRIEF3), 3)
+
+    def test_claude_version_clean(self):
+        errs, warns, stats = run_check3(self.base)
+        self.assertEqual(errs, [], messages(errs))
+        self.assertEqual(warns, [], messages(warns))
+        self.assertEqual(stats["slots"], 110)
+
+    def spoil(self, old, new):
+        self.assertIn(old, self.base)
+        errs, _, _ = run_check3(self.base.replace(old, new, 1))
+        return messages(errs)
+
+    def test_name_before_bill(self):
+        msg = self.spoil("Вернулась. С почтой.", "Вернулась. С почтой от Кухтулху.")
+        self.assertIn("только после счёта", msg)
+
+    def test_name_allowed_after_bill(self):
+        errs, _, _ = run_check3(self.base.replace(
+            "Людей не впускают. Обоз — впускают.",
+            "Людей Кухтулху не впускает. Обоз — впускает.", 1))
+        self.assertEqual(errs, [], messages(errs))
+
+    def test_isolde_first_person_before_confession(self):
+        msg = self.spoil("iz | iz_formal | CHAR | Печать ставится на документы отеля.",
+                         "iz | iz_formal | CHAR | Мою печать не дам.")
+        self.assertIn("до признания", msg)
+
+    def test_stepladder_required(self):
+        msg = self.spoil("iz | iz_confess | CHAR,PLOT | Я держала стремянку.",
+                         "iz | iz_confess | CHAR,PLOT | Стремянку держала.")
+        self.assertIn("Я держала стремянку", msg)
+
+    def test_stepladder_only_in_confession(self):
+        msg = self.spoil("Груз доставлен. Груз молчит.", "Я держала стремянку.")
+        self.assertIn("только в TALK.iz.confess", msg)
+
+    def test_author_note_exact(self):
+        msg = self.spoil("Платить МНѢ водой??? Да я васъ всѣхъ въ канализацію смою!",
+                         "Платить мне водой? Да я вас всех смою!")
+        self.assertIn("Платить МНѢ водой", msg)
+
+    def test_bill_needs_payer_mp(self):
+        msg = self.spoil("М.П. плательщика ________", "Плательщик ________")
+        self.assertIn("м.п. плательщика", msg)
+
+    def test_report_needs_name(self):
+        msg = self.spoil("Старшему по воде Кухтулху. Это Изольда", "Старшему по воде. Это Изольда")
+        self.assertIn("кухтулху", msg)
+
+    def test_ride_needs_staff(self):
+        msg = self.spoil("тот, по словам Изольды, обслуживающий персонал.",
+                         "тот, по словам Изольды, груз.")
+        self.assertIn("обслуживающим персоналом", msg)
+
+    def test_pa_third_stage(self):
+        msg = self.spoil("начинает третий этап плановых улучшений", "начинает плановые улучшения")
+        self.assertIn("третий этап плановых улучшений", msg)
+
+    def test_act4_owner_canon_banned(self):
+        msg = self.spoil("Груз доставлен. Груз молчит.", "Меня не увольняли. Меня благоустроили.")
+        self.assertIn("owner-canon Акта IV", msg)
+
+    def test_tentacles_banned(self):
+        msg = self.spoil("Груз доставлен. Груз молчит.", "Груз доставлен. Где-то щупальца.")
+        self.assertIn("«щупальца»", msg)
+
+    def test_water_stand_signature(self):
+        msg = self.spoil("Комплимент от заведения\nВаш комфорт — наша концепция.",
+                         "Комплимент от заведения\nС уважением.")
+        self.assertIn("подписи управляющего", msg)
+
+    def test_new_emotions_only_in_act3(self):
+        text2 = CLAUDE2.read_text(encoding="utf-8").replace(
+            "iz | iz_formal | CHAR | Табличка не соответствовала дизайн-коду.",
+            "iz | iz_confess | CHAR | Табличка не соответствовала дизайн-коду.", 1)
+        errs, _, _ = run_check2(text2)
+        self.assertIn("не из реестра", messages(errs))
+
+
+class Act3FinalTest(unittest.TestCase):
+    def test_final_passes_brief(self):
+        brief = ct.parse_brief(BRIEF3)
+        texts, fmt = ct.parse_texts(ROOT / "texts" / "act3" / "ACT3_TEXTS_FINAL.md")
+        errs, _, stats = ct.check(brief, texts, fmt, act=3)
+        self.assertEqual(errs, [], messages(errs))
+        self.assertEqual(stats["slots"], 110)
+
+    def test_final_body_equals_claude(self):
+        claude = CLAUDE3.read_text(encoding="utf-8")
+        final = (ROOT / "texts" / "act3" / "ACT3_TEXTS_FINAL.md").read_text(encoding="utf-8")
+        key = "### OPEN.door"
+        self.assertEqual(final[final.index(key):], claude[claude.index(key):])
