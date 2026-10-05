@@ -17,6 +17,7 @@
   --mauve: #7c4f68;      /* Изольда */
   --paper: #fbf8f0;      /* бумага документов */
   --good: #2f7a52;
+  --water: #2b6f7a;      /* вода: Кухтулху */
   --warn: #9a4b16;
   --display: "Neucha", "Comic Sans MS", cursive;
   --body: "PT Sans", "Segoe UI", system-ui, sans-serif;
@@ -27,14 +28,14 @@
   :root:not([data-theme="light"]) {
     --tile: #11181a; --panel: #192326; --ink: #e2e9e8; --muted: #93a3a5;
     --rule: #2b383b; --brass: #d4ab52; --brass-soft: #3b3220; --steel: #8fb1c8;
-    --mauve: #d39cba; --paper: #20292b; --good: #74c79a; --warn: #e79a63;
+    --mauve: #d39cba; --paper: #20292b; --good: #74c79a; --warn: #e79a63; --water: #7fc4cf;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --tile: #11181a; --panel: #192326; --ink: #e2e9e8; --muted: #93a3a5;
   --rule: #2b383b; --brass: #d4ab52; --brass-soft: #3b3220; --steel: #8fb1c8;
-  --mauve: #d39cba; --paper: #20292b; --good: #74c79a; --warn: #e79a63;
+  --mauve: #d39cba; --paper: #20292b; --good: #74c79a; --warn: #e79a63; --water: #7fc4cf;
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
@@ -111,6 +112,7 @@ article.slot.noted.applied { border-color: var(--good); box-shadow: inset 3px 0 
 .plate.lap { color: var(--brass); }
 .plate.anc { color: var(--steel); }
 .plate.iz, .plate.paiz { color: var(--mauve); }
+.plate.kuh { color: var(--water); }
 .text { overflow-wrap: anywhere; }
 .cap .text { font-style: italic; color: var(--muted); }
 .choice .text { display: inline-block; border: 1px dashed var(--rule); border-radius: 6px; padding: 2px 8px; }
@@ -175,13 +177,17 @@ button.next { align-self: flex-start; font-weight: 700; }
 
   var PLATES = { lap: "Лапидус", iz: "Изольда Тихоновна", anc: "Предок", pa: "Громкая связь",
     paiz: "Громкая связь (Изольда)", ans: "Автоответчик", guest: "Гость", guestf: "Гостья",
-    waiter: "Официант", cap: "Титр", choice: "Пункт меню", ui: "Надпись на кнопке" };
+    waiter: "Официант", kuh: "Кухтулху", cap: "Титр", choice: "Пункт меню", ui: "Надпись на кнопке" };
   var EMO = { lap_soap_neutral: "нейтрально", lap_soap_tired: "устало", lap_soap_worried: "тревожно",
     lap_soap_ashamed: "стыдно", lap_soap_angry: "зло", lap_soap_smug: "самодовольно",
     lap_soap_inspired: "с азартом", lap_soap_panic: "в панике", lap_soap_triumphant: "торжествующе",
     iz_formal: "казённо", iz_averted: "не глядя", iz_tired: "устало", iz_stern: "строго",
     iz_flustered: "смущённо", iz_confess: "срывается, признаётся", iz_looks: "впервые смотрит на героя",
-    anc_calm: "спокойно", anc_stern: "строго", anc_proud: "гордо", anc_smug: "довольно" };
+    anc_calm: "спокойно", anc_stern: "строго", anc_proud: "гордо", anc_smug: "довольно",
+    lap_clean: "чистый, без пены",
+    kuh_formal: "глаза в бумаги", kuh_displeased: "недовольно", kuh_dismissive: "отмахиваясь",
+    kuh_ancient: "по-старому", kuh_nostalgic: "вспоминая", kuh_satisfied: "удовлетворённо",
+    kuh_looks: "смотрит прямо на игрока" };
 
   function ls(op, key, val) {
     try {

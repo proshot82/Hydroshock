@@ -34,9 +34,13 @@ EMOTIONS = {
             "lap_soap_inspired", "lap_soap_panic", "lap_soap_triumphant"},
     "iz": {"iz_formal", "iz_averted", "iz_tired", "iz_stern", "iz_flustered"},
     "anc": {"anc_calm", "anc_stern", "anc_proud", "anc_smug"},
+    # Кухтулху — только Акт IV (ТЗ Акта IV §5); в Актах I–III ТЗ не даёт ей ни одного слота
+    "kuh": {"kuh_formal", "kuh_displeased", "kuh_dismissive", "kuh_ancient",
+            "kuh_nostalgic", "kuh_satisfied", "kuh_looks"},
 }
-# Акт III: срыв-признание Изольды и её первый взгляд на героя (ТЗ Акта III §5)
-EMOTIONS_BY_ACT = {3: {"iz": {"iz_confess", "iz_looks"}}}
+# Акт III: срыв-признание Изольды и её первый взгляд на героя (ТЗ Акта III §5).
+# Акт IV: чистый портрет Лапидуса после пуска (ТЗ Акта IV §5).
+EMOTIONS_BY_ACT = {3: {"iz": {"iz_confess", "iz_looks"}}, 4: {"lap": {"lap_clean"}}}
 # paiz — Изольда по громкой связи, один раз на пороге Акта IV (S3.1 §9а)
 VOICE_SPEAKERS = {"pa", "paiz", "ans", "guest", "guestf", "waiter", "cap", "choice", "ui"}
 ALL_SPEAKERS = set(EMOTIONS) | VOICE_SPEAKERS
@@ -45,7 +49,7 @@ HINT_LEVEL_EMOTION = {"1": "anc_calm", "2": "anc_stern", "3": "anc_smug"}
 
 # --- §7.1 ТЗ: длины ---------------------------------------------------------
 
-MAX_LEN = {"lap": 160, "iz": 200, "anc": 160, "pa": 220, "paiz": 220, "ans": 140,
+MAX_LEN = {"lap": 160, "iz": 200, "kuh": 200, "anc": 160, "pa": 220, "paiz": 220, "ans": 140,
            "guest": 140, "guestf": 140, "waiter": 140, "cap": 140,
            "choice": 40, "ui": 12}
 
@@ -77,6 +81,9 @@ BANNED_COMMON = [
     (r"\bр['’ʼ]?льех", "лавкрафтиана «Р'льех»"),
     (r"некрономикон", "лавкрафтиана «Некрономикон»"),
     (r"аркх[эе]м", "лавкрафтиана «Аркхэм»"),
+]
+# «Ктулху» и «щупальца» — только в Акте IV, где она появляется лично.
+BEFORE_ACT4 = [
     (r"ктулх", "раньше времени: «Ктулху»"),
     (r"щупальц", "раньше времени: «щупальца»"),
 ]
@@ -86,20 +93,26 @@ BEFORE_BILL = [
     (r"задолженност", "раньше времени: «задолженность»"),
 ]
 BANNED_BY_ACT = {
-    1: BEFORE_BILL + [
+    1: BEFORE_BILL + BEFORE_ACT4 + [
         (r"старш\w* по вод", "раньше времени: «старший по воде»"),
         (r"подношени", "раньше времени: «подношение»"),
         (r"до выяснения", "раньше времени: «до выяснения» (формула Кухтулху)"),
     ],
-    2: BEFORE_BILL + [
+    2: BEFORE_BILL + BEFORE_ACT4 + [
         (r"\bдолг(?:а|у|ом|и|ов|е)?\b", "раньше времени: «долг»"),
         (r"\bпени\b", "раньше времени: «пени»"),
         (r"я держала стремянку", "owner-canon Акта III: «Я держала стремянку»"),
     ],
-    3: [
+    3: BEFORE_ACT4 + [
         (r"меня не увольнял", "owner-canon Акта IV: «Меня не увольняли»"),
         (r"благоустроил", "owner-canon Акта IV: «Меня благоустроили»"),
         (r"лежат и ждут звезд", "owner-canon Акта IV: «лежат и ждут звёзд»"),
+    ],
+    # Акт IV: две строки сняты автором 05.10.2026 как несмешные и непонятные (канон V2.2)
+    4: [
+        (r"меня не увольнял", "снятая строка: «Меня не увольняли»"),
+        (r"благоустроил", "снятая строка: «Меня благоустроили»"),
+        (r"лежат и ждут звезд", "снятая строка: «лежат и ждут звёзд»"),
     ],
 }
 BANNED = BANNED_COMMON + BANNED_BY_ACT[1]   # Акт I — как было
@@ -118,6 +131,22 @@ ACT3_NAME_PREFIXES = ("HINT.payer.", "HINT.load.", "HINT.down.")
 ACT3_IZ_I_SLOTS = {"TALK.iz.confess", "SEQ.iz.payment", "SEQ.load", "TALK.iz.carry"}
 ACT3_CONFESS_SLOT = "TALK.iz.confess"
 STEPLADDER = "Я держала стремянку."
+
+# Акт IV (ТЗ Акта IV §5, §7.3): Изольда не действует; у Кухтулху нет канцелярита
+# Изольды; её первый взгляд на героя — только с выхода из-под тележки; чистый
+# портрет Лапидуса — только в финале и эпилогах.
+KUH_BANNED = [
+    (r"в установленном порядке", "«в установленном порядке»"),
+    (r"обслуживающ\w* персонал", "«обслуживающий персонал»"),
+    (r"доводится до сведения", "«доводится до сведения»"),
+    (r"в рабочем порядке", "«в рабочем порядке»"),
+    (r"вопрос передается", "«вопрос передаётся»"),
+]
+ACT4_KUH_BLIND_SLOTS = {"SEQ.goods", "SEQ.debt", "SEQ.note_fix", "SEQ.trolley_return",
+                        "SEQ.wait", "TALK.kuh.under", "W5.hand", "W5.wait_more"}
+ACT4_LOOK_SLOT = "SEQ.come_out"
+ACT4_CLEAN_SLOTS = {"SEQ.finale"}
+ACT4_EPILOGUE_PREFIX = "EPI."
 
 # Решения автора 04.10.2026: «по правилам тона — всё можно, лишь бы было
 # остроумно и смешно», но «ломка четвёртой стены — нет». Поэтому мат сверх
@@ -443,6 +472,23 @@ def check(brief, texts, fmt_errors, act=1):
                 for pat, name in IZ_BANNED:
                     if re.search(pat, low):
                         err(sid, "%s: Изольда не говорит %s" % (where, name))
+            if act == 4:
+                if sp in ("iz", "paiz"):
+                    err(sid, "%s: Изольда в Акте IV не действует (обязательство 8)" % where)
+                if sp == "kuh":
+                    for pat, name in KUH_BANNED:
+                        if re.search(pat, low):
+                            err(sid, "%s: канцелярит Изольды у Кухтулху — %s" % (where, name))
+                    if em == "kuh_looks" and sid in ACT4_KUH_BLIND_SLOTS:
+                        err(sid, "%s: kuh_looks раньше времени — на героя она смотрит только с %s"
+                            % (where, ACT4_LOOK_SLOT))
+                if sp == "lap":
+                    epilogue = sid.startswith(ACT4_EPILOGUE_PREFIX)
+                    if em == "lap_clean" and not (epilogue or sid in ACT4_CLEAN_SLOTS):
+                        err(sid, "%s: lap_clean до победы — портрет чист только в финале и эпилогах"
+                            % where)
+                    if epilogue and em != "lap_clean":
+                        err(sid, "%s: в эпилоге Лапидус чист — нужен lap_clean" % where)
             if sp == "pa":
                 for pat, name in PA_BANNED:
                     if re.search(pat, low):
@@ -535,8 +581,10 @@ def check(brief, texts, fmt_errors, act=1):
                 "Изольда не говорит «во всём здании»")
     elif act == 2:
         check_act2_fixed(texts, lines_of, require, err)
-    else:
+    elif act == 3:
         check_act3_fixed(texts, lines_of, require, err)
+    else:
+        check_act4_fixed(texts, lines_of, require, err)
     if texts and not any(re.search(PA_REQUIRED, norm_match(t)) for t in pa_texts):
         err(None, "громкая связь ни разу не сказала «плановые улучшения»")
     if guest_lines > MAX_GUEST_LINES:
@@ -700,10 +748,69 @@ def check_act3_fixed(texts, lines_of, require, err):
         require(sid, ok, "в конце нет подписи управляющего (две строки дословно)")
 
 
+# --- Акт IV: фиксированные строки (ТЗ Акта IV §7.2) -------------------------
+
+ACT4_LINE_RULES = [
+    # (слот, спикер, обязательные подстроки)
+    ("SEQ.goods", "kuh", ["кефир"]),
+    ("SEQ.debt", "kuh", ["на учете"]),
+    ("SEQ.trolley_return", "kuh", ["возврат"]),
+    ("TALK.kuh.under", "kuh", ["инвентар"]),
+    ("SEQ.hello", "lap", ["здравствуйте"]),
+    ("SEQ.report_line", "kuh", ["доложено"]),
+    ("PA.final", "pa", ["успешное завершение плановых улучшений"]),
+]
+ACT4_ANY_RULES = [
+    # (слот, обязательные подстроки в любой реплике слота)
+    ("Z13.valve.turn", ["послѣ сего пускать"]),
+    ("EPI.0", ["четверг"]), ("EPI.1", ["четверг"]), ("EPI.2", ["четверг"]), ("EPI.3", ["четверг"]),
+]
+ACT4_DOC_RULES = [
+    # (слот, обязательные подстроки, точные строки)
+    ("DOC.reception_sign", ["доложиться"], []),
+    ("DOC.note_fixed", ["исправленному", "[оттиск]"],
+     ["Платить МНѢ водой??? Да я васъ всѣхъ въ канализацію смою!"]),
+    ("DOC.plate_mark", ["возврат", "[оттиск]"], []),
+    ("DOC.ledger", ["доложилъ", "принялъ", "доложено", "[оттиск]"], []),
+    ("DOC.seal_tag", ["[оттиск]"], []),
+    ("DOC.menu_new", ["кефир — по четвергам"], []),
+]
+ACT4_SIGNED = ["DOC.menu_new"]
+
+
+def check_act4_fixed(texts, lines_of, require, err):
+    for sid, sp, subs in ACT4_LINE_RULES:
+        got = [norm_match(t) for t in lines_of(sid, sp)]
+        for sub in subs:
+            require(sid, any(norm_match(sub) in g for g in got),
+                    "нет «%s» в реплике %s" % (sub, sp))
+    for sid, subs in ACT4_ANY_RULES:
+        got = [norm_match(t) for t in lines_of(sid)]
+        for sub in subs:
+            require(sid, any(norm_match(sub) in g for g in got), "нет «%s» в слоте" % sub)
+    looks = [l for l in texts.get(ACT4_LOOK_SLOT, {}).get("lines", [])
+             if l["speaker"] == "kuh" and l["emotion"] == "kuh_looks"]
+    require(ACT4_LOOK_SLOT, bool(looks),
+            "нет первого взгляда Кухтулху: реплика kuh с эмоцией kuh_looks")
+    for sid, subs, exact in ACT4_DOC_RULES:
+        doc = [l for l in ((texts.get(sid) or {}).get("doc") or []) if l.strip()]
+        joined = norm_match("\n".join(doc))
+        for sub in subs:
+            require(sid, norm_match(sub) in joined, "в документе нет «%s»" % sub)
+        for line in exact:
+            require(sid, any(same_line(l, line) for l in doc),
+                    "нет строки «%s» отдельной строкой" % line)
+    for sid in ACT4_SIGNED:
+        doc = [l.strip() for l in ((texts.get(sid) or {}).get("doc") or []) if l.strip()]
+        ok = len(doc) >= 2 and same_line(doc[-2], MANAGER_SIGNATURE[0]) \
+            and same_line(doc[-1], MANAGER_SIGNATURE[1])
+        require(sid, ok, "в конце нет подписи управляющего (две строки дословно)")
+
+
 def detect_act(brief_path):
     head = Path(brief_path).read_text(encoding="utf-8").splitlines()[0]
     m = re.search(r"Акта\s+([IV]+)\b", head)
-    return {"I": 1, "II": 2, "III": 3}.get(m.group(1), 1) if m else 1
+    return {"I": 1, "II": 2, "III": 3, "IV": 4}.get(m.group(1), 1) if m else 1
 
 
 def to_json(texts):
