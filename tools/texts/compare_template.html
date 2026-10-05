@@ -38,6 +38,7 @@
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }  /* иначе display: flex у карточек перебивает hidden */
 body {
   background: var(--tile); color: var(--ink);
   font: 16px/1.5 var(--body);
