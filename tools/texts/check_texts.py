@@ -35,14 +35,17 @@ EMOTIONS = {
     "iz": {"iz_formal", "iz_averted", "iz_tired", "iz_stern", "iz_flustered"},
     "anc": {"anc_calm", "anc_stern", "anc_proud", "anc_smug"},
 }
-VOICE_SPEAKERS = {"pa", "ans", "guest", "guestf", "waiter", "cap", "choice", "ui"}
+# Акт III: срыв-признание Изольды и её первый взгляд на героя (ТЗ Акта III §5)
+EMOTIONS_BY_ACT = {3: {"iz": {"iz_confess", "iz_looks"}}}
+# paiz — Изольда по громкой связи, один раз на пороге Акта IV (S3.1 §9а)
+VOICE_SPEAKERS = {"pa", "paiz", "ans", "guest", "guestf", "waiter", "cap", "choice", "ui"}
 ALL_SPEAKERS = set(EMOTIONS) | VOICE_SPEAKERS
 FUNCTIONS = {"CLUE", "STATE", "CHAR", "PLOT", "RHYTHM", "JOKE"}
 HINT_LEVEL_EMOTION = {"1": "anc_calm", "2": "anc_stern", "3": "anc_smug"}
 
 # --- §7.1 ТЗ: длины ---------------------------------------------------------
 
-MAX_LEN = {"lap": 160, "iz": 200, "anc": 160, "pa": 220, "ans": 140,
+MAX_LEN = {"lap": 160, "iz": 200, "anc": 160, "pa": 220, "paiz": 220, "ans": 140,
            "guest": 140, "guestf": 140, "waiter": 140, "cap": 140,
            "choice": 40, "ui": 12}
 
@@ -74,21 +77,29 @@ BANNED_COMMON = [
     (r"\bр['’ʼ]?льех", "лавкрафтиана «Р'льех»"),
     (r"некрономикон", "лавкрафтиана «Некрономикон»"),
     (r"аркх[эе]м", "лавкрафтиана «Аркхэм»"),
-    (r"кухтулх", "раньше времени: «Кухтулху»"),
     (r"ктулх", "раньше времени: «Ктулху»"),
     (r"щупальц", "раньше времени: «щупальца»"),
+]
+# Имя «Кухтулху» и «задолженность» открываются в Акте III (счёт P12).
+BEFORE_BILL = [
+    (r"кухтулх", "раньше времени: «Кухтулху»"),
     (r"задолженност", "раньше времени: «задолженность»"),
 ]
 BANNED_BY_ACT = {
-    1: [
+    1: BEFORE_BILL + [
         (r"старш\w* по вод", "раньше времени: «старший по воде»"),
         (r"подношени", "раньше времени: «подношение»"),
         (r"до выяснения", "раньше времени: «до выяснения» (формула Кухтулху)"),
     ],
-    2: [
+    2: BEFORE_BILL + [
         (r"\bдолг(?:а|у|ом|и|ов|е)?\b", "раньше времени: «долг»"),
         (r"\bпени\b", "раньше времени: «пени»"),
         (r"я держала стремянку", "owner-canon Акта III: «Я держала стремянку»"),
+    ],
+    3: [
+        (r"меня не увольнял", "owner-canon Акта IV: «Меня не увольняли»"),
+        (r"благоустроил", "owner-canon Акта IV: «Меня благоустроили»"),
+        (r"лежат и ждут звезд", "owner-canon Акта IV: «лежат и ждут звёзд»"),
     ],
 }
 BANNED = BANNED_COMMON + BANNED_BY_ACT[1]   # Акт I — как было
@@ -97,6 +108,16 @@ BANNED = BANNED_COMMON + BANNED_BY_ACT[1]   # Акт I — как было
 # звучат только вместе, в итоговой реплике акта (ТЗ Акта II §7.3).
 ACT2_READINGS = [(r"оплат", "«оплата»"), (r"подношени", "«подношение»")]
 ACT2_READINGS_SLOT = "END.act2"
+
+# Акт III (ТЗ Акта III §7.3): имя — только после счёта; «я» у Изольды — только
+# после признания; «Я держала стремянку» — только её реплика в признании.
+ACT3_NAME_SLOTS = {"DOC.bill", "Z11.bill.read", "TALK.iz.confess", "SEQ.iz.payment",
+                   "DOC.invoice", "SEQ.load", "SEQ.report", "SEQ.ride", "SEQ.descent",
+                   "END.act3", "HINT.done"}
+ACT3_NAME_PREFIXES = ("HINT.payer.", "HINT.load.", "HINT.down.")
+ACT3_IZ_I_SLOTS = {"TALK.iz.confess", "SEQ.iz.payment", "SEQ.load", "TALK.iz.carry"}
+ACT3_CONFESS_SLOT = "TALK.iz.confess"
+STEPLADDER = "Я держала стремянку."
 
 # Решения автора 04.10.2026: «по правилам тона — всё можно, лишь бы было
 # остроумно и смешно», но «ломка четвёртой стены — нет». Поэтому мат сверх
@@ -136,7 +157,7 @@ MAT = [
 ]
 
 IZ_FIRST_PERSON = (r"\b(?:я|мне|меня|мной|мною|мой|моя|мое|мои|моего|моей|моих|"
-                   r"моим|моими|моему|моем)\b")
+                   r"моим|моими|моему|моем|мою)\b")
 IZ_BANNED = [(r"одновременн", "«одновременно»"), (r"сигнал", "«сигнал»")]
 PA_BANNED = [(r"авари", "«авария»"), (r"нет воды", "«нет воды»")]
 PA_REQUIRED = r"планов\w* улучшени"
@@ -385,7 +406,7 @@ def check(brief, texts, fmt_errors, act=1):
                 err(sid, "%s: спикер %s в этом слоте не разрешён (можно: %s)"
                     % (where, sp, ", ".join(sorted(spec["speakers"]))))
             if sp in EMOTIONS:
-                if em not in EMOTIONS[sp]:
+                if em not in EMOTIONS[sp] | EMOTIONS_BY_ACT.get(act, {}).get(sp, set()):
                     err(sid, "%s: эмоция %r не из реестра %s" % (where, em, sp))
             elif em != "none":
                 err(sid, "%s: у голоса %s эмоция должна быть none" % (where, sp))
@@ -416,8 +437,9 @@ def check(brief, texts, fmt_errors, act=1):
                 pa_texts.append(txt)
             low = norm_match(txt)
             if sp == "iz":
-                if re.search(IZ_FIRST_PERSON, low):
-                    err(sid, "%s: у Изольды до Акта III нет «я»: %s" % (where, txt))
+                if re.search(IZ_FIRST_PERSON, low) and not (act == 3 and sid in ACT3_IZ_I_SLOTS):
+                    err(sid, "%s: у Изольды %s нет «я»: %s"
+                        % (where, "до признания (C13)" if act == 3 else "до Акта III", txt))
                 for pat, name in IZ_BANNED:
                     if re.search(pat, low):
                         err(sid, "%s: Изольда не говорит %s" % (where, name))
@@ -451,6 +473,14 @@ def check(brief, texts, fmt_errors, act=1):
             if act >= 2 and re.search(r"[a-z]{2,}", low):
                 err(sid, "английское слово (решение автора — английских слов в игре нет): %s"
                     % txt.strip()[:80])
+            if act == 3:
+                if re.search(r"кухтулх", low) and not (
+                        sid in ACT3_NAME_SLOTS or sid.startswith(ACT3_NAME_PREFIXES)):
+                    err(sid, "раньше времени — имя «Кухтулху» звучит только после счёта: %s"
+                        % txt.strip()[:80])
+                if "я держала стремянку" in low and sid != ACT3_CONFESS_SLOT:
+                    err(sid, "«Я держала стремянку» — только в %s: %s"
+                        % (ACT3_CONFESS_SLOT, txt.strip()[:80]))
             if act == 2 and sid != ACT2_READINGS_SLOT:
                 for pat, name in ACT2_READINGS:
                     if re.search(pat, low):
@@ -503,8 +533,10 @@ def check(brief, texts, fmt_errors, act=1):
         require("TALK.iz.open",
                 any("во всем здании" in norm_match(t) for t in lines_of("TALK.iz.open", "iz")),
                 "Изольда не говорит «во всём здании»")
-    else:
+    elif act == 2:
         check_act2_fixed(texts, lines_of, require, err)
+    else:
+        check_act3_fixed(texts, lines_of, require, err)
     if texts and not any(re.search(PA_REQUIRED, norm_match(t)) for t in pa_texts):
         err(None, "громкая связь ни разу не сказала «плановые улучшения»")
     if guest_lines > MAX_GUEST_LINES:
@@ -597,10 +629,61 @@ def check_act2_fixed(texts, lines_of, require, err):
                 "в итоге акта нет %s: два прочтения звучат вместе" % name)
 
 
+# --- Акт III: фиксированные строки (ТЗ Акта III §7.2) ------------------------
+
+ACT3_LINE_RULES = [
+    # (слот, спикер, обязательные подстроки)
+    ("OPEN.pa", "pa", ["третий этап плановых улучшений"]),
+    ("TALK.iz.kefir", "iz", ["личное имущество"]),
+    ("TALK.iz.bill", "iz", ["обслуживающему персоналу"]),
+    ("SEQ.report", "paiz", ["кухтулху", "старшему по воде", "оплат"]),
+]
+ACT3_DOC_RULES = [
+    # (слот, обязательные подстроки, точные строки)
+    ("DOC.note", [], ["Платить МНѢ водой??? Да я васъ всѣхъ въ канализацію смою!"]),
+    ("DOC.bill", ["оплатой не является", "м.п. плательщика", "кухтулху", "[оттиск]"], []),
+    ("DOC.tray_stamp", ["оплатой не является", "[оттиск]"], []),
+    ("DOC.stencil", ["лифт грузовой", "перевозка людей запрещена"], []),
+    ("DOC.sticker", ["не трогать — элемент дизайна"], []),
+    ("DOC.chalk", [], ["НАШЕ", "НЕ ТРОГАТЬ"]),
+    ("DOC.water_stand", ["комплимент от заведения"], []),
+    ("DOC.invoice", ["кефир", "кухтулху", "[печать отеля]"], []),
+    ("DOC.complaint", ["м.п."], []),
+]
+ACT3_SIGNED = ["DOC.water_stand"]
+
+
+def check_act3_fixed(texts, lines_of, require, err):
+    for sid, sp, subs in ACT3_LINE_RULES:
+        got = [norm_match(t) for t in lines_of(sid, sp)]
+        for sub in subs:
+            require(sid, any(norm_match(sub) in g for g in got),
+                    "нет «%s» в реплике %s" % (sub, sp))
+    require(ACT3_CONFESS_SLOT,
+            any(same_line(t, STEPLADDER) for t in lines_of(ACT3_CONFESS_SLOT, "iz")),
+            "нет owner-canon «%s» отдельной репликой Изольды" % STEPLADDER)
+    got = [norm_match(t) for t in lines_of("SEQ.ride", "lap")]
+    require("SEQ.ride", any(re.search(r"обслуживающ\w* персонал", g) for g in got),
+            "Лапидус не называет себя обслуживающим персоналом")
+    for sid, subs, exact in ACT3_DOC_RULES:
+        doc = [l for l in ((texts.get(sid) or {}).get("doc") or []) if l.strip()]
+        joined = norm_match("\n".join(doc))
+        for sub in subs:
+            require(sid, norm_match(sub) in joined, "в документе нет «%s»" % sub)
+        for line in exact:
+            require(sid, any(same_line(l, line) for l in doc),
+                    "нет строки «%s» отдельной строкой" % line)
+    for sid in ACT3_SIGNED:
+        doc = [l.strip() for l in ((texts.get(sid) or {}).get("doc") or []) if l.strip()]
+        ok = len(doc) >= 2 and same_line(doc[-2], MANAGER_SIGNATURE[0]) \
+            and same_line(doc[-1], MANAGER_SIGNATURE[1])
+        require(sid, ok, "в конце нет подписи управляющего (две строки дословно)")
+
+
 def detect_act(brief_path):
     head = Path(brief_path).read_text(encoding="utf-8").splitlines()[0]
     m = re.search(r"Акта\s+([IV]+)\b", head)
-    return {"I": 1, "II": 2}.get(m.group(1), 1) if m else 1
+    return {"I": 1, "II": 2, "III": 3}.get(m.group(1), 1) if m else 1
 
 
 def to_json(texts):
