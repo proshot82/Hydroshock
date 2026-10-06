@@ -12,6 +12,7 @@ BJ3_SAMPLES (по умолчанию /home/user/samples/vsco2). В git сэмп�
 Нота играется ближайшим по высоте сэмплом нужного слоя динамики, транспонированным
 пересэмплированием (без растяжения времени — как у настоящего сэмплера).
 """
+import json
 import os
 import re
 import subprocess
@@ -182,8 +183,15 @@ class Song:
         wav = Path(out_path).with_suffix(".wav")
         sf.write(wav, mix.T, SR)
         # громкость всей музыки игры — одна: интегральная −18 LUFS, истинный пик −1,5 dBFS
+        # два прохода loudnorm: замер, затем линейная нормализация точно в цель
+        ln = f"loudnorm=I={lufs}:TP=-1.5:LRA=11"
+        r = subprocess.run(["ffmpeg", "-hide_banner", "-i", str(wav), "-af", ln + ":print_format=json",
+                            "-f", "null", "-"], capture_output=True, text=True, check=True)
+        m = json.loads(r.stderr[r.stderr.rindex("{"):r.stderr.rindex("}") + 1])
+        ln += (f":measured_I={m['input_i']}:measured_TP={m['input_tp']}:measured_LRA={m['input_lra']}"
+               f":measured_thresh={m['input_thresh']}:offset={m['target_offset']}:linear=true")
         subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(wav),
-                        "-af", f"loudnorm=I={lufs}:TP=-1.5:LRA=11", "-ar", str(SR),
+                        "-af", ln, "-ar", str(SR),
                         "-c:a", "libvorbis", "-q:a", "5", str(out_path)], check=True)
         wav.unlink()
         return mix.shape[1] / SR
