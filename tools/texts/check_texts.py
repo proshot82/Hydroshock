@@ -190,6 +190,31 @@ IZ_FIRST_PERSON = (r"\b(?:я|мне|меня|мной|мною|мой|моя|м�
 IZ_BANNED = [(r"одновременн", "«одновременно»"), (r"сигнал", "«сигнал»")]
 PA_BANNED = [(r"авари", "«авария»"), (r"нет воды", "«нет воды»")]
 PA_REQUIRED = r"планов\w* улучшени"
+# Латинская буква внутри кириллического слова — шрифтовой и греповый брак (R-03).
+MIXED_SCRIPT = r"[А-Яа-яЁёѢѣІіЪъЬь][A-Za-z]|[A-Za-z][А-Яа-яЁёѢѣІіЪъЬь]"
+# Один предмет — одно имя (ревью 05.10.2026, R-34): второе имя — предупреждение.
+TERMS = [
+    (r"текстильн\w* забот", "«Текстильная забота»: служба зовётся «Влажное очищение»"),
+    (r"wellness", "«wellness»: в игре «зал прекраснодушия»"),
+    (r"(?=.*фарфор)(?=.*кружк)", "«фарфор»: кружка Изольды эмалированная (фарфор на тележке — другой предмет)"),
+    (r"\bков[её]р", "«ковёр»: пол вестибюля — плитка под мрамор"),
+    (r"\bдок\b", "«док»: в игре «приёмный пункт»"),
+    (r"кассет|противовес|сервисн\w* платформ", "снятая механика S3 (кассета, противовес, платформа)"),
+]
+# Мягкая брань считается в ориентир «два пика на акт» вместе с матом (R-34), только предупреждение.
+SOFT_MAT = [r"\bептить", r"твою мать", r"\bсран", r"\bхрен", r"\bч[её]рт", r"\bзадниц", r"\bжоп",
+            r"говн", r"дерьм", r"\bсволоч", r"\bскотин"]
+AUTHOR_LINES_PATH = ROOT / "texts" / "AUTHOR_LINES.json"
+
+
+def author_lines():
+    """Строки автора (дословно и фрагменты): их брань — его решение, в счётчик не идёт."""
+    try:
+        data = json.loads(AUTHOR_LINES_PATH.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return []
+    return [(l.get("slot"), norm_match(l.get("text", ""))) for l in data.get("lines", [])
+            if l.get("kind") in ("verbatim", "part") and l.get("text")]
 MAX_GUEST_LINES = 8
 MAX_MAT = 2
 
@@ -236,11 +261,24 @@ def norm_match(text, keep_case=False):
     return t
 
 
+# Дореформенные буквы к современным (решение автора 06.10.2026, ревью R-03/R-04):
+# замок, записанный по-современному, совпадает с дореформенной строкой документа,
+# латинская «i» в кириллическом слове — с кириллической «і».
+OLD_LETTERS = str.maketrans({"ѣ": "е", "Ѣ": "Е", "і": "и", "І": "И", "i": "и", "I": "И",
+                             "ѳ": "ф", "Ѳ": "Ф", "ѵ": "и", "Ѵ": "И"})
+
+
+def norm_old(text, keep_case=False):
+    """norm_match плюс ѣ→е, і/i→и, ѳ→ф, ѵ→и и снятый конечный ъ."""
+    t = norm_match(text, keep_case).translate(OLD_LETTERS)
+    return re.sub(r"[ъЪ](?![а-яёА-ЯЁ])", "", t)
+
+
 def same_line(text, fixed):
     """Реплика совпадает с фиксированной строкой: буквы и регистр — точно,
-    типографика, ё/е и знак в конце — свободно."""
+    типографика, ё/е, дореформенные буквы и знак в конце — свободно."""
     def core(x):
-        return norm_match(x, keep_case=True).rstrip(" .!…")
+        return norm_old(x, keep_case=True).rstrip(" .!…")
     return core(text) == core(fixed)
 
 
@@ -382,6 +420,8 @@ def check(brief, texts, fmt_errors, act=1):
         warn(None, "порядок слотов отличается от §9 ТЗ")
 
     mat_hits = []
+    soft_hits = []
+    authors = author_lines()
     guest_lines = 0
     pa_texts = []
     for sid, slot in texts.items():
@@ -502,6 +542,9 @@ def check(brief, texts, fmt_errors, act=1):
             for pat in MAT:
                 for m in re.finditer(pat, low):
                     mat_hits.append((sid, sp, m.group(0), ln["line_no"]))
+            if any(re.search(p, low) for p in SOFT_MAT) and \
+                    not any(s == sid and a in low for s, a in authors):
+                soft_hits.append((sid, sp, ln["line_no"]))
 
         texts_all = [l["text"] for l in lines]
         if slot["doc"]:
@@ -516,9 +559,15 @@ def check(brief, texts, fmt_errors, act=1):
                     err(sid, "четвёртая стена — %s (запрет автора): %s" % (name, txt.strip()[:80]))
             if act == 1 and "кефир" in low and sid not in KEFIR_OK:
                 err(sid, "«кефир» вне разрешённых слотов: %s" % txt.strip()[:80])
-            if act >= 2 and re.search(r"[a-z]{2,}", low):
+            if re.search(r"[a-z]{2,}", low):
                 err(sid, "английское слово (решение автора — английских слов в игре нет): %s"
                     % txt.strip()[:80])
+            if re.search(MIXED_SCRIPT, txt):
+                err(sid, "латинская буква внутри кириллического слова (шрифт и греп, R-03): %s"
+                    % txt.strip()[:80])
+            for pat, name in TERMS:
+                if re.search(pat, low):
+                    warn(sid, "второе имя предмета — %s: %s" % (name, txt.strip()[:80]))
             if act == 3:
                 if re.search(r"кухтулх", low) and not (
                         sid in ACT3_NAME_SLOTS or sid.startswith(ACT3_NAME_PREFIXES)):
@@ -593,6 +642,13 @@ def check(brief, texts, fmt_errors, act=1):
     real_mat = [h for h in mat_hits]
     if len(real_mat) > MAX_MAT:
         warn(None, "мат: %d случаев, ориентир %d — ударение, а не фон" % (len(real_mat), MAX_MAT))
+    peaks = {(s, no) for s, _, _, no in real_mat} | {(s, no) for s, _, no in soft_hits}
+    if len(peaks) > MAX_MAT:
+        warn(None, "брань: реплик с матом или мягкой бранью %d (мат %d, мягкая %d), ориентир %d на акт — "
+             "ударение, а не фон" % (len(peaks), len(real_mat), len(soft_hits), MAX_MAT))
+    for sid, sp, no in soft_hits:
+        if sp in NO_MAT_SPEAKERS:
+            warn(sid, "мягкая брань у %s (строка %d) — не её регистр" % (sp, no))
     for sid, sp, word, no in real_mat:
         if sp in NO_MAT_SPEAKERS:
             err(sid, "мат у %s (строка %d): %s — лок канона" % (sp, no, word))
@@ -609,7 +665,7 @@ def check(brief, texts, fmt_errors, act=1):
 
     stats = {"slots": len([s for s in texts if s in brief]),
              "lines": sum(len(t["lines"]) for t in texts.values()),
-             "mat": len(real_mat), "guest_lines": guest_lines}
+             "mat": len(real_mat), "soft": len(soft_hits), "guest_lines": guest_lines}
     return errs, warns, stats
 
 
@@ -627,9 +683,11 @@ ACT2_LINE_RULES = [
 ACT2_DOC_RULES = [
     # (слот, обязательные подстроки, точные строки)
     ("DOC.plate_k", [], ["Старший по воде — тов. К."]),
-    ("DOC.notice_counter", ["[оттиск]"], ["Подача приостановлена до выяснения"]),
-    ("DOC.notice_door", ["[оттиск]"], ["Подача приостановлена до выяснения",
-                                       "Приём — в установленном порядке"]),
+    # замки хозяйки в дореформенной орфографии (решение автора 06.10.2026, R-04);
+    # сравнение через norm_old: ѣ/і/ъ не мешают, реплики людей цитируют по-современному
+    ("DOC.notice_counter", ["[оттиск]"], ["Подача пріостановлена до выясненія"]),
+    ("DOC.notice_door", ["[оттиск]"], ["Подача пріостановлена до выясненія",
+                                       "Пріемъ — въ установленномъ порядкѣ"]),
     ("DOC.exhibit", ["не трогать"], []),
     ("DOC.journal", ["принялъ", "[оттиск]"], []),
     ("DOC.instr1908", [], ["Передъ пускомъ — доложиться старшему по водѣ"]),
@@ -637,7 +695,7 @@ ACT2_DOC_RULES = [
     ("DOC.layoff", ["избыточных ритуалов", "не передавать"], []),
     ("DOC.paint_act", ["табличка", "и. т."], []),
     ("DOC.photo", ["четвергъ"], []),
-    ("DOC.token", ["на одно погруженiе"], []),
+    ("DOC.token", ["на одно погруженіе"], []),   # кириллическая «і» (R-03)
     ("DOC.map_hotel", ["зал прекраснодушия"], []),
     ("DOC.map_1908", ["пріёмный пунктъ", "залъ водолѣченія"], []),
     ("DOC.map_soviet", ["зал оздоровления"], []),
@@ -659,11 +717,11 @@ ACT2_SERVICES = [
 
 def check_act2_fixed(texts, lines_of, require, err):
     for sid, sp, subs in ACT2_LINE_RULES:
-        got = [norm_match(t) for t in lines_of(sid, sp)]
+        got = [norm_old(t) for t in lines_of(sid, sp)]
         for sub in subs:
-            require(sid, any(norm_match(sub) in g for g in got),
+            require(sid, any(norm_old(sub) in g for g in got),
                     "нет «%s» в реплике %s" % (sub, sp))
-    got = [norm_match(t) for t in lines_of("TALK.iz.key", "iz")]
+    got = [norm_old(t) for t in lines_of("TALK.iz.key", "iz")]
     require("TALK.iz.key", any(re.search(r"обслуживающ\w* персонал", g) for g in got),
             "Изольда не называет его обслуживающим персоналом")
     ans_n = len(lines_of("OPEN.requests", "ans"))
@@ -671,9 +729,9 @@ def check_act2_fixed(texts, lines_of, require, err):
         err("OPEN.requests", "у автоответчика больше двух реплик (%d)" % ans_n)
     for sid, subs, exact in ACT2_DOC_RULES:
         doc = [l for l in ((texts.get(sid) or {}).get("doc") or []) if l.strip()]
-        joined = norm_match("\n".join(doc))
+        joined = norm_old("\n".join(doc))
         for sub in subs:
-            require(sid, norm_match(sub) in joined, "в документе нет «%s»" % sub)
+            require(sid, norm_old(sub) in joined, "в документе нет «%s»" % sub)
         for line in exact:
             # нумерация пункта («2. …») строку не портит
             require(sid, any(same_line(re.sub(r"^\s*\d+[.)]\s*", "", l), line) for l in doc),
@@ -686,12 +744,12 @@ def check_act2_fixed(texts, lines_of, require, err):
     for sid, sp, line in ACT2_EXACT_LINES:
         require(sid, any(same_line(t, line) for t in lines_of(sid, sp)),
                 "нет строки автора «%s»" % line)
-    every = [norm_match(l["text"]) for s in texts.values() for l in s["lines"]] + \
-            [norm_match(l) for s in texts.values() for l in (s["doc"] or [])]
+    every = [norm_old(l["text"]) for s in texts.values() for l in s["lines"]] + \
+            [norm_old(l) for s in texts.values() for l in (s["doc"] or [])]
     for name, what, label in ACT2_SERVICES:
         require("OPEN.requests", any(re.search(name, t) and re.search(what, t) for t in every),
                 "нигде не сказано, что такое служба: нужна строка вида %s" % label)
-    end = [norm_match(t) for t in lines_of("END.act2")]
+    end = [norm_old(t) for t in lines_of("END.act2")]
     for pat, name in ACT2_READINGS:
         require("END.act2", any(re.search(pat, g) for g in end),
                 "в итоге акта нет %s: два прочтения звучат вместе" % name)
@@ -723,21 +781,21 @@ ACT3_SIGNED = ["DOC.water_stand"]
 
 def check_act3_fixed(texts, lines_of, require, err):
     for sid, sp, subs in ACT3_LINE_RULES:
-        got = [norm_match(t) for t in lines_of(sid, sp)]
+        got = [norm_old(t) for t in lines_of(sid, sp)]
         for sub in subs:
-            require(sid, any(norm_match(sub) in g for g in got),
+            require(sid, any(norm_old(sub) in g for g in got),
                     "нет «%s» в реплике %s" % (sub, sp))
     require(ACT3_CONFESS_SLOT,
             any(same_line(t, STEPLADDER) for t in lines_of(ACT3_CONFESS_SLOT, "iz")),
             "нет owner-canon «%s» отдельной репликой Изольды" % STEPLADDER)
-    got = [norm_match(t) for t in lines_of("SEQ.ride", "lap")]
+    got = [norm_old(t) for t in lines_of("SEQ.ride", "lap")]
     require("SEQ.ride", any(re.search(r"обслуживающ\w* персонал", g) for g in got),
             "Лапидус не называет себя обслуживающим персоналом")
     for sid, subs, exact in ACT3_DOC_RULES:
         doc = [l for l in ((texts.get(sid) or {}).get("doc") or []) if l.strip()]
-        joined = norm_match("\n".join(doc))
+        joined = norm_old("\n".join(doc))
         for sub in subs:
-            require(sid, norm_match(sub) in joined, "в документе нет «%s»" % sub)
+            require(sid, norm_old(sub) in joined, "в документе нет «%s»" % sub)
         for line in exact:
             require(sid, any(same_line(l, line) for l in doc),
                     "нет строки «%s» отдельной строкой" % line)
@@ -780,23 +838,23 @@ ACT4_SIGNED = ["DOC.menu_new"]
 
 def check_act4_fixed(texts, lines_of, require, err):
     for sid, sp, subs in ACT4_LINE_RULES:
-        got = [norm_match(t) for t in lines_of(sid, sp)]
+        got = [norm_old(t) for t in lines_of(sid, sp)]
         for sub in subs:
-            require(sid, any(norm_match(sub) in g for g in got),
+            require(sid, any(norm_old(sub) in g for g in got),
                     "нет «%s» в реплике %s" % (sub, sp))
     for sid, subs in ACT4_ANY_RULES:
-        got = [norm_match(t) for t in lines_of(sid)]
+        got = [norm_old(t) for t in lines_of(sid)]
         for sub in subs:
-            require(sid, any(norm_match(sub) in g for g in got), "нет «%s» в слоте" % sub)
+            require(sid, any(norm_old(sub) in g for g in got), "нет «%s» в слоте" % sub)
     looks = [l for l in texts.get(ACT4_LOOK_SLOT, {}).get("lines", [])
              if l["speaker"] == "kuh" and l["emotion"] == "kuh_looks"]
     require(ACT4_LOOK_SLOT, bool(looks),
             "нет первого взгляда Кухтулху: реплика kuh с эмоцией kuh_looks")
     for sid, subs, exact in ACT4_DOC_RULES:
         doc = [l for l in ((texts.get(sid) or {}).get("doc") or []) if l.strip()]
-        joined = norm_match("\n".join(doc))
+        joined = norm_old("\n".join(doc))
         for sub in subs:
-            require(sid, norm_match(sub) in joined, "в документе нет «%s»" % sub)
+            require(sid, norm_old(sub) in joined, "в документе нет «%s»" % sub)
         for line in exact:
             require(sid, any(same_line(l, line) for l in doc),
                     "нет строки «%s» отдельной строкой" % line)
