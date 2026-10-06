@@ -1,0 +1,115 @@
+<title>Музыка Гидроудара</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Old+Standard+TT:wght@400;700&family=PT+Sans:wght@400;700&display=swap">
+<style>
+/* Одна колонка карточек-тем, как листы приёмки в конторе водолечебницы: латунь по мокрому кафелю */
+:root{
+  --bg:#eef1ef; --paper:#fbfcfa; --fg:#1f2a28; --muted:#5d6b67; --line:#cdd6d2;
+  --brass:#9a6b1f; --brass-soft:#f3e6cc; --ok:#2f7a4f; --ok-soft:#dcefe3;
+  --display:"Old Standard TT",Georgia,"Times New Roman",serif;
+  --body:"PT Sans","Segoe UI",Roboto,Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#141a19; --paper:#1c2423; --fg:#e7ece9; --muted:#9aa8a4; --line:#2f3b39;
+  --brass:#d9a54a; --brass-soft:#3a2f1c; --ok:#6cc391; --ok-soft:#1f3a2b; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141a19; --paper:#1c2423; --fg:#e7ece9; --muted:#9aa8a4; --line:#2f3b39;
+  --brass:#d9a54a; --brass-soft:#3a2f1c; --ok:#6cc391; --ok-soft:#1f3a2b; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:16px/1.5 var(--body);padding:0 16px}
+main{max-width:760px;margin:0 auto;padding-block:32px 48px;display:grid;gap:20px}
+h1{font:700 2rem/1.15 var(--display);margin:0;text-wrap:balance}
+.lead{margin:0;color:var(--muted);max-width:62ch}
+.status{font-size:.9rem;color:var(--muted)}
+section.theme{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:18px;display:grid;gap:12px}
+.head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px}
+.head h2{font:700 1.35rem/1.2 var(--display);margin:0}
+.where{color:var(--muted);font-size:.95rem}
+code{font-size:.85em;color:var(--brass)}
+.vars{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px}
+.var{border:1px solid var(--line);border-radius:4px;padding:10px;display:grid;gap:8px;min-width:0}
+.var.picked{border-color:var(--ok);background:var(--ok-soft)}
+.var b{font-weight:700}
+audio{width:100%}
+.choices{display:flex;flex-wrap:wrap;gap:8px}
+.choices button{font:inherit;font-size:.95rem;padding:6px 12px;border-radius:4px;border:1px solid var(--line);background:var(--bg);color:var(--fg);cursor:pointer}
+.choices button[aria-pressed="true"]{background:var(--brass);border-color:var(--brass);color:var(--paper)}
+.choices button:focus-visible,textarea:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+label{font-size:.9rem;color:var(--muted)}
+textarea{width:100%;box-sizing:border-box;min-height:56px;font:inherit;padding:8px;border:1px solid var(--line);border-radius:4px;background:var(--bg);color:var(--fg)}
+.saved{font-size:.85rem;color:var(--ok);min-height:1.2em}
+.prompt{font-size:.8rem;color:var(--muted);margin:0}
+</style>
+
+<main>
+  <header style="display:grid;gap:8px">
+    <h1>Музыка «Гидроудара»: первые варианты</h1>
+    <p class="lead">Пять тем, по два варианта по 90 секунд, ElevenLabs Music. Для каждой темы выберите вариант или «Ни один» и, если нужно, напишите, что поменять. Выбор сохраняется сразу, я прочитаю его отсюда. Громкость пока сырая; петлю и −18 LUFS сделаю после выбора.</p>
+    <div class="status" id="status">Подключаю сохранение…</div>
+  </header>
+  <div id="list" style="display:grid;gap:20px"></div>
+</main>
+
+<script>
+const THEMES=[
+  ["bgm_title","Титул","титульный экран, 40–60 с","cozy whimsical 1930s jazz, warm upright piano, clarinet lead, muted trumpet, upright bass, brushed drums, gentle swing"],
+  ["bgm_hotel","Отель","W1–W2, главная тема","cozy lounge swing, upright piano, clarinet and flute melody, soft tuba, brushed snare, washboard"],
+  ["bgm_service","Служебные коридоры","W3–W4","lazy cozy blues, bassoon and clarinet, pizzicato bass, soft dripping percussion, brushes"],
+  ["bgm_below","Внизу, 1908","W5–W6","slow warm 1908 parlour music, old gramophone sound, low clarinets, tuba, harp, gentle water ambience"],
+  ["bgm_epilogue","Эпилог","финал и эпилоги","cheerful cozy jazz finale, full small band, piano, clarinet, trumpet, upright bass, brushed drums"]
+];
+const picks={}; let db=null; const timers={};
+const list=document.getElementById("list"), status=document.getElementById("status");
+
+function render(){
+  list.textContent="";
+  for(const [id,name,where,prompt] of THEMES){
+    const p=picks[id]||{};
+    const s=document.createElement("section"); s.className="theme";
+    s.innerHTML=`<div class="head"><h2></h2><span class="where"></span><code></code></div>
+      <div class="vars"></div><div class="choices" role="group"></div>
+      <div style="display:grid;gap:4px"><label for="note_${id}">Что поменять</label><textarea id="note_${id}" placeholder="например: медленнее, без трубы"></textarea><div class="saved"></div></div>
+      <p class="prompt"></p>`;
+    s.querySelector("h2").textContent=name; s.querySelector(".where").textContent=where; s.querySelector("code").textContent=id;
+    s.querySelector(".prompt").textContent="Промпт: "+prompt;
+    const vars=s.querySelector(".vars");
+    for(const v of ["v1","v2"]){
+      const d=document.createElement("div"); d.className="var"+(p.choice===v?" picked":"");
+      d.innerHTML=`<b>Вариант ${v.slice(1)}</b><audio controls preload="none" src="audio/${id}_${v}.mp3"></audio>`;
+      vars.appendChild(d);
+    }
+    const ch=s.querySelector(".choices");
+    for(const [val,lbl] of [["v1","Беру вариант 1"],["v2","Беру вариант 2"],["none","Ни один"]]){
+      const b=document.createElement("button"); b.type="button"; b.textContent=lbl;
+      b.setAttribute("aria-pressed",String(p.choice===val));
+      b.onclick=()=>save(id,{choice:val}); ch.appendChild(b);
+    }
+    const ta=s.querySelector("textarea"); ta.value=p.note||"";
+    ta.oninput=()=>{clearTimeout(timers[id]); timers[id]=setTimeout(()=>save(id,{note:ta.value},true),800)};
+    list.appendChild(s);
+  }
+  // играть один трек за раз
+  list.querySelectorAll("audio").forEach(a=>a.addEventListener("play",()=>list.querySelectorAll("audio").forEach(o=>{if(o!==a)o.pause()})));
+}
+
+async function save(id,patch,quiet){
+  picks[id]={...(picks[id]||{}),...patch};
+  if(!quiet) render();
+  if(!db){status.textContent="Сохранение недоступно: выбор останется только на этом экране. Напишите его в чат.";return}
+  try{
+    await db.doc("picks/"+id).set({choice:picks[id].choice||"",note:picks[id].note||"",at:new Date().toISOString()});
+    const el=document.querySelector(`#note_${id}`)?.parentElement.querySelector(".saved");
+    if(el) el.textContent="Сохранено";
+  }catch(e){status.textContent="Не сохранилось ("+(e.code||e.message)+"). Попробуйте ещё раз или напишите выбор в чат."}
+}
+
+render();
+(async()=>{
+  try{ db=await window.claude?.use("db"); }catch(e){ db=null }
+  if(!db){status.textContent="Сохранение недоступно: выбор останется только на этом экране. Напишите его в чат.";return}
+  status.textContent="Выбор сохраняется автоматически.";
+  try{
+    const snap=await db.collection("picks").get();
+    for(const d of snap.docs){const x=d.data(); picks[d.id]={choice:x.choice||undefined,note:x.note||""}}
+    render();
+  }catch(e){status.textContent="Не удалось загрузить прежний выбор ("+(e.code||e.message)+")."}
+})();
+</script>
