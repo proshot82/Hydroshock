@@ -101,3 +101,8 @@
 {"date": "2026-10-06", "kind": "accept", "target": "port_kuh_nostalgic.png", "job_id": "cbeb5785-28d1-49ea-bf57-bdfebef4e005", "note": "принято автором; основа А (~65)"}
 {"date": "2026-10-06", "kind": "accept", "target": "port_kuh_satisfied.png", "job_id": "47f8d1ee-50a4-4614-bc41-2bf1a5681516", "note": "принято автором; основа А (~65)"}
 {"date": "2026-10-06", "kind": "accept", "target": "port_kuh_looks.png", "job_id": "855d3ec9-aca5-4af7-b270-5d974a191f4d", "note": "принято автором; основа А (~65)"}
+{"date": "2026-10-06", "kind": "fetch", "target": "room_w5_a.png", "job_id": "50677495-f8a9-4fa8-8631-a9424175009e", "raw_size": "2688x1520", "size": "1920x1080", "mode": "RGB", "lum_pct": 48.3, "note": "пакет 3, вариант А"}
+{"date": "2026-10-06", "kind": "fetch", "target": "room_w5_b.png", "job_id": "be2e8938-35bb-4cfd-aa6a-d8e59e2d2063", "raw_size": "2688x1520", "size": "1920x1080", "mode": "RGB", "lum_pct": 46.0, "note": "пакет 3, вариант Б"}
+{"date": "2026-10-06", "kind": "fetch", "target": "room_w5_under_a.png", "job_id": "daa0393f-9c4a-4b3a-8398-c9efd867d2f2", "raw_size": "2688x1520", "size": "1920x1080", "mode": "RGB", "lum_pct": 42.4, "note": "пакет 3"}
+{"date": "2026-10-06", "kind": "fetch", "target": "room_w6_a.png", "job_id": "ac3620d0-f298-4bde-ba5b-c3e6d7af1245", "raw_size": "2688x1520", "size": "1920x1080", "mode": "RGB", "lum_pct": 36.2, "note": "пакет 3, вариант А"}
+{"date": "2026-10-06", "kind": "fetch", "target": "room_w6_b.png", "job_id": "a3ff9f78-c96c-42e3-8fdc-10ed0a77dbd5", "raw_size": "2688x1520", "size": "1920x1080", "mode": "RGB", "lum_pct": 37.5, "note": "пакет 3, вариант Б"}
