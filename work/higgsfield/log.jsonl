@@ -65,3 +65,7 @@
 {"date": "2026-10-06", "kind": "fetch", "target": "port_iz_flustered.png", "job_id": "65ff6d24-5344-4217-a6ac-1949e727e88e", "raw_size": "1024x1024", "size": "512x512", "mode": "RGB", "lum_pct": 42.9, "note": "Изольда v3 от основы 1"}
 {"date": "2026-10-06", "kind": "fetch", "target": "port_iz_looks.png", "job_id": "dfce04db-0522-416b-8312-7a08384e5b74", "raw_size": "1024x1024", "size": "512x512", "mode": "RGB", "lum_pct": 41.7, "note": "Изольда v3 от основы 1"}
 {"date": "2026-10-06", "kind": "fetch", "target": "port_iz_confess.png", "job_id": "b45363fb-7aff-478f-90cb-461a46ae3930", "raw_size": "1024x1024", "size": "512x512", "mode": "RGB", "lum_pct": 41.6, "note": "Изольда v3"}
+{"date": "2026-10-06", "kind": "fetch", "target": "room_w1.png", "job_id": "08110933-487f-40e4-a401-5ca5baa440b1", "raw_size": "2688x1520", "size": "1920x1080", "mode": "RGB", "lum_pct": 32.2, "note": "пакет 2"}
+{"date": "2026-10-06", "kind": "fetch", "target": "zoom_z01.png", "job_id": "1bf9cafd-cf73-4f4a-a9d2-117ce6049ef2", "raw_size": "2688x1520", "size": "1920x1080", "mode": "RGB", "lum_pct": 48.9, "note": "пакет 2"}
+{"date": "2026-10-06", "kind": "fetch", "target": "zoom_z02.png", "job_id": "45c97d88-7b93-4d26-8602-af04461a5054", "raw_size": "2688x1520", "size": "1920x1080", "mode": "RGB", "lum_pct": 31.9, "note": "пакет 2"}
+{"date": "2026-10-06", "kind": "fetch", "target": "zoom_z03.png", "job_id": "69089774-5ee2-46a9-a4fa-ec79e2c8c031", "raw_size": "2688x1520", "size": "1920x1080", "mode": "RGB", "lum_pct": 38.7, "note": "пакет 2"}
