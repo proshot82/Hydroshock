@@ -148,10 +148,9 @@ class Song:
         else:
             nz = np.where(np.abs(mix).max(axis=0) > 1e-4)[0]
             mix = mix[:, : (nz[-1] + 1 if len(nz) else self.length)]
-        if phone:                               # телефонная линия: 300–3400 Гц, моно, лёгкий клип
-            sos = butter(4, [300, 3400], btype="band", fs=SR, output="sos")
+        if phone:                               # маленький динамик трубки: срез низа и верха, моно, без искажений
+            sos = butter(2, [220, 5500], btype="band", fs=SR, output="sos")
             m = sosfilt(sos, mix.mean(axis=0))
-            m = np.tanh(m * 1.6 / max(1e-9, np.abs(m).max()))
             mix = np.vstack([m, m])
         peak = np.abs(mix).max()
         mix = mix / peak * master if peak else mix
@@ -170,3 +169,45 @@ def chord(root, kind):
     shapes = {"maj7": (0, 4, 7, 11), "m7": (0, 3, 7, 10), "7": (0, 4, 7, 10), "6": (0, 4, 7, 9),
               "m6": (0, 3, 7, 9), "dim": (0, 3, 6, 9), "maj": (0, 4, 7), "m": (0, 3, 7)}
     return [root + i for i in shapes[kind]]
+
+
+class Piano(Instrument):
+    """Upright Piano VSCO: имя файла — номер строки в MappingChart.txt (000=21 …), слои dyn1–dyn3."""
+
+    def __init__(self, layer="dyn2", gain=1.0, release=0.25):
+        d = LIB / "Keys" / "Upright Piano"
+        mapping = {}
+        for line in (d / "MappingChart.txt").read_text(encoding="utf-8", errors="ignore").splitlines():
+            m = re.match(r"^(\d{3})=(\d+)", line.strip())
+            if m:
+                mapping[m.group(1)] = int(m.group(2))
+        self.samples, self._cache, self._rr = {}, {}, 0
+        self.gain, self.release, self.attack_trim, self.octave_shift = gain, release, 0.0, 0
+        for p in sorted(d.glob(f"Player_{layer}_*.wav")):
+            key = mapping.get(p.stem[-3:])
+            if key is not None:
+                self.samples.setdefault(key, []).append(p)
+        if not self.samples:
+            raise ValueError("нет сэмплов фортепиано")
+
+
+class Perc:
+    """Перкуссия без высоты: набор файлов, круговая смена (round robin)."""
+
+    def __init__(self, files, gain=1.0, length=0.6):
+        self.files = [LIB / f for f in files]
+        self.gain, self.length, self._rr, self._cache = gain, length, 0, {}
+
+    def note(self, midi, seconds, vel=0.8):
+        self._rr += 1
+        p = self.files[self._rr % len(self.files)]
+        if p not in self._cache:
+            x, sr = sf.read(p, always_2d=True)
+            x = x.mean(axis=1)
+            if sr != SR:
+                x = np.interp(np.arange(0, len(x), sr / SR), np.arange(len(x)), x)
+            self._cache[p] = x[: int(self.length * SR)].astype(np.float32)
+        y = self._cache[p].copy()
+        f = min(len(y), int(0.03 * SR))
+        y[-f:] *= np.linspace(1, 0, f)
+        return y * vel * self.gain
