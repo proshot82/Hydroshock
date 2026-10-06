@@ -94,3 +94,10 @@
 {"date": "2026-10-06", "kind": "fetch", "target": "port_kuh_nostalgic.png", "job_id": "cbeb5785-28d1-49ea-bf57-bdfebef4e005", "raw_size": "1024x1024", "size": "1024x1024", "mode": "RGB", "lum_pct": 22.7, "note": "Кухтулху эмоция nostalgic от основы А (~65)"}
 {"date": "2026-10-06", "kind": "fetch", "target": "port_kuh_satisfied.png", "job_id": "47f8d1ee-50a4-4614-bc41-2bf1a5681516", "raw_size": "1024x1024", "size": "1024x1024", "mode": "RGB", "lum_pct": 24.4, "note": "Кухтулху эмоция satisfied от основы А (~65)"}
 {"date": "2026-10-06", "kind": "fetch", "target": "port_kuh_looks.png", "job_id": "855d3ec9-aca5-4af7-b270-5d974a191f4d", "raw_size": "1024x1024", "size": "1024x1024", "mode": "RGB", "lum_pct": 24.2, "note": "Кухтулху эмоция looks от основы А (~65)"}
+{"date": "2026-10-06", "kind": "accept", "target": "port_kuh_formal.png", "job_id": "38e423c1-fe9b-4829-9a17-2bdbf750a6c9", "note": "принято автором; основа А (~65)"}
+{"date": "2026-10-06", "kind": "accept", "target": "port_kuh_displeased.png", "job_id": "a56f12cb-36a1-4f04-ad7f-fa36b8140d05", "note": "принято автором; основа А (~65)"}
+{"date": "2026-10-06", "kind": "accept", "target": "port_kuh_dismissive.png", "job_id": "91679392-9335-4f88-acb8-9f6df6ddb94c", "note": "принято автором; основа А (~65)"}
+{"date": "2026-10-06", "kind": "accept", "target": "port_kuh_ancient.png", "job_id": "cefdfff6-347e-4a3b-bf9f-9ff42b742786", "note": "принято автором; основа А (~65)"}
+{"date": "2026-10-06", "kind": "accept", "target": "port_kuh_nostalgic.png", "job_id": "cbeb5785-28d1-49ea-bf57-bdfebef4e005", "note": "принято автором; основа А (~65)"}
+{"date": "2026-10-06", "kind": "accept", "target": "port_kuh_satisfied.png", "job_id": "47f8d1ee-50a4-4614-bc41-2bf1a5681516", "note": "принято автором; основа А (~65)"}
+{"date": "2026-10-06", "kind": "accept", "target": "port_kuh_looks.png", "job_id": "855d3ec9-aca5-4af7-b270-5d974a191f4d", "note": "принято автором; основа А (~65)"}
