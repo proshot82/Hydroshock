@@ -57,7 +57,7 @@ CLASSES = [
     ("audio", re.compile(r"^(sfx|amb|bgm|mus|sting|blip|ui)_[a-z0-9_]+\.ogg$"), None),
     ("font", re.compile(r"^[A-Za-z0-9\-]+\.ttf$"), None),
 ]
-UI_SIZES = {"bg_title.png": "1920×1080", "logo_title.png": "1200×420", "icon_512.png": "512×512"}
+UI_SIZES = {"bg_title.png": "1920×1080", "logo_title.png": "1200×600", "icon_512.png": "512×512"}
 
 
 def classify(name):

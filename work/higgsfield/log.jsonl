@@ -1,3 +1,5 @@
 {"date": "2026-10-06", "kind": "upload", "file": "proshot82/bj2 assets/gfx/zooms/zoom_lap_drawer.png", "media_id": "d0de5643-fb26-4a57-85ab-434520c319a1", "role": "эталон стиля BJ2"}
 {"date": "2026-10-06", "kind": "upload", "file": "proshot82/bj2 assets/gfx/rooms/room_office_day.png", "media_id": "99817b2d-f1c0-4d72-8ecd-8a1de65d3707", "role": "эталон стиля BJ2"}
 {"date": "2026-10-06", "kind": "generate", "target": "zoom_z07.png (проба цепочки)", "model": "gpt_image_2_5", "quality": "low", "resolution": "1k", "aspect_ratio": "16:9", "job_id": "bc87de82-33d3-4952-8438-e605a9d35e94", "credits": 0.25, "result": "1344x752, яркость 77.5 %, не принят — проба"}
+{"date": "2026-10-06", "kind": "fetch", "target": "zoom_z07__flare.png", "job_id": "2921a834-5245-421b-9d5f-ab3e22270bab", "raw_size": "2688x1520", "size": "1920x1080", "mode": "RGB", "lum_pct": 75.7, "note": "эталон стиля, high 2k, flare"}
+{"date": "2026-10-06", "kind": "fetch", "target": "zoom_z07__sunburst.png", "job_id": "4ed84adf-379d-4db5-9969-56d8f1168eab", "raw_size": "2688x1520", "size": "1920x1080", "mode": "RGB", "lum_pct": 70.3, "note": "эталон стиля, high 2k, sunburst"}
