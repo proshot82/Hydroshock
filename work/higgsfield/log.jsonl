@@ -56,3 +56,6 @@
 {"date": "2026-10-06", "kind": "fetch", "target": "port_lap_soap_ashamed_cap.png", "job_id": "f5306801-a267-4870-a712-a4269c9552d6", "raw_size": "1024x1024", "size": "512x512", "mode": "RGB", "lum_pct": 63.9, "note": "пакет 1, пена"}
 {"date": "2026-10-06", "kind": "generate", "target": "port_lap_soap_smug_foam.png", "model": "gpt_image_2_5", "job_id": "f3fe8449-c50e-424c-a20b-ffcecb94dce0", "note": "в работе"}
 {"date": "2026-10-06", "kind": "fetch", "target": "port_lap_soap_smug_foam.png", "job_id": "f3fe8449-c50e-424c-a20b-ffcecb94dce0", "raw_size": "1024x1024", "size": "512x512", "mode": "RGB", "lum_pct": 51.2, "note": "пакет 1, пена"}
+{"date": "2026-10-06", "kind": "fetch", "target": "port_iz_formal__U1.png", "job_id": "d6792a3b-bbca-47c5-9645-6056944068f7", "raw_size": "1024x1024", "size": "512x512", "mode": "RGB", "lum_pct": 42.9, "note": "Изольда некрасивее"}
+{"date": "2026-10-06", "kind": "fetch", "target": "port_iz_formal__U2.png", "job_id": "dc668eef-3902-488d-91a6-a12fe5a539a1", "raw_size": "1024x1024", "size": "512x512", "mode": "RGB", "lum_pct": 43.4, "note": "Изольда некрасивее"}
+{"date": "2026-10-06", "kind": "fetch", "target": "port_iz_formal__U3.png", "job_id": "6f14151f-7385-43ae-9159-7d97dcea58b8", "raw_size": "1024x1024", "size": "512x512", "mode": "RGB", "lum_pct": 44.5, "note": "Изольда некрасивее"}
