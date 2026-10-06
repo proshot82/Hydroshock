@@ -746,6 +746,18 @@
 | `bgm_epilogue.ogg` | 90–120 с | эпилоги: главная тема отеля полным составом, наконец сыгранная чисто и весело |
 | `mus_hold.ogg` | 20–30 с, петля | музыка ожидания автоответчика (`Z02.phone.call`, `Z02.phone.call.repeat`): бодрая гостиничная босса-нова 132 уд/мин — флейта, фортепиано, контрабас пиццикато, клавесы, шейкер — через мягкую «трубку» 220–5500 Гц; принята автором 06.10.2026; обязательна по текстам; партитура `tools/music/scores/mus_hold.py` |
 
+### 9.3а. Темы через Suno (решение автора 06.10.2026)
+
+Звучание сэмплера автора не устроило («лажа»); основные темы генерируются в **Suno через MCP-коннектор AceDataCloud** (решение автора). Риск, доложенный автору до решения: у Suno нет открытого официального API, коннектор — сторонняя обёртка; права на результат по условиям Suno не подтверждены. Автор решение принял. `mus_hold` остаётся из сэмплера (принят). Порядок: Claude генерирует по 2–4 варианта на тему → лист прослушивания → выбор автора → Claude режет петлю (шов по нулю и такту, кроссфейд), громкость −18 LUFS / −1,5 dBFS, OGG q5 44,1 кГц. Все темы — **инструментал, без вокала**; характер — уютно и приятно, ориентир — классические юмористические квесты (The Neverhood), без нарочито «смешных» гармоний.
+
+| Тема | Стиль для Suno (поле style, по-английски — так модель понимает точнее) |
+|---|---|
+| bgm_title | instrumental, cozy whimsical 1930s jazz, adventure game title theme, warm upright piano, clarinet lead, muted trumpet, upright bass, brushed drums, gentle swing, nostalgic hotel charm, no vocals |
+| bgm_hotel | instrumental, cozy lounge swing, quirky point-and-click adventure soundtrack, upright piano, clarinet and flute melody, soft tuba, brushed snare, washboard, warm and friendly, medium tempo, no vocals |
+| bgm_service | instrumental, lazy cozy blues, back corridors of an old hotel, bassoon and clarinet, pizzicato bass, soft dripping percussion, brushes, playful and calm, no vocals |
+| bgm_below | instrumental, slow warm 1908 parlour music, old gramophone sound, low clarinets, tuba, harp, gentle water ambience, mysterious but cozy, no vocals |
+| bgm_epilogue | instrumental, cheerful cozy jazz finale, full small band, piano, clarinet, trumpet, upright bass, brushed drums, warm happy ending, adventure game credits, no vocals |
+
 ### 9.4. Стингеры и голосовые «блипы» (печать текста)
 
 | Файл | Длит. | Что |
@@ -816,7 +828,7 @@
 
 - **Яркость в DESIGN_BIBLE §9** («≥ 45 %») расходится с решением п. 11 — править ли Библию (на «≥ 30 %, не темнее принятых кадров»)?
 - **Кухтулху** (§5.3) — основа выбрана (вариант 5); приёмка 7 эмоций по листу `work/higgsfield/sheet_kuh_emotions.png`.
-- **Музыка** — автор недоволен звучанием сэмплера («лажа»); выбор внешнего сервиса генерации музыки (§9.3).
+- **Музыка** — Suno через MCP AceDataCloud (§9.3а): ждём подключения коннектора автором.
 
 ## 14. Конвейер Higgsfield (решение автора 06.10.2026)
 
