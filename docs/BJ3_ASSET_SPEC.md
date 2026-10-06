@@ -767,7 +767,7 @@
 
 | Тема | Промпт для ElevenLabs (по-английски — так модель понимает точнее) |
 |---|---|
-| bgm_title | instrumental, cozy whimsical 1930s jazz, adventure game title theme, warm upright piano, clarinet lead, muted trumpet, upright bass, brushed drums, gentle swing, nostalgic hotel charm, no vocals |
+| bgm_title | instrumental, playful spooky mystery, humorous and mysterious adventure game title theme, quirky creepy-cute jazz, brisk swing tempo around 140 bpm, full small band: clarinet lead, bassoon, tuba, muted trumpet, pizzicato strings, celesta and vibraphone, honky-tonk piano, upright bass, brushed drums, woodblock, sneaky minor key with warm major turns, cozy not scary, The Neverhood vibe, no vocals (второй круг по замечанию автора 06.10.2026: «юмористическая загадочность и spookiness, темп побыстрее, инструментов побольше») |
 | bgm_hotel | instrumental, cozy lounge swing, quirky point-and-click adventure soundtrack, upright piano, clarinet and flute melody, soft tuba, brushed snare, washboard, warm and friendly, medium tempo, no vocals |
 | bgm_service | instrumental, lazy cozy blues, back corridors of an old hotel, bassoon and clarinet, pizzicato bass, soft dripping percussion, brushes, playful and calm, no vocals |
 | bgm_below | instrumental, slow warm 1908 parlour music, old gramophone sound, low clarinets, tuba, harp, gentle water ambience, mysterious but cozy, no vocals |
@@ -841,7 +841,7 @@
 
 **Открыто:**
 
-- **Музыка** — ElevenLabs Music (§9.3а): тариф Creator оплачен, игра для себя (условие «Studio Games» не мешает). По 2 варианта пяти тем ждут выбора автора.
+- **Музыка** — ElevenLabs Music (§9.3а): выбор автора 06.10.2026 — `bgm_hotel` v1, `bgm_service` v1, `bgm_below` v1, `bgm_epilogue` v2; петли собраны (`tools/music/make_loop.py`, 77–84 с — короче нормы §9.3 80–120 с у `bgm_below` и `bgm_epilogue`, т. к. исходник 90 с), ждут проверки шва автором. Титул отклонён — второй круг (v3–v5, новый промпт) ждёт выбора.
 
 ## 14. Конвейер Higgsfield (решение автора 06.10.2026)
 
