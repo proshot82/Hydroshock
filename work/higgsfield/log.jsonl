@@ -55,3 +55,4 @@
 {"date": "2026-10-06", "kind": "fetch", "target": "port_lap_soap_ashamed_foam.png", "job_id": "6cc1b44c-4747-40a6-8cb0-74809785c9e2", "raw_size": "1024x1024", "size": "512x512", "mode": "RGB", "lum_pct": 54.6, "note": "пакет 1, пена"}
 {"date": "2026-10-06", "kind": "fetch", "target": "port_lap_soap_ashamed_cap.png", "job_id": "f5306801-a267-4870-a712-a4269c9552d6", "raw_size": "1024x1024", "size": "512x512", "mode": "RGB", "lum_pct": 63.9, "note": "пакет 1, пена"}
 {"date": "2026-10-06", "kind": "generate", "target": "port_lap_soap_smug_foam.png", "model": "gpt_image_2_5", "job_id": "f3fe8449-c50e-424c-a20b-ffcecb94dce0", "note": "в работе"}
+{"date": "2026-10-06", "kind": "fetch", "target": "port_lap_soap_smug_foam.png", "job_id": "f3fe8449-c50e-424c-a20b-ffcecb94dce0", "raw_size": "1024x1024", "size": "512x512", "mode": "RGB", "lum_pct": 51.2, "note": "пакет 1, пена"}
