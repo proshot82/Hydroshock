@@ -126,12 +126,14 @@ th { color: var(--muted); font-weight: 700; }
 td.n { text-align: right; }
 .confirm { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 @media (prefers-reduced-motion: no-preference) { .meter > span { transition: width .3s ease; } }
+.same { margin: 28px 0 8px; color: var(--muted); }
+.same summary { cursor: pointer; font-weight: 600; }
 </style>
 
 <div class="wrap">
   <header class="top">
     <h1>Слепое сравнение Акта __ACT__</h1>
-    <p class="lede">«Латунный янычар: Гидроудар», Акт __ACT__ «__TITLE__». Две версии написаны по одному ТЗ: одна — Claude, другая — другой нейросетью. В каждом слоте варианты стоят в случайном порядке и без подписей. Выберите, какой смешнее при соблюдении правил, либо «Ничья» или «Оба слабые». В комментарии можно записать, что взять в итоговую версию.</p>
+    <p class="lede">«Латунный янычар: Гидроудар», Акт __ACT__ «__TITLE__». __LEDE__ В каждом слоте варианты стоят в случайном порядке и без подписей. Выберите, какой смешнее при соблюдении правил, либо «Ничья» или «Оба слабые». В комментарии можно записать, что взять в итоговую версию.</p>
     <p class="note" id="rules-note"></p>
     <div id="store-banner" class="banner" hidden></div>
     <div id="recover" class="recover" hidden>
@@ -179,6 +181,8 @@ td.n { text-align: right; }
   "use strict";
   var DATA = JSON.parse(document.getElementById("cmp-data").textContent);
   var SLOTS = DATA.slots;
+  var SAME = DATA.same || [];
+  var NAMES = DATA.names || ["Claude", "другая нейросеть"];
   var STORE_KEY = "hydroshock_act" + DATA.act + "_";
   var raw = atob(DATA.k), CI = [];
   for (var i = 0; i < raw.length; i++) CI.push(raw.charCodeAt(i) ^ 0x5A); // индекс варианта Claude
@@ -215,6 +219,7 @@ td.n { text-align: right; }
   document.getElementById("rules-note").textContent =
     "Кавычки, тире и многоточия приведены к одному виду, буква «ё» заменена на «е» в обеих версиях — чтобы авторство не угадывалось по оформлению. " +
     (autoSlots.length ? autoSlots.length + " слот(а) в голосовании не участвуют: по правилам ТЗ они решены автоматически и откроются вместе со счётом. " : "") +
+    (SAME.length ? SAME.length + " слот(ов), где обе версии совпадают буква в букву, в сравнении не показаны: список в конце страницы. " : "") +
     "Голоса сохраняются сами.";
 
   function el(tag, cls, text) {
@@ -275,7 +280,7 @@ td.n { text-align: right; }
     art.appendChild(ctx);
     if (s.auto.length) {
       var why = s.auto.map(function (a) {
-        return (a.who === "claude" ? "версия Claude" : "другая версия") + ": " + a.why;
+        return "версия «" + (a.who === "claude" ? NAMES[0] : NAMES[1]) + "»: " + a.why;
       }).join(" · ");
       art.appendChild(el("div", "banner", "Решено по правилам ТЗ, в счёт идёт автоматически. Нарушение — " + why));
     }
@@ -330,6 +335,12 @@ td.n { text-align: right; }
     if (!shown) card.hidden = true;
     sec.appendChild(card);
   });
+  if (SAME.length) {
+    var det = el("details", "same");
+    det.appendChild(el("summary", null, "Без изменений: " + SAME.length + " слот(ов) — обе версии совпадают, в сравнении не показаны"));
+    det.appendChild(el("p", "note", SAME.map(function (x) { return x.id; }).join(", ")));
+    main.appendChild(det);
+  }
 
   function newer(a, b) {
     if (!a) return b || null;
@@ -358,8 +369,8 @@ td.n { text-align: right; }
     c.art.classList.toggle("done", !!v.pick);
     if (document.activeElement !== c.com) c.com.value = v.comment || "";
     var claudeIsA = CI[c.idx] === 0;
-    c.a.who.textContent = state.revealed ? " · " + (claudeIsA ? "Claude" : "другая нейросеть") : "";
-    c.b.who.textContent = state.revealed ? " · " + (claudeIsA ? "другая нейросеть" : "Claude") : "";
+    c.a.who.textContent = state.revealed ? " · " + (claudeIsA ? NAMES[0] : NAMES[1]) : "";
+    c.b.who.textContent = state.revealed ? " · " + (claudeIsA ? NAMES[1] : NAMES[0]) : "";
     c.art.hidden = !!((state.onlyStar && !s.star) || (state.hideDone && !!v.pick) || (s.auto.length && !state.revealed));
   }
 
@@ -528,17 +539,17 @@ td.n { text-align: right; }
       tiles.appendChild(t);
     }
     var c = all.claude + autoC, o = all.other + autoO;
-    tile(c, "Claude" + (autoC ? " (из них по правилам ТЗ: " + autoC + ")" : ""), c > o);
-    tile(o, "Другая нейросеть" + (autoO ? " (по правилам ТЗ: " + autoO + ")" : ""), o > c);
+    tile(c, NAMES[0] + (autoC ? " (из них по правилам ТЗ: " + autoC + ")" : ""), c > o);
+    tile(o, NAMES[1] + (autoO ? " (по правилам ТЗ: " + autoO + ")" : ""), o > c);
     tile(all.tie, "Ничья", false);
     tile(all.weak, "Оба слабые", false);
     tile(all.none, "Без оценки", false);
     box.appendChild(tiles);
-    box.appendChild(el("p", "note", "Ключевые слоты ★: Claude " + stars.claude + ", другая нейросеть " + stars.other +
+    box.appendChild(el("p", "note", "Ключевые слоты ★: " + NAMES[0] + " " + stars.claude + ", " + NAMES[1] + " " + stars.other +
       ", ничья " + stars.tie + ", оба слабые " + stars.weak + ", без оценки " + stars.none + "."));
     var wrap = el("div", "tablewrap"), tb = el("table");
     var hr = el("tr");
-    ["Раздел", "Claude", "Другая", "Ничья", "Оба слабые", "Без оценки"].forEach(function (h) { hr.appendChild(el("th", null, h)); });
+    ["Раздел", NAMES[0], NAMES[1], "Ничья", "Оба слабые", "Без оценки"].forEach(function (h) { hr.appendChild(el("th", null, h)); });
     tb.appendChild(hr);
     order.forEach(function (sec) {
       var r = count(voting.filter(function (s) { return s.sec === sec; }));
