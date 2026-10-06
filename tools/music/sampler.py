@@ -57,7 +57,7 @@ def measure_midi(x):
 class Instrument:
     """Набор сэмплов: каталог, фильтр имени, слой динамики (подстрока)."""
 
-    def __init__(self, subdir, include="", layer="", gain=1.0, release=0.12, attack_trim=0.0):
+    def __init__(self, subdir, include="", layer="", gain=1.0, release=0.12, attack_trim=0.0, octave=None):
         self.samples = {}
         self.gain, self.release, self.attack_trim = gain, release, attack_trim
         for p in sorted((LIB / subdir).rglob("*.wav")):
@@ -72,10 +72,16 @@ class Instrument:
             raise ValueError(f"нет сэмплов: {subdir} {include} {layer}")
         self._cache = {}
         self._rr = 0
-        keys = sorted(self.samples)
-        probe = keys[len(keys) // 2]
-        heard = measure_midi(self._load(self.samples[probe][0]))
-        shift = 0 if heard is None else int(round((heard - probe) / 12)) * 12
+        keys = sorted(self.samples)                 # сдвиг октавы — медиана по нескольким сэмплам:
+        votes = []                                  # у низких нот спектр иногда ошибается на октаву
+        for probe in keys[:: max(1, len(keys) // 7)]:
+            heard = measure_midi(self._load(self.samples[probe][0]))
+            if heard is not None:
+                votes.append(int(round((heard - probe) / 12)) * 12)
+        if octave is None and votes:                # чаще всего встречающийся; при равенстве — меньший по модулю
+            shift = max(sorted(set(votes), key=abs), key=votes.count)
+        else:
+            shift = octave or 0
         if shift:
             self.samples = {m + shift: v for m, v in self.samples.items()}
         self.octave_shift = shift
@@ -91,13 +97,26 @@ class Instrument:
             self._cache[path] = x.astype(np.float32)
         return self._cache[path]
 
-    def note(self, midi, seconds, vel=0.8):
+    def note(self, midi, seconds, vel=0.8, scoop=0.0, fall=0.0, glide=0.12):
+        """scoop — подъезд к ноте снизу/сверху (полутоны), fall — сброс в конце (полутоны),
+        glide — длительность подъезда/сброса в секундах: тромбонная кулиса, «смешные» ноты."""
         root = min(self.samples, key=lambda m: (abs(m - midi), m))
         paths = self.samples[root]
         self._rr += 1
         x = self._load(paths[self._rr % len(paths)])
         ratio = 2 ** ((midi - root) / 12)
-        idx = np.arange(0, len(x) - 1, ratio)
+        if scoop or fall:
+            n_out = int((seconds + self.release) * SR)
+            t = np.arange(n_out) / SR
+            semi = np.zeros(n_out)
+            if scoop:
+                semi += scoop * np.clip(1 - t / glide, 0, 1) ** 2
+            if fall:
+                semi += fall * np.clip((t - (seconds - glide * 0.3)) / (glide + self.release), 0, 1) ** 1.5
+            idx = np.cumsum(ratio * 2 ** (semi / 12)) - ratio
+            idx = idx[idx < len(x) - 1]
+        else:
+            idx = np.arange(0, len(x) - 1, ratio)
         y = np.interp(idx, np.arange(len(x)), x)
         n = int((seconds + self.release) * SR)
         y = y[:n] if len(y) >= n else np.pad(y, (0, n - len(y)))
@@ -108,8 +127,10 @@ class Instrument:
 
 
 class Song:
-    def __init__(self, bpm, beats):
+    def __init__(self, bpm, beats, humanize=0.0):
+        """humanize — разброс времени нот (секунды, стандартное отклонение) и ±громкости: «живые» руки."""
         self.bpm, self.beats = bpm, beats
+        self.humanize, self._rng = humanize, np.random.default_rng(3)
         self.length = int(self.sec(beats) * SR)
         self.tracks = []
 
@@ -121,11 +142,15 @@ class Song:
         self.tracks.append(t)
         return t
 
-    def play(self, t, inst, beat, dur, midi, vel=0.8, swing=0.0):
-        if swing and (beat * 2) % 2 == 1:
+    def play(self, t, inst, beat, dur, midi, vel=0.8, swing=0.0, **kw):
+        if swing and (beat * 2) % 2 == 1:      # свинг: восьмая «на и» сдвигается позже
             beat += swing
-        y = inst.note(midi, self.sec(dur), vel)
-        s = int(self.sec(beat) * SR)
+        at = self.sec(beat)
+        if self.humanize:
+            at = max(0.0, at + self._rng.normal(0, self.humanize))
+            vel *= 1 + self._rng.uniform(-0.12, 0.12)
+        y = inst.note(midi, self.sec(dur), vel, **kw)
+        s = int(at * SR)
         t["buf"][s:s + len(y)] += y
 
     def render(self, out_path, loop=True, reverb_s=1.6, phone=False, master=0.89, lufs=-18):
@@ -198,7 +223,7 @@ class Perc:
         self.files = [LIB / f for f in files]
         self.gain, self.length, self._rr, self._cache = gain, length, 0, {}
 
-    def note(self, midi, seconds, vel=0.8):
+    def note(self, midi, seconds, vel=0.8, **kw):
         self._rr += 1
         p = self.files[self._rr % len(self.files)]
         if p not in self._cache:
