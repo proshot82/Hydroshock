@@ -1,0 +1,18 @@
+{
+ "_источник": "Слепое сравнение https://claude.ai/artifact/9mhTCezqKKuGtznSuL8itv («было» = итог 05.10.2026, pick claude; «стало» = доработка 06.10.2026, pick other), голоса автора 06.10.2026, выгрузка из базы страницы (коллекция votes). Слоты без голоса — по решению автора 06.10.2026 «пошли дальше»: доработка принята за основу (--default other). pick: claude | other | tie | weak | null.",
+ "CHOICE.cause.cut": {
+  "pick": "other",
+  "comment": "",
+  "at": "2026-10-06T11:36:36.758Z"
+ },
+ "CHOICE.cause.three": {
+  "pick": "claude",
+  "comment": "",
+  "at": "2026-10-06T11:36:09.371Z"
+ },
+ "Z04.lowdrawer.open": {
+  "pick": "claude",
+  "comment": "",
+  "at": "2026-10-06T11:35:57.969Z"
+ }
+}

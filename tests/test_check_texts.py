@@ -307,7 +307,7 @@ class Act2Test(unittest.TestCase):
 class Act2FinalTest(unittest.TestCase):
     def test_final_body_equals_claude(self):
         claude = CLAUDE2.read_text(encoding="utf-8")
-        final = (ROOT / "texts" / "act2" / "ACT2_TEXTS_FINAL.md").read_text(encoding="utf-8")
+        final = (ROOT / "texts" / "act2" / "ACT2_TEXTS_FINAL_v1.md").read_text(encoding="utf-8")  # прежний итог 05.10
         key = "### OPEN.counter"
         self.assertEqual(final[final.index(key):], claude[claude.index(key):])
 
@@ -315,7 +315,7 @@ class Act2FinalTest(unittest.TestCase):
         brief = ct.parse_brief(BRIEF2)
         texts, fmt = ct.parse_texts(ROOT / "texts" / "act2" / "ACT2_TEXTS_FINAL.md")
         errs, _, stats = ct.check(brief, texts, fmt, act=2)
-        self.assertEqual(before_rules(errs), [], messages(errs))
+        self.assertEqual(errs, [], messages(errs))
         self.assertEqual(stats["slots"], 164)  # редакция 2: слот Z12.point.look снят (решение автора 05.10.2026)
 
 
@@ -422,12 +422,12 @@ class Act3FinalTest(unittest.TestCase):
         brief = ct.parse_brief(BRIEF3)
         texts, fmt = ct.parse_texts(ROOT / "texts" / "act3" / "ACT3_TEXTS_FINAL.md")
         errs, _, stats = ct.check(brief, texts, fmt, act=3)
-        self.assertEqual(before_rules(errs), [], messages(errs))
+        self.assertEqual(errs, [], messages(errs))
         self.assertEqual(stats["slots"], 110)
 
     def test_final_body_equals_claude(self):
         claude = CLAUDE3.read_text(encoding="utf-8")
-        final = (ROOT / "texts" / "act3" / "ACT3_TEXTS_FINAL.md").read_text(encoding="utf-8")
+        final = (ROOT / "texts" / "act3" / "ACT3_TEXTS_FINAL_v1.md").read_text(encoding="utf-8")  # прежний итог 05.10
         key = "### OPEN.door"
         self.assertEqual(final[final.index(key):], claude[claude.index(key):])
 
@@ -547,11 +547,11 @@ class Act4FinalTest(unittest.TestCase):
         brief = ct.parse_brief(BRIEF4)
         texts, fmt = ct.parse_texts(ROOT / "texts" / "act4" / "ACT4_TEXTS_FINAL.md")
         errs, _, stats = ct.check(brief, texts, fmt, act=4)
-        self.assertEqual(before_rules(errs), [], messages(errs))
+        self.assertEqual(errs, [], messages(errs))
         self.assertEqual(stats["slots"], ACT4_SLOTS)
 
     def test_final_body_equals_claude(self):
         claude = CLAUDE4.read_text(encoding="utf-8")
-        final = (ROOT / "texts" / "act4" / "ACT4_TEXTS_FINAL.md").read_text(encoding="utf-8")
+        final = (ROOT / "texts" / "act4" / "ACT4_TEXTS_FINAL_v1.md").read_text(encoding="utf-8")  # прежний итог 05.10
         key = "### OPEN.arrive"
         self.assertEqual(final[final.index(key):], claude[claude.index(key):])

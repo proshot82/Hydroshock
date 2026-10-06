@@ -4,7 +4,7 @@
 
 **Что здесь.** То, чего нет в сдачах по отдельности и что нужно художнику, звуку и программисту до ASSET_SPEC: словарь имён (§1), состояния экранов и зумов по флагам (§3–§4), портреты (§5), предметы (§6), документы и шрифты (§7), звуки (§8), правила текста (§9), советы Предка (§10), эпилоги (§11), сохранение (§12). Условия показа каждого из 503 слотов текстов — отдельно: `docs/BJ3_SLOT_FLAGS.md`.
 
-**Источники по порядку:** `acts/act*/ACT*_SUBMISSION.md` и `ACT*_graph.json` → `texts/act*/BRIEF_ACT*_TEXTS.md` → `texts/polish/ACT*_TEXTS_POLISH.md` (итоговые тексты после доработки 05–06.10.2026; до голосования автора рядом лежат `texts/act*/ACT*_TEXTS_FINAL.md`) → `docs/BJ3_CANON_V2_1.md`, `BJ3_CANON_V2_2.md`, `BJ3_SKELETON_S3_1.md`.
+**Источники по порядку:** `acts/act*/ACT*_SUBMISSION.md` и `ACT*_graph.json` → `texts/act*/BRIEF_ACT*_TEXTS.md` → `texts/act*/ACT*_TEXTS_FINAL.md` (итоги 06.10.2026: доработка `texts/polish/` плюс голоса автора, собраны `tools/texts/merge_texts.py`) → `docs/BJ3_CANON_V2_1.md`, `BJ3_CANON_V2_2.md`, `BJ3_SKELETON_S3_1.md`.
 
 ## 1. Словарь имён: рабочее имя → имя в игре
 
