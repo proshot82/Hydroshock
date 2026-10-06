@@ -55,8 +55,11 @@ class BuildTest(unittest.TestCase):
 
     def test_rule_breaks_leave_the_vote(self):
         auto = {s["id"]: [a["who"] for a in s["auto"]] for s in self.data["slots"] if s["auto"]}
-        self.assertEqual(set(auto), {"SEQ.peek.3_lobby", "CHOICE.pass", "CHOICE.wait"})
-        self.assertTrue(all(w == ["other"] for w in auto.values()))
+        # «other» нарушала ТЗ в трёх слотах; с 06.10.2026 латиница — ошибка во всех актах,
+        # и версия Claude от 04.10 (room service, wellness) в четырёх слотах тоже выходит из голосования
+        self.assertEqual(auto, {"SEQ.peek.3_lobby": ["other"], "CHOICE.pass": ["other"], "CHOICE.wait": ["other"],
+                                "Z03.trolley.look": ["claude"], "END.act1": ["claude"], "DOC.voucher": ["claude"],
+                                "TALK.iz.exit": ["claude", "other"]})
 
     def test_blind_typography(self):
         self.assertEqual(bc.blind('Ещё "путёвка" - и всё...'), "Еще «путевка» — и все…")
@@ -90,7 +93,8 @@ class MergeTest(unittest.TestCase):
         brief = ct.parse_brief(ct.DEFAULT_BRIEF)
         texts, fmt = ct.parse_texts(ACT / "ACT1_TEXTS_FINAL.md")
         errs, _, stats = ct.check(brief, texts, fmt)
-        self.assertEqual(errs, [])
+        # итог 04.10 писался до решения автора 06.10.2026 о латинице; тексты с решениями — texts/polish/
+        self.assertEqual([e for e in errs if not e[1].startswith(("английское слово", "латинская буква"))], [])
         self.assertEqual(stats["slots"], 154)
 
     def test_sources(self):
@@ -110,8 +114,9 @@ class ReadTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         t = ROOT / "texts"
-        cls.pairs = [(t / "act2" / "ACT2_TEXTS_FINAL.md", t / "act2" / "BRIEF_ACT2_TEXTS.md"),
-                     (t / "act3" / "ACT3_TEXTS_FINAL.md", t / "act3" / "BRIEF_ACT3_TEXTS.md")]
+        # тексты с решениями автора 06.10.2026 (итоги 05.10 нынешние правила не проходят)
+        cls.pairs = [(t / "polish" / "ACT2_TEXTS_POLISH.md", t / "act2" / "BRIEF_ACT2_TEXTS.md"),
+                     (t / "polish" / "ACT3_TEXTS_POLISH.md", t / "act3" / "BRIEF_ACT3_TEXTS.md")]
         cls.data = br.build(cls.pairs, datetime.date(2026, 10, 5))
 
     def test_acts_slots_and_status(self):
@@ -119,7 +124,7 @@ class ReadTest(unittest.TestCase):
         self.assertEqual(self.data["built"], "05.10.2026")
         self.assertEqual([a["act"] for a in acts], ["II", "III"])
         self.assertEqual([len(a["slots"]) for a in acts], [164, 110])
-        self.assertEqual([a["status"] for a in acts], ["заморожен автором", "принят автором"])
+        self.assertEqual([a["status"] for a in acts], ["", ""])  # у файлов доработки шапки нет
         self.assertTrue(all(s["sec"] for a in acts for s in a["slots"]))
 
     def test_texts_verbatim(self):

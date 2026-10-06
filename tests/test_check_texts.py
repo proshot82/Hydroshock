@@ -31,6 +31,19 @@ def messages(errs):
     return "\n".join("%s: %s" % (sid, msg) for sid, msg in errs)
 
 
+POLISH = ROOT / "texts" / "polish"
+
+# Правила, введённые решением автора 06.10.2026 (латиница во всех актах, латинская
+# буква в кириллическом слове, словарь «один предмет — одно имя»). Версии до этой
+# даты (CLAUDE, FINAL) писались по прежним правилам и живут как «было» слепого
+# сравнения; тексты с решениями — texts/polish/, их проверяет PolishTest.
+NEW_RULES = ("английское слово", "латинская буква", "второе имя предмета")
+
+
+def before_rules(items):
+    return [(s, m) for s, m in items if not m.startswith(NEW_RULES)]
+
+
 class BriefTest(unittest.TestCase):
     def test_brief_parsed(self):
         b = ct.parse_brief(BRIEF)
@@ -67,7 +80,7 @@ class NormTest(unittest.TestCase):
 class ClaudeVersionTest(unittest.TestCase):
     def test_claude_version_passes(self):
         errs, warns, stats = run_check(CLAUDE.read_text(encoding="utf-8"))
-        self.assertEqual(errs, [], messages(errs))
+        self.assertEqual(before_rules(errs), [], messages(errs))
         self.assertEqual(stats["slots"], 154)
 
 
@@ -181,6 +194,29 @@ class NegativeTest(unittest.TestCase):
         self.assertCaught(text, "не по формату")
 
 
+class PolishTest(unittest.TestCase):
+    """Тексты с решениями автора 06.10.2026 проходят нынешние правила без
+    ошибок и предупреждений (до голосования живут в texts/polish/)."""
+
+    def check(self, n, runner, slots):
+        errs, warns, stats = runner((POLISH / f"ACT{n}_TEXTS_POLISH.md").read_text(encoding="utf-8"))
+        self.assertEqual(errs, [], messages(errs))
+        self.assertEqual(warns, [], messages(warns))
+        self.assertEqual(stats["slots"], slots)
+
+    def test_act1(self):
+        self.check(1, run_check, 154)
+
+    def test_act2(self):
+        self.check(2, run_check2, 164)
+
+    def test_act3(self):
+        self.check(3, run_check3, 110)
+
+    def test_act4(self):
+        self.check(4, run_check4, ACT4_SLOTS)
+
+
 if __name__ == "__main__":
     unittest.main()
 
@@ -210,7 +246,7 @@ class Act2Test(unittest.TestCase):
 
     def test_claude_version_clean(self):
         errs, _, stats = run_check2(self.base)
-        self.assertEqual(errs, [], messages(errs))
+        self.assertEqual(before_rules(errs), [], messages(errs))
         self.assertEqual(stats["slots"], 164)  # редакция 2: слот Z12.point.look снят (решение автора 05.10.2026)
 
     def spoil(self, old, new):
@@ -279,7 +315,7 @@ class Act2FinalTest(unittest.TestCase):
         brief = ct.parse_brief(BRIEF2)
         texts, fmt = ct.parse_texts(ROOT / "texts" / "act2" / "ACT2_TEXTS_FINAL.md")
         errs, _, stats = ct.check(brief, texts, fmt, act=2)
-        self.assertEqual(errs, [], messages(errs))
+        self.assertEqual(before_rules(errs), [], messages(errs))
         self.assertEqual(stats["slots"], 164)  # редакция 2: слот Z12.point.look снят (решение автора 05.10.2026)
 
 
@@ -305,8 +341,8 @@ class Act3Test(unittest.TestCase):
 
     def test_claude_version_clean(self):
         errs, warns, stats = run_check3(self.base)
-        self.assertEqual(errs, [], messages(errs))
-        self.assertEqual(warns, [], messages(warns))
+        self.assertEqual(before_rules(errs), [], messages(errs))
+        self.assertEqual(before_rules(warns), [], messages(warns))
         self.assertEqual(stats["slots"], 110)
 
     def spoil(self, old, new):
@@ -386,7 +422,7 @@ class Act3FinalTest(unittest.TestCase):
         brief = ct.parse_brief(BRIEF3)
         texts, fmt = ct.parse_texts(ROOT / "texts" / "act3" / "ACT3_TEXTS_FINAL.md")
         errs, _, stats = ct.check(brief, texts, fmt, act=3)
-        self.assertEqual(errs, [], messages(errs))
+        self.assertEqual(before_rules(errs), [], messages(errs))
         self.assertEqual(stats["slots"], 110)
 
     def test_final_body_equals_claude(self):
@@ -419,8 +455,8 @@ class Act4Test(unittest.TestCase):
 
     def test_claude_version_clean(self):
         errs, warns, stats = run_check4(self.base)
-        self.assertEqual(errs, [], messages(errs))
-        self.assertEqual(warns, [], messages(warns))
+        self.assertEqual(before_rules(errs), [], messages(errs))
+        self.assertEqual(before_rules(warns), [], messages(warns))
         self.assertEqual(stats["slots"], ACT4_SLOTS)
 
     def spoil(self, old, new):
@@ -511,7 +547,7 @@ class Act4FinalTest(unittest.TestCase):
         brief = ct.parse_brief(BRIEF4)
         texts, fmt = ct.parse_texts(ROOT / "texts" / "act4" / "ACT4_TEXTS_FINAL.md")
         errs, _, stats = ct.check(brief, texts, fmt, act=4)
-        self.assertEqual(errs, [], messages(errs))
+        self.assertEqual(before_rules(errs), [], messages(errs))
         self.assertEqual(stats["slots"], ACT4_SLOTS)
 
     def test_final_body_equals_claude(self):

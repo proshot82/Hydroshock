@@ -13,10 +13,12 @@ import build_layer as bl  # noqa: E402
 import check_texts as ct  # noqa: E402
 
 T = ROOT / "texts"
-PAIRS = [(T / "act1" / "ACT1_TEXTS_FINAL.md", T / "act1" / "BRIEF_ACT1_TEXTS.md"),
-         (T / "act2" / "ACT2_TEXTS_FINAL.md", T / "act2" / "BRIEF_ACT2_TEXTS.md"),
-         (T / "act3" / "ACT3_TEXTS_FINAL.md", T / "act3" / "BRIEF_ACT3_TEXTS.md"),
-         (T / "act4" / "ACT4_TEXTS_FINAL.md", T / "act4" / "BRIEF_ACT4_TEXTS.md")]
+# Слой собран из текстов с решениями автора 06.10.2026 (texts/polish/); после
+# голосования пересобирается из новых итоговых файлов актов.
+PAIRS = [(T / "polish" / "ACT1_TEXTS_POLISH.md", T / "act1" / "BRIEF_ACT1_TEXTS.md"),
+         (T / "polish" / "ACT2_TEXTS_POLISH.md", T / "act2" / "BRIEF_ACT2_TEXTS.md"),
+         (T / "polish" / "ACT3_TEXTS_POLISH.md", T / "act3" / "BRIEF_ACT3_TEXTS.md"),
+         (T / "polish" / "ACT4_TEXTS_POLISH.md", T / "act4" / "BRIEF_ACT4_TEXTS.md")]
 ROMANS = ["I", "II", "III", "IV"]
 
 
