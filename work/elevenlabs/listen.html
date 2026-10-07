@@ -42,7 +42,7 @@ textarea{width:100%;box-sizing:border-box;min-height:56px;font:inherit;padding:8
 <main>
   <header style="display:grid;gap:8px">
     <h1>Музыка «Гидроудара»: тема низа</h1>
-    <p class="lead">Заставка, отель, служебные коридоры и эпилог приняты и уже в игре. Низ стал огромным хтоническим офисом, поэтому прежняя лёгкая тема ему не подходит. Три новых варианта по 2 минуты: выберите один или «Ни один» и напишите, что поменять.</p>
+    <p class="lead">Заставка, отель, служебные коридоры и эпилог приняты и уже в игре. Низ — полузатопленная пещера; прошлый круг вышел маршевым и церковным, поэтому орган и марш убраны. Четыре варианта по 2 минуты: выберите один или «Ни один» и напишите, что поменять.</p>
     <div class="status" id="status">Подключаю сохранение…</div>
   </header>
   <div id="list" style="display:grid;gap:20px"></div>
@@ -50,8 +50,8 @@ textarea{width:100%;box-sizing:border-box;min-height:56px;font:inherit;padding:8
 
 <script>
 // Титул — новый круг; остальные приняты, проверяем шов петли
-const TITLE=["bgm_below","Внизу: залы Кухтулху","W5–W6; третий круг: низ теперь огромный хтонический офис — орган, низкая медь, стеклянная гармоника, торжественный вальс, без джаза",
-  "vast chthonic underground hall, Lovecraftian grandeur with a sly wink, slow heavy majestic 3/4 waltz, pipe organ, contrabassoon, tuba, bass clarinet, low strings tremolo, glass harmonica, celesta, water drips, abacus ticking"];
+const TITLE=["bgm_below","Внизу: пещера Кухтулху","W5–W6; четвёртый круг: без органа и марша. 6–7 — плывущая подводная (арфа, челеста, маримба, стеклянная гармоника); 8–9 — лукавая медленная хабанера (бас-кларнет, контрафагот, пиццикато)",
+  "6–7: dreamy floating underwater sea cave, harp, celesta, marimba, glass harmonica, bass clarinet, no beat · 8–9: sly slinky slow habanera, bass clarinet, contrabassoon, pizzicato, harp"];
 const ACCEPTED=[];
 const LOOPS={bgm_hotel:"82,5",bgm_service:"84,0",bgm_below:"78,0",bgm_epilogue:"76,8"};
 const picks={}; let db=null; const timers={};
@@ -77,11 +77,11 @@ function render(){
     const s=el('<section class="theme"><div class="head"><h2></h2><code></code></div><p class="where" style="margin:0"></p><div class="vars"></div></section>');
     s.querySelector("h2").textContent=name; s.querySelector("code").textContent=id; s.querySelector(".where").textContent=where;
     const vars=s.querySelector(".vars");
-    for(const v of ["v3","v4","v5"]){
+    for(const v of ["v6","v7","v8","v9"]){
       const d=el(`<div class="var${p.choice===v?" picked":""}"><b>Вариант ${v.slice(1)}</b><audio controls preload="none" src="audio/${id}_${v}.mp3"></audio></div>`);
       vars.appendChild(d);
     }
-    s.appendChild(choices(id,[["v3","Беру 3"],["v4","Беру 4"],["v5","Беру 5"],["none","Ни один"]],"choice"));
+    s.appendChild(choices(id,[["v6","Беру 6"],["v7","Беру 7"],["v8","Беру 8"],["v9","Беру 9"],["none","Ни один"]],"choice"));
     s.appendChild(noteBox(id,"например: медленнее, больше органа"));
     const pr=el('<p class="prompt"></p>'); pr.textContent="Промпт: "+prompt; s.appendChild(pr);
     list.appendChild(s);
@@ -119,7 +119,7 @@ render();
     const snap=await db.collection("picks").get();
     for(const d of snap.docs){const x=d.data(); picks[d.id]={choice:x.choice||undefined,seam:x.seam||undefined,note:x.note||""}}
     // прежний отказ от титула v1/v2 не переносим в новый круг
-    if(picks.bgm_below && !["v3","v4","v5","none"].includes(picks.bgm_below.choice)) delete picks.bgm_below.choice;
+    if(picks.bgm_below && !["v6","v7","v8","v9","none"].includes(picks.bgm_below.choice)) delete picks.bgm_below.choice;
     render();
   }catch(e){status.textContent="Не удалось загрузить прежний выбор ("+(e.code||e.message)+")."}
 })();
