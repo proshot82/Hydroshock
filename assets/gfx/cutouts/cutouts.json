@@ -1,9 +1,37 @@
 {
+ "st_w5_kuh": {
+  "base": "room_w5.png",
+  "x": 529,
+  "y": 159,
+  "w": 1202,
+  "h": 852
+ },
+ "st_w5u_reach": {
+  "base": "room_w5_under.png",
+  "x": 592,
+  "y": 29,
+  "w": 1267,
+  "h": 1051
+ },
+ "st_w5u_tentacles": {
+  "base": "room_w5_under.png",
+  "x": 860,
+  "y": 473,
+  "w": 851,
+  "h": 538
+ },
  "st_w6_kuh": {
   "base": "room_w6.png",
   "x": 838,
   "y": 33,
   "w": 1082,
   "h": 826
+ },
+ "st_w6_kuh_aside": {
+  "base": "room_w6.png",
+  "x": 156,
+  "y": 42,
+  "w": 603,
+  "h": 929
  }
 }
