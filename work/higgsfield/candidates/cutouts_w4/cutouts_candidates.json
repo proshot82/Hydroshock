@@ -1,0 +1,72 @@
+{
+ "st_w4_cabin_empty": {
+  "base": "room_w4.png",
+  "x": 218,
+  "y": 168,
+  "w": 184,
+  "h": 544
+ },
+ "st_w4_cabin_full": {
+  "base": "room_w4.png",
+  "x": 218,
+  "y": 168,
+  "w": 184,
+  "h": 544
+ },
+ "st_w4_design": {
+  "base": "room_w4.png",
+  "x": 786,
+  "y": 429,
+  "w": 337,
+  "h": 151
+ },
+ "st_w4_films": {
+  "base": "room_w4.png",
+  "x": 944,
+  "y": 595,
+  "w": 136,
+  "h": 91
+ },
+ "st_w4_mirror_aside": {
+  "base": "room_w4.png",
+  "x": 421,
+  "y": 195,
+  "w": 167,
+  "h": 462
+ },
+ "st_w4_plate": {
+  "base": "room_w4.png",
+  "x": 991,
+  "y": 307,
+  "w": 95,
+  "h": 95
+ },
+ "st_w4_stairs_open": {
+  "base": "room_w4.png",
+  "x": 601,
+  "y": 254,
+  "w": 183,
+  "h": 317
+ },
+ "st_w4_tube_photo": {
+  "base": "room_w4.png",
+  "x": 328,
+  "y": 884,
+  "w": 579,
+  "h": 172
+ },
+ "st_w4_tube_photo_b": {
+  "base": "room_w4.png",
+  "x": 344,
+  "y": 876,
+  "w": 256,
+  "h": 169
+ },
+ "st_w4_water_bottle": {
+  "base": "room_w4.png",
+  "x": 1121,
+  "y": 440,
+  "w": 63,
+  "h": 106
+ }
+}
