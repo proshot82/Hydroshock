@@ -8,7 +8,7 @@ R = lambda n: ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.tt
 B = lambda n: ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', n)
 W, H = 1800, 1150
 im = Image.new('RGB', (W, H), 'white'); d = ImageDraw.Draw(im)
-d.text((30, 15), "План первого этажа — проект на утверждение (08.10.2026)", fill='black', font=B(28))
+d.text((30, 15), "План первого этажа — утверждён автором 08.10.2026", fill='black', font=B(28))
 d.text((30, 55), "север — вверх; все проходы и двери — по утверждённой топологии", fill=(90, 90, 90), font=R(17))
 WALL = 8
 def room(x0, y0, x1, y1, fill, title, sub=''):
