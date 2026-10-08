@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""План зала прекраснодушия W4 с камерой (проект на утверждение). Вывод: docs/assets/w4_plan.png"""
+"""План зала прекраснодушия W4 с камерой (утверждён автором 08.10.2026). Вывод: docs/assets/w4_plan.png"""
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 ROOT = Path(__file__).resolve().parents[2]
 R = lambda n: ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', n)
 B = lambda n: ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', n)
 im = Image.new('RGB', (1500, 1180), 'white'); d = ImageDraw.Draw(im)
-d.text((30, 15), "W4 зал прекраснодушия — план и камера (проект на утверждение)", fill='black', font=B(26))
+d.text((30, 15), "W4 зал прекраснодушия — план и камера (утверждено автором 08.10.2026)", fill='black', font=B(26))
 d.text((30, 52), "север — вверх; зал к западу от вестибюля, служебный коридор — вдоль южной стены (план первого этажа)", fill=(90, 90, 90), font=R(16))
 # зал
 X0, Y0, X1, Y1 = 200, 110, 1180, 960
