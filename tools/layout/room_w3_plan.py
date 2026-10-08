@@ -6,7 +6,7 @@ ROOT = Path(__file__).resolve().parents[2]
 R = lambda n: ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', n)
 B = lambda n: ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', n)
 im = Image.new('RGB', (1500, 1000), 'white'); d = ImageDraw.Draw(im)
-d.text((30, 15), "W3 прачечная — план и камера (проект на утверждение)", fill='black', font=B(26))
+d.text((30, 15), "W3 прачечная — план и камера (утверждено автором 08.10.2026)", fill='black', font=B(26))
 d.text((30, 52), "север — вверх; прачечная к югу от служебного коридора (план первого этажа)", fill=(90, 90, 90), font=R(16))
 # коридор
 d.rectangle((60, 100, 1440, 200), fill=(250, 240, 250), outline='black', width=6)
