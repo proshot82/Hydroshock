@@ -1,0 +1,118 @@
+{
+ "_источник": "Слепое сравнение https://claude.ai/artifact/BCE54fDe9GFePcheeaTFMy («было» = итог 05.10.2026, pick claude; «стало» = доработка 06.10.2026, pick other), голоса автора 06.10.2026, выгрузка из базы страницы (коллекция votes). Слоты без голоса — по решению автора 06.10.2026 «пошли дальше»: доработка принята за основу (--default other). pick: claude | other | tie | weak | null.",
+ "CHOICE.pass": {
+  "pick": "other",
+  "comment": "",
+  "at": "2026-10-06T11:33:58.342Z"
+ },
+ "DOC.bathday": {
+  "pick": "claude",
+  "comment": "",
+  "at": "2026-10-06T11:35:06.708Z"
+ },
+ "DOC.menu": {
+  "pick": "tie",
+  "comment": "",
+  "at": "2026-10-06T11:34:53.638Z"
+ },
+ "DOC.voucher": {
+  "pick": "tie",
+  "comment": "",
+  "at": "2026-10-06T11:34:38.554Z"
+ },
+ "END.act1": {
+  "pick": "other",
+  "comment": "",
+  "at": "2026-10-06T11:34:17.331Z"
+ },
+ "OPEN.1_voucher": {
+  "pick": "claude",
+  "comment": "",
+  "at": "2026-10-06T11:19:57.439Z"
+ },
+ "OPEN.2_shower": {
+  "pick": "claude",
+  "comment": "",
+  "at": "2026-10-06T11:20:07.688Z"
+ },
+ "PROBE.rule.unknown": {
+  "pick": "claude",
+  "comment": "",
+  "at": "2026-10-06T11:32:41.059Z"
+ },
+ "SEQ.drive.1_under": {
+  "pick": "other",
+  "comment": "",
+  "at": "2026-10-06T11:33:36.773Z"
+ },
+ "SEQ.drive.3_lobby": {
+  "pick": "other",
+  "comment": "",
+  "at": "2026-10-06T11:33:48.773Z"
+ },
+ "SEQ.peek.1_corridor": {
+  "pick": "other",
+  "comment": "",
+  "at": "2026-10-06T11:33:05.298Z"
+ },
+ "SEQ.peek.3_lobby": {
+  "pick": "other",
+  "comment": "",
+  "at": "2026-10-06T11:33:20.717Z"
+ },
+ "SEQ.peek.4_waiter": {
+  "pick": "other",
+  "comment": "",
+  "at": "2026-10-06T11:33:25.985Z"
+ },
+ "TALK.iz.open": {
+  "pick": "claude",
+  "comment": "",
+  "at": "2026-10-06T11:34:04.878Z"
+ },
+ "W1.bucket": {
+  "pick": "claude",
+  "comment": "",
+  "at": "2026-10-06T11:31:47.733Z"
+ },
+ "W1.cistern.look": {
+  "pick": "claude",
+  "comment": "",
+  "at": "2026-10-06T11:32:00.401Z"
+ },
+ "W1.door.look": {
+  "pick": "claude",
+  "comment": "",
+  "at": "2026-10-06T11:31:54.315Z"
+ },
+ "W1.hooks": {
+  "pick": "claude",
+  "comment": "",
+  "at": "2026-10-06T11:20:22.943Z"
+ },
+ "W1.suitcase": {
+  "pick": "claude",
+  "comment": "",
+  "at": "2026-10-06T11:31:41.160Z"
+ },
+ "Z01.head.look": {
+  "pick": "claude",
+  "comment": "",
+  "at": "2026-10-06T11:32:06.505Z"
+ },
+ "Z01.head.use": {
+  "pick": "claude",
+  "comment": "",
+  "at": "2026-10-06T11:32:11.036Z"
+ },
+ "Z01.head.use.repeat": {
+  "pick": "claude",
+  "comment": "",
+  "at": "2026-10-06T11:32:19.974Z"
+ },
+ "Z03.stars.look": {
+  "pick": "other",
+  "comment": "",
+  "at": "2026-10-06T11:32:56.749Z"
+ }
+}

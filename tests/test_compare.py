@@ -55,8 +55,11 @@ class BuildTest(unittest.TestCase):
 
     def test_rule_breaks_leave_the_vote(self):
         auto = {s["id"]: [a["who"] for a in s["auto"]] for s in self.data["slots"] if s["auto"]}
-        self.assertEqual(set(auto), {"SEQ.peek.3_lobby", "CHOICE.pass", "CHOICE.wait"})
-        self.assertTrue(all(w == ["other"] for w in auto.values()))
+        # «other» нарушала ТЗ в трёх слотах; с 06.10.2026 латиница — ошибка во всех актах,
+        # и версия Claude от 04.10 (room service, wellness) в четырёх слотах тоже выходит из голосования
+        self.assertEqual(auto, {"SEQ.peek.3_lobby": ["other"], "CHOICE.pass": ["other"], "CHOICE.wait": ["other"],
+                                "Z03.trolley.look": ["claude"], "END.act1": ["claude"], "DOC.voucher": ["claude"],
+                                "TALK.iz.exit": ["claude", "other"]})
 
     def test_blind_typography(self):
         self.assertEqual(bc.blind('Ещё "путёвка" - и всё...'), "Еще «путевка» — и все…")
@@ -70,34 +73,66 @@ class BuildAct2Test(unittest.TestCase):
 
 
 class MergeTest(unittest.TestCase):
-    """Итоговая версия — генерируемый файл: она обязана совпадать со сборкой
-    из голосов и правок и проходить проверку по ТЗ."""
+    """Итоговые файлы — генерируемые: обязаны совпадать со сборкой из голосов
+    и правок и проходить проверку по ТЗ. Две цепочки: прежний итог Акта I
+    (v1, 04.10.2026: версия Claude + другая нейросеть) и итог после доработки
+    (06.10.2026: v1 + texts/polish/, голоса автора, без голоса — доработка)."""
 
     import merge_texts as mt  # noqa: E402
 
-    def build(self):
-        blocks, report = self.mt.merge(ct.DEFAULT_BRIEF, ACT / "ACT1_TEXTS_CLAUDE.md",
-                                       ACT / "ACT1_TEXTS_OTHER.md", ACT / "ACT1_VOTES.json",
-                                       ACT / "ACT1_TEXTS_EDITS.md")
-        return self.mt.HEADER + "\n" + "\n\n".join(blocks) + "\n\nКОНЕЦ АКТА I\n", report
+    NAMES = ("как было (итог 05.10.2026)", "как стало (доработка 06.10.2026)")
+    NOTE = ("Состояние: ждёт чтения автора. Собрано 06.10.2026 по решению автора «пошли дальше»: "
+            "доработка принята за основу, отданные в слепом сравнении голоса учтены.")
 
-    def test_final_is_generated(self):
-        text, _ = self.build()
-        self.assertEqual(text, (ACT / "ACT1_TEXTS_FINAL.md").read_text(encoding="utf-8"),
-                         "ACT1_TEXTS_FINAL.md правили руками — правки вносятся в ACT1_TEXTS_EDITS.md")
+    def build_v1(self):
+        return self.mt.build(ct.DEFAULT_BRIEF, ACT / "ACT1_TEXTS_CLAUDE.md", ACT / "ACT1_TEXTS_OTHER.md",
+                             ACT / "ACT1_VOTES.json", ACT / "ACT1_TEXTS_EDITS.md")
+
+    def build_final(self, n):
+        t = ROOT / "texts"
+        return self.mt.build(t / f"act{n}" / f"BRIEF_ACT{n}_TEXTS.md", t / f"act{n}" / f"ACT{n}_TEXTS_FINAL_v1.md",
+                             t / "polish" / f"ACT{n}_TEXTS_POLISH.md", t / "polish" / f"ACT{n}_VOTES.json",
+                             t / "polish" / f"ACT{n}_TEXTS_EDITS.md", default="other", names=self.NAMES, note=self.NOTE)
+
+    def test_v1_is_generated(self):
+        text, _ = self.build_v1()
+        self.assertEqual(text, (ACT / "ACT1_TEXTS_FINAL_v1.md").read_text(encoding="utf-8"),
+                         "ACT1_TEXTS_FINAL_v1.md правили руками — правки вносятся в ACT1_TEXTS_EDITS.md")
+
+    def test_finals_are_generated(self):
+        for n in (1, 2, 3, 4):
+            text, _ = self.build_final(n)
+            self.assertEqual(text, (ROOT / "texts" / f"act{n}" / f"ACT{n}_TEXTS_FINAL.md").read_text(encoding="utf-8"),
+                             f"ACT{n}_TEXTS_FINAL.md правили руками — правки вносятся в texts/polish/ACT{n}_TEXTS_EDITS.md")
 
     def test_final_passes_brief(self):
-        brief = ct.parse_brief(ct.DEFAULT_BRIEF)
-        texts, fmt = ct.parse_texts(ACT / "ACT1_TEXTS_FINAL.md")
-        errs, _, stats = ct.check(brief, texts, fmt)
-        self.assertEqual(errs, [])
-        self.assertEqual(stats["slots"], 154)
+        for n, slots in ((1, 154), (2, 164), (3, 110), (4, 75)):
+            brief = ROOT / "texts" / f"act{n}" / f"BRIEF_ACT{n}_TEXTS.md"
+            texts, fmt = ct.parse_texts(ROOT / "texts" / f"act{n}" / f"ACT{n}_TEXTS_FINAL.md")
+            errs, warns, stats = ct.check(ct.parse_brief(brief), texts, fmt, ct.detect_act(brief))
+            self.assertEqual(errs, [], (n, errs))
+            self.assertEqual(warns, [], (n, warns))
+            self.assertEqual(stats["slots"], slots)
 
-    def test_sources(self):
-        _, report = self.build()
+    def test_sources_v1(self):
+        _, report = self.build_v1()
         self.assertEqual(sorted(report["rule"]), ["CHOICE.pass", "CHOICE.wait", "SEQ.peek.3_lobby"])
         self.assertIn("OPEN.2_shower", report["edit"])
         self.assertEqual(sum(len(v) for v in report.values()), 154)
+
+    def test_sources_final(self):
+        _, report = self.build_final(1)
+        # голоса автора 06.10.2026: 13 слотов «как было», 8 «как стало»; латиница в «было» решает слот по правилам
+        self.assertEqual(len(report["claude"]), 13)
+        self.assertEqual(len(report["other"]), 8)
+        self.assertIn("Z03.trolley.look", report["rule"])
+        self.assertEqual(report["edit"], [])
+        self.assertEqual(sum(len(v) for v in report.values()), 154)
+
+    def test_default_must_be_a_side(self):
+        with self.assertRaises(ValueError):
+            self.mt.merge(ct.DEFAULT_BRIEF, ACT / "ACT1_TEXTS_CLAUDE.md", ACT / "ACT1_TEXTS_OTHER.md",
+                          ACT / "ACT1_VOTES.json", ACT / "ACT1_TEXTS_EDITS.md", default="both")
 
 
 if __name__ == "__main__":
@@ -119,7 +154,7 @@ class ReadTest(unittest.TestCase):
         self.assertEqual(self.data["built"], "05.10.2026")
         self.assertEqual([a["act"] for a in acts], ["II", "III"])
         self.assertEqual([len(a["slots"]) for a in acts], [164, 110])
-        self.assertEqual([a["status"] for a in acts], ["заморожен автором", "принят автором"])
+        self.assertEqual([a["status"] for a in acts], ["ждёт чтения автора", "ждёт чтения автора"])
         self.assertTrue(all(s["sec"] for a in acts for s in a["slots"]))
 
     def test_texts_verbatim(self):

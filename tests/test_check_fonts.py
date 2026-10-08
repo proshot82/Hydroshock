@@ -32,12 +32,49 @@ class TestCheckFonts(unittest.TestCase):
         for font in sorted(FONTS.glob("*.ttf")):
             self.assertEqual(cf.missing(str(font), "Каскадъ погруженіе"), set(), font.name)
 
-    def test_yat_missing_in_neucha(self):
-        # Известная дыра (статус проекта): ѣ нет в Neucha, есть в PT Sans.
-        # Тест упадёт, когда шрифт заменят, — тогда его надо обновить.
-        self.assertIn("ѣ", cf.missing(str(FONTS / "Neucha.ttf"), "ѣ"))
-        self.assertEqual(cf.missing(str(FONTS / "PTSans-Regular.ttf"), "ѣ"), set())
+    def test_yat_in_every_font(self):
+        # ASSET_SPEC §8: ѣ/і рисуются всеми шрифтами сборки (H25).
+        for font in sorted(FONTS.glob("*.ttf")):
+            self.assertEqual(cf.missing(str(font), "ѣѢіІъЪ«»„“—–…№"), set(), font.name)
 
+    def test_three_roles_present(self):
+        # диалоги — PT Sans, печать 1908 — Old Standard TT, рукопись — Caveat
+        names = {f.name for f in FONTS.glob("*.ttf")}
+        for need in ("PTSans-Regular.ttf", "OldStandard-Regular.ttf", "Caveat.ttf"):
+            self.assertIn(need, names)
+
+    def test_detector_sees_missing_yat(self):
+        # Негатив гейта на живом шрифте: в выведенной из сборки Neucha нет ѣ.
+        neucha = ROOT / "work" / "orig_fonts" / "Neucha.ttf"
+        self.assertIn("ѣ", cf.missing(str(neucha), "ѣ"))
+
+    def test_gate_reads_final_texts(self):
+        # пока design/texts.json нет, символы берутся из итоговых текстов
+        import os
+        cwd = os.getcwd()
+        os.chdir(ROOT)
+        try:
+            src = cf.texts_chars()
+        finally:
+            os.chdir(cwd)
+        self.assertIn("ѣ", src)
+        self.assertIn("TEXTS_FINAL", src["ѣ"])
+
+    def test_gate_passes(self):
+        import io
+        import os
+        from contextlib import redirect_stdout
+        cwd = os.getcwd()
+        os.chdir(ROOT)
+        buf = io.StringIO()
+        try:
+            with redirect_stdout(buf):
+                cf.main()
+        except SystemExit as e:
+            self.fail("гейт шрифтов упал: " + buf.getvalue() + str(e))
+        finally:
+            os.chdir(cwd)
+        self.assertIn("FONT GATE PASS", buf.getvalue())
 
 if __name__ == "__main__":
     unittest.main()

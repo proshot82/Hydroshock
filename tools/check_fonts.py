@@ -27,8 +27,8 @@ src/autoplay.lua исключён сознательно — это тестов
 уходят в консоль (там «≠» законен), на экран не попадают.
 
 BJ3 (перенесено из BJ2 @1da9c11). Два отличия:
-  • design/*.json и Lua-исходники необязательны — пока их нет (до GDD), гейт
-    проверяет только обязательный набор;
+  • design/*.json и Lua-исходники необязательны — пока design/texts.json нет,
+    гейт читает итоговые тексты texts/act*/ACT*_TEXTS_FINAL.md (ASSET_SPEC §8);
   • REQUIRED — символы, которые игра заведомо использует, даже если их ещё
     нет в данных: дореформенная орфография документов «Каскадъ» (ѣ — в S3:
     «старшему по водѣ», ъ, і) и русская типографика. Handoff §16 велит
@@ -77,11 +77,24 @@ def missing(path, chars):
     return out
 
 
+def final_texts_chars():
+    """(BJ3) Пока design/texts.json нет — итоговые тексты актов целиком.
+    Файл берётся весь: разметка (#, |, `, >) — ASCII, её рисуют все шрифты,
+    а лишний символ в проверке дешевле пропущенного."""
+    src = {}
+    for p in sorted(glob.glob("texts/act*/ACT*_TEXTS_FINAL.md")):
+        with open(p, encoding="utf-8") as fh:
+            for n, line in enumerate(fh, 1):
+                for ch in line:
+                    src.setdefault(ch, f"{p}:{n}")
+    return src
+
+
 def texts_chars():
     """Символы из design/texts.json с путём до строки — чтобы было что чинить."""
     src = {}
     if not os.path.exists("design/texts.json"):
-        return src
+        return final_texts_chars()
     data = json.load(open("design/texts.json", encoding="utf-8"))
 
     def walk(o, path):

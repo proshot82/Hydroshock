@@ -4,12 +4,11 @@
   "errors": [],
   "warnings": [],
   "info": {
-    "states": 47456,
+    "states": 46944,
     "goal_states": 16384,
     "shortest_path": [
       "C01_read_order",
       "C02_trolley_stairs",
-      "C03_photo_floor",
       "C04_threshold",
       "C05_plunger_mirror",
       "C06_inspect_cabin",
@@ -30,7 +29,6 @@
     "bottlenecks": [
       "C01_read_order",
       "C02_trolley_stairs",
-      "C03_photo_floor",
       "C04_threshold",
       "C05_plunger_mirror",
       "C06_inspect_cabin",
@@ -46,14 +44,6 @@
       "C16_ride_as_staff"
     ],
     "free_pairs": [
-      [
-        "C03_photo_floor",
-        "C04_threshold"
-      ],
-      [
-        "C03_photo_floor",
-        "C08_offering"
-      ],
       [
         "C04_threshold",
         "C08_offering"
@@ -322,7 +312,7 @@
       "wet_ring_seen"
     ],
     "actions_total": 30,
-    "actions_required": 16,
+    "actions_required": 15,
     "rooms_used": [
       "W2",
       "W3",
@@ -331,7 +321,7 @@
     "required_by_type": {
       "read": 2,
       "use": 9,
-      "inspect": 4,
+      "inspect": 3,
       "talk": 1
     }
   }

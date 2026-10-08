@@ -1,0 +1,126 @@
+<title>Музыка Гидроудара</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Old+Standard+TT:wght@400;700&family=PT+Sans:wght@400;700&display=swap">
+<style>
+/* Одна колонка карточек-тем, как листы приёмки в конторе водолечебницы: латунь по мокрому кафелю */
+:root{
+  --bg:#eef1ef; --paper:#fbfcfa; --fg:#1f2a28; --muted:#5d6b67; --line:#cdd6d2;
+  --brass:#9a6b1f; --brass-soft:#f3e6cc; --ok:#2f7a4f; --ok-soft:#dcefe3;
+  --display:"Old Standard TT",Georgia,"Times New Roman",serif;
+  --body:"PT Sans","Segoe UI",Roboto,Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#141a19; --paper:#1c2423; --fg:#e7ece9; --muted:#9aa8a4; --line:#2f3b39;
+  --brass:#d9a54a; --brass-soft:#3a2f1c; --ok:#6cc391; --ok-soft:#1f3a2b; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141a19; --paper:#1c2423; --fg:#e7ece9; --muted:#9aa8a4; --line:#2f3b39;
+  --brass:#d9a54a; --brass-soft:#3a2f1c; --ok:#6cc391; --ok-soft:#1f3a2b; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:16px/1.5 var(--body);padding:0 16px}
+main{max-width:760px;margin:0 auto;padding-block:32px 48px;display:grid;gap:20px}
+h1{font:700 2rem/1.15 var(--display);margin:0;text-wrap:balance}
+.lead{margin:0;color:var(--muted);max-width:62ch}
+.status{font-size:.9rem;color:var(--muted)}
+section.theme{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:18px;display:grid;gap:12px}
+.head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px}
+.head h2{font:700 1.35rem/1.2 var(--display);margin:0}
+.where{color:var(--muted);font-size:.95rem}
+code{font-size:.85em;color:var(--brass)}
+.vars{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px}
+.var{border:1px solid var(--line);border-radius:4px;padding:10px;display:grid;gap:8px;min-width:0}
+.var.picked{border-color:var(--ok);background:var(--ok-soft)}
+.var b{font-weight:700}
+audio{width:100%}
+.choices{display:flex;flex-wrap:wrap;gap:8px}
+.choices button{font:inherit;font-size:.95rem;padding:6px 12px;border-radius:4px;border:1px solid var(--line);background:var(--bg);color:var(--fg);cursor:pointer}
+.choices button[aria-pressed="true"]{background:var(--brass);border-color:var(--brass);color:var(--paper)}
+.choices button:focus-visible,textarea:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+label{font-size:.9rem;color:var(--muted)}
+textarea{width:100%;box-sizing:border-box;min-height:56px;font:inherit;padding:8px;border:1px solid var(--line);border-radius:4px;background:var(--bg);color:var(--fg)}
+.saved{font-size:.85rem;color:var(--ok);min-height:1.2em}
+.prompt{font-size:.8rem;color:var(--muted);margin:0}
+</style>
+
+<main>
+  <header style="display:grid;gap:8px">
+    <h1>Музыка «Гидроудара»: тема низа</h1>
+    <p class="lead">Заставка, отель, служебные коридоры и эпилог приняты и уже в игре. Низ — полузатопленная пещера; прошлый круг вышел маршевым и церковным, поэтому орган и марш убраны. Четыре варианта по 2 минуты: выберите один или «Ни один» и напишите, что поменять.</p>
+    <div class="status" id="status">Подключаю сохранение…</div>
+  </header>
+  <div id="list" style="display:grid;gap:20px"></div>
+</main>
+
+<script>
+// Титул — новый круг; остальные приняты, проверяем шов петли
+const TITLE=["bgm_below","Внизу: пещера Кухтулху","W5–W6; четвёртый круг: без органа и марша. 6–7 — плывущая подводная (арфа, челеста, маримба, стеклянная гармоника); 8–9 — лукавая медленная хабанера (бас-кларнет, контрафагот, пиццикато)",
+  "6–7: dreamy floating underwater sea cave, harp, celesta, marimba, glass harmonica, bass clarinet, no beat · 8–9: sly slinky slow habanera, bass clarinet, contrabassoon, pizzicato, harp"];
+const ACCEPTED=[];
+const LOOPS={bgm_hotel:"82,5",bgm_service:"84,0",bgm_below:"78,0",bgm_epilogue:"76,8"};
+const picks={}; let db=null; const timers={};
+const list=document.getElementById("list"), status=document.getElementById("status");
+
+function el(html){const t=document.createElement("template");t.innerHTML=html.trim();return t.content.firstChild}
+function choices(id,opts,field){
+  const p=picks[id]||{}; const ch=el('<div class="choices" role="group"></div>');
+  for(const [val,lbl] of opts){const b=document.createElement("button");b.type="button";b.textContent=lbl;
+    b.setAttribute("aria-pressed",String(p[field]===val));b.onclick=()=>save(id,{[field]:val});ch.appendChild(b)}
+  return ch;
+}
+function noteBox(id,ph){
+  const p=picks[id]||{};
+  const w=el(`<div style="display:grid;gap:4px"><label for="note_${id}">Что поменять</label><textarea id="note_${id}"></textarea><div class="saved"></div></div>`);
+  const ta=w.querySelector("textarea"); ta.placeholder=ph; ta.value=p.note||"";
+  ta.oninput=()=>{clearTimeout(timers[id]);timers[id]=setTimeout(()=>save(id,{note:ta.value},true),800)};
+  return w;
+}
+function render(){
+  list.textContent="";
+  { const [id,name,where,prompt]=TITLE, p=picks[id]||{};
+    const s=el('<section class="theme"><div class="head"><h2></h2><code></code></div><p class="where" style="margin:0"></p><div class="vars"></div></section>');
+    s.querySelector("h2").textContent=name; s.querySelector("code").textContent=id; s.querySelector(".where").textContent=where;
+    const vars=s.querySelector(".vars");
+    for(const v of ["v6","v7","v8","v9"]){
+      const d=el(`<div class="var${p.choice===v?" picked":""}"><b>Вариант ${v.slice(1)}</b><audio controls preload="none" src="audio/${id}_${v}.mp3"></audio></div>`);
+      vars.appendChild(d);
+    }
+    s.appendChild(choices(id,[["v6","Беру 6"],["v7","Беру 7"],["v8","Беру 8"],["v9","Беру 9"],["none","Ни один"]],"choice"));
+    s.appendChild(noteBox(id,"например: медленнее, больше органа"));
+    const pr=el('<p class="prompt"></p>'); pr.textContent="Промпт: "+prompt; s.appendChild(pr);
+    list.appendChild(s);
+  }
+  for(const [id,name,where] of ACCEPTED){
+    const p=picks[id]||{}, v=p.choice?p.choice.slice(1):"?";
+    const s=el(`<section class="theme"><div class="head"><h2></h2><span class="where"></span><code></code></div>
+      <div class="var"><b>Шов петли</b><audio controls preload="none" src="audio/seam_${id}.mp3"></audio></div></section>`);
+    s.querySelector("h2").textContent=name; s.querySelector(".where").textContent=`${where} · принят вариант ${v} · петля ${LOOPS[id]} с`;
+    s.querySelector("code").textContent=id;
+    s.appendChild(choices(id,[["clean","Шов чистый"],["audible","Шов слышен"]],"seam"));
+    s.appendChild(noteBox(id,"например: на шве сбивается ритм"));
+    list.appendChild(s);
+  }
+  list.querySelectorAll("audio").forEach(a=>a.addEventListener("play",()=>list.querySelectorAll("audio").forEach(o=>{if(o!==a)o.pause()})));
+}
+
+async function save(id,patch,quiet){
+  picks[id]={...(picks[id]||{}),...patch};
+  if(!quiet) render();
+  if(!db){status.textContent="Сохранение недоступно: выбор останется только на этом экране. Напишите его в чат.";return}
+  try{
+    const p=picks[id];
+    await db.doc("picks/"+id).set({choice:p.choice||"",seam:p.seam||"",note:p.note||"",at:new Date().toISOString()});
+    const s=document.querySelector(`#note_${id}`)?.parentElement.querySelector(".saved"); if(s) s.textContent="Сохранено";
+  }catch(e){status.textContent="Не сохранилось ("+(e.code||e.message)+"). Попробуйте ещё раз или напишите выбор в чат."}
+}
+
+render();
+(async()=>{
+  try{ db=await window.claude?.use("db"); }catch(e){ db=null }
+  if(!db){status.textContent="Сохранение недоступно: выбор останется только на этом экране. Напишите его в чат.";return}
+  status.textContent="Выбор сохраняется автоматически.";
+  try{
+    const snap=await db.collection("picks").get();
+    for(const d of snap.docs){const x=d.data(); picks[d.id]={choice:x.choice||undefined,seam:x.seam||undefined,note:x.note||""}}
+    // прежний отказ от титула v1/v2 не переносим в новый круг
+    if(picks.bgm_below && !["v6","v7","v8","v9","none"].includes(picks.bgm_below.choice)) delete picks.bgm_below.choice;
+    render();
+  }catch(e){status.textContent="Не удалось загрузить прежний выбор ("+(e.code||e.message)+")."}
+})();
+</script>

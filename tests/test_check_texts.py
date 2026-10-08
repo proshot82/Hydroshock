@@ -31,6 +31,19 @@ def messages(errs):
     return "\n".join("%s: %s" % (sid, msg) for sid, msg in errs)
 
 
+POLISH = ROOT / "texts" / "polish"
+
+# Правила, введённые решением автора 06.10.2026 (латиница во всех актах, латинская
+# буква в кириллическом слове, словарь «один предмет — одно имя»). Версии до этой
+# даты (CLAUDE, FINAL) писались по прежним правилам и живут как «было» слепого
+# сравнения; тексты с решениями — texts/polish/, их проверяет PolishTest.
+NEW_RULES = ("английское слово", "латинская буква", "второе имя предмета")
+
+
+def before_rules(items):
+    return [(s, m) for s, m in items if not m.startswith(NEW_RULES)]
+
+
 class BriefTest(unittest.TestCase):
     def test_brief_parsed(self):
         b = ct.parse_brief(BRIEF)
@@ -67,7 +80,7 @@ class NormTest(unittest.TestCase):
 class ClaudeVersionTest(unittest.TestCase):
     def test_claude_version_passes(self):
         errs, warns, stats = run_check(CLAUDE.read_text(encoding="utf-8"))
-        self.assertEqual(errs, [], messages(errs))
+        self.assertEqual(before_rules(errs), [], messages(errs))
         self.assertEqual(stats["slots"], 154)
 
 
@@ -181,6 +194,29 @@ class NegativeTest(unittest.TestCase):
         self.assertCaught(text, "не по формату")
 
 
+class PolishTest(unittest.TestCase):
+    """Тексты с решениями автора 06.10.2026 проходят нынешние правила без
+    ошибок и предупреждений (до голосования живут в texts/polish/)."""
+
+    def check(self, n, runner, slots):
+        errs, warns, stats = runner((POLISH / f"ACT{n}_TEXTS_POLISH.md").read_text(encoding="utf-8"))
+        self.assertEqual(errs, [], messages(errs))
+        self.assertEqual(warns, [], messages(warns))
+        self.assertEqual(stats["slots"], slots)
+
+    def test_act1(self):
+        self.check(1, run_check, 154)
+
+    def test_act2(self):
+        self.check(2, run_check2, 164)
+
+    def test_act3(self):
+        self.check(3, run_check3, 110)
+
+    def test_act4(self):
+        self.check(4, run_check4, ACT4_SLOTS)
+
+
 if __name__ == "__main__":
     unittest.main()
 
@@ -210,7 +246,7 @@ class Act2Test(unittest.TestCase):
 
     def test_claude_version_clean(self):
         errs, _, stats = run_check2(self.base)
-        self.assertEqual(errs, [], messages(errs))
+        self.assertEqual(before_rules(errs), [], messages(errs))
         self.assertEqual(stats["slots"], 164)  # редакция 2: слот Z12.point.look снят (решение автора 05.10.2026)
 
     def spoil(self, old, new):
@@ -271,7 +307,7 @@ class Act2Test(unittest.TestCase):
 class Act2FinalTest(unittest.TestCase):
     def test_final_body_equals_claude(self):
         claude = CLAUDE2.read_text(encoding="utf-8")
-        final = (ROOT / "texts" / "act2" / "ACT2_TEXTS_FINAL.md").read_text(encoding="utf-8")
+        final = (ROOT / "texts" / "act2" / "ACT2_TEXTS_FINAL_v1.md").read_text(encoding="utf-8")  # прежний итог 05.10
         key = "### OPEN.counter"
         self.assertEqual(final[final.index(key):], claude[claude.index(key):])
 
@@ -305,8 +341,8 @@ class Act3Test(unittest.TestCase):
 
     def test_claude_version_clean(self):
         errs, warns, stats = run_check3(self.base)
-        self.assertEqual(errs, [], messages(errs))
-        self.assertEqual(warns, [], messages(warns))
+        self.assertEqual(before_rules(errs), [], messages(errs))
+        self.assertEqual(before_rules(warns), [], messages(warns))
         self.assertEqual(stats["slots"], 110)
 
     def spoil(self, old, new):
@@ -391,6 +427,131 @@ class Act3FinalTest(unittest.TestCase):
 
     def test_final_body_equals_claude(self):
         claude = CLAUDE3.read_text(encoding="utf-8")
-        final = (ROOT / "texts" / "act3" / "ACT3_TEXTS_FINAL.md").read_text(encoding="utf-8")
+        final = (ROOT / "texts" / "act3" / "ACT3_TEXTS_FINAL_v1.md").read_text(encoding="utf-8")  # прежний итог 05.10
         key = "### OPEN.door"
+        self.assertEqual(final[final.index(key):], claude[claude.index(key):])
+
+
+BRIEF4 = ROOT / "texts" / "act4" / "BRIEF_ACT4_TEXTS.md"
+CLAUDE4 = ROOT / "texts" / "act4" / "ACT4_TEXTS_CLAUDE.md"
+ACT4_SLOTS = 75
+
+
+def run_check4(text):
+    with tempfile.TemporaryDirectory() as d:
+        p = Path(d) / "тексты акта 4.md"
+        p.write_text(text, encoding="utf-8")
+        brief = ct.parse_brief(BRIEF4)
+        texts, fmt = ct.parse_texts(p)
+        return ct.check(brief, texts, fmt, act=4)
+
+
+class Act4Test(unittest.TestCase):
+    def setUp(self):
+        self.base = CLAUDE4.read_text(encoding="utf-8")
+
+    def test_detect_act(self):
+        self.assertEqual(ct.detect_act(BRIEF4), 4)
+
+    def test_claude_version_clean(self):
+        errs, warns, stats = run_check4(self.base)
+        self.assertEqual(before_rules(errs), [], messages(errs))
+        self.assertEqual(before_rules(warns), [], messages(warns))
+        self.assertEqual(stats["slots"], ACT4_SLOTS)
+
+    def spoil(self, old, new):
+        self.assertIn(old, self.base)
+        errs, _, _ = run_check4(self.base.replace(old, new, 1))
+        return messages(errs)
+
+    def test_hello_required(self):
+        # «здравствуйте» должно быть у Лапидуса в самом докладе, а не только в его шутке после
+        text = self.base.replace("Здравствуйте. Лапидус, инженер. Прибыл с оплатой и докладом.",
+                                 "Лапидус, инженер. Прибыл с оплатой и докладом.", 1)
+        text = text.replace("Записывает «здравствуйте». В графу доходов, надо полагать.",
+                            "Записывает. В графу доходов, надо полагать.", 1)
+        errs, _, _ = run_check4(text)
+        self.assertIn("здравствуйте", messages(errs))
+
+    def test_kuh_without_isolde_bureaucratese(self):
+        msg = self.spoil("Приём окончен. Расписаться — в журнале. Журнал — в конторе.",
+                         "Приём окончен в установленном порядке. Журнал — в конторе.")
+        self.assertIn("канцелярит Изольды", msg)
+
+    def test_kuh_mat_is_error(self):
+        msg = self.spoil("Отметка принята. Встречная.", "Отметка принята, блядь. Встречная.")
+        self.assertIn("лок канона", msg)
+
+    def test_removed_lines_banned(self):
+        msg = self.spoil("Краску не прощаю. Но учёту это не мешает.",
+                         "Меня не увольняли. Меня благоустроили.")
+        self.assertIn("снятая строка", msg)
+
+    def test_valve_line_required(self):
+        msg = self.spoil("«Послѣ сего пускать». Инструкция тысяча девятьсот восьмого. Дочитал.",
+                         "Инструкция тысяча девятьсот восьмого. Дочитал до конца.")
+        self.assertIn("послѣ сего пускать", msg)
+
+    def test_menu_line_required(self):
+        msg = self.spoil("Кефир — по четвергам\nВаш комфорт", "Кефир — по средам\nВаш комфорт")
+        self.assertIn("кефир — по четвергам", msg)
+
+    def test_menu_signature(self):
+        msg = self.spoil("Кефир — по четвергам\nВаш комфорт — наша концепция.\nУправляющий",
+                         "Кефир — по четвергам\nС уважением.\nУправляющий")
+        self.assertIn("подписи управляющего", msg)
+
+    def test_isolde_silent(self):
+        msg = self.spoil(
+            "lap | lap_soap_smug | STATE,CHAR | Кружка Изольды. Кефирная. А сама штампует и не смотрит. "
+            "Некоторые вещи вода не меняет.",
+            "iz | iz_formal | STATE | Обслуживающий персонал, ящик закрыть.")
+        self.assertIn("не действует", msg)
+
+    def test_clean_only_after_victory(self):
+        msg = self.spoil("lap | lap_soap_neutral | PLOT,CHAR | Приёмный пункт. Кефир наверху, Лапидус внизу.",
+                         "lap | lap_clean | PLOT,CHAR | Приёмный пункт. Кефир наверху, Лапидус внизу.")
+        self.assertIn("lap_clean до победы", msg)
+
+    def test_epilogue_needs_clean(self):
+        msg = self.spoil("lap | lap_clean | CHAR | Минус четыре звезды. Но с водой. В сумме — отель.",
+                         "lap | lap_soap_neutral | CHAR | Минус четыре звезды. Но с водой. В сумме — отель.")
+        self.assertIn("нужен lap_clean", msg)
+
+    def test_look_not_before_coming_out(self):
+        msg = self.spoil("kuh | kuh_formal | PLOT,CHAR | Доклад — есть. Докладчика — нет. Жду.",
+                         "kuh | kuh_looks | PLOT,CHAR | Доклад — есть. Докладчика — нет. Жду.")
+        self.assertIn("kuh_looks раньше времени", msg)
+
+    def test_first_look_required(self):
+        msg = self.spoil("kuh | kuh_looks | CHAR,PLOT | Так. Докладчик. Фамилия, должность.",
+                         "kuh | kuh_formal | CHAR,PLOT | Так. Докладчик. Фамилия, должность.")
+        self.assertIn("первого взгляда", msg)
+
+    def test_ledger_needs_columns(self):
+        msg = self.spoil("Число — Что подано — Доложилъ — Принялъ", "Число — Что подано — Принялъ")
+        self.assertIn("доложилъ", msg)
+
+    def test_tentacles_allowed_in_act4_only(self):
+        self.assertIn("щупальц", self.base.lower())
+        errs, _, _ = run_check4(self.base)
+        self.assertNotIn("щупальца", messages(errs))
+        text3 = CLAUDE3.read_text(encoding="utf-8").replace(
+            "Груз доставлен. Груз молчит.", "Груз доставлен. Где-то щупальца.", 1)
+        errs3, _, _ = run_check3(text3)
+        self.assertIn("«щупальца»", messages(errs3))
+
+
+class Act4FinalTest(unittest.TestCase):
+    def test_final_passes_brief(self):
+        brief = ct.parse_brief(BRIEF4)
+        texts, fmt = ct.parse_texts(ROOT / "texts" / "act4" / "ACT4_TEXTS_FINAL.md")
+        errs, _, stats = ct.check(brief, texts, fmt, act=4)
+        self.assertEqual(errs, [], messages(errs))
+        self.assertEqual(stats["slots"], ACT4_SLOTS)
+
+    def test_final_body_equals_claude(self):
+        claude = CLAUDE4.read_text(encoding="utf-8")
+        final = (ROOT / "texts" / "act4" / "ACT4_TEXTS_FINAL_v1.md").read_text(encoding="utf-8")  # прежний итог 05.10
+        key = "### OPEN.arrive"
         self.assertEqual(final[final.index(key):], claude[claude.index(key):])
