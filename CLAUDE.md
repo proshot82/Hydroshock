@@ -9,3 +9,4 @@ docs/history/ (PUZZLE_FREE, промпт v1, handoff ChatGPT, Фаза_0.docx, v
 Производственная сводка — docs/BJ3_GDD.md и docs/BJ3_SLOT_FLAGS.md (проверка: python tools/texts/check_slot_flags.py); тексты — texts/act*/ACT*_TEXTS_FINAL.md (генерируются tools/texts/merge_texts.py, правки через texts/polish/ACT*_TEXTS_EDITS.md), проверка tools/texts/check_texts.py.
 Инфраструктура скопирована из BJ2 (C:\Янычар\bj2) — сам BJ2 не трогать.
 Спойлер-гигиены нет. Генерируемые данные руками не править. Релиз — только по слову «собирай».
+Новая сессия (заговорил о ней автор или Claude) — сначала проверить, нужно ли слияние в main (открытые PR, отставание main), и доложить автору (решение автора 08.10.2026).
