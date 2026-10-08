@@ -15,6 +15,8 @@
     {"act": "II", "slot": "Z12.seal.tear", "speaker": "lap", "kind": "verbatim", "text": "Пломбы срывают воры и дураки. Я, в первую очередь, инженер. А уж потом всё остальное."},
     {"act": "III", "slot": "DOC.note", "speaker": "doc", "kind": "verbatim", "text": "Платить МНѢ водой??? Да я васъ всѣхъ въ канализацію смою!"},
     {"act": "IV", "slot": "DOC.note_fixed", "speaker": "doc", "kind": "verbatim", "text": "Платить МНѢ водой??? Да я васъ всѣхъ въ канализацію смою!"},
-    {"act": "IV", "slot": "SEQ.finale", "speaker": "lap", "kind": "verbatim", "text": "Хороший Лапидус — чистый Лапидус."}
+    {"act": "IV", "slot": "SEQ.finale", "speaker": "lap", "kind": "verbatim", "text": "Хороший Лапидус — чистый Лапидус."},
+    {"act": "III", "slot": "Z11.ride.standing", "speaker": "lap", "kind": "part", "text": "Людям нельзя. Значит, людей тут и не будет. Будет груз."},
+    {"act": "III", "slot": "SEQ.ride", "speaker": "lap", "kind": "verbatim", "text": "Нарушения нет: снаружи — ни одного человека, внутри — груз. Лапидус как всегда не попал под статью."}
   ]
 }
