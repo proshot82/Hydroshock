@@ -6,6 +6,13 @@
   "w": 374,
   "h": 766
  },
+ "st_w4_tube_photo": {
+  "base": "room_w4.png",
+  "x": 319,
+  "y": 770,
+  "w": 602,
+  "h": 301
+ },
  "st_w5_kuh": {
   "base": "room_w5.png",
   "x": 529,

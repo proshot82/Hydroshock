@@ -1,4 +1,4 @@
-# Кандидаты: состояния W4 (08.10.2026, редакция 2 — по замечаниям автора)
+# Кандидаты: состояния W4 (08.10.2026, редакция 3 — по замечаниям автора)
 
 Вырезки поверх принятой `assets/gfx/rooms/room_w4.png`; координаты — `cutouts_candidates.json`.
 После приёмки автором: повторный запуск `tools/assets/cutout.py` с параметрами ниже → `assets/gfx/cutouts/`
@@ -18,15 +18,13 @@
 | Состояние | Вариант (job) | Параметры |
 |---|---|---|
 | st_w4_mirror_aside | `st_w4_mirror_aside_fix` (04b70ca1…; наклейка «Не трогать — элемент дизайна» врезана из принятого `st_w4_mirror` — `plaque_insert.py`, углы `517.5,563 552,556 554.5,574 520.5,585`) | `--box 425,190,600,650 --open 3 --align 6 --grow 8 --feather 3` |
-| st_w4_cabin_full | `st_w4_cabin_full2` (f9010a05…) | `--box 222,172,398,708 --thresh 3 --feather 3 --align 4` |
-| st_w4_cabin_empty | `st_w4_cabin_empty2` (fbaeeeb9…) | `--box 222,172,398,708 --thresh 3 --feather 3 --align 4` |
-| st_w4_stairs_open | `st_w4_stairs_open4` (62bab420…) | `--box 598,258,818,572 --thresh 30 --open 3 --close 25 --align 6 --grow 8 --feather 3` |
-| st_w4_design | `st_w4_design5` (6fa4b30a…); БАЗА — склейка `room_w4 + st_w4_mirror_aside + st_w4_stairs_open` | `--box 540,310,745,600 --thresh 30 --open 3 --close 15 --align 6 --grow 8 --feather 3 --base-name room_w4.png` |
+| st_w4_cabin_full | `st_w4_cabin_full4` (27ee292e…; нарисована от пустой 0b9da089 — та же кабина) | `--box 222,172,398,708 --thresh 3 --feather 3 --align 4` |
+| st_w4_cabin_empty | `st_w4_cabin_open1` (0b9da089…; решётка открыта, рубильник на задней стенке) | `--box 222,172,398,708 --thresh 3 --feather 3 --align 4` |
+| st_w4_stairs_open | `st_w4_stairs_open13` (6026b89a…; столб с шаром, поручень уходит вниз) | `--box 598,258,818,572 --thresh 30 --open 3 --close 25 --align 6 --grow 8 --feather 3` |
+| st_w4_design | `st_w4_design7` (90191679…); БАЗА — склейка `room_w4 + st_w4_mirror_aside + st_w4_cabin_empty + st_w4_stairs_open` | `--box 560,330,700,600 --thresh 30 --open 3 --close 15 --align 6 --grow 8 --feather 3 --base-name room_w4.png` |
 | st_w4_water_bottle | `st_w4_water_bottle` (3a782e09…) | `--box 1125,430,1180,545 --thresh 14 --open 3 --close 9 --align 4 --grow 4 --feather 3` |
-| st_w4_films | `st_w4_films` (edf6eb4c…) | `--box 950,600,1085,680 --thresh 12 --open 3 --close 15 --align 4 --grow 5 --feather 3` |
+| st_w4_films | `st_w4_films2` (fb3571e6…; плёнки на стекле, угол за рамой) | `--box 860,625,1070,720 --thresh 7 --open 1 --close 31 --align 4 --grow 6 --feather 3` |
 | st_w4_plate | `st_w4_plate` (8be82651…) | `--box 985,280,1085,415 --open 3 --align 4 --grow 5 --feather 3` |
-| st_w4_tube_photo (А) | `st_w4_tube_photo2` (02366be5…) | `--box 330,780,910,1060 --thresh 18 --open 3 --close 35 --align 4 --grow 8 --feather 3` |
-| st_w4_tube_photo_b (Б) | `st_w4_tube_photo3` (b07a9554…) | `--box 300,840,620,1065 --open 3 --align 4 --grow 8 --feather 3` |
 
 Порядок слоёв в движке: зеркало у стены → кабина → лестница → куча «дизайна» (она ближе к камере и
 заслоняет створку) → остальное.
@@ -36,5 +34,11 @@
 сдаче: беспорядок у северной стены), 3–4 (нарисованы на кадре с закрытой дверью), 6 (закрывает наклейку
 зеркала).
 
-`../room_w4_okr_fix.png` — база W4 с исправленной надписью «Осторожно, окрашено» (в принятой — «окращено»):
+Принято автором и уже в `assets/`: `st_w4_tube_photo` (вариант А) и база W4 с исправленной надписью «Осторожно, окрашено» (в принятой — «окращено»):
 прямоугольник 945,424–1195,460 из `st_w4_cabin_empty` (0f1f84df…, сдвиг −1 px), растушёвка 3 px, цвет по кольцу.
+
+Редакция 3 (замечания автора 08.10.2026): полная кабина — от пустой; пустая — с открытой решёткой (её открыли
+для выноса вещей и она остаётся открытой; на время пробного пуска, между `SEQ.test.send` и `SEQ.test.call`,
+кабины нет — видна база с закрытой решёткой); рубильник — на задней стенке кабины; лестница — без кольца
+(пробы 6–9 с кольцом-ограждением отклонены: нижнее кольцо перегораживало проход; 10–11 вели наверх; 12 —
+прямая, не винтовая); плёнки — на стекле; куча — те же вещи из кабины.
