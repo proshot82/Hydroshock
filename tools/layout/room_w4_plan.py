@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parents[2]
 R = lambda n: ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', n)
 B = lambda n: ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', n)
 im = Image.new('RGB', (1500, 1360), 'white'); d = ImageDraw.Draw(im)
-d.text((30, 15), "W4 зал прекраснодушия — план и камера (ред. 2, на утверждение)", fill='black', font=B(26))
+d.text((30, 15), "W4 зал прекраснодушия — план и камера (ред. 2, утверждено автором 08.10.2026)", fill='black', font=B(26))
 d.text((30, 52), "север — вверх; зал к западу от вестибюля, служебный коридор — вдоль южной стены (план первого этажа)", fill=(90, 90, 90), font=R(16))
 d.text((30, 76), "окон в стенах зала нет: он внутри здания, свет — сверху, через стеклянный фонарь в потолке (1908)", fill=(150, 20, 20), font=B(16))
 OY = 180
