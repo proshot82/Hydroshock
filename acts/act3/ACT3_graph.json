@@ -282,7 +282,7 @@
         "knows_lift_in_hall"
       ],
       "removes": [],
-      "optional": false
+      "optional": true
     },
     {
       "id": "C04_threshold",
@@ -295,6 +295,7 @@
       ],
       "adds": [
         "knows_door_behind_mirror",
+        "knows_lift_in_hall",
         "mirror_seen"
       ],
       "removes": [],

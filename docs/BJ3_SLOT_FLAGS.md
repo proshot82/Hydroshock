@@ -377,11 +377,11 @@
 | `Z12.instr.read` | `zoom:Z12` ∧ `knows_receiving_point` ∧ ¬`instr1908_read` | C01_read_order → `DOC.instr1908` | `instr1908_read`, `knows_order_trolley` |
 | `Z12.door.knock.again` | `zoom:Z12`, постучать (в Акте III) | — (D2) | — |
 | `SEQ.trolley.hall` | `room:W2` ∧ `trolley_service_side` ∧ `knows_order_trolley`, в зал с тележкой — кадр 1 | C02_trolley_stairs | `trolley_in_hall`; `trolley.pos` = `hall` |
-| `W4.stairs.trolley` | `room:W4` ∧ `trolley_in_hall` ∧ `knows_stairs_narrow`, спустить тележку — кадр 2 | C02_trolley_stairs | `knows_lift_exists`; `trolley.pos` = `stairs` |
+| `W4.stairs.trolley` | `room:W4` ∧ `trolley_in_hall` ∧ `knows_stairs_narrow`, спустить тележку — кадр 2 | C02_trolley_stairs | `knows_lift_exists`; `trolley.pos` = `stairs` на кадр слота, затем `hall` (выкатил обратно — правка 08.10.2026) |
 | `W4.stairs.carry` | `room:W4` ∧ `trolley_in_hall`, нести тележку | — (D1) | — |
 | `Z10.photo.again` | `zoom:Z10` ∧ `knows_lift_exists` ∧ `photo_seen` ∧ ¬`knows_lift_in_hall` | C03_photo_floor | `knows_lift_in_hall` |
 | `W4.lift.search` | (`room:W3` ∨ `room:W2`) ∧ `knows_lift_exists` ∧ ¬`knows_lift_in_hall`, искать лифт | — (D4) | — |
-| `Z11.threshold.look` | `zoom:Z11` ∧ `knows_lift_exists` ∧ ¬`knows_door_behind_mirror` | C04_threshold | `knows_door_behind_mirror`, `mirror_seen` |
+| `Z11.threshold.look` | `zoom:Z11` ∧ `knows_lift_exists` ∧ ¬`knows_door_behind_mirror` | C04_threshold | `knows_door_behind_mirror`, `knows_lift_in_hall`, `mirror_seen` |
 | `Z11.mirror.look.again` | `zoom:Z11` ∧ `knows_door_behind_mirror` ∧ ¬`mirror_removed` | — | — |
 | `Z11.mirror.press` | `zoom:Z11` ∧ `knows_door_behind_mirror` ∧ ¬`mirror_removed`, нажать | O01_mirror_hands (D5) | `mirror_tried` |
 | `Z11.mirror.pull` | `zoom:Z11` ∧ `knows_door_behind_mirror` ∧ ¬`mirror_removed`, потянуть | O01_mirror_hands (D6) | `mirror_tried` |
