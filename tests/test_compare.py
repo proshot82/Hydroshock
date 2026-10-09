@@ -134,12 +134,13 @@ class MergeTest(unittest.TestCase):
     def test_sources_final(self):
         # раунд «живая речь» 09.10.2026: голосов нет, все слоты — живая речь;
         # по правилам ТЗ — только слоты, которых в прежнем итоге не было (новые по плану правок);
-        # правки — строка автора 09.10.2026 про вантуз и правки автора со страницы чтения
+        # правки — строка автора 09.10.2026 про вантуз, правки автора со страницы чтения
+        # и устройство тележки по решению автора 09.10.2026 (шторка с кармашками, пластина на раме)
         _, report = self.build_final(1)
         self.assertEqual(report["claude"], [])
         self.assertEqual(report["other"], [])
         self.assertIn("Z01.plunger.look", report["edit"])
-        self.assertEqual(len(report["edit"]), 34)
+        self.assertEqual(len(report["edit"]), 37)
         # Z01.plunger.pull (новый слот, раньше — «по правилам ТЗ») теперь из правки автора
         self.assertEqual(sorted(report["rule"]), [])
         self.assertIn("Z01.plunger.pull", report["edit"])
