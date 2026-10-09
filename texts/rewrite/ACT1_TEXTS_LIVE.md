@@ -355,7 +355,7 @@ lap | lap_soap_neutral | CLUE | Администратор. Смотрит в б
 lap | lap_soap_neutral | STATE | Банный день, крупно. Чтобы видели все, кому нечем вытереться.
 
 ### W2.cascade.look
-lap | lap_soap_neutral | CLUE | Декоративный каскад. Сухой. Декоративнее уже некуда.
+lap | lap_soap_neutral | CLUE | Декоративный каскад, и совершенно сухой. Декоративнее уже некуда.
 
 ### W2.lift.use
 lap | lap_soap_tired | STATE | Назад в номер. Подумаю там, где меня видит только матрас.
