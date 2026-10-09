@@ -6,7 +6,7 @@
 только после приёмки (прежняя — в карантин `work/orig_gfx/`).
 
 Склейки-основы (повторяемы из принятых слоёв):
-- `W4_OPEN` = `room_w4 + st_w4_mirror_aside + st_w4_cabin_empty + st_w4_stairs_open`;
+- `W4_OPEN` = `room_w4` (до мела — склейки делались от прежней базы; мел вне их рамок) `+ st_w4_mirror_aside + st_w4_cabin_empty + st_w4_stairs_open`;
 - `W4_DESIGN` = `W4_OPEN + st_w4_design`.
 
 **Доска «НАШЕ» одна на все кадры** — эталон взят из трапа (job f9da7be5): ширина ~70 см (под тележку),
@@ -14,7 +14,7 @@
 
 | Файл | Кадр-вариант (job) | Вырезка |
 |---|---|---|
-| `room_w4_nashe.png` (база-кандидат) | участок 880,300–1264,516 ×5 → мел (9a83d102), уменьшен и вклеен по разнице | `--box 890,395,1000,430 --thresh 25 --open 1 --close 9 --grow 3 --feather 2`, вклейка 885,400 (73×23) |
+| ~~`room_w4_nashe.png`~~ — **принят автором 09.10.2026** («как есть»), уже `assets/gfx/rooms/room_w4.png`; прежняя — `work/orig_gfx/room_w4__до_мела_НАШЕ.png` | участок 880,300–1264,516 ×5 → мел (9a83d102), уменьшен и вклеен по разнице | `--box 890,395,1000,430 --thresh 25 --open 1 --close 9 --grow 3 --feather 2`, вклейка 885,400 (73×23) |
 | `st_w4_cabin_full` | принятый вариант 27ee292e + доска из 9ea72669 (вклейка по разнице `--box 222,585,398,708 --thresh 20 --close 21 --align 4 --grow 6 --feather 3`) → `room_w4__st_w4_cabin_full_board.png` | база `room_w4`, `--box 222,172,398,708 --thresh 3 --feather 3 --align 4` (как принятая) |
 | `st_w4_board_floor` (новое) | e3e11e3c от `W4_OPEN` → `room_w4__st_w4_board_floor.png` | база `W4_OPEN`, `--box 225,520,405,720 --thresh 25 --open 3 --close 15 --align 6 --grow 6 --feather 3 --base-name room_w4.png` |
 | `st_w4_ramp` | f9da7be5 от `W4_OPEN` → `room_w4__st_w4_ramp.png` | база `W4_OPEN`, `--box 200,540,640,800 --thresh 30 --open 3 --close 15 --align 6 --grow 8 --feather 3 --base-name room_w4.png` |
