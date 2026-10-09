@@ -1,6 +1,6 @@
 {
   "act": "ACT3",
-  "revision": 2,
+  "revision": 3,
   "assumptions": [
     "CS1. Старт — гарантированный финал Акта II (75 флагов). Лапидус внизу служебной лестницы, у двери конторы (Z12); тележка за стойкой, на служебной стороне. В W3, W4 и на лестнице гостей нет: там Лапидус ходит голым; за стойкой его закрывает от вестибюля сама стойка; тележка нужна только для вестибюля. Повторные переходы через W2 — одним переходом (H24).",
     "CS2. Двигатель акта (S3 §10): каждый шаг отменяет одно «улучшение» управляющего — зеркало на двери лифта, склад «элементов дизайна» в кабине, кефир, вычеркнутый из закупок, и пункт о докладе, вырезанный из регламента. После зеркала и склада громкая связь объявляет «третий этап плановых улучшений».",
@@ -27,85 +27,13 @@
     "CS23. Триада: инструкция 1908 года обязательна (C01); советская памятка и регламент с вырезом — по желанию (открытое решение автора).",
     "CS24. Постановка от первого лица (решение автора 05.10.2026): игрок не видит Лапидуса; зеркало — единственный полный вид до C05; вид из-под тележки — горизонтально, на уровне обуви; голоса — текстом, звук только усиливает; процесс — пара кадров, звук и титр.",
     "CS25. Долг профилактория с 1991 года в Акте III не требуется к оплате: он «состоит на учёте». Обязательство Акта IV — закрыть его в сверке без новой загадки.",
-    "CS26. Записка на бутылке — решение автора 05.10.2026, строка дословно, в дореформенной орфографии, как все её бумаги. Отступление от канона V2.1 §2 («претензия деловая, без обиды»): под бронёй бухгалтера прорывается характер. Сразу под запиской — сухой счёт по позициям: контраст и есть шутка. Мата нет (лок). Угроза — только слова: никакого явления не происходит. Для Акта IV это сетап переворота: ждали ужас из канализации — получили усталую даму из бухгалтерии."
+    "CS26. Записка на бутылке — решение автора 05.10.2026, строка дословно, в дореформенной орфографии, как все её бумаги. Отступление от канона V2.1 §2 («претензия деловая, без обиды»): под бронёй бухгалтера прорывается характер. Сразу под запиской — сухой счёт по позициям: контраст и есть шутка. Мата нет (лок). Угроза — только слова: никакого явления не происходит. Для Акта IV это сетап переворота: ждали ужас из канализации — получили усталую даму из бухгалтерии.",
+    "CS27. Решения автора 09.10.2026 (review/PUZZLE_FIX_PLAN.md). Кабина: после выноса хлама тележка упирается в латунный порожек; доска с меловым «НАШЕ» рукой сантехника кладётся трапом (C07b, загадка P10′). Выбросить доску можно (O12), ошибка видна и обратима: доска возвращается из кучи у зеркала.",
+    "CS28. Накладная Изольды (C13b): показания счётчика с витрины и «табличка восстановлена» — она вписывает с его слов; по громкой связи называет число, а не «без изменений». Витрина и табличка, если не сделаны в Акте II, делаются здесь (C17 = B01 + B08, C18 = B11 + B12 Акта II; в графе укрупнены в одно действие каждая ради размера пространства состояний, в игре это те же шаги).",
+    "CS29. Частичная приёмка (решение автора 09.10.2026): оплату можно отправить вниз одну (C19) — кабина возвращается с пустой тележкой и отметкой «Грузъ принятъ. Докладчика — нѣтъ. Пріёмъ не оконченъ»; герой едет вниз под пустой тележкой (C16b). Прежний отказ героя (O09) снят. Внизу кефир уже числится принятым (Акт IV, текст по флагу payment_sent_alone).",
+    "CS30. Скрытые условия сняты: C13 (счёт под печать) не требует наблюдения за штампом (C12 — по желанию); E05/E06 Акта IV — без «знал». Лифт ждёт закрытой решётки (решение автора 08.10.2026, C16)."
   ],
-  "start_flags": [
-    "bathday_done",
-    "breakfast_on_trolley",
-    "cascade_dry_seen",
-    "cascade_pump_dry",
-    "clothes_locked_seen",
-    "counter_notice_read",
-    "crowd_seen",
-    "drums_same_time",
-    "foam_active",
-    "foam_class_closed",
-    "foam_swollen",
-    "has_hotel_map",
-    "has_menu_card",
-    "has_stairs_key",
-    "iz_admits_facts",
-    "iz_folder_seen",
-    "iz_formal",
-    "iz_rule3_seen",
-    "iz_rules_all_shown",
-    "iz_stepladder_minimized",
-    "journal_old_read",
-    "kefir_in_drawer_seen",
-    "knows_assortment",
-    "knows_bath_day",
-    "knows_chalk_author",
-    "knows_counter_on_line",
-    "knows_foam_flow",
-    "knows_handover_gap",
-    "knows_iz_stamp_mp",
-    "knows_map_lies",
-    "knows_office_by_source",
-    "knows_paint_fresh",
-    "knows_paper_soaks",
-    "knows_plate_under_paint",
-    "knows_push_latch",
-    "knows_receiving_point",
-    "knows_service_stairs",
-    "knows_soap_grip",
-    "knows_stairs_narrow",
-    "knows_stars_fold",
-    "knows_supplier_exists",
-    "knows_supply_cut",
-    "knows_thursday_plumber",
-    "knows_trolley_chamber",
-    "knows_waiter_call",
-    "layoff_read",
-    "menu_smeared",
-    "meter_seal_seen",
-    "midpoint_known",
-    "minus_four_stars_said",
-    "name_revealed",
-    "need_cover",
-    "office_notice_read",
-    "overlay_by_frame",
-    "paint_act_read",
-    "photo_seen",
-    "plate_revealed",
-    "plunger_taken",
-    "poster_seen",
-    "reception_called",
-    "requests_stapled",
-    "seal_is_mark",
-    "shock_done",
-    "shock_report_known",
-    "stairs_open",
-    "stars_folded",
-    "topology_known",
-    "trolley_at_crowd",
-    "trolley_present",
-    "trolley_service_side",
-    "vitrine_open",
-    "voucher_read",
-    "w3_open",
-    "w4_open",
-    "wet_ring_seen"
-  ],
+  "start_flags": ["bathday_done", "breakfast_on_trolley", "cascade_demo_seen", "cascade_dry_seen", "cascade_pump_dry", "clothes_locked_seen", "counter_notice_read", "crowd_seen", "drums_same_time", "foam_active", "foam_class_closed", "foam_swollen", "has_hotel_map", "has_menu_card", "has_stairs_key", "iz_admits_facts", "iz_folder_seen", "iz_formal", "iz_rule3_seen", "iz_rules_all_shown", "iz_stepladder_minimized", "kefir_in_drawer_seen", "knows_assortment", "knows_bath_day", "knows_chalk_author", "knows_counter_on_line", "knows_foam_flow", "knows_handover_gap", "knows_iz_stamp_mp", "knows_map_lies", "knows_office_by_source", "knows_paper_soaks", "knows_push_latch", "knows_receiving_point", "knows_service_stairs", "knows_soap_grip", "knows_stairs_narrow", "knows_stars_fold", "knows_supplier_exists", "knows_supply_cut", "knows_thursday_plumber", "knows_waiter_call", "layoff_read", "midpoint_known", "minus_four_stars_said", "need_cover", "office_notice_read", "overlay_by_frame", "photo_seen", "plate_revealed", "plunger_taken", "poster_seen", "reception_called", "requests_stapled", "shock_done", "shock_report_known", "stairs_open", "stars_folded", "topology_known", "trolley_at_crowd", "trolley_present", "trolley_service_side", "voucher_read", "w3_open", "w4_open", "wet_ring_seen"],
   "flags_glossary": {
     "bathday_done": "банный день прошёл: весь съёмный текстиль в стоящей прачечной",
     "bill_read": "счёт прочитан: «Вода „Каскадъ“ — продукция поставщика. Оплатой не является»; к возобновлению подачи — бутыль за четверг, печать плательщика, доклад",
@@ -146,7 +74,6 @@
     "iz_rules_all_shown": "правило Изольды показано трижды: папка, гость у тележки, разговор с говорящей тележкой",
     "iz_sees_lapidus": "Изольда впервые посмотрела на голого человека у своей стойки",
     "iz_stepladder_minimized": "свою роль в покраске Изольда свела к «подержала стремянку, и всё» (минимизация; owner-canon строка — в P13)",
-    "journal_old_read": "старый журнал приёмки (Z10): по четвергам «кефиръ 1 бут., доложено», в графе «Принялъ» — лучистый оттиск",
     "kefir_in_drawer_seen": "в ящике Изольды — бутылка кефира; ящик задвинут, не глядя",
     "kefir_ready": "бутылка кефира Изольды на стойке",
     "knows_assortment": "прочитано меню мини-бара: кефир исключён, комбуча и лимонад, минералка «Каскадъ», пена-концентрат",
@@ -179,7 +106,6 @@
     "knows_supplier_exists": "Изольда признала: поставщик есть («поставщик» — её слово для старшего по воде)",
     "knows_supply_cut": "вывод P04: это не три поломки и не кончившаяся вода — подачу резко остановили выше по общей линии, одним движением",
     "knows_thursday_plumber": "Изольда: сантехник по четвергам носил вниз бутылку кефира и показания и здоровался",
-    "knows_trolley_chamber": "юбка не снимается: она на жёсткой раме и распахивается, внутри пустота и нижний поручень",
     "knows_waiter_call": "нормальный цикл: официант крикнул «Осторожно, горячее!», толпа расступилась не глядя, Изольда подняла доску не глядя",
     "kuh_note_read": "на бутылке «Каскадъ» записка её рукой, крупно: «Платить МНѢ водой??? Да я васъ всѣхъ въ канализацію смою!» (строка автора, дословно); под бутылкой — сухой счёт по позициям",
     "lap_hides_again": "Лапидус снова под тележкой: перед поставщиком голым стыдно",
@@ -214,8 +140,6 @@
     "relic_r2": "R2 найден: открытка «тов. К.» ко Дню работника ЖКХ от бригады профилактория, в целлофане (шкаф Z08)",
     "relic_r3": "R3 найден: старая кефирная кружка Изольды из нижнего ящика стойки — переставлена на столешницу тележки",
     "requests_stapled": "Изольда скрепила степлером три заявки по трём «услугам» в одну",
-    "seal_is_mark": "вывод P06: лучистый круг — рабочий оттиск того, кто «Принялъ» в журнале, а не сырость; он опломбировал счётчик; круг под папкой — тот же знак",
-    "send_alone_refused": "отправить оплату одну Лапидус не соглашается: платить — лично, а дверь людей не принимает",
     "shock_done": "гидроудар состоялся: воды нет во всём здании",
     "shock_report_known": "Изольда, говоря с тележкой, сообщила: воды нет во всём здании",
     "stairs_open": "служебная лестница из зала прекраснодушия отперта: внизу площадка и дверь конторы (Z12)",
@@ -232,494 +156,94 @@
     "voucher_read": "строка путёвки «Отель „Каскад“ — четыре звезды» прочитана всерьёз (вступительная виньетка)",
     "w3_open": "со служебной стороны доступна прачечная W3",
     "w4_open": "со служебной стороны доступен wellness-зал W4",
-    "wet_ring_seen": "на стекле остался круглый влажный след присоски (модель следа)"
+    "wet_ring_seen": "на стекле остался круглый влажный след присоски (модель следа)",
+    "cascade_on": "аттракцион включён самим героем: зал смотрит на каскад — ширма для витрины (состояние экрана; движок снимает при уходе из W2)",
+    "meter_reading_seen": "витрина открыта, бирка «Экспонат № 1» отогнута, показания контрольного счётчика прочитаны (число хранит движок)",
+    "chalk_sample_seen": "на раме доски почёта — меловое «НАШЕ» рукой сантехника",
+    "board_restored": "табличка «Старший по воде — тов. К.» расчищена — состояние мира, которого требует счёт",
+    "junk_out": "хлам с наклейками «элемент дизайна» вынесен из кабины; доска «НАШЕ» ещё не на порожке",
+    "ramp_set": "доска с меловым «НАШЕ» лежит трапом через латунный порожек кабины",
+    "ramp_thrown": "доску «НАШЕ» выбросили вместе с хламом; тележка упёрлась в порожек (обратимо)",
+    "invoice_filled": "Изольда вписала в накладную показания счётчика и «табличка — восстановлена» со слов обслуживающего персонала",
+    "payment_sent_alone": "оплата отправлена вниз одна: принята по накладной, докладчика не было, приём не окончен",
+    "trolley_marked_partial": "тележка вернулась пустой, с отметкой «Грузъ принятъ. Докладчика — нѣтъ. Пріёмъ не оконченъ»",
+    "goods_on_trolley": "оплата едет вниз вместе с героем на тележке (кефир, накладная, счёт)",
+    "cascade_demo_seen": "в открытии акта показано: кнопка за стойкой включает подсветку и насос каскада, и весь вестибюль поворачивается смотреть на сухой водопад; через минуту защита выключает насос"
   },
   "actions": [
-    {
-      "id": "C01_read_order",
-      "name": "У двери конторы прочитать инструкцию 1908 года: бутыль кефира на тележке — в приёмный пункт, перед пуском — доклад (Z12)",
-      "room": "W4",
-      "type": "read",
-      "requires": [
-        "stairs_open",
-        "office_notice_read",
-        "knows_receiving_point"
-      ],
-      "adds": [
-        "instr1908_read",
-        "knows_order_trolley"
-      ],
-      "removes": [],
-      "optional": false
-    },
-    {
-      "id": "C02_trolley_stairs",
-      "name": "Прикатить тележку из-за стойки служебным коридором к лестнице и попробовать спустить: винтовая лестница её не пропускает — значит, был лифт",
-      "room": "W4",
-      "type": "use",
-      "requires": [
-        "knows_order_trolley",
-        "knows_stairs_narrow",
-        "trolley_service_side"
-      ],
-      "adds": [
-        "trolley_in_hall",
-        "knows_lift_exists"
-      ],
-      "removes": [],
-      "optional": false
-    },
-    {
-      "id": "C03_photo_floor",
-      "name": "Сличить фото «Четвергъ» с полом зала: решётчатая дверь стояла на этой мозаике (Z10)",
-      "room": "W4",
-      "type": "inspect",
-      "requires": [
-        "knows_lift_exists",
-        "photo_seen"
-      ],
-      "adds": [
-        "knows_lift_in_hall"
-      ],
-      "removes": [],
-      "optional": true
-    },
-    {
-      "id": "C04_threshold",
-      "name": "Осмотреть низ «Зеркала прекраснодушия»: из мозаики выступает латунный порожек (Z11)",
-      "room": "W4",
-      "type": "inspect",
-      "requires": [
-        "knows_lift_exists",
-        "w4_open"
-      ],
-      "adds": [
-        "knows_door_behind_mirror",
-        "knows_lift_in_hall",
-        "mirror_seen"
-      ],
-      "removes": [],
-      "optional": false
-    },
-    {
-      "id": "C05_plunger_mirror",
-      "name": "Присосать вантуз к стеклу, как стекольщик, снять зеркало с крюков и отставить к стене (Z11)",
-      "room": "W4",
-      "type": "use",
-      "requires": [
-        "knows_lift_in_hall",
-        "knows_door_behind_mirror",
-        "plunger_taken",
-        "knows_soap_grip"
-      ],
-      "adds": [
-        "mirror_removed",
-        "lift_gate_seen"
-      ],
-      "removes": [],
-      "optional": false
-    },
-    {
-      "id": "C06_inspect_cabin",
-      "name": "Открыть решётку и осмотреть кабину: склад «элементов дизайна», на частях лифта — мел сантехника (Z11)",
-      "room": "W4",
-      "type": "inspect",
-      "requires": [
-        "mirror_removed"
-      ],
-      "adds": [
-        "cabin_seen",
-        "chalk_seen"
-      ],
-      "removes": [],
-      "optional": false
-    },
-    {
-      "id": "C07_clear_cabin",
-      "name": "Вынести из кабины всё с наклейками «Не трогать — элемент дизайна»; меловое «НЕ ТРОГАТЬ» не трогать (Z11)",
-      "room": "W4",
-      "type": "use",
-      "requires": [
-        "cabin_seen",
-        "chalk_seen",
-        "knows_chalk_author"
-      ],
-      "adds": [
-        "cabin_free"
-      ],
-      "removes": [],
-      "optional": false
-    },
-    {
-      "id": "C08_offering",
-      "name": "Переставить на тележку бутылку воды «Каскадъ» со стойки «Комплимент от заведения» у люка — проверить версию подношения (Z10)",
-      "room": "W4",
-      "type": "use",
-      "requires": [
-        "knows_order_trolley",
-        "trolley_in_hall",
-        "knows_assortment"
-      ],
-      "adds": [
-        "offering_on_trolley"
-      ],
-      "removes": [],
-      "optional": false
-    },
-    {
-      "id": "C09_test_run",
-      "name": "Вкатить тележку в кабину, закрыть решётку, нажать «Вниз»; подождать и нажать «Вызов» (Z11)",
-      "room": "W4",
-      "type": "use",
-      "requires": [
-        "cabin_free",
-        "lift_gate_seen",
-        "offering_on_trolley",
-        "trolley_in_hall"
-      ],
-      "adds": [
-        "test_run_done",
-        "has_bill",
-        "breakfast_stamped"
-      ],
-      "removes": [],
-      "optional": false
-    },
-    {
-      "id": "C10_read_bill",
-      "name": "Прочитать записку на бутылке «Каскадъ» («Платить МНѢ водой???») и влагостойкий счёт под ней: к оплате — бутыль за четверг, печать плательщика, доклад; подпись «Кухтулху»",
-      "room": "W4",
-      "type": "read",
-      "requires": [
-        "has_bill"
-      ],
-      "adds": [
-        "kuh_note_read",
-        "bill_read",
-        "knows_kuh_name",
-        "knows_debt_balance",
-        "knows_secret_payer",
-        "lowest_point"
-      ],
-      "removes": [],
-      "optional": false
-    },
-    {
-      "id": "C11_trolley_counter",
-      "name": "Отвезти тележку служебным коридором за стойку",
-      "room": "W2",
-      "type": "use",
-      "requires": [
-        "bill_read",
-        "trolley_in_hall"
-      ],
-      "adds": [
-        "trolley_back_at_counter"
-      ],
-      "removes": [],
-      "optional": false
-    },
-    {
-      "id": "C12_watch_stamp",
-      "name": "За стойкой посмотреть, как Изольда штампует жалобы гостей: не читает, смотрит только на «М.П.» (Z04)",
-      "room": "W2",
-      "type": "inspect",
-      "requires": [
-        "bill_read"
-      ],
-      "adds": [
-        "knows_mp_habit"
-      ],
-      "removes": [],
-      "optional": false
-    },
-    {
-      "id": "C13_bill_under_stamp",
-      "name": "Подложить счёт в стопку жалоб под её печать — графой «М.П. плательщика» вверх (Z04)",
-      "room": "W2",
-      "type": "use",
-      "requires": [
-        "knows_mp_habit",
-        "bill_read",
-        "knows_secret_payer"
-      ],
-      "adds": [
-        "bill_stamped",
-        "iz_confessed",
-        "iz_sees_lapidus",
-        "knows_payer_iz",
-        "kefir_ready",
-        "invoice_ready"
-      ],
-      "removes": [],
-      "optional": false
-    },
-    {
-      "id": "C14_load_payment",
-      "name": "Подкатить тележку к Изольде: кефир и накладную на столешницу ставит она — у неё руки сухие (Z04)",
-      "room": "W2",
-      "type": "talk",
-      "requires": [
-        "kefir_ready",
-        "invoice_ready",
-        "trolley_back_at_counter"
-      ],
-      "adds": [
-        "payment_loaded"
-      ],
-      "removes": [],
-      "optional": false
-    },
-    {
-      "id": "C15_leave_counter",
-      "name": "Увезти тележку с оплатой от стойки — Изольда берёт микрофон громкой связи и докладывает Кухтулху",
-      "room": "W2",
-      "type": "use",
-      "requires": [
-        "payment_loaded",
-        "bill_stamped",
-        "iz_confessed"
-      ],
-      "adds": [
-        "iz_reported_pa",
-        "payment_in_hall"
-      ],
-      "removes": [],
-      "optional": false
-    },
-    {
-      "id": "C16_ride_as_staff",
-      "name": "Нажать «Вниз», забраться в кабине под тележку и закрыть решётку изнутри (лифт ждёт закрытой решётки): людей возить запрещено, а персонал — не люди (Z11)",
-      "room": "W4",
-      "type": "use",
-      "requires": [
-        "payment_in_hall",
-        "iz_reported_pa",
-        "cabin_free",
-        "lift_gate_seen",
-        "iz_rule3_seen"
-      ],
-      "adds": [
-        "descended_as_staff",
-        "lap_hides_again",
-        "payment_delivered",
-        "in_receiving_point"
-      ],
-      "removes": [],
-      "optional": false
-    },
-    {
-      "id": "O01_mirror_hands",
-      "name": "Попробовать снять зеркало руками или нажать на него (Z11)",
-      "room": "W4",
-      "type": "use",
-      "requires": [
-        "knows_door_behind_mirror"
-      ],
-      "adds": [
-        "mirror_tried"
-      ],
-      "removes": [],
-      "optional": true
-    },
-    {
-      "id": "O02_ask_mirror",
-      "name": "Спросить Изольду про зеркало",
-      "room": "W2",
-      "type": "talk",
-      "requires": [
-        "knows_door_behind_mirror",
-        "trolley_service_side"
-      ],
-      "adds": [
-        "iz_mirror_design"
-      ],
-      "removes": [],
-      "optional": true
-    },
-    {
-      "id": "O03_touch_switch",
-      "name": "Повернуть рубильник с меловым «НЕ ТРОГАТЬ» и вернуть обратно (Z11)",
-      "room": "W4",
-      "type": "use",
-      "requires": [
-        "cabin_seen"
-      ],
-      "adds": [
-        "switch_tried"
-      ],
-      "removes": [],
-      "optional": true
-    },
-    {
-      "id": "O04_ask_kefir",
-      "name": "Попросить у Изольды кефир до счёта",
-      "room": "W2",
-      "type": "talk",
-      "requires": [
-        "knows_order_trolley",
-        "trolley_service_side"
-      ],
-      "adds": [
-        "iz_kefir_refused"
-      ],
-      "removes": [],
-      "optional": true
-    },
-    {
-      "id": "O05_bill_direct",
-      "name": "Отдать счёт Изольде в руки",
-      "room": "W2",
-      "type": "talk",
-      "requires": [
-        "bill_read"
-      ],
-      "adds": [
-        "iz_forwards_bill"
-      ],
-      "removes": [],
-      "optional": true
-    },
-    {
-      "id": "O06_take_bottle",
-      "name": "Взять бутылку кефира со стойки самому",
-      "room": "W2",
-      "type": "use",
-      "requires": [
-        "kefir_ready"
-      ],
-      "adds": [
-        "grip_refused_bottle"
-      ],
-      "removes": [],
-      "optional": true
-    },
-    {
-      "id": "O07_walk_down",
-      "name": "С оплатой на тележке спуститься пешком к двери конторы и постучать",
-      "room": "W4",
-      "type": "use",
-      "requires": [
-        "payment_in_hall"
-      ],
-      "adds": [
-        "door_still_closed"
-      ],
-      "removes": [],
-      "optional": true
-    },
-    {
-      "id": "O08_ride_standing",
-      "name": "Встать в кабину рядом с тележкой",
-      "room": "W4",
-      "type": "use",
-      "requires": [
-        "payment_in_hall",
-        "cabin_free"
-      ],
-      "adds": [
-        "people_ban_read"
-      ],
-      "removes": [],
-      "optional": true
-    },
-    {
-      "id": "O09_send_alone",
-      "name": "Отправить тележку с оплатой одну",
-      "room": "W4",
-      "type": "use",
-      "requires": [
-        "payment_in_hall",
-        "cabin_free"
-      ],
-      "adds": [
-        "send_alone_refused"
-      ],
-      "removes": [],
-      "optional": true
-    },
-    {
-      "id": "O10_read_memo",
-      "name": "Прочитать советскую памятку дежурной смене (Z10)",
-      "room": "W4",
-      "type": "read",
-      "requires": [
-        "w4_open"
-      ],
-      "adds": [
-        "memo_soviet_read"
-      ],
-      "removes": [],
-      "optional": true
-    },
-    {
-      "id": "O11_read_regulation",
-      "name": "Прочитать ламинированный регламент пуска на стойке (Z04)",
-      "room": "W2",
-      "type": "read",
-      "requires": [
-        "trolley_service_side"
-      ],
-      "adds": [
-        "regulation_cut_seen"
-      ],
-      "removes": [],
-      "optional": true
-    },
-    {
-      "id": "R1_token",
-      "name": "Нажать латунную заслонку «Для жетоновъ» у доски почёта (Z09)",
-      "room": "W4",
-      "type": "use",
-      "requires": [
-        "w4_open"
-      ],
-      "adds": [
-        "relic_r1"
-      ],
-      "removes": [],
-      "optional": true
-    },
-    {
-      "id": "R2_postcard",
-      "name": "Открыть внутреннюю створку служебного шкафа (Z08)",
-      "room": "W3",
-      "type": "use",
-      "requires": [
-        "w3_open"
-      ],
-      "adds": [
-        "relic_r2"
-      ],
-      "removes": [],
-      "optional": true
-    },
-    {
-      "id": "R3_mug",
-      "name": "Открыть нажатием нижний ящик стойки и переставить кружку на столешницу тележки (Z04)",
-      "room": "W2",
-      "type": "use",
-      "requires": [
-        "trolley_service_side",
-        "knows_push_latch"
-      ],
-      "adds": [
-        "relic_r3"
-      ],
-      "removes": [],
-      "optional": true
-    }
+    {"id": "C01_read_order", "name": "У двери конторы прочитать инструкцию 1908 года: бутыль кефира на тележке — в приёмный пункт, перед пуском — доклад (Z12)", "room": "W4", "type": "read",
+     "requires": ["stairs_open", "office_notice_read", "knows_receiving_point"], "adds": ["instr1908_read", "knows_order_trolley"], "removes": [], "optional": false},
+    {"id": "C02_trolley_stairs", "name": "Прикатить тележку из-за стойки служебным коридором к лестнице и попробовать спустить: винтовая лестница её не пропускает — значит, был лифт", "room": "W4", "type": "use",
+     "requires": ["knows_order_trolley", "knows_stairs_narrow", "trolley_service_side"], "adds": ["trolley_in_hall", "knows_lift_exists"], "removes": [], "optional": false},
+    {"id": "C03_photo_floor", "name": "Сличить фото «Четвергъ» с полом зала: решётчатая дверь стояла на этой мозаике (Z10)", "room": "W4", "type": "inspect",
+     "requires": ["knows_lift_exists", "photo_seen"], "adds": ["knows_lift_in_hall"], "removes": [], "optional": true},
+    {"id": "C04_threshold", "name": "Осмотреть низ «Зеркала прекраснодушия»: из мозаики выступает латунный порожек (Z11)", "room": "W4", "type": "inspect",
+     "requires": ["knows_lift_exists", "w4_open"], "adds": ["knows_door_behind_mirror", "knows_lift_in_hall", "mirror_seen"], "removes": [], "optional": false},
+    {"id": "C05_plunger_mirror", "name": "Присосать вантуз к стеклу, как стекольщик, снять зеркало с крюков и отставить к стене (Z11)", "room": "W4", "type": "use",
+     "requires": ["knows_lift_in_hall", "knows_door_behind_mirror", "plunger_taken", "knows_soap_grip"], "adds": ["mirror_removed", "lift_gate_seen"], "removes": [], "optional": false},
+    {"id": "C06_inspect_cabin", "name": "Открыть решётку и осмотреть кабину: склад «элементов дизайна», на частях лифта — мел сантехника (Z11)", "room": "W4", "type": "inspect",
+     "requires": ["mirror_removed"], "adds": ["cabin_seen", "chalk_seen"], "removes": [], "optional": false},
+    {"id": "C07_clear_junk", "name": "Вынести из кабины всё с наклейками «Не трогать — элемент дизайна» (куча — у зеркала); меловое «НЕ ТРОГАТЬ» на частях лифта не трогать (Z11)", "room": "W4", "type": "use",
+     "requires": ["cabin_seen", "chalk_seen"], "adds": ["junk_out"], "removes": [], "optional": false},
+    {"id": "C07b_set_ramp", "name": "Доску с меловым «НАШЕ» положить трапом через латунный порожек кабины: без неё тележка упирается в порожек (Z11)", "room": "W4", "type": "use",
+     "requires": ["junk_out", "chalk_seen"], "adds": ["cabin_free", "ramp_set"], "removes": [], "optional": false},
+    {"id": "O12_throw_ramp", "name": "Выбросить доску «НАШЕ» вместе с хламом, а потом попробовать вкатить тележку: упирается в порожек; доску возвращают из кучи (Z11)", "room": "W4", "type": "use",
+     "requires": ["junk_out"], "adds": ["ramp_thrown"], "removes": [], "optional": true},
+    {"id": "C08_offering", "name": "Переставить на тележку бутылку воды «Каскадъ» со стойки «Комплимент от заведения» у люка — проверить версию подношения (Z10)", "room": "W4", "type": "use",
+     "requires": ["knows_order_trolley", "trolley_in_hall", "knows_assortment"], "adds": ["offering_on_trolley"], "removes": [], "optional": false},
+    {"id": "C09_test_run", "name": "Вкатить тележку в кабину, закрыть решётку, нажать «Вниз»; подождать и нажать «Вызов» (Z11)", "room": "W4", "type": "use",
+     "requires": ["cabin_free", "lift_gate_seen", "offering_on_trolley", "trolley_in_hall"], "adds": ["test_run_done", "has_bill", "breakfast_stamped"], "removes": [], "optional": false},
+    {"id": "C10_read_bill", "name": "Прочитать записку на бутылке «Каскадъ» («Платить МНѢ водой???») и влагостойкий счёт под ней: к оплате — бутыль за четверг, печать плательщика, доклад; подпись «Кухтулху»", "room": "W4", "type": "read",
+     "requires": ["has_bill"], "adds": ["kuh_note_read", "bill_read", "knows_kuh_name", "knows_debt_balance", "knows_secret_payer", "lowest_point"], "removes": [], "optional": false},
+    {"id": "C11_trolley_counter", "name": "Отвезти тележку служебным коридором за стойку", "room": "W2", "type": "use",
+     "requires": ["bill_read", "trolley_in_hall"], "adds": ["trolley_back_at_counter"], "removes": [], "optional": false},
+    {"id": "C12_watch_stamp", "name": "За стойкой посмотреть, как Изольда штампует жалобы гостей: не читает, смотрит только на «М.П.» (Z04)", "room": "W2", "type": "inspect",
+     "requires": ["bill_read"], "adds": ["knows_mp_habit"], "removes": [], "optional": true},
+    {"id": "C17_vitrine_readings", "name": "Если не сделано в Акте II: включить ширму (кнопка аттракциона за стойкой), под тележкой открыть витрину, отогнуть бирку и прочитать показания (как B01 + B08 Акта II)", "room": "W2", "type": "use",
+     "requires": ["trolley_service_side"], "adds": ["cascade_on", "vitrine_open", "meter_seal_seen", "meter_reading_seen"], "removes": [], "optional": false},
+    {"id": "C18_board_plate", "name": "Если не сделано в Акте II: осмотреть доску почёта (свежая краска, акт, меловое «НАШЕ» на раме) и соскоблить краску с таблички кромкой меню (как B11 + B12 Акта II)", "room": "W4", "type": "use",
+     "requires": ["w4_open", "has_menu_card"], "adds": ["knows_plate_under_paint", "knows_paint_fresh", "paint_act_read", "chalk_sample_seen", "name_revealed", "board_restored", "menu_smeared"], "removes": [], "optional": false},
+    {"id": "C13_bill_under_stamp", "name": "Подложить счёт в стопку жалоб под её печать — графой «М.П. плательщика» вверх (Z04)", "room": "W2", "type": "use",
+     "requires": ["bill_read", "knows_secret_payer"], "adds": ["bill_stamped", "iz_confessed", "iz_sees_lapidus", "knows_payer_iz", "kefir_ready", "invoice_ready"], "removes": [], "optional": false},
+    {"id": "C13b_report_for_invoice", "name": "Доложить Изольде для накладной: показания счётчика (с витрины) и «табличка восстановлена» — она вписывает с его слов; если чего-то нет, спрашивает, и путь открыт (Z04)", "room": "W2", "type": "talk",
+     "requires": ["bill_stamped", "meter_reading_seen", "board_restored"], "adds": ["invoice_filled"], "removes": [], "optional": false},
+    {"id": "C14_load_payment", "name": "Подкатить тележку к Изольде: кефир и накладную на столешницу ставит она — у неё руки сухие (Z04)", "room": "W2", "type": "talk",
+     "requires": ["kefir_ready", "invoice_ready", "trolley_back_at_counter", "invoice_filled"], "adds": ["payment_loaded"], "removes": [], "optional": false},
+    {"id": "C15_leave_counter", "name": "Увезти тележку с оплатой от стойки — Изольда берёт микрофон громкой связи и докладывает Кухтулху", "room": "W2", "type": "use",
+     "requires": ["payment_loaded", "bill_stamped", "iz_confessed"], "adds": ["iz_reported_pa", "payment_in_hall"], "removes": [], "optional": false},
+    {"id": "C19_send_alone", "name": "Отправить тележку с оплатой одну: кабина уходит и возвращается — кефир и бумаги приняты, на тележке отметка «Грузъ принятъ. Докладчика — нѣтъ. Пріёмъ не оконченъ» (Z11)", "room": "W4", "type": "use",
+     "requires": ["payment_in_hall", "cabin_free", "lift_gate_seen"], "adds": ["payment_delivered", "payment_sent_alone", "trolley_marked_partial"], "removes": ["payment_in_hall"], "optional": true},
+    {"id": "C16_ride_as_staff", "name": "Нажать «Вниз», забраться в кабине под тележку и закрыть решётку изнутри (лифт ждёт закрытой решётки): людей возить запрещено, а персонал — не люди (Z11)", "room": "W4", "type": "use",
+     "requires": ["payment_in_hall", "iz_reported_pa", "cabin_free", "lift_gate_seen", "iz_rule3_seen"], "adds": ["descended_as_staff", "lap_hides_again", "payment_delivered", "in_receiving_point", "goods_on_trolley"], "removes": [], "optional": false},
+    {"id": "C16b_ride_after_send", "name": "После отправки оплаты одной: нажать «Вниз», забраться под пустую тележку с отметкой, закрыть решётку изнутри — ехать грузом за докладчиком", "room": "W4", "type": "use",
+     "requires": ["trolley_marked_partial", "cabin_free", "lift_gate_seen", "iz_reported_pa", "iz_rule3_seen"], "adds": ["descended_as_staff", "lap_hides_again", "in_receiving_point"], "removes": [], "optional": true},
+    {"id": "O01_mirror_hands", "name": "Попробовать снять зеркало руками или нажать на него (Z11)", "room": "W4", "type": "use",
+     "requires": ["knows_door_behind_mirror"], "adds": ["mirror_tried"], "removes": [], "optional": true},
+    {"id": "O02_ask_mirror", "name": "Спросить Изольду про зеркало", "room": "W2", "type": "talk",
+     "requires": ["knows_door_behind_mirror", "trolley_service_side"], "adds": ["iz_mirror_design"], "removes": [], "optional": true},
+    {"id": "O03_touch_switch", "name": "Повернуть рубильник с меловым «НЕ ТРОГАТЬ» и вернуть обратно (Z11)", "room": "W4", "type": "use",
+     "requires": ["cabin_seen"], "adds": ["switch_tried"], "removes": [], "optional": true},
+    {"id": "O04_ask_kefir", "name": "Попросить у Изольды кефир до счёта", "room": "W2", "type": "talk",
+     "requires": ["knows_order_trolley", "trolley_service_side"], "adds": ["iz_kefir_refused"], "removes": [], "optional": true},
+    {"id": "O05_bill_direct", "name": "Отдать счёт Изольде в руки", "room": "W2", "type": "talk",
+     "requires": ["bill_read"], "adds": ["iz_forwards_bill"], "removes": [], "optional": true},
+    {"id": "O06_take_bottle", "name": "Взять бутылку кефира со стойки самому", "room": "W2", "type": "use",
+     "requires": ["kefir_ready"], "adds": ["grip_refused_bottle"], "removes": [], "optional": true},
+    {"id": "O07_walk_down", "name": "Спуститься пешком к двери конторы и постучать (без тележки: она в лестницу не проходит)", "room": "W4", "type": "use",
+     "requires": ["payment_in_hall"], "adds": ["door_still_closed"], "removes": [], "optional": true},
+    {"id": "O08_ride_standing", "name": "Встать в кабину рядом с тележкой", "room": "W4", "type": "use",
+     "requires": ["payment_in_hall", "cabin_free"], "adds": ["people_ban_read"], "removes": [], "optional": true},
+    {"id": "O10_read_memo", "name": "Прочитать советскую памятку дежурной смене (Z10)", "room": "W4", "type": "read",
+     "requires": ["w4_open"], "adds": ["memo_soviet_read"], "removes": [], "optional": true},
+    {"id": "O11_read_regulation", "name": "Прочитать ламинированный регламент пуска на стойке (Z04)", "room": "W2", "type": "read",
+     "requires": ["trolley_service_side"], "adds": ["regulation_cut_seen"], "removes": [], "optional": true},
+    {"id": "R1_token", "name": "Нажать латунную заслонку «Для жетоновъ» у доски почёта (Z09)", "room": "W4", "type": "use",
+     "requires": ["w4_open"], "adds": ["relic_r1"], "removes": [], "optional": true},
+    {"id": "R2_postcard", "name": "Открыть внутреннюю створку служебного шкафа (Z08)", "room": "W3", "type": "use",
+     "requires": ["w3_open"], "adds": ["relic_r2"], "removes": [], "optional": true},
+    {"id": "R3_mug", "name": "Открыть нажатием нижний ящик стойки и переставить кружку на столешницу тележки (Z04)", "room": "W2", "type": "use",
+     "requires": ["trolley_service_side", "knows_push_latch"], "adds": ["relic_r3"], "removes": [], "optional": true}
   ],
-  "rooms": [
-    "W2 — Вестибюль и стойка Изольды",
-    "W3 — Прачечная и служебная шахта",
-    "W4 — Wellness-зал (бывшая водолечебница)",
-    "W5 — Приёмный пункт (её сторона; конец акта)"
-  ],
-  "act_goal_flags": [
-    "in_receiving_point",
-    "payment_delivered",
-    "iz_reported_pa",
-    "iz_confessed"
-  ]
+  "rooms": ["W2 — Вестибюль и стойка Изольды", "W3 — Прачечная и служебная шахта", "W4 — Wellness-зал (бывшая водолечебница)", "W5 — Приёмный пункт (её сторона; конец акта)"],
+  "act_goal_flags": ["in_receiving_point", "payment_delivered", "iz_reported_pa", "iz_confessed"]
 }

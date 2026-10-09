@@ -2,23 +2,19 @@
   "act": "ACT2",
   "ok": true,
   "errors": [],
-  "warnings": [],
+  "warnings": [
+    "флаг knows_trolley_chamber есть в глоссарии, но нигде не используется"
+  ],
   "info": {
-    "states": 74240,
-    "goal_states": 256,
+    "states": 117760,
+    "goal_states": 5120,
     "shortest_path": [
-      "B01_pump_cascade",
+      "B00_opening_demo",
       "B02_inspect_drums",
       "B03_merge_requests",
       "B04_take_hotel_map",
       "B05_lay_films",
       "B06_align_source",
-      "B07_read_old_journal",
-      "B08_open_vitrine",
-      "B09_compare_plunger",
-      "B10_take_menu",
-      "B11_inspect_board",
-      "B12_scrape_plate",
       "B13_read_layoff",
       "B14_present_model",
       "B15_descend"
@@ -27,57 +23,35 @@
     "removes_actions": [],
     "removes_unsafe": [],
     "bottlenecks": [
-      "B01_pump_cascade",
+      "B00_opening_demo",
       "B02_inspect_drums",
       "B03_merge_requests",
       "B04_take_hotel_map",
       "B05_lay_films",
       "B06_align_source",
-      "B07_read_old_journal",
-      "B08_open_vitrine",
-      "B09_compare_plunger",
-      "B10_take_menu",
-      "B11_inspect_board",
-      "B12_scrape_plate",
       "B13_read_layoff",
       "B14_present_model",
       "B15_descend"
     ],
     "free_pairs": [
       [
-        "B01_pump_cascade",
+        "B00_opening_demo",
         "B02_inspect_drums"
       ],
       [
-        "B01_pump_cascade",
+        "B00_opening_demo",
         "B04_take_hotel_map"
       ],
       [
-        "B01_pump_cascade",
+        "B00_opening_demo",
         "B05_lay_films"
       ],
       [
-        "B01_pump_cascade",
+        "B00_opening_demo",
         "B06_align_source"
       ],
       [
-        "B01_pump_cascade",
-        "B07_read_old_journal"
-      ],
-      [
-        "B01_pump_cascade",
-        "B10_take_menu"
-      ],
-      [
-        "B01_pump_cascade",
-        "B11_inspect_board"
-      ],
-      [
-        "B01_pump_cascade",
-        "B12_scrape_plate"
-      ],
-      [
-        "B01_pump_cascade",
+        "B00_opening_demo",
         "B13_read_layoff"
       ],
       [
@@ -91,22 +65,6 @@
       [
         "B02_inspect_drums",
         "B06_align_source"
-      ],
-      [
-        "B02_inspect_drums",
-        "B07_read_old_journal"
-      ],
-      [
-        "B02_inspect_drums",
-        "B10_take_menu"
-      ],
-      [
-        "B02_inspect_drums",
-        "B11_inspect_board"
-      ],
-      [
-        "B02_inspect_drums",
-        "B12_scrape_plate"
       ],
       [
         "B02_inspect_drums",
@@ -126,180 +84,37 @@
       ],
       [
         "B03_merge_requests",
-        "B07_read_old_journal"
-      ],
-      [
-        "B03_merge_requests",
-        "B10_take_menu"
-      ],
-      [
-        "B03_merge_requests",
-        "B11_inspect_board"
-      ],
-      [
-        "B03_merge_requests",
-        "B12_scrape_plate"
-      ],
-      [
-        "B03_merge_requests",
         "B13_read_layoff"
-      ],
-      [
-        "B04_take_hotel_map",
-        "B07_read_old_journal"
-      ],
-      [
-        "B04_take_hotel_map",
-        "B08_open_vitrine"
-      ],
-      [
-        "B04_take_hotel_map",
-        "B09_compare_plunger"
-      ],
-      [
-        "B04_take_hotel_map",
-        "B10_take_menu"
-      ],
-      [
-        "B04_take_hotel_map",
-        "B11_inspect_board"
-      ],
-      [
-        "B04_take_hotel_map",
-        "B12_scrape_plate"
       ],
       [
         "B04_take_hotel_map",
         "B13_read_layoff"
       ],
       [
-        "B05_lay_films",
-        "B07_read_old_journal"
-      ],
-      [
-        "B05_lay_films",
-        "B08_open_vitrine"
-      ],
-      [
-        "B05_lay_films",
-        "B09_compare_plunger"
-      ],
-      [
-        "B05_lay_films",
-        "B10_take_menu"
-      ],
-      [
-        "B05_lay_films",
-        "B11_inspect_board"
-      ],
-      [
-        "B05_lay_films",
-        "B12_scrape_plate"
+        "B04_take_hotel_map",
+        "B14_present_model"
       ],
       [
         "B05_lay_films",
         "B13_read_layoff"
       ],
       [
-        "B06_align_source",
-        "B07_read_old_journal"
-      ],
-      [
-        "B06_align_source",
-        "B08_open_vitrine"
-      ],
-      [
-        "B06_align_source",
-        "B09_compare_plunger"
-      ],
-      [
-        "B06_align_source",
-        "B10_take_menu"
-      ],
-      [
-        "B06_align_source",
-        "B11_inspect_board"
-      ],
-      [
-        "B06_align_source",
-        "B12_scrape_plate"
+        "B05_lay_films",
+        "B14_present_model"
       ],
       [
         "B06_align_source",
         "B13_read_layoff"
       ],
       [
-        "B07_read_old_journal",
-        "B08_open_vitrine"
-      ],
-      [
-        "B07_read_old_journal",
-        "B10_take_menu"
-      ],
-      [
-        "B07_read_old_journal",
-        "B11_inspect_board"
-      ],
-      [
-        "B07_read_old_journal",
-        "B12_scrape_plate"
-      ],
-      [
-        "B07_read_old_journal",
-        "B13_read_layoff"
-      ],
-      [
-        "B08_open_vitrine",
-        "B10_take_menu"
-      ],
-      [
-        "B08_open_vitrine",
-        "B11_inspect_board"
-      ],
-      [
-        "B08_open_vitrine",
-        "B12_scrape_plate"
-      ],
-      [
-        "B08_open_vitrine",
-        "B13_read_layoff"
-      ],
-      [
-        "B09_compare_plunger",
-        "B10_take_menu"
-      ],
-      [
-        "B09_compare_plunger",
-        "B11_inspect_board"
-      ],
-      [
-        "B09_compare_plunger",
-        "B12_scrape_plate"
-      ],
-      [
-        "B09_compare_plunger",
-        "B13_read_layoff"
-      ],
-      [
-        "B10_take_menu",
-        "B11_inspect_board"
-      ],
-      [
-        "B10_take_menu",
-        "B13_read_layoff"
-      ],
-      [
-        "B11_inspect_board",
-        "B13_read_layoff"
-      ],
-      [
-        "B12_scrape_plate",
-        "B13_read_layoff"
+        "B06_align_source",
+        "B14_present_model"
       ]
     ],
     "guaranteed_final_flags": [
       "bathday_done",
       "breakfast_on_trolley",
+      "cascade_demo_seen",
       "cascade_dry_seen",
       "cascade_pump_dry",
       "clothes_locked_seen",
@@ -318,7 +133,6 @@
       "iz_rule3_seen",
       "iz_rules_all_shown",
       "iz_stepladder_minimized",
-      "journal_old_read",
       "kefir_in_drawer_seen",
       "knows_assortment",
       "knows_bath_day",
@@ -329,9 +143,7 @@
       "knows_iz_stamp_mp",
       "knows_map_lies",
       "knows_office_by_source",
-      "knows_paint_fresh",
       "knows_paper_soaks",
-      "knows_plate_under_paint",
       "knows_push_latch",
       "knows_receiving_point",
       "knows_service_stairs",
@@ -341,25 +153,19 @@
       "knows_supplier_exists",
       "knows_supply_cut",
       "knows_thursday_plumber",
-      "knows_trolley_chamber",
       "knows_waiter_call",
       "layoff_read",
-      "menu_smeared",
-      "meter_seal_seen",
       "midpoint_known",
       "minus_four_stars_said",
-      "name_revealed",
       "need_cover",
       "office_notice_read",
       "overlay_by_frame",
-      "paint_act_read",
       "photo_seen",
       "plate_revealed",
       "plunger_taken",
       "poster_seen",
       "reception_called",
       "requests_stapled",
-      "seal_is_mark",
       "shock_done",
       "shock_report_known",
       "stairs_open",
@@ -368,7 +174,6 @@
       "trolley_at_crowd",
       "trolley_present",
       "trolley_service_side",
-      "vitrine_open",
       "voucher_read",
       "w3_open",
       "w4_open",
@@ -376,9 +181,13 @@
     ],
     "possible_final_flags": [
       "bathday_done",
+      "board_restored",
       "breakfast_on_trolley",
+      "cascade_demo_seen",
       "cascade_dry_seen",
+      "cascade_on",
       "cascade_pump_dry",
+      "chalk_sample_seen",
       "cladding_seen",
       "clothes_locked_seen",
       "counter_notice_read",
@@ -420,11 +229,11 @@
       "knows_supplier_exists",
       "knows_supply_cut",
       "knows_thursday_plumber",
-      "knows_trolley_chamber",
       "knows_waiter_call",
       "layoff_read",
       "memo_soviet_read",
       "menu_smeared",
+      "meter_reading_seen",
       "meter_seal_seen",
       "midpoint_known",
       "minus_four_stars_said",
@@ -460,19 +269,18 @@
       "wet_ring_seen"
     ],
     "actions_total": 23,
-    "actions_required": 15,
+    "actions_required": 9,
     "rooms_used": [
-      "W1",
       "W2",
       "W3",
       "W4"
     ],
     "required_by_type": {
-      "use": 7,
       "inspect": 2,
       "talk": 2,
-      "take": 2,
-      "read": 2
+      "take": 1,
+      "use": 3,
+      "read": 1
     }
   }
 }

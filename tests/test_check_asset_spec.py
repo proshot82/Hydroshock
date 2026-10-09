@@ -37,8 +37,8 @@ class TestAssetSpec(unittest.TestCase):
     def test_live_spec_clean(self):
         code, out = run(SPEC)
         self.assertEqual(code, 0, out)
-        self.assertIn("кадров слотов 68", out)
-        self.assertIn("документов 39", out)
+        self.assertIn("кадров слотов 73", out)
+        self.assertIn("документов 41", out)
         self.assertIn("эмоций 28", out)
 
     def test_duplicate_name(self):

@@ -126,8 +126,12 @@ ACT2_READINGS_SLOT = "END.act2"
 # после признания; «Я держала стремянку» — только её реплика в признании.
 ACT3_NAME_SLOTS = {"DOC.bill", "Z11.bill.read", "TALK.iz.confess", "SEQ.iz.payment",
                    "DOC.invoice", "SEQ.load", "SEQ.report", "SEQ.ride", "SEQ.descent",
-                   "END.act3", "HINT.done"}
-ACT3_NAME_PREFIXES = ("HINT.payer.", "HINT.load.", "HINT.down.")
+                   "END.act3", "HINT.done",
+                   # после счёта (план правок 09.10.2026): табличка, накладная, частичная приёмка
+                   "Z11.bill.plate.todo", "Z11.bill.plate.done", "TALK.iz.invoice",
+                   "TALK.iz.invoice.noreading", "TALK.iz.invoice.noplate", "SEQ.send.alone",
+                   "Z11.ride.after.send", "DOC.partial_mark"}
+ACT3_NAME_PREFIXES = ("HINT.payer.", "HINT.load.", "HINT.down.", "HINT.plate.", "HINT.reading.", "HINT.invoice.")
 ACT3_IZ_I_SLOTS = {"TALK.iz.confess", "SEQ.iz.payment", "SEQ.load", "TALK.iz.carry"}
 ACT3_CONFESS_SLOT = "TALK.iz.confess"
 STEPLADDER = "Я держала стремянку."
@@ -142,8 +146,8 @@ KUH_BANNED = [
     (r"в рабочем порядке", "«в рабочем порядке»"),
     (r"вопрос передается", "«вопрос передаётся»"),
 ]
-ACT4_KUH_BLIND_SLOTS = {"SEQ.goods", "SEQ.debt", "SEQ.note_fix", "SEQ.trolley_return",
-                        "SEQ.wait", "TALK.kuh.under", "W5.hand", "W5.wait_more"}
+ACT4_KUH_BLIND_SLOTS = {"SEQ.goods", "SEQ.goods.prior", "SEQ.rollout.empty", "SEQ.debt", "SEQ.note_fix",
+                        "SEQ.trolley_return", "SEQ.wait", "TALK.kuh.under", "W5.hand", "W5.wait_more"}
 ACT4_LOOK_SLOT = "SEQ.come_out"
 ACT4_CLEAN_SLOTS = {"SEQ.finale"}
 ACT4_EPILOGUE_PREFIX = "EPI."
@@ -677,7 +681,7 @@ ACT2_LINE_RULES = [
     ("OPEN.requests", "ans", ["заявка принята, ожидайте"]),
     ("OPEN.pa", "pa", ["влажное наслаждение", "влажное наваждение", "влажное очищение"]),
     ("TALK.iz.vitrine", "iz", ["не запирается"]),
-    ("TALK.iz.layoff", "iz", ["поставщик"]),
+    ("TALK.iz.duty", "iz", ["поставщик"]),   # ключ за одну стратегию (решение автора 09.10.2026)
     ("TALK.iz.ladder", "iz", ["стремянк"]),
 ]
 ACT2_DOC_RULES = [
@@ -689,7 +693,7 @@ ACT2_DOC_RULES = [
     ("DOC.notice_door", ["[оттиск]"], ["Подача пріостановлена до выясненія",
                                        "Пріемъ — въ установленномъ порядкѣ"]),
     ("DOC.exhibit", ["не трогать"], []),
-    ("DOC.journal", ["принялъ", "[оттиск]"], []),
+    ("DOC.journal", ["принялъ", "[оттиск]", "показан"], []),   # графа «показанія» (нить показаний, 09.10.2026)
     ("DOC.instr1908", [], ["Передъ пускомъ — доложиться старшему по водѣ"]),
     ("DOC.memo", [], ["Перед пуском уведомить ответственное лицо"]),
     ("DOC.layoff", ["избыточных ритуалов", "не передавать"], []),
@@ -762,18 +766,20 @@ ACT3_LINE_RULES = [
     ("OPEN.pa", "pa", ["третий этап плановых улучшений"]),
     ("TALK.iz.kefir", "iz", ["личное имущество"]),
     ("TALK.iz.bill", "iz", ["обслуживающему персоналу"]),
-    ("SEQ.report", "paiz", ["кухтулху", "старшему по воде", "оплат"]),
+    ("SEQ.report", "paiz", ["кухтулху", "старшему по воде", "оплат", "40 712"]),   # показания (нить показаний, 09.10.2026)
 ]
 ACT3_DOC_RULES = [
     # (слот, обязательные подстроки, точные строки)
     ("DOC.note", [], ["Платить МНѢ водой??? Да я васъ всѣхъ въ канализацію смою!"]),
-    ("DOC.bill", ["оплатой не является", "м.п. плательщика", "кухтулху", "[оттиск]"], []),
+    ("DOC.bill", ["оплатой не является", "м.п. плательщика", "кухтулху", "[оттиск]",
+                  "за истекшій періодъ", "табличку возстановить"], []),   # решения автора 09.10.2026
     ("DOC.tray_stamp", ["оплатой не является", "[оттиск]"], []),
     ("DOC.stencil", ["лифт грузовой", "перевозка людей запрещена"], []),
     ("DOC.sticker", ["не трогать — элемент дизайна"], []),
     ("DOC.chalk", [], ["НАШЕ", "НЕ ТРОГАТЬ"]),
     ("DOC.water_stand", ["комплимент от заведения"], []),
-    ("DOC.invoice", ["кефир", "кухтулху", "[печать отеля]"], []),
+    ("DOC.invoice", ["кефир", "кухтулху", "[печать отеля]", "40 712"], []),
+    ("DOC.partial_mark", ["грузъ принятъ", "докладчика — нѣтъ", "[оттиск]"], []),   # частичная приёмка (09.10.2026)
     ("DOC.complaint", ["м.п."], []),
 ]
 ACT3_SIGNED = ["DOC.water_stand"]
@@ -811,11 +817,13 @@ def check_act3_fixed(texts, lines_of, require, err):
 ACT4_LINE_RULES = [
     # (слот, спикер, обязательные подстроки)
     ("SEQ.goods", "kuh", ["кефир"]),
+    ("SEQ.goods.prior", "kuh", ["кефир", "ранее"]),   # оплата приехала одна (частичная приёмка, 09.10.2026)
     ("SEQ.debt", "kuh", ["на учете"]),
     ("SEQ.trolley_return", "kuh", ["возврат"]),
     ("TALK.kuh.under", "kuh", ["инвентар"]),
     ("SEQ.hello", "lap", ["здравствуйте"]),
-    ("SEQ.report_line", "kuh", ["доложено"]),
+    ("SEQ.report_line", "lap", ["за истекший период", "40 712"]),   # доклад о водоснабжении за истекший период (09.10.2026)
+    ("SEQ.report_line", "kuh", ["доложено", "сходятся"]),
     ("PA.final", "pa", ["успешное завершение плановых улучшений"]),
 ]
 ACT4_ANY_RULES = [
@@ -829,7 +837,7 @@ ACT4_DOC_RULES = [
     ("DOC.note_fixed", ["исправленному", "[оттиск]"],
      ["Платить МНѢ водой??? Да я васъ всѣхъ въ канализацію смою!"]),
     ("DOC.plate_mark", ["возврат", "[оттиск]"], []),
-    ("DOC.ledger", ["доложилъ", "принялъ", "доложено", "[оттиск]"], []),
+    ("DOC.ledger", ["доложилъ", "принялъ", "доложено", "[оттиск]", "показан", "40 712"], []),   # графа «показанія» (09.10.2026)
     ("DOC.seal_tag", ["[оттиск]"], []),
     ("DOC.menu_new", ["кефир — по четвергам"], []),
 ]

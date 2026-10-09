@@ -4,27 +4,32 @@
   "errors": [],
   "warnings": [],
   "info": {
-    "states": 46944,
-    "goal_states": 16384,
+    "states": 382336,
+    "goal_states": 131072,
     "shortest_path": [
       "C01_read_order",
       "C02_trolley_stairs",
       "C04_threshold",
       "C05_plunger_mirror",
       "C06_inspect_cabin",
-      "C07_clear_cabin",
+      "C07_clear_junk",
+      "C07b_set_ramp",
       "C08_offering",
       "C09_test_run",
       "C10_read_bill",
       "C11_trolley_counter",
-      "C12_watch_stamp",
+      "C17_vitrine_readings",
+      "C18_board_plate",
       "C13_bill_under_stamp",
+      "C13b_report_for_invoice",
       "C14_load_payment",
       "C15_leave_counter",
       "C16_ride_as_staff"
     ],
     "dead_end_states": 0,
-    "removes_actions": [],
+    "removes_actions": [
+      "C19_send_alone"
+    ],
     "removes_unsafe": [],
     "bottlenecks": [
       "C01_read_order",
@@ -32,40 +37,146 @@
       "C04_threshold",
       "C05_plunger_mirror",
       "C06_inspect_cabin",
-      "C07_clear_cabin",
+      "C07_clear_junk",
+      "C07b_set_ramp",
       "C08_offering",
       "C09_test_run",
       "C10_read_bill",
       "C11_trolley_counter",
-      "C12_watch_stamp",
+      "C17_vitrine_readings",
+      "C18_board_plate",
       "C13_bill_under_stamp",
+      "C13b_report_for_invoice",
       "C14_load_payment",
-      "C15_leave_counter",
-      "C16_ride_as_staff"
+      "C15_leave_counter"
     ],
     "free_pairs": [
       [
+        "C01_read_order",
+        "C17_vitrine_readings"
+      ],
+      [
+        "C01_read_order",
+        "C18_board_plate"
+      ],
+      [
+        "C02_trolley_stairs",
+        "C17_vitrine_readings"
+      ],
+      [
+        "C02_trolley_stairs",
+        "C18_board_plate"
+      ],
+      [
         "C04_threshold",
         "C08_offering"
+      ],
+      [
+        "C04_threshold",
+        "C17_vitrine_readings"
+      ],
+      [
+        "C04_threshold",
+        "C18_board_plate"
       ],
       [
         "C05_plunger_mirror",
         "C08_offering"
       ],
       [
+        "C05_plunger_mirror",
+        "C17_vitrine_readings"
+      ],
+      [
+        "C05_plunger_mirror",
+        "C18_board_plate"
+      ],
+      [
         "C06_inspect_cabin",
         "C08_offering"
       ],
       [
-        "C07_clear_cabin",
+        "C06_inspect_cabin",
+        "C17_vitrine_readings"
+      ],
+      [
+        "C06_inspect_cabin",
+        "C18_board_plate"
+      ],
+      [
+        "C07_clear_junk",
         "C08_offering"
       ],
       [
-        "C11_trolley_counter",
-        "C12_watch_stamp"
+        "C07_clear_junk",
+        "C17_vitrine_readings"
+      ],
+      [
+        "C07_clear_junk",
+        "C18_board_plate"
+      ],
+      [
+        "C07b_set_ramp",
+        "C08_offering"
+      ],
+      [
+        "C07b_set_ramp",
+        "C17_vitrine_readings"
+      ],
+      [
+        "C07b_set_ramp",
+        "C18_board_plate"
+      ],
+      [
+        "C08_offering",
+        "C17_vitrine_readings"
+      ],
+      [
+        "C08_offering",
+        "C18_board_plate"
+      ],
+      [
+        "C09_test_run",
+        "C17_vitrine_readings"
+      ],
+      [
+        "C09_test_run",
+        "C18_board_plate"
+      ],
+      [
+        "C10_read_bill",
+        "C17_vitrine_readings"
+      ],
+      [
+        "C10_read_bill",
+        "C18_board_plate"
       ],
       [
         "C11_trolley_counter",
+        "C17_vitrine_readings"
+      ],
+      [
+        "C11_trolley_counter",
+        "C18_board_plate"
+      ],
+      [
+        "C11_trolley_counter",
+        "C13_bill_under_stamp"
+      ],
+      [
+        "C11_trolley_counter",
+        "C13b_report_for_invoice"
+      ],
+      [
+        "C17_vitrine_readings",
+        "C18_board_plate"
+      ],
+      [
+        "C17_vitrine_readings",
+        "C13_bill_under_stamp"
+      ],
+      [
+        "C18_board_plate",
         "C13_bill_under_stamp"
       ]
     ],
@@ -73,12 +184,16 @@
       "bathday_done",
       "bill_read",
       "bill_stamped",
+      "board_restored",
       "breakfast_on_trolley",
       "breakfast_stamped",
       "cabin_free",
       "cabin_seen",
+      "cascade_demo_seen",
       "cascade_dry_seen",
+      "cascade_on",
       "cascade_pump_dry",
+      "chalk_sample_seen",
       "chalk_seen",
       "clothes_locked_seen",
       "counter_notice_read",
@@ -94,6 +209,7 @@
       "has_stairs_key",
       "in_receiving_point",
       "instr1908_read",
+      "invoice_filled",
       "invoice_ready",
       "iz_admits_facts",
       "iz_confessed",
@@ -104,7 +220,7 @@
       "iz_rules_all_shown",
       "iz_sees_lapidus",
       "iz_stepladder_minimized",
-      "journal_old_read",
+      "junk_out",
       "kefir_in_drawer_seen",
       "kefir_ready",
       "knows_assortment",
@@ -120,7 +236,6 @@
       "knows_lift_exists",
       "knows_lift_in_hall",
       "knows_map_lies",
-      "knows_mp_habit",
       "knows_office_by_source",
       "knows_order_trolley",
       "knows_paint_fresh",
@@ -137,7 +252,6 @@
       "knows_supplier_exists",
       "knows_supply_cut",
       "knows_thursday_plumber",
-      "knows_trolley_chamber",
       "knows_waiter_call",
       "kuh_note_read",
       "lap_hides_again",
@@ -145,6 +259,7 @@
       "lift_gate_seen",
       "lowest_point",
       "menu_smeared",
+      "meter_reading_seen",
       "meter_seal_seen",
       "midpoint_known",
       "minus_four_stars_said",
@@ -157,15 +272,14 @@
       "overlay_by_frame",
       "paint_act_read",
       "payment_delivered",
-      "payment_in_hall",
       "payment_loaded",
       "photo_seen",
       "plate_revealed",
       "plunger_taken",
       "poster_seen",
+      "ramp_set",
       "reception_called",
       "requests_stapled",
-      "seal_is_mark",
       "shock_done",
       "shock_report_known",
       "stairs_open",
@@ -187,12 +301,16 @@
       "bathday_done",
       "bill_read",
       "bill_stamped",
+      "board_restored",
       "breakfast_on_trolley",
       "breakfast_stamped",
       "cabin_free",
       "cabin_seen",
+      "cascade_demo_seen",
       "cascade_dry_seen",
+      "cascade_on",
       "cascade_pump_dry",
+      "chalk_sample_seen",
       "chalk_seen",
       "clothes_locked_seen",
       "counter_notice_read",
@@ -203,6 +321,7 @@
       "foam_active",
       "foam_class_closed",
       "foam_swollen",
+      "goods_on_trolley",
       "grip_refused_bottle",
       "has_bill",
       "has_hotel_map",
@@ -210,6 +329,7 @@
       "has_stairs_key",
       "in_receiving_point",
       "instr1908_read",
+      "invoice_filled",
       "invoice_ready",
       "iz_admits_facts",
       "iz_confessed",
@@ -223,7 +343,7 @@
       "iz_rules_all_shown",
       "iz_sees_lapidus",
       "iz_stepladder_minimized",
-      "journal_old_read",
+      "junk_out",
       "kefir_in_drawer_seen",
       "kefir_ready",
       "knows_assortment",
@@ -256,7 +376,6 @@
       "knows_supplier_exists",
       "knows_supply_cut",
       "knows_thursday_plumber",
-      "knows_trolley_chamber",
       "knows_waiter_call",
       "kuh_note_read",
       "lap_hides_again",
@@ -265,6 +384,7 @@
       "lowest_point",
       "memo_soviet_read",
       "menu_smeared",
+      "meter_reading_seen",
       "meter_seal_seen",
       "midpoint_known",
       "minus_four_stars_said",
@@ -280,19 +400,20 @@
       "payment_delivered",
       "payment_in_hall",
       "payment_loaded",
+      "payment_sent_alone",
       "people_ban_read",
       "photo_seen",
       "plate_revealed",
       "plunger_taken",
       "poster_seen",
+      "ramp_set",
+      "ramp_thrown",
       "reception_called",
       "regulation_cut_seen",
       "relic_r1",
       "relic_r2",
       "relic_r3",
       "requests_stapled",
-      "seal_is_mark",
-      "send_alone_refused",
       "shock_done",
       "shock_report_known",
       "stairs_open",
@@ -303,6 +424,7 @@
       "trolley_at_crowd",
       "trolley_back_at_counter",
       "trolley_in_hall",
+      "trolley_marked_partial",
       "trolley_present",
       "trolley_service_side",
       "vitrine_open",
@@ -311,8 +433,8 @@
       "w4_open",
       "wet_ring_seen"
     ],
-    "actions_total": 30,
-    "actions_required": 15,
+    "actions_total": 36,
+    "actions_required": 18,
     "rooms_used": [
       "W2",
       "W3",
@@ -320,9 +442,9 @@
     ],
     "required_by_type": {
       "read": 2,
-      "use": 9,
-      "inspect": 3,
-      "talk": 1
+      "use": 12,
+      "inspect": 2,
+      "talk": 2
     }
   }
 }
