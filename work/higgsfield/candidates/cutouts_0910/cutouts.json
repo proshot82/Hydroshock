@@ -19,47 +19,5 @@
   "y": 505,
   "w": 710,
   "h": 540
- },
- "st_w2_cascade_on": {
-  "base": "room_w2.png",
-  "x": 335,
-  "y": 175,
-  "w": 1395,
-  "h": 419
- },
- "st_w4_board_floor": {
-  "base": "room_w4.png",
-  "x": 244,
-  "y": 590,
-  "w": 134,
-  "h": 72
- },
- "st_w4_cabin_full": {
-  "base": "room_w4.png",
-  "x": 219,
-  "y": 169,
-  "w": 182,
-  "h": 542
- },
- "st_w4_design_board": {
-  "base": "room_w4.png",
-  "x": 449,
-  "y": 546,
-  "w": 263,
-  "h": 165
- },
- "st_w4_ramp": {
-  "base": "room_w4.png",
-  "x": 240,
-  "y": 588,
-  "w": 357,
-  "h": 199
- },
- "st_w5_mark": {
-  "base": "room_w5.png",
-  "x": 1066,
-  "y": 512,
-  "w": 121,
-  "h": 58
  }
 }
