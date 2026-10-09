@@ -74,25 +74,36 @@ class BuildAct2Test(unittest.TestCase):
 
 class MergeTest(unittest.TestCase):
     """Итоговые файлы — генерируемые: обязаны совпадать со сборкой из голосов
-    и правок и проходить проверку по ТЗ. Две цепочки: прежний итог Акта I
-    (v1, 04.10.2026: версия Claude + другая нейросеть) и итог после доработки
-    (06.10.2026: v1 + texts/polish/, голоса автора, без голоса — доработка)."""
+    и правок и проходить проверку по ТЗ. Три цепочки: прежний итог Акта I
+    (v1, 04.10.2026: версия Claude + другая нейросеть), итог после доработки
+    (v2 = итог 06.10.2026: v1 + texts/polish/, голоса автора, без голоса —
+    доработка) и действующий итог (09.10.2026: v2 + раунд «живая речь»
+    texts/rewrite/, без голоса — живая речь)."""
 
     import merge_texts as mt  # noqa: E402
 
-    NAMES = ("как было (итог 05.10.2026)", "как стало (доработка 06.10.2026)")
-    NOTE = ("Состояние: ждёт чтения автора. Собрано 06.10.2026 по решению автора «пошли дальше»: "
-            "доработка принята за основу, отданные в слепом сравнении голоса учтены.")
+    NAMES_V2 = ("как было (итог 05.10.2026)", "как стало (доработка 06.10.2026)")
+    NOTE_V2 = ("Состояние: ждёт чтения автора. Собрано 06.10.2026 по решению автора «пошли дальше»: "
+               "доработка принята за основу, отданные в слепом сравнении голоса учтены.")
+    NAMES = ("итог 06.10.2026", "живая речь 09.10.2026")
+    NOTES = {
+        1: 'Раунд «живая речь» (указание автора 09.10.2026, review/STYLE_DIRECTIVE_2026-10-09.md): все слоты переписаны живой речью; загадка N01 «Впустить воздух» (решение автора 09.10.2026). Состояние: ждёт чтения автора.',
+        2: 'Состояние 09.10.2026: раунд «живая речь» по указанию автора о стиле (review/STYLE_DIRECTIVE_2026-10-09.md) и план правок по решениям автора (review/PUZZLE_FIX_PLAN.md): акт открывается показом насоса, викторины о причине нет, ширма у витрины — включённый каскад, бирка «Экспонат № 1» и показания 40 712, меловое «НАШЕ» на раме доски, ключ за обязанность сантехника. Прежний итог — texts/act2/ACT2_TEXTS_FINAL_v2.md. Состояние: ждёт чтения автора.',
+        3: 'Состояние 09.10.2026: раунд «живая речь» по указанию автора о стиле (review/STYLE_DIRECTIVE_2026-10-09.md) и план правок по решениям автора (review/PUZZLE_FIX_PLAN.md): трап «НАШЕ» через порожек кабины, счёт с «докладом о водоснабженіи за истекшій періодъ» и «табличку возстановить», накладная с показаниями 40 712, частичная приёмка при отправке оплаты одной, порядок у двери конторы. Прежний итог — texts/act3/ACT3_TEXTS_FINAL_v2.md. Состояние: ждёт чтения автора.',
+        4: 'Состояние 09.10.2026: раунд «живая речь» по указанию автора о стиле (review/STYLE_DIRECTIVE_2026-10-09.md) и план правок по решениям автора (review/PUZZLE_FIX_PLAN.md): приёмка в двух вариантах (груз с героем или принят ранее), доклад о водоснабжении за истекший период с показаниями 40 712, порядок у двери на лестницу, громкая связь о табличке, графа показаний в журнале. Прежний итог — texts/act4/ACT4_TEXTS_FINAL_v2.md. Состояние: ждёт чтения автора.',
+    }
+
+    FROZEN1 = ROOT / "tests" / "fixtures" / "BRIEF_ACT1_TEXTS_2026-10-06.md"   # ТЗ времени версий v1
 
     def build_v1(self):
-        return self.mt.build(ct.DEFAULT_BRIEF, ACT / "ACT1_TEXTS_CLAUDE.md", ACT / "ACT1_TEXTS_OTHER.md",
+        return self.mt.build(self.FROZEN1, ACT / "ACT1_TEXTS_CLAUDE.md", ACT / "ACT1_TEXTS_OTHER.md",
                              ACT / "ACT1_VOTES.json", ACT / "ACT1_TEXTS_EDITS.md")
 
     def build_final(self, n):
         t = ROOT / "texts"
-        return self.mt.build(t / f"act{n}" / f"BRIEF_ACT{n}_TEXTS.md", t / f"act{n}" / f"ACT{n}_TEXTS_FINAL_v1.md",
-                             t / "polish" / f"ACT{n}_TEXTS_POLISH.md", t / "polish" / f"ACT{n}_VOTES.json",
-                             t / "polish" / f"ACT{n}_TEXTS_EDITS.md", default="other", names=self.NAMES, note=self.NOTE)
+        return self.mt.build(t / f"act{n}" / f"BRIEF_ACT{n}_TEXTS.md", t / f"act{n}" / f"ACT{n}_TEXTS_FINAL_v2.md",
+                             t / "rewrite" / f"ACT{n}_TEXTS_LIVE.md", t / "rewrite" / f"ACT{n}_VOTES.json",
+                             t / "rewrite" / f"ACT{n}_TEXTS_EDITS.md", default="other", names=self.NAMES, note=self.NOTES[n])
 
     def test_v1_is_generated(self):
         text, _ = self.build_v1()
@@ -103,10 +114,10 @@ class MergeTest(unittest.TestCase):
         for n in (1, 2, 3, 4):
             text, _ = self.build_final(n)
             self.assertEqual(text, (ROOT / "texts" / f"act{n}" / f"ACT{n}_TEXTS_FINAL.md").read_text(encoding="utf-8"),
-                             f"ACT{n}_TEXTS_FINAL.md правили руками — правки вносятся в texts/polish/ACT{n}_TEXTS_EDITS.md")
+                             f"ACT{n}_TEXTS_FINAL.md правили руками — правки вносятся в texts/rewrite/ACT{n}_TEXTS_EDITS.md")
 
     def test_final_passes_brief(self):
-        for n, slots in ((1, 154), (2, 164), (3, 110), (4, 75)):
+        for n, slots in ((1, 155), (2, 167), (3, 134), (4, 77)):
             brief = ROOT / "texts" / f"act{n}" / f"BRIEF_ACT{n}_TEXTS.md"
             texts, fmt = ct.parse_texts(ROOT / "texts" / f"act{n}" / f"ACT{n}_TEXTS_FINAL.md")
             errs, warns, stats = ct.check(ct.parse_brief(brief), texts, fmt, ct.detect_act(brief))
@@ -121,17 +132,22 @@ class MergeTest(unittest.TestCase):
         self.assertEqual(sum(len(v) for v in report.values()), 154)
 
     def test_sources_final(self):
+        # раунд «живая речь» 09.10.2026: голосов нет, все слоты — живая речь;
+        # по правилам ТЗ — только слоты, которых в прежнем итоге не было (новые по плану правок)
         _, report = self.build_final(1)
-        # голоса автора 06.10.2026: 13 слотов «как было», 8 «как стало»; латиница в «было» решает слот по правилам
-        self.assertEqual(len(report["claude"]), 13)
-        self.assertEqual(len(report["other"]), 8)
-        self.assertIn("Z03.trolley.look", report["rule"])
+        self.assertEqual(report["claude"], [])
+        self.assertEqual(report["other"], [])
         self.assertEqual(report["edit"], [])
-        self.assertEqual(sum(len(v) for v in report.values()), 154)
+        self.assertEqual(sorted(report["rule"]), ["Z01.plunger.pull"])
+        self.assertEqual(sum(len(v) for v in report.values()), 155)
+        _, report = self.build_final(2)
+        self.assertIn("OPEN.demo", report["rule"])
+        self.assertIn("TALK.iz.duty", report["rule"])
+        self.assertEqual(sum(len(v) for v in report.values()), 167)
 
     def test_default_must_be_a_side(self):
         with self.assertRaises(ValueError):
-            self.mt.merge(ct.DEFAULT_BRIEF, ACT / "ACT1_TEXTS_CLAUDE.md", ACT / "ACT1_TEXTS_OTHER.md",
+            self.mt.merge(self.FROZEN1, ACT / "ACT1_TEXTS_CLAUDE.md", ACT / "ACT1_TEXTS_OTHER.md",
                           ACT / "ACT1_VOTES.json", ACT / "ACT1_TEXTS_EDITS.md", default="both")
 
 
@@ -153,7 +169,7 @@ class ReadTest(unittest.TestCase):
         acts = self.data["acts"]
         self.assertEqual(self.data["built"], "05.10.2026")
         self.assertEqual([a["act"] for a in acts], ["II", "III"])
-        self.assertEqual([len(a["slots"]) for a in acts], [164, 110])
+        self.assertEqual([len(a["slots"]) for a in acts], [167, 134])
         self.assertEqual([a["status"] for a in acts], ["ждёт чтения автора", "ждёт чтения автора"])
         self.assertTrue(all(s["sec"] for a in acts for s in a["slots"]))
 

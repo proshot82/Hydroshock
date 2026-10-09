@@ -1,6 +1,6 @@
 {
   "act": "ACT4",
-  "revision": 2,
+  "revision": 3,
   "assumptions": [
     "DS1. Старт — гарантированный финал Акта III (112 флагов). Кабина внизу, решётка открыта в приёмный пункт W5. На столешнице тележки: кефир, накладная № 1 с печатью отеля, счёт с печатью в «М.П. плательщика», бутылка «Каскадъ» с запиской, поднос с завтраком и оттиском «Оплатой не является», найденные реликвии. Лапидус под юбкой (`lap_hides_again`).",
     "DS2. Геометрия низа (решения автора 05.10.2026): с площадки служебной лестницы одна дверь — конторы (Z12). Приёмный пункт W5 и контора W6 — за ней, на её стороне; шахта лифта выходит в W5; между W5 и W6 внутренняя дверь. Контора — начало водяного контура (S3 §4.1: «Кухтулху / источник W6»): здесь задвижка линии с маховиком и манометром. Зумов в W5 нет (вайд и читалка документов); в W6 — Z13.",
@@ -20,122 +20,10 @@
     "DS16. Реликвии: найденные раньше лежат на столешнице и после приёмки — у неё на столе. Ненайденные достижимы после доклада: Лапидус ходит сам по служебной лестнице, W4 (R1), W3 (R2), служебным коридором за стойку W2 (R3). В W3, W4, на лестнице и за стойкой гостей нет. Жетон — латунь, открытка — в целлофане, кружка — эмалированная, то есть металлическая: мыльный хват касается стекла и фарфора на весу (Акт I), к ним это не относится. Изольда за стойкой штампует жалобы и не реагирует (обязательство 8).",
     "DS17. Реликвии не участвуют ни в одном основании P16 и P17 (S3 §14). Число найденных (0–3) выбирает один из четырёх эпилогов; в каждом — новое меню мини-бара «Кефир — по четвергам» (обязательство 12). R3, если найдена, стоит на её столе рядом с её кружкой — только картинка.",
     "DS18. Все флаги накопительные, `removes` нет. После пуска действий нет: игра кончается финальным монтажом.",
-    "DS19. Постановка от первого лица, голоса — текстом (решение автора 05.10.2026). Портрет Кухтулху новый, реестр эмоций `kuh_*` — в ТЗ текстов Акта IV. Owner-canon строк в акте нет: «Меня не увольняли. Меня благоустроили» и «В нашей семье все лежат и ждут звёзд. Одна я работаю» сняты решением автора 05.10.2026."
+    "DS19. Постановка от первого лица, голоса — текстом (решение автора 05.10.2026). Портрет Кухтулху новый, реестр эмоций `kuh_*` — в ТЗ текстов Акта IV. Owner-canon строк в акте нет: «Меня не увольняли. Меня благоустроили» и «В нашей семье все лежат и ждут звёзд. Одна я работаю» сняты решением автора 05.10.2026.",
+    "DS20. Решения автора 09.10.2026. Доклад (E03) — «доклад о водоснабжении за истекший период»: показания, состояние линии, подача, табличка восстановлена, кефир подан; «здравствуйте» — первая позиция доклада, не весь доклад. Приёмка (E01): сверка показаний по накладной («сходятся»), отметка о табличке; если оплата приехала раньше одна (payment_sent_alone — возможный флаг Акта III, в глоссарии для условий слотов), Кухтулху подтверждает «принято ранее» и ждёт докладчика. Её журнал получает графу «показанія». О табличке ей доложила громкая связь отеля («с гордостью»). Скрытые условия на E03, E05, E06 сняты."
   ],
-  "start_flags": [
-    "bathday_done",
-    "bill_read",
-    "bill_stamped",
-    "breakfast_on_trolley",
-    "breakfast_stamped",
-    "cabin_free",
-    "cabin_seen",
-    "cascade_dry_seen",
-    "cascade_pump_dry",
-    "chalk_seen",
-    "clothes_locked_seen",
-    "counter_notice_read",
-    "crowd_seen",
-    "descended_as_staff",
-    "drums_same_time",
-    "foam_active",
-    "foam_class_closed",
-    "foam_swollen",
-    "has_bill",
-    "has_hotel_map",
-    "has_menu_card",
-    "has_stairs_key",
-    "in_receiving_point",
-    "instr1908_read",
-    "invoice_ready",
-    "iz_admits_facts",
-    "iz_confessed",
-    "iz_folder_seen",
-    "iz_formal",
-    "iz_reported_pa",
-    "iz_rule3_seen",
-    "iz_rules_all_shown",
-    "iz_sees_lapidus",
-    "iz_stepladder_minimized",
-    "journal_old_read",
-    "kefir_in_drawer_seen",
-    "kefir_ready",
-    "knows_assortment",
-    "knows_bath_day",
-    "knows_chalk_author",
-    "knows_counter_on_line",
-    "knows_debt_balance",
-    "knows_door_behind_mirror",
-    "knows_foam_flow",
-    "knows_handover_gap",
-    "knows_iz_stamp_mp",
-    "knows_kuh_name",
-    "knows_lift_exists",
-    "knows_lift_in_hall",
-    "knows_map_lies",
-    "knows_mp_habit",
-    "knows_office_by_source",
-    "knows_order_trolley",
-    "knows_paint_fresh",
-    "knows_paper_soaks",
-    "knows_payer_iz",
-    "knows_plate_under_paint",
-    "knows_push_latch",
-    "knows_receiving_point",
-    "knows_secret_payer",
-    "knows_service_stairs",
-    "knows_soap_grip",
-    "knows_stairs_narrow",
-    "knows_stars_fold",
-    "knows_supplier_exists",
-    "knows_supply_cut",
-    "knows_thursday_plumber",
-    "knows_trolley_chamber",
-    "knows_waiter_call",
-    "kuh_note_read",
-    "lap_hides_again",
-    "layoff_read",
-    "lift_gate_seen",
-    "lowest_point",
-    "menu_smeared",
-    "meter_seal_seen",
-    "midpoint_known",
-    "minus_four_stars_said",
-    "mirror_removed",
-    "mirror_seen",
-    "name_revealed",
-    "need_cover",
-    "offering_on_trolley",
-    "office_notice_read",
-    "overlay_by_frame",
-    "paint_act_read",
-    "payment_delivered",
-    "payment_in_hall",
-    "payment_loaded",
-    "photo_seen",
-    "plate_revealed",
-    "plunger_taken",
-    "poster_seen",
-    "reception_called",
-    "requests_stapled",
-    "seal_is_mark",
-    "shock_done",
-    "shock_report_known",
-    "stairs_open",
-    "stars_folded",
-    "test_run_done",
-    "topology_known",
-    "trolley_at_crowd",
-    "trolley_back_at_counter",
-    "trolley_in_hall",
-    "trolley_present",
-    "trolley_service_side",
-    "vitrine_open",
-    "voucher_read",
-    "w3_open",
-    "w4_open",
-    "wet_ring_seen"
-  ],
+  "start_flags": ["bathday_done", "bill_read", "bill_stamped", "board_restored", "breakfast_on_trolley", "breakfast_stamped", "cabin_free", "cabin_seen", "cascade_demo_seen", "cascade_dry_seen", "cascade_on", "cascade_pump_dry", "chalk_sample_seen", "chalk_seen", "clothes_locked_seen", "counter_notice_read", "crowd_seen", "descended_as_staff", "drums_same_time", "foam_active", "foam_class_closed", "foam_swollen", "has_bill", "has_hotel_map", "has_menu_card", "has_stairs_key", "in_receiving_point", "instr1908_read", "invoice_filled", "invoice_ready", "iz_admits_facts", "iz_confessed", "iz_folder_seen", "iz_formal", "iz_reported_pa", "iz_rule3_seen", "iz_rules_all_shown", "iz_sees_lapidus", "iz_stepladder_minimized", "junk_out", "kefir_in_drawer_seen", "kefir_ready", "knows_assortment", "knows_bath_day", "knows_chalk_author", "knows_counter_on_line", "knows_debt_balance", "knows_door_behind_mirror", "knows_foam_flow", "knows_handover_gap", "knows_iz_stamp_mp", "knows_kuh_name", "knows_lift_exists", "knows_lift_in_hall", "knows_map_lies", "knows_office_by_source", "knows_order_trolley", "knows_paint_fresh", "knows_paper_soaks", "knows_payer_iz", "knows_plate_under_paint", "knows_push_latch", "knows_receiving_point", "knows_secret_payer", "knows_service_stairs", "knows_soap_grip", "knows_stairs_narrow", "knows_stars_fold", "knows_supplier_exists", "knows_supply_cut", "knows_thursday_plumber", "knows_waiter_call", "kuh_note_read", "lap_hides_again", "layoff_read", "lift_gate_seen", "lowest_point", "menu_smeared", "meter_reading_seen", "meter_seal_seen", "midpoint_known", "minus_four_stars_said", "mirror_removed", "mirror_seen", "name_revealed", "need_cover", "offering_on_trolley", "office_notice_read", "overlay_by_frame", "paint_act_read", "payment_delivered", "payment_loaded", "photo_seen", "plate_revealed", "plunger_taken", "poster_seen", "ramp_set", "reception_called", "requests_stapled", "shock_done", "shock_report_known", "stairs_open", "stars_folded", "test_run_done", "topology_known", "trolley_at_crowd", "trolley_back_at_counter", "trolley_in_hall", "trolley_present", "trolley_service_side", "vitrine_open", "voucher_read", "w3_open", "w4_open", "wet_ring_seen"],
   "flags_glossary": {
     "bathday_done": "банный день прошёл: весь съёмный текстиль в стоящей прачечной",
     "bill_read": "счёт прочитан: «Вода „Каскадъ“ — продукция поставщика. Оплатой не является»; к возобновлению подачи — бутыль за четверг, печать плательщика, доклад",
@@ -171,7 +59,6 @@
     "iz_rules_all_shown": "правило Изольды показано трижды: папка, гость у тележки, разговор с говорящей тележкой",
     "iz_sees_lapidus": "Изольда впервые посмотрела на голого человека у своей стойки",
     "iz_stepladder_minimized": "свою роль в покраске Изольда свела к «подержала стремянку, и всё» (минимизация; owner-canon строка — в P13)",
-    "journal_old_read": "старый журнал приёмки (Z10): по четвергам «кефиръ 1 бут., доложено», в графе «Принялъ» — лучистый оттиск",
     "kefir_in_drawer_seen": "в ящике Изольды — бутылка кефира; ящик задвинут, не глядя",
     "kefir_ready": "бутылка кефира Изольды на стойке",
     "knows_assortment": "прочитано меню мини-бара: кефир исключён, комбуча и лимонад, минералка «Каскадъ», пена-концентрат",
@@ -187,7 +74,6 @@
     "knows_lift_exists": "тележка в узкую винтовую лестницу не проходит, а по инструкции её возили в приёмный пункт — значит, сверху был грузовой лифт",
     "knows_lift_in_hall": "фото «Четвергъ»: решётчатая дверь стояла на этой самой мозаике — дверь лифта наверху в зале прекраснодушия",
     "knows_map_lies": "карта отеля нарисована «для красоты»: симметричный фасад, несуществующий купол, поворот «лицом к гостю»",
-    "knows_mp_habit": "Изольда штампует жалобы гостей «Принято», не читая: смотрит только в угол «М.П.»",
     "knows_office_by_source": "по совмещённым плёнкам: у источника под зданием — контора (в 1908 году «контора старшего по водѣ», у отеля — «техническое помещение»)",
     "knows_order_trolley": "установленный порядок: бутыль кефира на тележке — в приёмный пункт (он за дверью конторы), перед пуском — доклад",
     "knows_paint_fresh": "табличка маляров «Осторожно, окрашено»: краска свежая и мягкая",
@@ -204,7 +90,6 @@
     "knows_supplier_exists": "Изольда признала: поставщик есть («поставщик» — её слово для старшего по воде)",
     "knows_supply_cut": "вывод P04: это не три поломки и не кончившаяся вода — подачу резко остановили выше по общей линии, одним движением",
     "knows_thursday_plumber": "Изольда: сантехник по четвергам носил вниз бутылку кефира и показания и здоровался",
-    "knows_trolley_chamber": "юбка не снимается: она на жёсткой раме и распахивается, внутри пустота и нижний поручень",
     "knows_waiter_call": "нормальный цикл: официант крикнул «Осторожно, горячее!», толпа расступилась не глядя, Изольда подняла доску не глядя",
     "kuh_note_read": "на бутылке «Каскадъ» записка её рукой, крупно: «Платить МНѢ водой??? Да я васъ всѣхъ въ канализацію смою!» (строка автора, дословно); под бутылкой — сухой счёт по позициям",
     "lap_hides_again": "Лапидус снова под тележкой: перед поставщиком голым стыдно",
@@ -224,7 +109,6 @@
     "overlay_by_frame": "три плёнки разложены на подсвеченном стекле над люком и сложены по рамкам: контуры здания совпали, источник — в трёх разных местах",
     "paint_act_read": "акт малярной приёмки у доски: окраска в цвет дизайн-кода, «табличка — 1 шт.»; принято — подпись И. Т.",
     "payment_delivered": "кефир, накладная и счёт с печатью отеля приехали в приёмный пункт",
-    "payment_in_hall": "тележка с оплатой отвезена от стойки в зал, к лифту",
     "payment_loaded": "Изольда поставила кефир и положила накладную со счётом на столешницу тележки",
     "photo_seen": "старая фотография из тубуса: та же латунная тележка с пластиной «Каскадъ» у решётчатой двери на мозаичном полу, на столешнице бутылка и журнал, подпись «Четвергъ»",
     "plate_revealed": "открылась историческая инвентарная пластина водолечебницы",
@@ -232,7 +116,6 @@
     "poster_seen": "крупное объявление банного дня в вестибюле",
     "reception_called": "звонок на стойку: автоответчик «Спасибо! Ваше мнение очень важно для нас»; халата не принесут",
     "requests_stapled": "Изольда скрепила степлером три заявки по трём «услугам» в одну",
-    "seal_is_mark": "вывод P06: лучистый круг — рабочий оттиск того, кто «Принялъ» в журнале, а не сырость; он опломбировал счётчик; круг под папкой — тот же знак",
     "shock_done": "гидроудар состоялся: воды нет во всём здании",
     "shock_report_known": "Изольда, говоря с тележкой, сообщила: воды нет во всём здании",
     "stairs_open": "служебная лестница из зала прекраснодушия отперта: внизу площадка и дверь конторы (Z12)",
@@ -265,244 +148,51 @@
     "water_restored": "Лапидус повернул маховик задвижки — «Послѣ сего пускать»: стрелка манометра встаёт, по зданию долгий влажный выдох, громкая связь «успешное завершение плановых улучшений» тонет в нём; вода — только косвенно; конец игры",
     "relic_r1": "реликвия R1: латунный жетон «На одно погруженiе» из ниши у доски почёта (Z09)",
     "relic_r2": "реликвия R2: открытка тов. К. ко Дню работника ЖКХ в целлофане (Z08)",
-    "relic_r3": "реликвия R3: старая эмалированная кружка Изольды из нижнего ящика стойки (Z04)"
+    "relic_r3": "реликвия R3: старая эмалированная кружка Изольды из нижнего ящика стойки (Z04)",
+    "board_restored": "табличка «Старший по воде — тов. К.» расчищена — состояние мира, которого требует счёт",
+    "cascade_demo_seen": "в открытии акта показано: кнопка за стойкой включает подсветку и насос каскада, и весь вестибюль поворачивается смотреть на сухой водопад; через минуту защита выключает насос",
+    "cascade_on": "аттракцион включён самим героем: зал смотрит на каскад — ширма для витрины (состояние экрана; движок снимает при уходе из W2)",
+    "chalk_sample_seen": "на раме доски почёта — меловое «НАШЕ» рукой сантехника",
+    "invoice_filled": "Изольда вписала в накладную показания счётчика и «табличка — восстановлена» со слов обслуживающего персонала",
+    "junk_out": "хлам с наклейками «элемент дизайна» вынесен из кабины; доска «НАШЕ» ещё не на порожке",
+    "meter_reading_seen": "витрина открыта, бирка «Экспонат № 1» отогнута, показания контрольного счётчика прочитаны (число хранит движок)",
+    "ramp_set": "доска с меловым «НАШЕ» лежит трапом через латунный порожек кабины",
+    "payment_sent_alone": "оплата приехала раньше одна (Акт III, C19): кефир и бумаги приняты, докладчика не было — текст приёмки по этому флагу (возможный, не гарантированный)",
+    "trolley_marked_partial": "на тележке отметка «Грузъ принятъ. Докладчика — нѣтъ. Пріёмъ не оконченъ» (Акт III, C19; возможный флаг)",
+    "goods_on_trolley": "оплата приехала вместе с героем (Акт III, C16; возможный флаг)"
   },
   "actions": [
-    {
-      "id": "E01_roll_out",
-      "name": "Выкатить тележку из кабины к столу приёма: Кухтулху принимает груз по накладной и узнаёт свою тележку (W5)",
-      "room": "W5",
-      "type": "use",
-      "requires": [
-        "in_receiving_point",
-        "lap_hides_again",
-        "payment_delivered",
-        "plate_revealed"
-      ],
-      "adds": [
-        "goods_accepted",
-        "trolley_reinventoried",
-        "kuh_wants_hello"
-      ],
-      "removes": [],
-      "optional": false
-    },
-    {
-      "id": "E02_come_out",
-      "name": "Вылезти из-под тележки и встать перед ней (W5)",
-      "room": "W5",
-      "type": "use",
-      "requires": [
-        "kuh_wants_hello"
-      ],
-      "adds": [
-        "lap_out"
-      ],
-      "removes": [],
-      "optional": false
-    },
-    {
-      "id": "E03_report",
-      "name": "Доложиться: поздороваться, назваться, доложить состояние линии (W5)",
-      "room": "W5",
-      "type": "talk",
-      "requires": [
-        "lap_out",
-        "knows_thursday_plumber",
-        "instr1908_read"
-      ],
-      "adds": [
-        "reported"
-      ],
-      "removes": [],
-      "optional": false
-    },
-    {
-      "id": "E04_enter_office",
-      "name": "Войти за ней в контору старшего по воде (W6, Z13)",
-      "room": "W6",
-      "type": "use",
-      "requires": [
-        "reported"
-      ],
-      "adds": [
-        "in_office"
-      ],
-      "removes": [],
-      "optional": false
-    },
-    {
-      "id": "E05_plunger_mark",
-      "name": "Прижать вантуз к графе «Доложилъ» её журнала — круглая мокрая отметка; она отвечает лучистым оттиском в «Принялъ» и снимает пломбу с задвижки (Z13)",
-      "room": "W6",
-      "type": "use",
-      "requires": [
-        "in_office",
-        "plunger_taken",
-        "wet_ring_seen",
-        "seal_is_mark"
-      ],
-      "adds": [
-        "marks_exchanged"
-      ],
-      "removes": [],
-      "optional": false
-    },
-    {
-      "id": "E06_open_valve",
-      "name": "Повернуть маховик задвижки — пуск по инструкции 1908 года: «Послѣ сего пускать» (Z13)",
-      "room": "W6",
-      "type": "use",
-      "requires": [
-        "marks_exchanged",
-        "instr1908_read"
-      ],
-      "adds": [
-        "water_restored"
-      ],
-      "removes": [],
-      "optional": false
-    },
-    {
-      "id": "O01_report_from_under",
-      "name": "Доложиться из-под тележки — поздороваться голосом или высунуть руку (W5)",
-      "room": "W5",
-      "type": "talk",
-      "requires": [
-        "kuh_wants_hello"
-      ],
-      "adds": [
-        "under_refused"
-      ],
-      "removes": [],
-      "optional": true
-    },
-    {
-      "id": "O02_cover_up",
-      "name": "Прикрыться подручным: обернуться юбкой, картой отеля, меню мини-бара или салфеткой (W5)",
-      "room": "W5",
-      "type": "use",
-      "requires": [
-        "kuh_wants_hello"
-      ],
-      "adds": [
-        "cover_tried"
-      ],
-      "removes": [],
-      "optional": true
-    },
-    {
-      "id": "O03_look_photo",
-      "name": "Рассмотреть семейную фотографию на её столе (Z13)",
-      "room": "W6",
-      "type": "inspect",
-      "requires": [
-        "in_office"
-      ],
-      "adds": [
-        "family_photo_seen"
-      ],
-      "removes": [],
-      "optional": true
-    },
-    {
-      "id": "O04_pen",
-      "name": "Расписаться в журнале её ручкой (Z13)",
-      "room": "W6",
-      "type": "use",
-      "requires": [
-        "in_office"
-      ],
-      "adds": [
-        "pen_slipped"
-      ],
-      "removes": [],
-      "optional": true
-    },
-    {
-      "id": "O05_thumb",
-      "name": "Расписаться в журнале пальцем (Z13)",
-      "room": "W6",
-      "type": "use",
-      "requires": [
-        "in_office"
-      ],
-      "adds": [
-        "thumb_smeared"
-      ],
-      "removes": [],
-      "optional": true
-    },
-    {
-      "id": "O06_valve_sealed",
-      "name": "Повернуть задвижку до снятия пломбы (Z13)",
-      "room": "W6",
-      "type": "use",
-      "requires": [
-        "in_office"
-      ],
-      "adds": [
-        "valve_refused"
-      ],
-      "removes": [],
-      "optional": true
-    },
-    {
-      "id": "R1_token",
-      "name": "Подняться по служебной лестнице в зал и нажать латунную заслонку «Для жетоновъ» у доски почёта (Z09)",
-      "room": "W4",
-      "type": "use",
-      "requires": [
-        "reported",
-        "w4_open"
-      ],
-      "adds": [
-        "relic_r1"
-      ],
-      "removes": [],
-      "optional": true
-    },
-    {
-      "id": "R2_postcard",
-      "name": "Подняться в прачечную и открыть внутреннюю створку служебного шкафа (Z08)",
-      "room": "W3",
-      "type": "use",
-      "requires": [
-        "reported",
-        "w3_open"
-      ],
-      "adds": [
-        "relic_r2"
-      ],
-      "removes": [],
-      "optional": true
-    },
-    {
-      "id": "R3_mug",
-      "name": "Пройти служебным коридором за стойку и нажатием открыть нижний ящик: эмалированная кружка (Z04)",
-      "room": "W2",
-      "type": "use",
-      "requires": [
-        "reported",
-        "knows_push_latch"
-      ],
-      "adds": [
-        "relic_r3"
-      ],
-      "removes": [],
-      "optional": true
-    }
+    {"id": "E01_roll_out", "name": "Выкатить тележку из кабины к столу приёма: Кухтулху принимает груз по накладной — сверяет показания, отмечает табличку — и узнаёт свою тележку (если оплата приехала раньше одна — подтверждает «принято ранее», ждёт докладчика)", "room": "W5", "type": "use",
+     "requires": ["in_receiving_point", "lap_hides_again", "payment_delivered", "plate_revealed"], "adds": ["goods_accepted", "trolley_reinventoried", "kuh_wants_hello"], "removes": [], "optional": false},
+    {"id": "E02_come_out", "name": "Вылезти из-под тележки и встать перед ней (W5)", "room": "W5", "type": "use",
+     "requires": ["kuh_wants_hello"], "adds": ["lap_out"], "removes": [], "optional": false},
+    {"id": "E03_report", "name": "Доложиться: поздороваться, назваться, доложить о водоснабжении за истекший период — показания, состояние линии, подача, табличка, кефир (W5)", "room": "W5", "type": "talk",
+     "requires": ["lap_out"], "adds": ["reported"], "removes": [], "optional": false},
+    {"id": "E04_enter_office", "name": "Войти за ней в контору старшего по воде (W6, Z13)", "room": "W6", "type": "use",
+     "requires": ["reported"], "adds": ["in_office"], "removes": [], "optional": false},
+    {"id": "E05_plunger_mark", "name": "Прижать вантуз к графе «Доложилъ» её журнала — круглая мокрая отметка; она отвечает лучистым оттиском в «Принялъ» и снимает пломбу с задвижки (Z13)", "room": "W6", "type": "use",
+     "requires": ["in_office", "plunger_taken"], "adds": ["marks_exchanged"], "removes": [], "optional": false},
+    {"id": "E06_open_valve", "name": "Повернуть маховик задвижки — пуск по инструкции 1908 года: «Послѣ сего пускать» (Z13)", "room": "W6", "type": "use",
+     "requires": ["marks_exchanged"], "adds": ["water_restored"], "removes": [], "optional": false},
+    {"id": "O01_report_from_under", "name": "Доложиться из-под тележки — поздороваться голосом или высунуть руку (W5)", "room": "W5", "type": "talk",
+     "requires": ["kuh_wants_hello"], "adds": ["under_refused"], "removes": [], "optional": true},
+    {"id": "O02_cover_up", "name": "Прикрыться подручным: обернуться юбкой, картой отеля, меню мини-бара или салфеткой (W5)", "room": "W5", "type": "use",
+     "requires": ["kuh_wants_hello"], "adds": ["cover_tried"], "removes": [], "optional": true},
+    {"id": "O03_look_photo", "name": "Рассмотреть семейную фотографию на её столе (Z13)", "room": "W6", "type": "inspect",
+     "requires": ["in_office"], "adds": ["family_photo_seen"], "removes": [], "optional": true},
+    {"id": "O04_pen", "name": "Расписаться в журнале её ручкой (Z13)", "room": "W6", "type": "use",
+     "requires": ["in_office"], "adds": ["pen_slipped"], "removes": [], "optional": true},
+    {"id": "O05_thumb", "name": "Расписаться в журнале пальцем (Z13)", "room": "W6", "type": "use",
+     "requires": ["in_office"], "adds": ["thumb_smeared"], "removes": [], "optional": true},
+    {"id": "O06_valve_sealed", "name": "Повернуть задвижку до снятия пломбы (Z13)", "room": "W6", "type": "use",
+     "requires": ["in_office"], "adds": ["valve_refused"], "removes": [], "optional": true},
+    {"id": "R1_token", "name": "Подняться по служебной лестнице в зал и нажать латунную заслонку «Для жетоновъ» у доски почёта (Z09)", "room": "W4", "type": "use",
+     "requires": ["reported", "w4_open"], "adds": ["relic_r1"], "removes": [], "optional": true},
+    {"id": "R2_postcard", "name": "Подняться в прачечную и открыть внутреннюю створку служебного шкафа (Z08)", "room": "W3", "type": "use",
+     "requires": ["reported", "w3_open"], "adds": ["relic_r2"], "removes": [], "optional": true},
+    {"id": "R3_mug", "name": "Пройти служебным коридором за стойку и нажатием открыть нижний ящик: эмалированная кружка (Z04)", "room": "W2", "type": "use",
+     "requires": ["reported", "knows_push_latch"], "adds": ["relic_r3"], "removes": [], "optional": true}
   ],
-  "rooms": [
-    "W2 — Вестибюль и стойка Изольды (только за стойкой, по желанию: R3)",
-    "W3 — Прачечная и служебная шахта (по желанию: R2)",
-    "W4 — Зал прекраснодушия и служебная лестница (по желанию: R1)",
-    "W5 — Приёмный пункт (её сторона; P16)",
-    "W6 — Контора старшего по воде (P17, пуск)"
-  ],
-  "act_goal_flags": [
-    "reported",
-    "marks_exchanged",
-    "water_restored"
-  ]
+  "rooms": ["W2 — Вестибюль и стойка Изольды (только за стойкой, по желанию: R3)", "W3 — Прачечная и служебная шахта (по желанию: R2)", "W4 — Зал прекраснодушия и служебная лестница (по желанию: R1)", "W5 — Приёмный пункт (её сторона; P16)", "W6 — Контора старшего по воде (P17, пуск)"],
+  "act_goal_flags": ["reported", "marks_exchanged", "water_restored"]
 }

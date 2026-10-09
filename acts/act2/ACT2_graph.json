@@ -1,16 +1,16 @@
 {
   "act": "ACT2",
-  "revision": 2,
+  "revision": 3,
   "assumptions": [
     "BS1. Старт — гарантированный финал Акта I (34 флага). Тележка за стойкой, Лапидус под ней рядом с Изольдой. Служебные зоны W3, W4 и служебная лестница без гостей: там Лапидус ходит голым без укрытия; тележка нужна только для пересечения вестибюля (S3, прил. А п. 1). Повторные переходы через W2 — одним переходом, privacy-барьер не разыгрывается заново (H24).",
-    "BS2. Нормальный цикл P04: когда Лапидус возвращается к стойке, Изольда оформляет три заявки по трём «услугам» («душевой комфорт», «lobby water feature», «textile care») и по каждой звонит в одну и ту же аутсорс-службу; ответ всегда «заявка принята, ожидайте» (S3.1 §9). Громкая связь извиняется от имени трёх «служб».",
+    "BS2. Нормальный цикл P04: когда Лапидус возвращается к стойке, Изольда оформляет три заявки по трём «услугам» («Влажное наслаждение», «Влажное наваждение», «Влажное очищение» (решение автора 05.10.2026)) и по каждой звонит в одну и ту же аутсорс-службу; ответ всегда «заявка принята, ожидайте» (S3.1 §9). Громкая связь извиняется от имени трёх «служб».",
     "BS3. Приборы P04 разнородны, у каждого прототип в жизни: душ W1 — лейку одним ударом вывернуло из держателя, в трубе воздух (вступление Акта I); каскад W2 — насос гудит вхолостую, на камнях одна резкая сухая линия; прачечная W3 — барабаны, запущенные банным днём одновременно, стоят на одном и том же оставшемся времени с сообщением «нет подачи воды». Тройки одинаковых стрелок нет.",
     "BS4. Гидроудар — бытовая физика: один удар по всему зданию бывает, когда поток перекрывают резко. Вывод «подачу остановили выше по общей линии, одним движением» делает игрок (выбор объяснения в разговоре); Изольда его не подсказывает (S3.1 §6). Слово «гидроудар» — название игры, не жаргон.",
     "BS5. Мебель стойки по дизайн-коду без ручек: ящики открываются нажатием (реальная нажимная защёлка). Изольда открывает ящик коленом, не глядя. В ящике степлер, печать отеля и бутылка кефира — Изольда задвигает его, не глядя. Кефир — сетап P13, в Акте II не объясняется.",
     "BS6. Карта отеля для гостей — прозрачная плёнка-вкладыш в акриловой подставке на стойке; вынимается сзади, со служебной стороны. Плёнка — не бумага, мыльным рукам не страшна.",
     "BS7. План водолечебницы 1908 года — на восковке (вощёная калька на ткани): полупрозрачной и влагостойкой. Он лежит в тубусе на архивном столе Z10 вместе со старой фотографией тележки. Советская схема — лекционная плёнка профилактория в папке на том же столе. Совмещают их не на столе, а на подсвеченном полу над люком (BS9). Решение автора 04.10.2026: «пол».",
     "BS8. Карта отеля нарисована «для красоты»: фасад симметричный, купол несуществующий, план повёрнут «лицом к гостю». Внутренние точки (номера, источник) перерисованы со старого плана верно. Поэтому по контуру три слоя не сходятся, а по источнику и водопроводу номера 317 сходятся.",
-    "BS9. Люк старого источника выставлен в полу wellness-зала W4 под стеклом с подсветкой — heritage-деталь рядом с архивным столом, видна в зуме Z10. Это неподвижный якорь и одновременно световой стол: плёнки кладут прямо на стекло над люком и двигают, пока нарисованный источник не ляжет на настоящий.",
+    "BS9. Люк старого источника выставлен в полу зала прекраснодушия W4 под стеклом с подсветкой — деталь «наследия» рядом с архивным столом, видна в зуме Z10. Это неподвижный якорь и одновременно световой стол: плёнки кладут прямо на стекло над люком и двигают, пока нарисованный источник не ляжет на настоящий.",
     "BS10. Контрольный счётчик водолечебницы стоит на старой линии в вестибюле, рядом с каскадом. Управляющий накрыл его музейной витриной с табличкой «Экспонат. Не трогать». Витрина не запирается: стеклянная дверца на нажимной защёлке, без ручки, по тому же дизайн-коду. Её не открывают, потому что «Не трогать».",
     "BS11. Счётчик стоит. Пломба на нём — свежий мокрый лучистый оттиск поверх проволоки; тот же знак, что круг под папкой (Акт I).",
     "BS12. Старый журнал приёмки водолечебницы (Z10, ID journal_old): по четвергам «кефиръ 1 бут., доложено», в графе «Принялъ» — лучистый оттиск. Внутриигровой заголовок нейтральный — «Журналъ приёмки», чтобы до P12 жили оба прочтения (подношение или оплата). «Журнал оплат» в S3.1 — дизайнерское имя.",
@@ -34,44 +34,14 @@
     "BS30. На фото «Четвергъ» тележка стоит у решётчатой двери на том же мозаичном полу, что в зале прекраснодушия; на столешнице бутылка и журнал. В Акте II фото доказывает одно: тележка — родная часть водолечебницы.",
     "BS31. «Декоративная стена» прачечной (Z07) — просто гладкая стена отеля без ручек; за ней ничего сюжетного. Её «ухватиться не за что» готовит вантуз как присоску (Акт III, зеркало).",
     "BS32. Зал W4 на трёх планах назван по-разному: «Залъ водолѣченія» (1908), «Зал оздоровления» (профилакторий), «Зал прекраснодушия» (отель; так управляющий перевёл «велнес»). Совмещение плёнок (B15) даёт Лапидусу догадку о переводе. Это шутка, а не улика: флага нет, на проходимость не влияет.",
-    "BS33. Решения автора 05.10.2026 (геометрия низа). Приёмный пункт — на её стороне, за дверью конторы: на плане 1908 года «Пріёмный пунктъ» стоит рядом с «Конторой старшаго по водѣ». «Приём — в установленном порядке» значит: людей не принимают, принимают груз — сверху, лифтом, после доклада. W5 в игре — приёмный пункт, W6 — контора; обе комнаты открываются только в Акте IV. Планы — схемы водопровода: лифта на них нет."
+    "BS33. Решения автора 05.10.2026 (геометрия низа). Приёмный пункт — на её стороне, за дверью конторы: на плане 1908 года «Пріёмный пунктъ» стоит рядом с «Конторой старшаго по водѣ». «Приём — в установленном порядке» значит: людей не принимают, принимают груз — сверху, лифтом, после доклада. W5 в игре — приёмный пункт, W6 — контора; обе комнаты открываются только в Акте IV. Планы — схемы водопровода: лифта на них нет.",
+    "BS34. Решения автора 09.10.2026 (план правок review/PUZZLE_FIX_PLAN.md). Акт открывается виньеткой B00: гость требует аттракцион, Изольда жмёт кнопку, насос гудит вхолостую (вывод «удар один» делается наблюдением, викторина CHOICE.cause.* снята), и зал поворачивается к каскаду — показ правила ширмы.",
+    "BS35. P06 «Экспонат»: рука из-под тележки у витрины видна гостям («Мама, там рука из тележки!»); решение — самому включить аттракцион (B01) и открыть витрину, пока все смотрят на камни (B08). Защёлка видна под кромкой: подсматривать ящик Изольды не обязательно. Внутри на циферблат наклеена бирка «Экспонат № 1»; показания читаются, когда её отогнуть (B08b). Сравнение следа вантуза с пломбой (B09) — по желанию.",
+    "BS36. Ключ от служебной лестницы Изольда отдаёт за одну верную стратегию (B14): Лапидус предлагает взять на себя обязанность сокращённого сантехника. Витрина с показаниями (B08) и табличка (B11, B12) в Акте II необязательны: их требует Акт III (накладная C13b: показания и «табличка восстановлена»; счёт), и там есть дубли «если не сделано в Акте II». Темы «сырость» и «дизайн-код» остаются разговорами без ключа (слоты текстов, в графе не моделируются).",
+    "BS37. Скрытые условия сняты: B08 без «подсмотренной защёлки» и «попытки с юбкой», B12 без «бумага раскисает», B09 без старого журнала. Спуск B15 по-прежнему требует совмещённых планов (topology_known): это финал акта, герой должен знать, что внизу приёмный пункт у источника.",
+    "BS38. Меню мини-бара гарантировано Актом I (A11 обязательно, N01); страховочное B10 снято. knows_trolley_chamber не гарантирован (A04 необязательна)."
   ],
-  "start_flags": [
-    "bathday_done",
-    "breakfast_on_trolley",
-    "cascade_dry_seen",
-    "crowd_seen",
-    "foam_active",
-    "foam_class_closed",
-    "foam_swollen",
-    "iz_folder_seen",
-    "iz_formal",
-    "iz_rule3_seen",
-    "iz_rules_all_shown",
-    "knows_bath_day",
-    "knows_foam_flow",
-    "knows_paper_soaks",
-    "knows_soap_grip",
-    "knows_stars_fold",
-    "knows_trolley_chamber",
-    "knows_waiter_call",
-    "minus_four_stars_said",
-    "need_cover",
-    "plate_revealed",
-    "plunger_taken",
-    "poster_seen",
-    "reception_called",
-    "shock_done",
-    "shock_report_known",
-    "stars_folded",
-    "trolley_at_crowd",
-    "trolley_present",
-    "trolley_service_side",
-    "voucher_read",
-    "w3_open",
-    "w4_open",
-    "wet_ring_seen"
-  ],
+  "start_flags": ["bathday_done", "breakfast_on_trolley", "cascade_dry_seen", "crowd_seen", "foam_active", "foam_class_closed", "foam_swollen", "has_menu_card", "iz_folder_seen", "iz_formal", "iz_rule3_seen", "iz_rules_all_shown", "knows_assortment", "knows_bath_day", "knows_foam_flow", "knows_paper_soaks", "knows_soap_grip", "knows_stars_fold", "knows_waiter_call", "minus_four_stars_said", "need_cover", "plate_revealed", "plunger_taken", "poster_seen", "reception_called", "shock_done", "shock_report_known", "stars_folded", "trolley_at_crowd", "trolley_present", "trolley_service_side", "voucher_read", "w3_open", "w4_open", "wet_ring_seen"],
   "flags_glossary": {
     "bathday_done": "банный день прошёл: весь съёмный текстиль в стоящей прачечной",
     "breakfast_on_trolley": "на столешнице нетронутый завтрак: кофейник с надписью «Осторожно, горячо!», чашка с блюдцем, стакан сока, круассан, бумажная салфетка",
@@ -109,7 +79,7 @@
     "wet_ring_seen": "на стекле остался круглый влажный след присоски (модель следа)",
     "has_menu_card": "у Лапидуса ламинированное меню мини-бара (приказ об ассортименте)",
     "knows_assortment": "прочитано меню мини-бара: кефир исключён, комбуча и лимонад, минералка «Каскадъ», пена-концентрат",
-    "cascade_pump_dry": "кнопка «Lobby water feature: пуск» за стойкой: насос гудит вхолостую, каскад цел, но сух; на камнях одна резкая сухая линия",
+    "cascade_pump_dry": "кнопка «Влажное наваждение: пуск» за стойкой: насос гудит вхолостую, каскад цел, но сух; на камнях одна резкая сухая линия",
     "drums_same_time": "все барабаны прачечной (запущены банным днём одновременно) стоят на одном и том же оставшемся времени с сообщением «нет подачи воды»",
     "clothes_locked_seen": "одежда Лапидуса видна за стеклом люка; люк заблокирован посреди цикла, внутри вода",
     "knows_supply_cut": "вывод P04: это не три поломки и не кончившаяся вода — подачу резко остановили выше по общей линии, одним движением",
@@ -155,397 +125,61 @@
     "mirror_seen": "осмотрено «Зеркало прекраснодушия» (Z11): огромное зеркало в золочёной раме, табличка «Улыбнитесь себе», на раме наклейка «Не трогать — элемент дизайна»; голый Лапидус впервые видит себя целиком",
     "stairs_open": "служебная лестница из зала прекраснодушия отперта: внизу площадка и дверь конторы (Z12)",
     "knows_stairs_narrow": "служебная лестница винтовая и узкая: человек пройдёт, тележка — нет (в Акте II только шутка про худого сантехника)",
-    "knows_iz_stamp_mp": "Изольда ставит печать, не читая: смотрит только в угол «М.П.» (место печати) — сетап P13 Акта III (решение автора 05.10.2026)"
+    "knows_iz_stamp_mp": "Изольда ставит печать, не читая: смотрит только в угол «М.П.» (место печати) — сетап P13 Акта III (решение автора 05.10.2026)",
+    "cascade_demo_seen": "в открытии акта показано: кнопка за стойкой включает подсветку и насос каскада, и весь вестибюль поворачивается смотреть на сухой водопад; через минуту защита выключает насос",
+    "cascade_on": "аттракцион включён самим героем: подсветка камней, насос гудит, зал смотрит на каскад — ширма для витрины (состояние экрана: движок снимает при уходе из W2, в графе — что герой умеет её включать)",
+    "meter_reading_seen": "витрина открыта, бирка «Экспонат № 1» на циферблате отогнута, показания контрольного счётчика прочитаны (40 712 вёдер — число закреплено в текстах, нить показаний Актов III–IV); стрелка стоит",
+    "chalk_sample_seen": "на раме доски почёта — меловое «НАШЕ» рукой сантехника: образец его почерка",
+    "board_restored": "табличка «Старший по воде — тов. К.» расчищена от бежевой краски — состояние мира, которого потом требует счёт («табличку возстановить»)"
   },
   "actions": [
-    {
-      "id": "B01_pump_cascade",
-      "name": "За стойкой нажать кнопку «Lobby water feature: пуск» и посмотреть на каскад",
-      "room": "W2",
-      "type": "use",
-      "requires": [
-        "trolley_service_side",
-        "cascade_dry_seen"
-      ],
-      "adds": [
-        "cascade_pump_dry"
-      ],
-      "removes": [],
-      "optional": false
-    },
-    {
-      "id": "B02_inspect_drums",
-      "name": "Осмотреть барабаны прачечной: табло, люки, одежда за стеклом (Z06)",
-      "room": "W3",
-      "type": "inspect",
-      "requires": [
-        "w3_open",
-        "knows_bath_day"
-      ],
-      "adds": [
-        "drums_same_time",
-        "clothes_locked_seen"
-      ],
-      "removes": [],
-      "optional": false
-    },
-    {
-      "id": "B03_merge_requests",
-      "name": "Остановить Изольду, которая оформляет три заявки на три «услуги»: это одна остановка выше по линии",
-      "room": "W2",
-      "type": "talk",
-      "requires": [
-        "shock_done",
-        "cascade_pump_dry",
-        "drums_same_time",
-        "trolley_service_side",
-        "iz_formal"
-      ],
-      "adds": [
-        "knows_supply_cut",
-        "requests_stapled",
-        "knows_push_latch",
-        "kefir_in_drawer_seen",
-        "knows_iz_stamp_mp"
-      ],
-      "removes": [],
-      "optional": false
-    },
-    {
-      "id": "B04_take_hotel_map",
-      "name": "Вынуть со служебной стороны прозрачную карту отеля из гостевой подставки на стойке (Z04)",
-      "room": "W2",
-      "type": "take",
-      "requires": [
-        "trolley_service_side"
-      ],
-      "adds": [
-        "has_hotel_map"
-      ],
-      "removes": [],
-      "optional": false
-    },
-    {
-      "id": "B05_lay_films",
-      "name": "Разложить на подсвеченном стекле над люком источника план 1908 года из тубуса, советскую лекционную плёнку и карту отеля (Z10)",
-      "room": "W4",
-      "type": "use",
-      "requires": [
-        "w4_open",
-        "has_hotel_map"
-      ],
-      "adds": [
-        "overlay_by_frame",
-        "knows_map_lies",
-        "photo_seen"
-      ],
-      "removes": [],
-      "optional": false
-    },
-    {
-      "id": "B06_align_source",
-      "name": "Сдвинуть каждую плёнку так, чтобы нарисованный источник лёг на настоящий люк, и довернуть по водопроводу номера 317 (Z10)",
-      "room": "W4",
-      "type": "use",
-      "requires": [
-        "overlay_by_frame",
-        "knows_map_lies"
-      ],
-      "adds": [
-        "topology_known",
-        "knows_receiving_point",
-        "knows_office_by_source",
-        "knows_counter_on_line",
-        "knows_service_stairs"
-      ],
-      "removes": [],
-      "optional": false
-    },
-    {
-      "id": "B07_read_old_journal",
-      "name": "Прочитать старый журнал приёмки на архивном столе (Z10)",
-      "room": "W4",
-      "type": "read",
-      "requires": [
-        "w4_open"
-      ],
-      "adds": [
-        "journal_old_read"
-      ],
-      "removes": [],
-      "optional": false
-    },
-    {
-      "id": "B08_open_vitrine",
-      "name": "Под тележкой подъехать к экспонату, отгородиться распахнутой юбкой и нажать на стекло витрины (Z05)",
-      "room": "W2",
-      "type": "use",
-      "requires": [
-        "trolley_service_side",
-        "knows_trolley_chamber",
-        "knows_push_latch"
-      ],
-      "adds": [
-        "vitrine_open",
-        "meter_seal_seen"
-      ],
-      "removes": [],
-      "optional": false
-    },
-    {
-      "id": "B09_compare_plunger",
-      "name": "Прижать вантуз к стеклу счётчика рядом с пломбой и сравнить оттиски (Z05)",
-      "room": "W2",
-      "type": "use",
-      "requires": [
-        "vitrine_open",
-        "plunger_taken",
-        "wet_ring_seen",
-        "journal_old_read"
-      ],
-      "adds": [
-        "seal_is_mark"
-      ],
-      "removes": [],
-      "optional": false
-    },
-    {
-      "id": "B10_take_menu",
-      "name": "Если меню не взято в Акте I: под тележкой вернуться в номер и снять с мини-бара ламинированное меню (Z02)",
-      "room": "W1",
-      "type": "take",
-      "requires": [
-        "trolley_service_side"
-      ],
-      "adds": [
-        "has_menu_card",
-        "knows_assortment"
-      ],
-      "removes": [],
-      "optional": false
-    },
-    {
-      "id": "B11_inspect_board",
-      "name": "Осмотреть доску почёта: свежий бежевый прямоугольник, табличка маляров, приколотый акт (Z09)",
-      "room": "W4",
-      "type": "inspect",
-      "requires": [
-        "w4_open"
-      ],
-      "adds": [
-        "knows_plate_under_paint",
-        "knows_paint_fresh",
-        "paint_act_read"
-      ],
-      "removes": [],
-      "optional": false
-    },
-    {
-      "id": "B12_scrape_plate",
-      "name": "Соскоблить свежую краску кромкой ламинированного меню (Z09)",
-      "room": "W4",
-      "type": "use",
-      "requires": [
-        "has_menu_card",
-        "knows_plate_under_paint",
-        "knows_paint_fresh",
-        "knows_paper_soaks"
-      ],
-      "adds": [
-        "name_revealed",
-        "menu_smeared"
-      ],
-      "removes": [],
-      "optional": false
-    },
-    {
-      "id": "B13_read_layoff",
-      "name": "Прочитать распоряжение о сокращении сантехника на архивном столе (Z10)",
-      "room": "W4",
-      "type": "read",
-      "requires": [
-        "w4_open"
-      ],
-      "adds": [
-        "layoff_read"
-      ],
-      "removes": [],
-      "optional": false
-    },
-    {
-      "id": "B14_present_model",
-      "name": "Изложить Изольде модель через распоряжение о сокращении: функции сантехника никому не передали",
-      "room": "W2",
-      "type": "talk",
-      "requires": [
-        "knows_supply_cut",
-        "topology_known",
-        "photo_seen",
-        "seal_is_mark",
-        "name_revealed",
-        "paint_act_read",
-        "layoff_read",
-        "trolley_service_side",
-        "iz_formal"
-      ],
-      "adds": [
-        "iz_admits_facts",
-        "knows_supplier_exists",
-        "knows_thursday_plumber",
-        "knows_handover_gap",
-        "knows_chalk_author",
-        "counter_notice_read",
-        "iz_stepladder_minimized",
-        "has_stairs_key"
-      ],
-      "removes": [],
-      "optional": false
-    },
-    {
-      "id": "B15_descend",
-      "name": "Отпереть ключом служебную лестницу зала прекраснодушия и спуститься к двери конторы (Z12)",
-      "room": "W4",
-      "type": "use",
-      "requires": [
-        "has_stairs_key",
-        "topology_known",
-        "iz_admits_facts"
-      ],
-      "adds": [
-        "stairs_open",
-        "knows_stairs_narrow",
-        "office_notice_read",
-        "midpoint_known"
-      ],
-      "removes": [],
-      "optional": false
-    },
-    {
-      "id": "B20_accuse_signature",
-      "name": "Предъявить Изольде её подпись на акте малярной приёмки",
-      "room": "W2",
-      "type": "talk",
-      "requires": [
-        "paint_act_read",
-        "trolley_service_side",
-        "iz_formal"
-      ],
-      "adds": [
-        "iz_defends_seen"
-      ],
-      "removes": [],
-      "optional": true
-    },
-    {
-      "id": "B21_read_soviet_memo",
-      "name": "Прочитать советскую памятку дежурной смене (Z10)",
-      "room": "W4",
-      "type": "read",
-      "requires": [
-        "w4_open"
-      ],
-      "adds": [
-        "memo_soviet_read"
-      ],
-      "removes": [],
-      "optional": true
-    },
-    {
-      "id": "B22_read_regulation",
-      "name": "Прочитать ламинированный регламент пуска на стойке (Z04)",
-      "room": "W2",
-      "type": "read",
-      "requires": [
-        "trolley_service_side"
-      ],
-      "adds": [
-        "regulation_cut_seen"
-      ],
-      "removes": [],
-      "optional": true
-    },
-    {
-      "id": "B23_inspect_mirror",
-      "name": "Осмотреть «Зеркало прекраснодушия» (Z11)",
-      "room": "W4",
-      "type": "inspect",
-      "requires": [
-        "w4_open"
-      ],
-      "adds": [
-        "mirror_seen"
-      ],
-      "removes": [],
-      "optional": true
-    },
-    {
-      "id": "B24_inspect_cladding",
-      "name": "Осмотреть гладкую бежевую «декоративную стену» в прачечной (Z07)",
-      "room": "W3",
-      "type": "inspect",
-      "requires": [
-        "w3_open"
-      ],
-      "adds": [
-        "cladding_seen"
-      ],
-      "removes": [],
-      "optional": true
-    },
-    {
-      "id": "R1_token",
-      "name": "Нажать латунную заслонку «Для жетоновъ» у доски почёта (Z09)",
-      "room": "W4",
-      "type": "take",
-      "requires": [
-        "w4_open"
-      ],
-      "adds": [
-        "relic_r1"
-      ],
-      "removes": [],
-      "optional": true
-    },
-    {
-      "id": "R2_postcard",
-      "name": "Открыть внутреннюю створку служебного шкафа (Z08)",
-      "room": "W3",
-      "type": "take",
-      "requires": [
-        "w3_open"
-      ],
-      "adds": [
-        "relic_r2"
-      ],
-      "removes": [],
-      "optional": true
-    },
-    {
-      "id": "R3_mug",
-      "name": "Открыть нажатием нижний ящик стойки и переставить кружку на столешницу тележки (Z04)",
-      "room": "W2",
-      "type": "take",
-      "requires": [
-        "trolley_service_side",
-        "knows_push_latch"
-      ],
-      "adds": [
-        "relic_r3"
-      ],
-      "removes": [],
-      "optional": true
-    }
+    {"id": "B00_opening_demo", "name": "Открытие акта (виньетка): гость требует обещанный аттракцион «Влажное наваждение», Изольда не глядя жмёт кнопку — насос гудит вхолостую, подсветка камней, весь вестибюль поворачивается к сухому каскаду; защита отключает насос", "room": "W2", "type": "inspect",
+     "requires": ["trolley_service_side", "cascade_dry_seen"], "adds": ["cascade_demo_seen", "cascade_pump_dry"], "removes": [], "optional": false},
+    {"id": "B01_pump_cascade", "name": "За стойкой самому нажать кнопку «Влажное наваждение: пуск»: подсветка камней, насос гудит, весь вестибюль смотрит на каскад — ширма, держится, пока герой в вестибюле", "room": "W2", "type": "use",
+     "requires": ["trolley_service_side", "cascade_demo_seen"], "adds": ["cascade_on"], "removes": [], "optional": true},
+    {"id": "B02_inspect_drums", "name": "Осмотреть барабаны прачечной: табло, люки, одежда за стеклом (Z06)", "room": "W3", "type": "inspect",
+     "requires": ["w3_open", "knows_bath_day"], "adds": ["drums_same_time", "clothes_locked_seen"], "removes": [], "optional": false},
+    {"id": "B03_merge_requests", "name": "Остановить Изольду, которая оформляет три заявки на три «услуги»: это одна остановка выше по линии", "room": "W2", "type": "talk",
+     "requires": ["shock_done", "cascade_pump_dry", "drums_same_time", "trolley_service_side", "iz_formal"], "adds": ["knows_supply_cut", "requests_stapled", "knows_push_latch", "kefir_in_drawer_seen", "knows_iz_stamp_mp"], "removes": [], "optional": false},
+    {"id": "B04_take_hotel_map", "name": "Вынуть со служебной стороны прозрачную карту отеля из гостевой подставки на стойке (Z04)", "room": "W2", "type": "take",
+     "requires": ["trolley_service_side"], "adds": ["has_hotel_map"], "removes": [], "optional": false},
+    {"id": "B05_lay_films", "name": "Разложить на подсвеченном стекле над люком источника план 1908 года из тубуса, советскую лекционную плёнку и карту отеля (Z10)", "room": "W4", "type": "use",
+     "requires": ["w4_open", "has_hotel_map"], "adds": ["overlay_by_frame", "knows_map_lies", "photo_seen"], "removes": [], "optional": false},
+    {"id": "B06_align_source", "name": "Сдвинуть каждую плёнку так, чтобы нарисованный источник лёг на настоящий люк, и довернуть по водопроводу номера 317 (Z10)", "room": "W4", "type": "use",
+     "requires": ["overlay_by_frame", "knows_map_lies"], "adds": ["topology_known", "knows_receiving_point", "knows_office_by_source", "knows_counter_on_line", "knows_service_stairs"], "removes": [], "optional": false},
+    {"id": "B07_read_old_journal", "name": "Прочитать старый журнал приёмки на архивном столе (Z10)", "room": "W4", "type": "read",
+     "requires": ["w4_open"], "adds": ["journal_old_read"], "removes": [], "optional": true},
+    {"id": "B08_open_vitrine", "name": "Под тележкой подъехать к экспонату, пока вестибюль смотрит на каскад, нажать на стекло витрины (упор защёлки виден под кромкой), отогнуть бирку «Экспонат № 1» на циферблате и прочитать показания; увидеть пломбу (Z05)", "room": "W2", "type": "use",
+     "requires": ["trolley_service_side", "cascade_on"], "adds": ["vitrine_open", "meter_seal_seen", "meter_reading_seen"], "removes": [], "optional": true},
+    {"id": "B09_compare_plunger", "name": "Прижать вантуз к стеклу счётчика рядом с пломбой и сравнить оттиски (Z05)", "room": "W2", "type": "use",
+     "requires": ["vitrine_open", "plunger_taken", "wet_ring_seen"], "adds": ["seal_is_mark"], "removes": [], "optional": true},
+    {"id": "B11_inspect_board", "name": "Осмотреть доску почёта: свежий бежевый прямоугольник, табличка маляров, приколотый акт; на раме доски — меловое «НАШЕ» рукой сантехника (Z09)", "room": "W4", "type": "inspect",
+     "requires": ["w4_open"], "adds": ["knows_plate_under_paint", "knows_paint_fresh", "paint_act_read", "chalk_sample_seen"], "removes": [], "optional": true},
+    {"id": "B12_scrape_plate", "name": "Соскоблить свежую краску кромкой ламинированного меню (Z09)", "room": "W4", "type": "use",
+     "requires": ["has_menu_card", "knows_plate_under_paint", "knows_paint_fresh"], "adds": ["name_revealed", "board_restored", "menu_smeared"], "removes": [], "optional": true},
+    {"id": "B13_read_layoff", "name": "Прочитать распоряжение о сокращении сантехника на архивном столе (Z10)", "room": "W4", "type": "read",
+     "requires": ["w4_open"], "adds": ["layoff_read"], "removes": [], "optional": false},
+    {"id": "B14_present_model", "name": "Предложить Изольде взять на себя брошенную обязанность сантехника (распоряжение «функции не передавать» + три сшитые заявки): она с облегчением «передаёт вопрос обслуживающему персоналу» и отдаёт ключ от служебной лестницы", "room": "W2", "type": "talk",
+     "requires": ["layoff_read", "requests_stapled", "trolley_service_side", "iz_formal"], "adds": ["iz_admits_facts", "knows_supplier_exists", "knows_thursday_plumber", "knows_handover_gap", "knows_chalk_author", "counter_notice_read", "iz_stepladder_minimized", "has_stairs_key"], "removes": [], "optional": false},
+    {"id": "B15_descend", "name": "Отпереть ключом служебную лестницу зала прекраснодушия и спуститься к двери конторы (Z12)", "room": "W4", "type": "use",
+     "requires": ["has_stairs_key", "topology_known", "iz_admits_facts"], "adds": ["stairs_open", "knows_stairs_narrow", "office_notice_read", "midpoint_known"], "removes": [], "optional": false},
+    {"id": "B20_accuse_signature", "name": "Предъявить Изольде её подпись на акте малярной приёмки", "room": "W2", "type": "talk",
+     "requires": ["paint_act_read", "trolley_service_side", "iz_formal"], "adds": ["iz_defends_seen"], "removes": [], "optional": true},
+    {"id": "B21_read_soviet_memo", "name": "Прочитать советскую памятку дежурной смене (Z10)", "room": "W4", "type": "read",
+     "requires": ["w4_open"], "adds": ["memo_soviet_read"], "removes": [], "optional": true},
+    {"id": "B22_read_regulation", "name": "Прочитать ламинированный регламент пуска на стойке (Z04)", "room": "W2", "type": "read",
+     "requires": ["trolley_service_side"], "adds": ["regulation_cut_seen"], "removes": [], "optional": true},
+    {"id": "B23_inspect_mirror", "name": "Осмотреть «Зеркало прекраснодушия» (Z11)", "room": "W4", "type": "inspect",
+     "requires": ["w4_open"], "adds": ["mirror_seen"], "removes": [], "optional": true},
+    {"id": "B24_inspect_cladding", "name": "Осмотреть гладкую бежевую «декоративную стену» в прачечной (Z07)", "room": "W3", "type": "inspect",
+     "requires": ["w3_open"], "adds": ["cladding_seen"], "removes": [], "optional": true},
+    {"id": "R1_token", "name": "Нажать латунную заслонку «Для жетоновъ» у доски почёта (Z09)", "room": "W4", "type": "take",
+     "requires": ["w4_open"], "adds": ["relic_r1"], "removes": [], "optional": true},
+    {"id": "R2_postcard", "name": "Открыть внутреннюю створку служебного шкафа (Z08)", "room": "W3", "type": "take",
+     "requires": ["w3_open"], "adds": ["relic_r2"], "removes": [], "optional": true},
+    {"id": "R3_mug", "name": "Открыть нажатием нижний ящик стойки и переставить кружку на столешницу тележки (Z04)", "room": "W2", "type": "take",
+     "requires": ["trolley_service_side", "knows_push_latch"], "adds": ["relic_r3"], "removes": [], "optional": true}
   ],
-  "rooms": [
-    "W1 — Номер 317",
-    "W2 — Вестибюль и стойка Изольды",
-    "W3 — Прачечная и служебная шахта",
-    "W4 — Wellness-зал (бывшая водолечебница)"
-  ],
-  "act_goal_flags": [
-    "midpoint_known",
-    "stairs_open",
-    "office_notice_read",
-    "iz_admits_facts"
-  ]
+  "rooms": ["W1 — Номер 317", "W2 — Вестибюль и стойка Изольды", "W3 — Прачечная и служебная шахта", "W4 — Зал прекраснодушия (бывшая водолечебница)"],
+  "act_goal_flags": ["midpoint_known", "stairs_open", "office_notice_read", "iz_admits_facts"]
 }

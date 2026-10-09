@@ -4,59 +4,55 @@
   "errors": [],
   "warnings": [],
   "info": {
-    "states": 792,
-    "goal_states": 8,
+    "states": 4800,
+    "goal_states": 64,
     "shortest_path": [
-      "A01_take_plunger",
       "A02_probe_mineral",
       "A03_call_reception",
-      "A04_try_skirt",
       "A05_inspect_stars",
       "A06_fold_stars",
       "A07_peek_lobby",
+      "A11_take_menu_card",
+      "N01_free_plunger",
       "A08_drive_out",
       "A09_shout_hot",
       "A10_talk_isolde"
     ],
     "dead_end_states": 0,
     "removes_actions": [
-      "A01_take_plunger"
+      "N01_free_plunger"
     ],
     "removes_unsafe": [],
     "bottlenecks": [
-      "A01_take_plunger",
+      "N01_free_plunger",
       "A03_call_reception",
-      "A04_try_skirt",
       "A05_inspect_stars",
       "A06_fold_stars",
       "A07_peek_lobby",
       "A08_drive_out",
       "A09_shout_hot",
-      "A10_talk_isolde"
+      "A10_talk_isolde",
+      "A11_take_menu_card"
     ],
     "free_pairs": [
       [
-        "A01_take_plunger",
+        "N01_free_plunger",
         "A02_probe_mineral"
       ],
       [
-        "A01_take_plunger",
+        "N01_free_plunger",
         "A03_call_reception"
       ],
       [
-        "A01_take_plunger",
-        "A04_try_skirt"
-      ],
-      [
-        "A01_take_plunger",
+        "N01_free_plunger",
         "A05_inspect_stars"
       ],
       [
-        "A01_take_plunger",
+        "N01_free_plunger",
         "A06_fold_stars"
       ],
       [
-        "A01_take_plunger",
+        "N01_free_plunger",
         "A07_peek_lobby"
       ],
       [
@@ -65,10 +61,6 @@
       ],
       [
         "A02_probe_mineral",
-        "A04_try_skirt"
-      ],
-      [
-        "A02_probe_mineral",
         "A05_inspect_stars"
       ],
       [
@@ -80,8 +72,8 @@
         "A07_peek_lobby"
       ],
       [
-        "A03_call_reception",
-        "A04_try_skirt"
+        "A02_probe_mineral",
+        "A11_take_menu_card"
       ],
       [
         "A03_call_reception",
@@ -96,24 +88,28 @@
         "A07_peek_lobby"
       ],
       [
-        "A04_try_skirt",
-        "A05_inspect_stars"
-      ],
-      [
-        "A04_try_skirt",
-        "A06_fold_stars"
-      ],
-      [
-        "A04_try_skirt",
-        "A07_peek_lobby"
+        "A03_call_reception",
+        "A11_take_menu_card"
       ],
       [
         "A05_inspect_stars",
         "A07_peek_lobby"
       ],
       [
+        "A05_inspect_stars",
+        "A11_take_menu_card"
+      ],
+      [
         "A06_fold_stars",
         "A07_peek_lobby"
+      ],
+      [
+        "A06_fold_stars",
+        "A11_take_menu_card"
+      ],
+      [
+        "A07_peek_lobby",
+        "A11_take_menu_card"
       ]
     ],
     "guaranteed_final_flags": [
@@ -124,16 +120,17 @@
       "foam_active",
       "foam_class_closed",
       "foam_swollen",
+      "has_menu_card",
       "iz_folder_seen",
       "iz_formal",
       "iz_rule3_seen",
       "iz_rules_all_shown",
+      "knows_assortment",
       "knows_bath_day",
       "knows_foam_flow",
       "knows_paper_soaks",
       "knows_soap_grip",
       "knows_stars_fold",
-      "knows_trolley_chamber",
       "knows_waiter_call",
       "minus_four_stars_said",
       "need_cover",
@@ -157,6 +154,7 @@
       "breakfast_on_trolley",
       "cascade_dry_seen",
       "crowd_seen",
+      "fingers_edge_tried",
       "foam_active",
       "foam_class_closed",
       "foam_swollen",
@@ -177,8 +175,10 @@
       "minus_four_stars_said",
       "need_cover",
       "plate_revealed",
+      "plunger_pull_tried",
       "plunger_taken",
       "poster_seen",
+      "push_tried",
       "reception_called",
       "room_bare_seen",
       "shock_done",
@@ -192,17 +192,17 @@
       "w4_open",
       "wet_ring_seen"
     ],
-    "actions_total": 18,
+    "actions_total": 21,
     "actions_required": 10,
     "rooms_used": [
       "W1",
       "W2"
     ],
     "required_by_type": {
-      "take": 1,
       "use": 5,
       "inspect": 2,
-      "talk": 2
+      "talk": 2,
+      "take": 1
     }
   }
 }

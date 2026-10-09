@@ -16,13 +16,17 @@ import check_texts as ct  # noqa: E402
 
 BRIEF = ROOT / "texts" / "act1" / "BRIEF_ACT1_TEXTS.md"
 CLAUDE = ROOT / "texts" / "act1" / "ACT1_TEXTS_CLAUDE.md"
+# ТЗ актов на 06.10.2026 — заморожены для проверки версий того времени (CLAUDE, OTHER,
+# polish, итоги v1/v2): после решений автора 09.10.2026 (план правок) в живых ТЗ
+# появились новые слоты, и старые версии им не соответствуют по составу.
+FROZEN = {n: ROOT / "tests" / "fixtures" / f"BRIEF_ACT{n}_TEXTS_2026-10-06.md" for n in (1, 2, 3, 4)}
 
 
 def run_check(text):
     with tempfile.TemporaryDirectory() as d:
         p = Path(d) / "тексты акта.md"
         p.write_text(text, encoding="utf-8")
-        brief = ct.parse_brief(BRIEF)
+        brief = ct.parse_brief(FROZEN[1])
         texts, fmt = ct.parse_texts(p)
         return ct.check(brief, texts, fmt)
 
@@ -37,7 +41,12 @@ POLISH = ROOT / "texts" / "polish"
 # буква в кириллическом слове, словарь «один предмет — одно имя»). Версии до этой
 # даты (CLAUDE, FINAL) писались по прежним правилам и живут как «было» слепого
 # сравнения; тексты с решениями — texts/polish/, их проверяет PolishTest.
-NEW_RULES = ("английское слово", "латинская буква", "второе имя предмета")
+NEW_RULES = ("английское слово", "латинская буква", "второе имя предмета",
+             # фиксированные строки решений автора 09.10.2026 (нить показаний, счёт, накладная):
+             # версии до этой даты их не содержат по определению
+             "в документе нет «показан»", "в документе нет «40 712»", "в документе нет «за истекшій періодъ»",
+             "в документе нет «табличку возстановить»", "нет «40 712» в реплике", "нет «за истекший период» в реплике",
+             "нет «сходятся» в реплике")
 
 
 def before_rules(items):
@@ -47,7 +56,8 @@ def before_rules(items):
 class BriefTest(unittest.TestCase):
     def test_brief_parsed(self):
         b = ct.parse_brief(BRIEF)
-        self.assertEqual(len(b), 154)
+        self.assertEqual(len(b), 155)   # ТЗ 1.4 (09.10.2026): добавлен Z01.plunger.pull
+        self.assertEqual(len(ct.parse_brief(FROZEN[1])), 154)
         self.assertEqual(b["Z03.stars.look"]["min"], 2)
         self.assertEqual(b["Z03.stars.look"]["max"], 2)
         self.assertEqual(b["DOC.menu"]["kind"], "doc")
@@ -195,13 +205,14 @@ class NegativeTest(unittest.TestCase):
 
 
 class PolishTest(unittest.TestCase):
-    """Тексты с решениями автора 06.10.2026 проходят нынешние правила без
-    ошибок и предупреждений (до голосования живут в texts/polish/)."""
+    """Тексты с решениями автора 06.10.2026 проходят правила своего времени без
+    ошибок и предупреждений (проверка по замороженным ТЗ 06.10.2026; фиксированные
+    строки 09.10.2026 к ним не применяются — NEW_RULES)."""
 
     def check(self, n, runner, slots):
         errs, warns, stats = runner((POLISH / f"ACT{n}_TEXTS_POLISH.md").read_text(encoding="utf-8"))
-        self.assertEqual(errs, [], messages(errs))
-        self.assertEqual(warns, [], messages(warns))
+        self.assertEqual(before_rules(errs), [], messages(errs))
+        self.assertEqual(before_rules(warns), [], messages(warns))
         self.assertEqual(stats["slots"], slots)
 
     def test_act1(self):
@@ -231,7 +242,7 @@ def run_check2(text):
     with tempfile.TemporaryDirectory() as d:
         p = Path(d) / "тексты акта 2.md"
         p.write_text(text, encoding="utf-8")
-        brief = ct.parse_brief(BRIEF2)
+        brief = ct.parse_brief(FROZEN[2])
         texts, fmt = ct.parse_texts(p)
         return ct.check(brief, texts, fmt, act=2)
 
@@ -316,7 +327,7 @@ class Act2FinalTest(unittest.TestCase):
         texts, fmt = ct.parse_texts(ROOT / "texts" / "act2" / "ACT2_TEXTS_FINAL.md")
         errs, _, stats = ct.check(brief, texts, fmt, act=2)
         self.assertEqual(errs, [], messages(errs))
-        self.assertEqual(stats["slots"], 164)  # редакция 2: слот Z12.point.look снят (решение автора 05.10.2026)
+        self.assertEqual(stats["slots"], 167)  # ТЗ 1.8 (09.10.2026): показ насоса, ширма, бирка, ключ за обязанность
 
 
 BRIEF3 = ROOT / "texts" / "act3" / "BRIEF_ACT3_TEXTS.md"
@@ -327,7 +338,7 @@ def run_check3(text):
     with tempfile.TemporaryDirectory() as d:
         p = Path(d) / "тексты акта 3.md"
         p.write_text(text, encoding="utf-8")
-        brief = ct.parse_brief(BRIEF3)
+        brief = ct.parse_brief(FROZEN[3])
         texts, fmt = ct.parse_texts(p)
         return ct.check(brief, texts, fmt, act=3)
 
@@ -358,7 +369,7 @@ class Act3Test(unittest.TestCase):
         errs, _, _ = run_check3(self.base.replace(
             "Людей не впускают. Обоз — впускают.",
             "Людей Кухтулху не впускает. Обоз — впускает.", 1))
-        self.assertEqual(errs, [], messages(errs))
+        self.assertEqual(before_rules(errs), [], messages(errs))
 
     def test_isolde_first_person_before_confession(self):
         msg = self.spoil("iz | iz_formal | CHAR | Печать ставится на документы отеля.",
@@ -423,7 +434,7 @@ class Act3FinalTest(unittest.TestCase):
         texts, fmt = ct.parse_texts(ROOT / "texts" / "act3" / "ACT3_TEXTS_FINAL.md")
         errs, _, stats = ct.check(brief, texts, fmt, act=3)
         self.assertEqual(errs, [], messages(errs))
-        self.assertEqual(stats["slots"], 110)
+        self.assertEqual(stats["slots"], 134)  # ТЗ 1.1 (09.10.2026): трап, накладная, частичная приёмка
 
     def test_final_body_equals_claude(self):
         claude = CLAUDE3.read_text(encoding="utf-8")
@@ -434,14 +445,15 @@ class Act3FinalTest(unittest.TestCase):
 
 BRIEF4 = ROOT / "texts" / "act4" / "BRIEF_ACT4_TEXTS.md"
 CLAUDE4 = ROOT / "texts" / "act4" / "ACT4_TEXTS_CLAUDE.md"
-ACT4_SLOTS = 75
+ACT4_SLOTS = 75          # ТЗ 1.1 (06.10.2026), версии того времени
+ACT4_SLOTS_LIVE = 77     # ТЗ 1.2 (09.10.2026): приёмка «принято ранее»
 
 
 def run_check4(text):
     with tempfile.TemporaryDirectory() as d:
         p = Path(d) / "тексты акта 4.md"
         p.write_text(text, encoding="utf-8")
-        brief = ct.parse_brief(BRIEF4)
+        brief = ct.parse_brief(FROZEN[4])
         texts, fmt = ct.parse_texts(p)
         return ct.check(brief, texts, fmt, act=4)
 
@@ -548,7 +560,7 @@ class Act4FinalTest(unittest.TestCase):
         texts, fmt = ct.parse_texts(ROOT / "texts" / "act4" / "ACT4_TEXTS_FINAL.md")
         errs, _, stats = ct.check(brief, texts, fmt, act=4)
         self.assertEqual(errs, [], messages(errs))
-        self.assertEqual(stats["slots"], ACT4_SLOTS)
+        self.assertEqual(stats["slots"], ACT4_SLOTS_LIVE)
 
     def test_final_body_equals_claude(self):
         claude = CLAUDE4.read_text(encoding="utf-8")

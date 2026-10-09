@@ -1,22 +1,131 @@
 {
   "note": "Строки автора (Lao) в итоговых текстах — для инструментов; описание приёмов — texts/STYLE_AUTHOR.md. kind: verbatim — реплика дословно; part — этот фрагмент дословно внутри реплики; joke — шутка автора: смысл и обе её части сохранить, формулировку можно оживить. Строки, которые и так закреплены таблицей §7.2 ТЗ акта (owner-canon, записка на бутылке, строка про пломбы), здесь тоже есть: этот файл — полный список строк автора. Акт IV: записка автора повторяется в исправленном виде (DOC.note_fixed), а строка «Хороший Лапидус — чистый Лапидус» закрывает игру (SEQ.finale) — обе дословно.",
   "lines": [
-    {"act": "I", "slot": "OPEN.2_shower", "speaker": "lap", "kind": "verbatim", "text": "Хороший Лапидус — чистый Лапидус."},
-    {"act": "I", "slot": "OPEN.3_shock", "speaker": "lap", "kind": "verbatim", "text": "Кто-то скажет — ептить! Я скажу — ептить, гидроудар!"},
-    {"act": "I", "slot": "OPEN.4_after", "speaker": "lap", "kind": "verbatim", "text": "Отличная награда. Я голый, слепой от пены, и кран пустой. Даже если пену я смою — позор останется."},
-    {"act": "I", "slot": "OPEN.5_anc", "speaker": "lap", "kind": "verbatim", "text": "Мне бы для начала срам прикрыть."},
-    {"act": "I", "slot": "W1.suitcase", "speaker": "lap", "kind": "verbatim", "text": "Первый раз меня подвела жажда халявы."},
-    {"act": "I", "slot": "W1.door.again", "speaker": "lap", "kind": "verbatim", "text": "Нет. Человечество ещё не готово к встрече с голым Лапидусом."},
-    {"act": "I", "slot": "PROBE.coffee", "speaker": "lap", "kind": "part", "text": "Не хватает корицы."},
-    {"act": "I", "slot": "PROBE.cistern", "speaker": "lap", "kind": "verbatim", "text": "Новый мужской аромат — «Шмон номер пять»."},
-    {"act": "I", "slot": "W2.getout.use", "speaker": "lap", "kind": "verbatim", "text": "Вылезти здесь — значит показать голый зад всему вестибюлю. Заманчиво, но чуть позже."},
-    {"act": "II", "slot": "W4.enter", "speaker": "lap", "kind": "joke", "text": "«Зал прекраснодушия». Прекрасный душ, что ли? Тогда унитаз у них волшебный."},
-    {"act": "II", "slot": "Z10.films.align", "speaker": "lap", "kind": "joke", "text": "А зал — водолечения, оздоровления, прекраснодушия. Дошло: это они «велнес» перевели."},
-    {"act": "II", "slot": "Z12.seal.tear", "speaker": "lap", "kind": "verbatim", "text": "Пломбы срывают воры и дураки. Я, в первую очередь, инженер. А уж потом всё остальное."},
-    {"act": "III", "slot": "DOC.note", "speaker": "doc", "kind": "verbatim", "text": "Платить МНѢ водой??? Да я васъ всѣхъ въ канализацію смою!"},
-    {"act": "IV", "slot": "DOC.note_fixed", "speaker": "doc", "kind": "verbatim", "text": "Платить МНѢ водой??? Да я васъ всѣхъ въ канализацію смою!"},
-    {"act": "IV", "slot": "SEQ.finale", "speaker": "lap", "kind": "verbatim", "text": "Хороший Лапидус — чистый Лапидус."},
-    {"act": "III", "slot": "Z11.ride.standing", "speaker": "lap", "kind": "part", "text": "Людям нельзя. Значит, людей тут и не будет. Будет груз."},
-    {"act": "III", "slot": "SEQ.ride", "speaker": "lap", "kind": "verbatim", "text": "Нарушения нет: снаружи — ни одного человека, внутри — груз. Лапидус как всегда не попал под статью."}
+    {
+      "act": "I",
+      "slot": "OPEN.2_shower",
+      "speaker": "lap",
+      "kind": "verbatim",
+      "text": "Хороший Лапидус — чистый Лапидус."
+    },
+    {
+      "act": "I",
+      "slot": "OPEN.3_shock",
+      "speaker": "lap",
+      "kind": "verbatim",
+      "text": "Кто-то скажет — ептить! Я скажу — ептить, гидроудар!"
+    },
+    {
+      "act": "I",
+      "slot": "OPEN.4_after",
+      "speaker": "lap",
+      "kind": "verbatim",
+      "text": "Отличная награда. Я голый, слепой от пены, и кран пустой. Даже если пену я смою — позор останется."
+    },
+    {
+      "act": "I",
+      "slot": "OPEN.5_anc",
+      "speaker": "lap",
+      "kind": "verbatim",
+      "text": "Мне бы для начала срам прикрыть."
+    },
+    {
+      "act": "I",
+      "slot": "W1.suitcase",
+      "speaker": "lap",
+      "kind": "verbatim",
+      "text": "Первый раз меня подвела жажда халявы."
+    },
+    {
+      "act": "I",
+      "slot": "W1.door.again",
+      "speaker": "lap",
+      "kind": "verbatim",
+      "text": "Нет. Человечество ещё не готово к встрече с голым Лапидусом."
+    },
+    {
+      "act": "I",
+      "slot": "PROBE.coffee",
+      "speaker": "lap",
+      "kind": "part",
+      "text": "Не хватает корицы."
+    },
+    {
+      "act": "I",
+      "slot": "PROBE.cistern",
+      "speaker": "lap",
+      "kind": "verbatim",
+      "text": "Новый мужской аромат — «Шмон номер пять»."
+    },
+    {
+      "act": "I",
+      "slot": "W2.getout.use",
+      "speaker": "lap",
+      "kind": "verbatim",
+      "text": "Вылезти здесь — значит показать голый зад всему вестибюлю. Заманчиво, но чуть позже."
+    },
+    {
+      "act": "II",
+      "slot": "W4.enter",
+      "speaker": "lap",
+      "kind": "joke",
+      "text": "«Зал прекраснодушия». Прекрасный душ, что ли? Тогда унитаз у них волшебный."
+    },
+    {
+      "act": "II",
+      "slot": "Z10.films.align",
+      "speaker": "lap",
+      "kind": "joke",
+      "text": "А зал — водолечения, оздоровления, прекраснодушия. Дошло: это они «велнес» перевели."
+    },
+    {
+      "act": "II",
+      "slot": "Z12.seal.tear",
+      "speaker": "lap",
+      "kind": "verbatim",
+      "text": "Пломбы срывают воры и дураки. Я, в первую очередь, инженер. А уж потом всё остальное."
+    },
+    {
+      "act": "III",
+      "slot": "DOC.note",
+      "speaker": "doc",
+      "kind": "verbatim",
+      "text": "Платить МНѢ водой??? Да я васъ всѣхъ въ канализацію смою!"
+    },
+    {
+      "act": "IV",
+      "slot": "DOC.note_fixed",
+      "speaker": "doc",
+      "kind": "verbatim",
+      "text": "Платить МНѢ водой??? Да я васъ всѣхъ въ канализацію смою!"
+    },
+    {
+      "act": "IV",
+      "slot": "SEQ.finale",
+      "speaker": "lap",
+      "kind": "verbatim",
+      "text": "Хороший Лапидус — чистый Лапидус."
+    },
+    {
+      "act": "III",
+      "slot": "Z11.ride.standing",
+      "speaker": "lap",
+      "kind": "part",
+      "text": "Людям нельзя. Значит, людей тут и не будет. Будет груз."
+    },
+    {
+      "act": "III",
+      "slot": "SEQ.ride",
+      "speaker": "lap",
+      "kind": "verbatim",
+      "text": "Нарушения нет: снаружи — ни одного человека, внутри — груз. Лапидус как всегда не попал под статью."
+    },
+    {
+      "act": "III",
+      "slot": "Z11.mirror.plunger",
+      "speaker": "lap",
+      "kind": "verbatim",
+      "text": "Стекольщики носят зеркала на присосках. Присоска при мне. А санаторный смрад, то есть целебный воздух, так меня закалил, что справлюсь в одиночку."
+    }
   ]
 }
