@@ -1,4 +1,25 @@
 {
+ "st_w1_juice_empty": {
+  "base": "room_w1.png",
+  "x": 757,
+  "y": 545,
+  "w": 94,
+  "h": 136
+ },
+ "st_w1_trolley": {
+  "base": "room_w1.png",
+  "x": 515,
+  "y": 514,
+  "w": 710,
+  "h": 531
+ },
+ "st_w1_trolley_folded": {
+  "base": "room_w1.png",
+  "x": 515,
+  "y": 505,
+  "w": 710,
+  "h": 540
+ },
  "st_w2_cascade_on": {
   "base": "room_w2.png",
   "x": 335,
