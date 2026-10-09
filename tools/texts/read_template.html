@@ -104,7 +104,29 @@ article.slot.noted.applied { border-color: var(--good); box-shadow: inset 3px 0 
 .star { color: var(--brass); font-weight: 700; font-size: .85rem; letter-spacing: .04em; }
 .ctx { display: grid; gap: 4px; font-size: .9rem; color: var(--muted); max-width: 70ch; }
 .ctx b { color: var(--ink); font-weight: 700; }
-.no-ctx .ctx { display: none; }
+.lbl { font-weight: 700; color: var(--ink); }
+button.pen { display: none; margin-left: auto; flex: none; font-size: .82rem; font-style: normal; padding: 0 2px; border: 0; background: none; color: var(--muted); text-decoration: underline dotted; }
+button.pen:hover { color: var(--brass); }
+.when { display: flex; gap: 12px; align-items: baseline; }
+.clean-only { display: none; }
+.clean .clean-only { display: inline; }
+.clean .svc-only { display: none; }
+
+/* Режим чтения (по умолчанию): только текст игры, как сценарий. Служебное —
+   код слота, «ключевой», «Обязано быть», выражение лица, поля правки — по кнопке «Служебное». */
+.clean article.slot {
+  background: transparent; border: 0; border-radius: 0; border-bottom: 1px solid var(--rule);
+  padding: 4px 0 14px; gap: 6px;
+}
+.clean article.slot.noted { box-shadow: inset 3px 0 0 var(--brass); padding-left: 12px; }
+.clean article.slot.noted.applied { box-shadow: inset 3px 0 0 var(--good); }
+.clean .slot-head, .clean .ctx .must, .clean .lbl, .clean .plate .emo { display: none; }
+.clean .ctx { font-style: italic; font-size: .88rem; }
+.clean .script { border: 0; padding: 0; gap: 6px; }
+.clean .text { font-size: 1.05rem; }
+.clean article.slot:not(.open):not(.noted) .edit-row { display: none; }
+.clean article.slot:not(.open):not(.noted) button.pen { display: inline-block; }
+.clean section.sec { gap: 10px; }
 .script { min-width: 0; border: 1px solid var(--rule); border-radius: 8px; padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; }
 .line { margin: 0; display: flex; flex-direction: column; gap: 1px; }
 .plate { font: 700 .74rem var(--body); letter-spacing: .07em; text-transform: uppercase; color: var(--muted); }
@@ -135,8 +157,8 @@ button.next { align-self: flex-start; font-weight: 700; }
 <div class="wrap">
   <header class="top">
     <h1>Сценарий «Гидроудара»</h1>
-    <p class="lede">«Латунный янычар: Гидроудар» — итоговые тексты актов в том виде, в каком они пойдут в игру: реплики с плашкой говорящего и его выражением лица, титры, пункты меню, документы на бумаге. Над каждым слотом — когда он срабатывает и что в нём обязано быть по ТЗ.</p>
-    <p class="note">Под каждым слотом — поле правки: напишите, что поменять, или свою строку. Правки сохраняются сами, Claude их читает. <span id="built"></span></p>
+    <p class="lede">«Латунный янычар: Гидроудар» — тексты актов как сценарий: кто что говорит, титры, пункты меню, документы. Серым курсивом над каждым местом — когда это звучит в игре.</p>
+    <p class="note">Чтобы поправить место, нажмите «✎ правка» под ним и напишите, что поменять, или свою строку. Правки сохраняются сами, Claude их читает. Коды слотов, требования ТЗ и выражения лиц спрятаны — кнопка «Служебное». <span id="built"></span></p>
     <div id="store-banner" class="banner" hidden></div>
     <div id="recover" class="recover" hidden>
       <p id="recover-text"></p>
@@ -156,8 +178,8 @@ button.next { align-self: flex-start; font-weight: 700; }
     <div class="side">
       <span class="state"><span id="count-label">Правок нет</span> · <span id="store-state">сохранение: проверяю…</span></span>
       <div class="tools">
-        <button type="button" id="btn-star" aria-pressed="false">Только ★</button>
-        <button type="button" id="btn-ctx" aria-pressed="false">Без пояснений</button>
+        <button type="button" id="btn-star" aria-pressed="false">Только ключевые места</button>
+        <button type="button" id="btn-svc" aria-pressed="false">Служебное</button>
         <button type="button" id="btn-mine" aria-pressed="false">Только с правками</button>
         <button type="button" id="btn-export">Правки текстом</button>
       </div>
@@ -196,6 +218,14 @@ button.next { align-self: flex-start; font-weight: 700; }
     } catch (e) { return null; }
     return null;
   }
+  // Для чтения: без внутренних кодов загадок и мест — «(N01, ошибка)», «(P06)», «Z01 — …».
+  function plainWhen(s) {
+    return s.replace(/\s*\([^()]*\b[A-Z]{1,2}\d{1,2}[a-z′]?\b[^()]*\)/g, "").trim();
+  }
+  function plainSec(s) {
+    var r = s.replace(/^[A-Z]{1,2}\d{1,2}′?\s+—\s+/, "");
+    return r.charAt(0).toUpperCase() + r.slice(1);
+  }
   function el(tag, cls, text) {
     var e = document.createElement(tag);
     if (cls) e.className = cls;
@@ -210,7 +240,7 @@ button.next { align-self: flex-start; font-weight: 700; }
   var state = {
     dbNotes: {}, localNotes: {}, db: null, dbState: "wait", diag: "",
     act: ACTS.some(function (A) { return A.act === savedAct; }) ? savedAct : ACTS[0].act,
-    onlyStar: false, noCtx: ls("get", "noctx") === "1", onlyNotes: false
+    onlyStar: false, svc: ls("get", "svc") === "1", onlyNotes: false
   };
   try { state.localNotes = JSON.parse(ls("get", "notes_local") || "{}") || {}; } catch (e) { state.localNotes = {}; }
   if (DATA.built) document.getElementById("built").textContent = "Тексты на " + DATA.built + ".";
@@ -250,8 +280,10 @@ button.next { align-self: flex-start; font-weight: 700; }
     if (s.star) head.appendChild(el("span", "star", "★ ключевой"));
     art.appendChild(head);
     var ctx = el("div", "ctx");
-    var w = el("div"); w.appendChild(el("b", null, "Когда: ")); w.appendChild(document.createTextNode(s.when)); ctx.appendChild(w);
-    var m = el("div"); m.appendChild(el("b", null, "Обязано быть: ")); m.appendChild(document.createTextNode(s.must)); ctx.appendChild(m);
+    var w = el("div", "when"); w.appendChild(el("span", "lbl", "Когда: "));
+    var wt = el("span"); wt.appendChild(el("span", "svc-only", s.when)); wt.appendChild(el("span", "clean-only", plainWhen(s.when)));
+    w.appendChild(wt); ctx.appendChild(w);
+    var m = el("div", "must"); m.appendChild(el("b", null, "Обязано быть: ")); m.appendChild(document.createTextNode(s.must)); ctx.appendChild(m);
     art.appendChild(ctx);
     art.appendChild(renderScript(s));
     var row = el("div", "edit-row");
@@ -264,6 +296,11 @@ button.next { align-self: flex-start; font-weight: 700; }
     row.appendChild(ta);
     row.appendChild(saved);
     art.appendChild(row);
+    var pen = el("button", "pen", "✎ правка");
+    pen.type = "button";
+    pen.setAttribute("aria-label", "Правка: " + plainWhen(s.when));
+    pen.addEventListener("click", function () { art.classList.add("open"); grow(ta); ta.focus(); });
+    w.appendChild(pen);
     var t = null;
     ta.addEventListener("input", function () {
       grow(ta);
@@ -312,8 +349,13 @@ button.next { align-self: flex-start; font-weight: 700; }
       if (!sec) {
         sec = { name: s.sec, keys: [], box: el("section", "sec") };
         sec.box.id = "a" + A.act + "-sec-" + secs.length;
-        sec.box.appendChild(el("h3", null, s.sec || "Без раздела"));
-        sec.chip = el("a", "chip", s.sec || "Без раздела");
+        var h = el("h3");
+        h.appendChild(el("span", "svc-only", s.sec || "Без раздела"));
+        h.appendChild(el("span", "clean-only", plainSec(s.sec || "Без раздела")));
+        sec.box.appendChild(h);
+        sec.chip = el("a", "chip");
+        sec.chip.appendChild(el("span", "svc-only", s.sec || "Без раздела"));
+        sec.chip.appendChild(el("span", "clean-only", plainSec(s.sec || "Без раздела")));
         sec.chip.href = "#" + sec.box.id;
         nav.appendChild(sec.chip);
         box.appendChild(sec.box);
@@ -376,7 +418,7 @@ button.next { align-self: flex-start; font-weight: 700; }
   }
 
   function refreshAll() {
-    document.body.classList.toggle("no-ctx", state.noCtx);
+    document.body.classList.toggle("clean", !state.svc);
     Object.keys(cards).forEach(refreshCard);
     var total = 0;
     ACTS.forEach(function (A) {
@@ -528,7 +570,7 @@ button.next { align-self: flex-start; font-weight: 700; }
     });
   }
   toggle("btn-star", "onlyStar");
-  toggle("btn-ctx", "noCtx", "noctx");
+  toggle("btn-svc", "svc", "svc");
   toggle("btn-mine", "onlyNotes");
 
   var api = window.claude && typeof window.claude.use === "function" ? window.claude.use("db") : Promise.resolve(null);
