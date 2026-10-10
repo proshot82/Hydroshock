@@ -1,4 +1,25 @@
 {
+ "st_w1_juice_empty": {
+  "base": "room_w1.png",
+  "x": 763,
+  "y": 535,
+  "w": 85,
+  "h": 116
+ },
+ "st_w1_trolley": {
+  "base": "room_w1.png",
+  "x": 505,
+  "y": 486,
+  "w": 750,
+  "h": 579
+ },
+ "st_w1_trolley_folded": {
+  "base": "room_w1.png",
+  "x": 505,
+  "y": 485,
+  "w": 750,
+  "h": 580
+ },
  "st_w2_cascade_on": {
   "base": "room_w2.png",
   "x": 335,
@@ -152,6 +173,13 @@
   "y": 429,
   "w": 1408,
   "h": 651
+ },
+ "st_z03_skirt_open_folded": {
+  "base": "zoom_z03.png",
+  "x": 147,
+  "y": 367,
+  "w": 1620,
+  "h": 713
  },
  "st_z03_stars_folded": {
   "base": "zoom_z03.png",
