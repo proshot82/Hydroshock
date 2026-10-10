@@ -27,6 +27,13 @@
   "w": 1395,
   "h": 419
  },
+ "st_w2_trolley": {
+  "base": "room_w2.png",
+  "x": 25,
+  "y": 491,
+  "w": 254,
+  "h": 301
+ },
  "st_w4_board_floor": {
   "base": "room_w4.png",
   "x": 244,
@@ -104,6 +111,13 @@
   "w": 199,
   "h": 336
  },
+ "st_w4_trolley_hall": {
+  "base": "room_w4.png",
+  "x": 1169,
+  "y": 459,
+  "w": 314,
+  "h": 262
+ },
  "st_w4_tube_photo": {
   "base": "room_w4.png",
   "x": 319,
@@ -131,6 +145,13 @@
   "y": 512,
   "w": 121,
   "h": 58
+ },
+ "st_w5_trolley": {
+  "base": "room_w5.png",
+  "x": 419,
+  "y": 419,
+  "w": 481,
+  "h": 406
  },
  "st_w5u_reach": {
   "base": "room_w5_under.png",
