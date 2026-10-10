@@ -1,0 +1,23 @@
+{
+ "st_z03_juice_empty": {
+  "base": "zoom_z03.png",
+  "x": 759,
+  "y": 101,
+  "w": 119,
+  "h": 240
+ },
+ "st_z03_skirt_open": {
+  "base": "zoom_z03.png",
+  "x": 241,
+  "y": 429,
+  "w": 1408,
+  "h": 651
+ },
+ "st_z03_stars_folded": {
+  "base": "zoom_z03.png",
+  "x": 280,
+  "y": 439,
+  "w": 1331,
+  "h": 269
+ }
+}
