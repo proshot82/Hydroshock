@@ -29,10 +29,10 @@
  },
  "st_w4_tt_payment": {
   "base": "room_w4.png",
-  "x": 1195,
-  "y": 423,
-  "w": 267,
-  "h": 144
+  "x": 1183,
+  "y": 428,
+  "w": 277,
+  "h": 118
  },
  "st_w4_tt_returned": {
   "base": "room_w4.png",

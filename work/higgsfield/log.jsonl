@@ -683,3 +683,7 @@
 {"date": "2026-10-10", "kind": "generate", "target": "st_w2_tt_payment: участок ×4, проба 1", "model": "gpt_image_2_5", "params": "high 2k 4:3", "job_id": "b435edd0-8d27-41ba-b822-7659e916df27"}
 {"date": "2026-10-10", "kind": "generate", "target": "st_w2_tt_payment: участок ×4, проба 2", "model": "gpt_image_2_5", "params": "high 2k 4:3", "job_id": "b8b2762b-4b3a-4920-8618-4210dbe674ed"}
 {"date": "2026-10-10", "kind": "fix", "target": "st_w5_trolley.png", "note": "оттиск на пластине — красное лучистое «солнце» как на принятом st_w5_mark (было тёмное пятно), центр 551,617; прежний узор закрашен; показано автору на листе sheet_1010_trolley_items"}
+{"date": "2026-10-10", "kind": "upload", "file": "участок кадра 21087263 (W4 тележка) 1180,400–1480,625 ×4", "media_id": "e6f211f7-7de3-408b-a5d2-0a94bc8ffae9", "role": "st_w4_tt_payment крупно (замечание автора: счёт висел в воздухе)"}
+{"date": "2026-10-10", "kind": "upload", "file": "принятый в кандидаты участок W2 кефир+бумаги (b8b2762b)", "media_id": "84abe562-e7a8-4e1a-998f-8923133a8fc6", "role": "эталон кефира и бумаг"}
+{"date": "2026-10-10", "kind": "generate", "target": "st_w4_tt_payment: участок ×4, бумаги на подносе, проба 1", "model": "gpt_image_2_5", "params": "high 2k 4:3", "job_id": "fcedec98-5998-4163-a2ad-78fd11bf0185"}
+{"date": "2026-10-10", "kind": "generate", "target": "st_w4_tt_payment: участок ×4, проба 2", "model": "gpt_image_2_5", "params": "high 2k 4:3", "job_id": "9c2f1297-cb20-47f3-85ac-01e002b0646a"}
