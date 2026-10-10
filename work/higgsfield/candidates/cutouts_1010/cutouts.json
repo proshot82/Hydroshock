@@ -1,0 +1,23 @@
+{
+ "st_w2_trolley": {
+  "base": "room_w2.png",
+  "x": 25,
+  "y": 491,
+  "w": 254,
+  "h": 301
+ },
+ "st_w4_trolley_hall": {
+  "base": "room_w4.png",
+  "x": 1169,
+  "y": 459,
+  "w": 314,
+  "h": 262
+ },
+ "st_w5_trolley": {
+  "base": "room_w5.png",
+  "x": 419,
+  "y": 419,
+  "w": 481,
+  "h": 406
+ }
+}
