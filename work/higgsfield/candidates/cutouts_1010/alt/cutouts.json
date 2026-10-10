@@ -1,9 +1,9 @@
 {
- "st_z03_skirt_open_b": {
-  "base": "zoom_z03.png",
-  "x": 247,
-  "y": 427,
-  "w": 1443,
-  "h": 653
+ "st_w1_trolley_folded": {
+  "base": "room_w1.png",
+  "x": 505,
+  "y": 485,
+  "w": 750,
+  "h": 580
  }
 }

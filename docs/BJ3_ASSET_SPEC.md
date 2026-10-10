@@ -11,7 +11,7 @@
 | Экраны (вайды), включая два вида «из-под юбки» | `assets/gfx/rooms/` | 1920×1080 RGB | 8 |
 | Зумы Z01–Z13 и три крупных плана Z04 | `assets/gfx/zooms/` | 1920×1080 RGB | 16 |
 | Кадры немых сцен | `assets/gfx/frames/` | 1920×1080 RGB | 18 |
-| Состояния (сдаются полным кадром-вариантом, §1.2) | `assets/gfx/cutouts/` | сдача 1920×1080 RGB → у меня RGBA-вырезка | 128 |
+| Состояния (сдаются полным кадром-вариантом, §1.2) | `assets/gfx/cutouts/` | сдача 1920×1080 RGB → у меня RGBA-вырезка | 129 |
 | Оверлеи юбки тележки | `assets/gfx/cutouts/` | 1920×1080 RGBA | 2 |
 | Портреты (с вариантами пены) | `assets/gfx/portraits/` | 512×512 RGBA | 42 (+4 Предка из BJ2) |
 | Иконки предметов | `assets/gfx/icons/` | 128×128 RGBA | 9 |
@@ -21,7 +21,7 @@
 | Шрифты | `assets/fonts/` | TTF | 0 — поставлены этой сессией (§8) |
 | Звуки, амбиенты, музыка | `assets/audio/` | OGG | 59 (+9 из BJ2, §9.5) |
 
-Итого генерировать: **графика 262 файла, звук 59 файлов.** Точные списки — в таблицах ниже; счёт сверяет `tools/check_asset_spec.py`.
+Итого генерировать: **графика 263 файла, звук 59 файлов.** Точные списки — в таблицах ниже; счёт сверяет `tools/check_asset_spec.py`.
 
 ## 1. Общие правила
 
@@ -303,6 +303,7 @@
 | `st_z02_lemonade_empty.png` | бутылка лимонада пуста | `shown(PROBE.lemonade)` |
 | `st_z03_stars_folded.png` | звёзды откинуты наружу и висят вдоль внешнего бортика | `stars_folded` |
 | `st_z03_skirt_open.png` | шторка юбки отодвинута, ткань собрана на кольцах: внутри пустая камера, старая латунная рама 1908 года, нижний поручень и на раме инвентарная пластина (поле чистое) | кадр `Z03.skirt.use`; пластина — `plate_revealed` |
+| `st_z03_skirt_open_folded.png` | то же при откинутых звёздах: звёзды висят вдоль бортика, шторка отодвинута вправо, внутри рама, поручень, пластина (вместо пары `st_z03_stars_folded` + `st_z03_skirt_open`: слои чисто не совмещаются; добавлено 10.10.2026) | кадр `Z03.skirt.use` ∧ `stars_folded` |
 | `st_z03_juice_empty.png` | стакан сока пуст | `shown(PROBE.juice)` |
 | `st_z04_folder.png` | папка лежит на мокром круге | ¬`counter_notice_read` |
 | `st_z04_map.png` | вкладыш с картой в подставке | ¬`has_hotel_map` |
@@ -479,7 +480,7 @@
 
 | Слот | Кадр |
 |---|---|
-| `Z03.skirt.use` | `zoom_z03.png` + `st_z03_skirt_open.png` |
+| `Z03.skirt.use` | `zoom_z03.png` + `st_z03_skirt_open.png` (при `stars_folded` — `zoom_z03.png` + `st_z03_skirt_open_folded.png`) |
 | `TALK.req.cut` | `cu_z04_forms.png` + `st_cu_z04_forms_stapled.png`, затем `zoom_z04.png` + `st_z04_drawer_kefir.png` |
 | `TALK.iz.folder` | `cu_z04_folder_key.png` |
 | `TALK.iz.key` | `cu_z04_folder_key.png` |

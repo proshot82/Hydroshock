@@ -1,6 +1,6 @@
 # Кандидаты 09.10.2026: новые состояния по решениям автора 08–09.10.2026 (спека §13)
 
-**09.10.2026: приняты автором и перенесены в `assets/`** — `st_w4_cabin_full`, `st_w4_board_floor`, `st_w4_ramp`, `st_w4_design_board`, `st_w2_cascade_on`, `st_w5_mark` (кадры-варианты — `work/higgsfield/variants/`), база W4 с мелом. В папке остаются только состояния тележки W1 — **устарели** (решение автора 09.10.2026 об устройстве тележки: звёзды по углам горизонтально, откидываются к бортику; юбка-шторка с кармашками; пластина на раме внутри). Будут сделаны заново после новой `zoom_z03`; `st_w1_juice_empty` переживёт, если тележка в номере сохранит стакан на том же месте. Таблица ниже сохраняет параметры принятых. После «да» — повторный запуск `tools/assets/cutout.py` с параметрами ниже без `--out`
+**09.10.2026: приняты автором и перенесены в `assets/`** — `st_w4_cabin_full`, `st_w4_board_floor`, `st_w4_ramp`, `st_w4_design_board`, `st_w2_cascade_on`, `st_w5_mark` (кадры-варианты — `work/higgsfield/variants/`), база W4 с мелом. Состояния тележки W1 из этой партии (звёзды по углам) устарели и удалены 10.10.2026; новые — `../cutouts_1010/`. Таблица ниже сохраняет параметры принятых. После «да» — повторный запуск `tools/assets/cutout.py` с параметрами ниже без `--out`
 (в `assets/gfx/cutouts/`, `cutouts.json` генерируется), кадры-варианты — в `work/higgsfield/variants/`,
 запись `accept` в `work/higgsfield/log.jsonl`. База W4 с мелом заменяет `assets/gfx/rooms/room_w4.png`
 только после приёмки (прежняя — в карантин `work/orig_gfx/`).
@@ -20,9 +20,9 @@
 | `st_w4_ramp` | f9da7be5 от `W4_OPEN` → `room_w4__st_w4_ramp.png` | база `W4_OPEN`, `--box 200,540,640,800 --thresh 30 --open 3 --close 15 --align 6 --grow 8 --feather 3 --base-name room_w4.png` |
 | `st_w4_design_board` | 592a1758 от `W4_DESIGN`; надпись «СНАШЕ» исправлена: участок 470,560–726,704 ×7,5 (097f97f7), вклеен прямоугольником 522,572–660,662 с растушёвкой 3 → `room_w4__st_w4_design_board.png` | база `W4_DESIGN`, `--box 455,530,725,700 --thresh 28 --open 3 --close 15 --align 6 --grow 8 --feather 3 --base-name room_w4.png` |
 | `st_w2_cascade_on` | e0a66d5c от `room_w2` → `room_w2__st_w2_cascade_on.png` | `--box 340,150,1730,580 --keep 950,90,1140,380 --keep 880,460,1000,560 --thresh 18 --open 5 --close 45 --align 6 --grow 10 --feather 4` |
-| `st_w1_trolley` | 2bce99fd от `room_w1` + эталон `zoom_z03` → `room_w1__st_w1_trolley.png` | `--box 530,520,1210,1030 --thresh 14 --open 3 --close 41 --align 6 --grow 12 --feather 3` |
-| `st_w1_trolley_folded` | 84b34ddd от кадра-варианта тележки (звёзды убраны внутрь борта, пластина открыта) → `room_w1__st_w1_trolley_folded.png` | как `st_w1_trolley` |
-| `st_w1_juice_empty` | 32989c5a от кадра-варианта тележки → `room_w1__st_w1_juice_empty.png` | база `room_w1 + st_w1_trolley`, `--box 760,545,845,675 --thresh 20 --open 1 --close 9 --align 6 --grow 4 --feather 2 --base-name room_w1.png` |
+| ~~`st_w1_trolley`~~ (удалено 10.10.2026) | 2bce99fd от `room_w1` + эталон `zoom_z03` → `room_w1__st_w1_trolley.png` | `--box 530,520,1210,1030 --thresh 14 --open 3 --close 41 --align 6 --grow 12 --feather 3` |
+| ~~`st_w1_trolley_folded`~~ (удалено 10.10.2026) | 84b34ddd от кадра-варианта тележки (звёзды убраны внутрь борта, пластина открыта) → `room_w1__st_w1_trolley_folded.png` | как `st_w1_trolley` |
+| ~~`st_w1_juice_empty`~~ (удалено 10.10.2026) | 32989c5a от кадра-варианта тележки → `room_w1__st_w1_juice_empty.png` | база `room_w1 + st_w1_trolley`, `--box 760,545,845,675 --thresh 20 --open 1 --close 9 --align 6 --grow 4 --feather 2 --base-name room_w1.png` |
 | `st_w5_mark` | afb7a60b от `room_w5` → `room_w5__st_w5_mark.png` | `--box 1050,495,1215,580 --thresh 25 --open 3 --close 15 --align 6 --grow 5 --feather 3` |
 
 Порядок слоёв W4: зеркало у стены → кабина → доска на полу / трап → лестница → куча → доска в куче.
