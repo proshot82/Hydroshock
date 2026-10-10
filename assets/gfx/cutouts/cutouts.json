@@ -34,6 +34,27 @@
   "w": 254,
   "h": 301
  },
+ "st_w2_tt_key": {
+  "base": "room_w2.png",
+  "x": 65,
+  "y": 463,
+  "w": 234,
+  "h": 144
+ },
+ "st_w2_tt_mug": {
+  "base": "room_w2.png",
+  "x": 51,
+  "y": 467,
+  "w": 243,
+  "h": 107
+ },
+ "st_w2_tt_payment": {
+  "base": "room_w2.png",
+  "x": 64,
+  "y": 474,
+  "w": 237,
+  "h": 105
+ },
  "st_w4_board_floor": {
   "base": "room_w4.png",
   "x": 244,
@@ -117,6 +138,34 @@
   "y": 459,
   "w": 314,
   "h": 262
+ },
+ "st_w4_tt_marked": {
+  "base": "room_w4.png",
+  "x": 1185,
+  "y": 423,
+  "w": 272,
+  "h": 135
+ },
+ "st_w4_tt_payment": {
+  "base": "room_w4.png",
+  "x": 1183,
+  "y": 428,
+  "w": 277,
+  "h": 118
+ },
+ "st_w4_tt_returned": {
+  "base": "room_w4.png",
+  "x": 1183,
+  "y": 423,
+  "w": 304,
+  "h": 139
+ },
+ "st_w4_tt_water": {
+  "base": "room_w4.png",
+  "x": 1183,
+  "y": 426,
+  "w": 284,
+  "h": 116
  },
  "st_w4_tube_photo": {
   "base": "room_w4.png",
