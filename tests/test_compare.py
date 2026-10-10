@@ -140,7 +140,7 @@ class MergeTest(unittest.TestCase):
         self.assertEqual(report["claude"], [])
         self.assertEqual(report["other"], [])
         self.assertIn("Z01.plunger.look", report["edit"])
-        self.assertEqual(len(report["edit"]), 37)
+        self.assertEqual(len(report["edit"]), 38)
         # Z01.plunger.pull (новый слот, раньше — «по правилам ТЗ») теперь из правки автора
         self.assertEqual(sorted(report["rule"]), [])
         self.assertIn("Z01.plunger.pull", report["edit"])
