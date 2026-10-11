@@ -769,3 +769,7 @@
 {"date": "2026-10-11", "kind": "fetch", "target": "zoom_z11__st_z11_hand_plunger_jan2.png", "job_id": "x", "raw_size": "2688x1520", "size": "1920x1080", "mode": "RGB", "lum_pct": 61.8, "note": "zoom_z11__st_z11_hand_plunger_jan2.png"}
 {"date": "2026-10-11", "kind": "fetch", "target": "zoom_z11__st_z11_finger_down_m1.png", "job_id": "x", "raw_size": "2688x1520", "size": "1920x1080", "mode": "RGB", "lum_pct": 53.7, "note": "zoom_z11__st_z11_finger_down_m1.png"}
 {"date": "2026-10-11", "kind": "fetch", "target": "zoom_z11__st_z11_finger_down_m2.png", "job_id": "x", "raw_size": "2688x1520", "size": "1920x1080", "mode": "RGB", "lum_pct": 53.6, "note": "zoom_z11__st_z11_finger_down_m2.png"}
+{"date": "2026-10-11", "kind": "generate", "target": "st_z11_hand_plunger: отражение не выходит из-за стекла (замечание автора), проба 1 от 19ed5f6f", "model": "gpt_image_2_5", "params": "high 2k 16:9", "job_id": "31da4772-cd51-4d48-818c-c97151432254"}
+{"date": "2026-10-11", "kind": "generate", "target": "то же, проба 2", "model": "gpt_image_2_5", "params": "high 2k 16:9", "job_id": "db1c9f87-1376-4eb9-9ccb-f497110dc962"}
+{"date": "2026-10-11", "kind": "fetch", "target": "zoom_z11__st_z11_hand_plunger_g1.png", "job_id": "31da4772", "raw_size": "2688x1520", "size": "1920x1080", "mode": "RGB", "lum_pct": 62.6, "note": "g1"}
+{"date": "2026-10-11", "kind": "fetch", "target": "zoom_z11__st_z11_hand_plunger_g2.png", "job_id": "db1c9f87", "raw_size": "2688x1520", "size": "1920x1080", "mode": "RGB", "lum_pct": 60.7, "note": "g2"}
