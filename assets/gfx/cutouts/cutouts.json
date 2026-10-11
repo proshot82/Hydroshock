@@ -1,4 +1,11 @@
 {
+ "st_cu_z04_forms_stapled": {
+  "base": "cu_z04_forms.png",
+  "x": 355,
+  "y": 354,
+  "w": 1243,
+  "h": 478
+ },
  "st_w1_juice_empty": {
   "base": "room_w1.png",
   "x": 763,
@@ -27,6 +34,83 @@
   "w": 1395,
   "h": 419
  },
+ "st_w2_complaints": {
+  "base": "room_w2.png",
+  "x": 371,
+  "y": 438,
+  "w": 236,
+  "h": 179
+ },
+ "st_w2_folder": {
+  "base": "room_w2.png",
+  "x": 919,
+  "y": 857,
+  "w": 404,
+  "h": 223
+ },
+ "st_w2_forms1": {
+  "base": "room_w2.png",
+  "x": 491,
+  "y": 531,
+  "w": 314,
+  "h": 198
+ },
+ "st_w2_forms3": {
+  "base": "room_w2.png",
+  "x": 495,
+  "y": 533,
+  "w": 391,
+  "h": 178
+ },
+ "st_w2_gauge_up": {
+  "base": "room_w2.png",
+  "x": 1212,
+  "y": 172,
+  "w": 116,
+  "h": 106
+ },
+ "st_w2_iz": {
+  "base": "room_w2.png",
+  "x": 125,
+  "y": 206,
+  "w": 398,
+  "h": 874
+ },
+ "st_w2_iz_mic": {
+  "base": "room_w2.png",
+  "x": 129,
+  "y": 171,
+  "w": 1791,
+  "h": 909
+ },
+ "st_w2_kefir": {
+  "base": "room_w2.png",
+  "x": 563,
+  "y": 496,
+  "w": 239,
+  "h": 183
+ },
+ "st_w2_lowdrawer_open": {
+  "base": "room_w2.png",
+  "x": 311,
+  "y": 721,
+  "w": 318,
+  "h": 288
+ },
+ "st_w2_map": {
+  "base": "room_w2.png",
+  "x": 957,
+  "y": 660,
+  "w": 105,
+  "h": 164
+ },
+ "st_w2_pump_lamp": {
+  "base": "room_w2.png",
+  "x": 1730,
+  "y": 930,
+  "w": 157,
+  "h": 150
+ },
  "st_w2_trolley": {
   "base": "room_w2.png",
   "x": 25,
@@ -54,6 +138,41 @@
   "y": 474,
   "w": 237,
   "h": 105
+ },
+ "st_w2_vitrine_open": {
+  "base": "room_w2.png",
+  "x": 1310,
+  "y": 328,
+  "w": 171,
+  "h": 169
+ },
+ "st_w2u_crowd": {
+  "base": "room_w2_under.png",
+  "x": 0,
+  "y": 0,
+  "w": 1920,
+  "h": 1080
+ },
+ "st_w2u_gate_open": {
+  "base": "room_w2_under.png",
+  "x": 1240,
+  "y": 411,
+  "w": 277,
+  "h": 358
+ },
+ "st_w2u_parted": {
+  "base": "room_w2_under.png",
+  "x": 0,
+  "y": 0,
+  "w": 1920,
+  "h": 1080
+ },
+ "st_w3_cabinet_open": {
+  "base": "room_w3.png",
+  "x": 1399,
+  "y": 317,
+  "w": 250,
+  "h": 434
  },
  "st_w4_board_floor": {
   "base": "room_w4.png",
@@ -230,6 +349,55 @@
   "w": 603,
   "h": 929
  },
+ "st_z01_head_running": {
+  "base": "zoom_z01.png",
+  "x": 366,
+  "y": 0,
+  "w": 468,
+  "h": 1080
+ },
+ "st_z01_plunger": {
+  "base": "zoom_z01.png",
+  "x": 1136,
+  "y": 482,
+  "w": 374,
+  "h": 435
+ },
+ "st_z02_kombucha_empty": {
+  "base": "zoom_z02.png",
+  "x": 788,
+  "y": 456,
+  "w": 157,
+  "h": 376
+ },
+ "st_z02_lemonade_empty": {
+  "base": "zoom_z02.png",
+  "x": 953,
+  "y": 460,
+  "w": 114,
+  "h": 384
+ },
+ "st_z02_menu": {
+  "base": "zoom_z02.png",
+  "x": 1396,
+  "y": 860,
+  "w": 170,
+  "h": 220
+ },
+ "st_z02_mineral_empty": {
+  "base": "zoom_z02.png",
+  "x": 661,
+  "y": 480,
+  "w": 179,
+  "h": 362
+ },
+ "st_z02_voucher_soaked": {
+  "base": "zoom_z02.png",
+  "x": 341,
+  "y": 50,
+  "w": 462,
+  "h": 305
+ },
  "st_z03_juice_empty": {
   "base": "zoom_z03.png",
   "x": 759,
@@ -257,6 +425,202 @@
   "y": 439,
   "w": 1331,
   "h": 269
+ },
+ "st_z04_bill_mp": {
+  "base": "zoom_z04.png",
+  "x": 31,
+  "y": 0,
+  "w": 398,
+  "h": 149
+ },
+ "st_z04_bill_stamped": {
+  "base": "zoom_z04.png",
+  "x": 31,
+  "y": 0,
+  "w": 398,
+  "h": 149
+ },
+ "st_z04_complaints": {
+  "base": "zoom_z04.png",
+  "x": 5,
+  "y": 0,
+  "w": 424,
+  "h": 322
+ },
+ "st_z04_drawer_kefir": {
+  "base": "zoom_z04.png",
+  "x": 0,
+  "y": 253,
+  "w": 389,
+  "h": 456
+ },
+ "st_z04_folder": {
+  "base": "zoom_z04.png",
+  "x": 770,
+  "y": 671,
+  "w": 419,
+  "h": 298
+ },
+ "st_z04_forms1": {
+  "base": "zoom_z04.png",
+  "x": 253,
+  "y": 201,
+  "w": 335,
+  "h": 176
+ },
+ "st_z04_forms3": {
+  "base": "zoom_z04.png",
+  "x": 251,
+  "y": 210,
+  "w": 403,
+  "h": 161
+ },
+ "st_z04_iz_hand": {
+  "base": "zoom_z04.png",
+  "x": 0,
+  "y": 0,
+  "w": 266,
+  "h": 116
+ },
+ "st_z04_kefir": {
+  "base": "zoom_z04.png",
+  "x": 357,
+  "y": 95,
+  "w": 344,
+  "h": 294
+ },
+ "st_z04_lowdrawer_empty": {
+  "base": "zoom_z04.png",
+  "x": 31,
+  "y": 551,
+  "w": 466,
+  "h": 529
+ },
+ "st_z04_lowdrawer_mug": {
+  "base": "zoom_z04.png",
+  "x": 111,
+  "y": 551,
+  "w": 458,
+  "h": 529
+ },
+ "st_z04_map": {
+  "base": "zoom_z04.png",
+  "x": 769,
+  "y": 357,
+  "w": 135,
+  "h": 177
+ },
+ "st_z04_pump_lamp": {
+  "base": "zoom_z04.png",
+  "x": 1631,
+  "y": 811,
+  "w": 238,
+  "h": 238
+ },
+ "st_z05_open": {
+  "base": "zoom_z05.png",
+  "x": 331,
+  "y": 0,
+  "w": 878,
+  "h": 587
+ },
+ "st_z05_palm": {
+  "base": "zoom_z05.png",
+  "x": 0,
+  "y": 169,
+  "w": 745,
+  "h": 717
+ },
+ "st_z05_ring": {
+  "base": "zoom_z05.png",
+  "x": 690,
+  "y": 170,
+  "w": 200,
+  "h": 260
+ },
+ "st_z05_tag": {
+  "base": "zoom_z05.png",
+  "x": 698,
+  "y": 134,
+  "w": 143,
+  "h": 115
+ },
+ "st_z05_tag_folded": {
+  "base": "zoom_z05.png",
+  "x": 685,
+  "y": 0,
+  "w": 184,
+  "h": 107
+ },
+ "st_z06_blink": {
+  "base": "zoom_z06.png",
+  "x": 271,
+  "y": 3,
+  "w": 1378,
+  "h": 216
+ },
+ "st_z06_spin": {
+  "base": "zoom_z06.png",
+  "x": 191,
+  "y": 10,
+  "w": 1518,
+  "h": 999
+ },
+ "st_z08_inner_empty": {
+  "base": "zoom_z08.png",
+  "x": 755,
+  "y": 264,
+  "w": 332,
+  "h": 385
+ },
+ "st_z08_inner_postcard": {
+  "base": "zoom_z08.png",
+  "x": 750,
+  "y": 290,
+  "w": 326,
+  "h": 328
+ },
+ "st_z09_flap_open": {
+  "base": "zoom_z09.png",
+  "x": 1637,
+  "y": 595,
+  "w": 259,
+  "h": 194
+ },
+ "st_z09_plate": {
+  "base": "zoom_z09.png",
+  "x": 601,
+  "y": 253,
+  "w": 483,
+  "h": 656
+ },
+ "st_z09_stripes": {
+  "base": "zoom_z09.png",
+  "x": 611,
+  "y": 271,
+  "w": 458,
+  "h": 628
+ },
+ "st_z10_bottle": {
+  "base": "zoom_z10.png",
+  "x": 1696,
+  "y": 63,
+  "w": 135,
+  "h": 215
+ },
+ "st_z10_photo": {
+  "base": "zoom_z10.png",
+  "x": 571,
+  "y": 613,
+  "w": 338,
+  "h": 396
+ },
+ "st_z10_tube_open": {
+  "base": "zoom_z10.png",
+  "x": 0,
+  "y": 520,
+  "w": 166,
+  "h": 196
  },
  "st_z11_board_floor": {
   "base": "zoom_z11.png",
@@ -316,10 +680,10 @@
  },
  "st_z11_mirror_aside": {
   "base": "zoom_z11.png",
-  "x": 1249,
-  "y": 157,
-  "w": 482,
-  "h": 864
+  "x": 1270,
+  "y": 6,
+  "w": 650,
+  "h": 1074
  },
  "st_z11_ramp": {
   "base": "zoom_z11.png",
@@ -355,5 +719,12 @@
   "y": 261,
   "w": 638,
   "h": 819
+ },
+ "st_z12_door_open": {
+  "base": "zoom_z12.png",
+  "x": 811,
+  "y": 207,
+  "w": 358,
+  "h": 565
  }
 }
