@@ -1230,3 +1230,19 @@
 {"date": "2026-10-11", "kind": "fetch", "target": "cu_z04_forms__st_cu_z04_forms_stapled_1.png", "job_id": "73ed7e9f-4633-4c00-bf70-224e712374f4", "raw_size": "2688x1520", "size": "1920x1080", "mode": "RGB", "lum_pct": 76.3, "note": ""}
 {"date": "2026-10-11", "kind": "generate", "target": "st_cu_z04_forms_stapled, проба 2", "model": "gpt_image_2_5", "params": "high 2k 16:9", "job_id": "78fd453d-d754-48f5-8af8-4687af724f6f"}
 {"date": "2026-10-11", "kind": "fetch", "target": "cu_z04_forms__st_cu_z04_forms_stapled_2.png", "job_id": "78fd453d-d754-48f5-8af8-4687af724f6f", "raw_size": "2688x1520", "size": "1920x1080", "mode": "RGB", "lum_pct": 76.4, "note": ""}
+{"date": "2026-10-11", "kind": "upload", "file": "variants/room_w2__st_w2_tt_payment__x4.png", "media_id": "bd367113-ffc1-41fb-af99-fa400deedbfa", "role": "перекраска оттиска счёта"}
+{"date": "2026-10-11", "kind": "upload", "file": "variants/room_w4__st_w4_tt_payment__x4.png", "media_id": "5d24fe0b-68bc-4900-b60d-d2450606391d", "role": "перекраска оттиска счёта"}
+{"date": "2026-10-11", "kind": "upload", "file": "вырезка room_w2__st_w2_tt_key вокруг ключа ×4", "media_id": "42dca98f-9201-4899-9131-f13c239bf121", "role": "эталон ключа cu_z04_key"}
+{"date": "2026-10-11", "kind": "upload", "file": "вырезка кадра папки st_z04_folder_1 620,560–1340,965 ×2,7", "media_id": "7aaebadc-e111-4665-8bd3-33f3dea88b24", "role": "эталон cu_z04_folder"}
+{"date": "2026-10-11", "kind": "generate", "target": "st_w2_tt_payment: оттиск на счёте — печать отеля (решение автора)", "model": "gpt_image_2_5", "params": "high 2k 4:3", "job_id": "22cc1835-885f-47ca-92ed-2a59e5072133"}
+{"date": "2026-10-11", "kind": "fetch", "target": "crop_w2_ttp_violet.png", "job_id": "22cc1835-885f-47ca-92ed-2a59e5072133", "raw_size": "2336x1744", "size": "2336x1744", "mode": "RGB", "lum_pct": 54.4, "note": ""}
+{"date": "2026-10-11", "kind": "generate", "target": "st_w4_tt_payment: оттиск на счёте — печать отеля", "model": "gpt_image_2_5", "params": "high 2k 4:3", "job_id": "ede48da3-88e4-451c-a3d9-c9c4358bc0e5"}
+{"date": "2026-10-11", "kind": "fetch", "target": "crop_w4_ttp_violet.png", "job_id": "ede48da3-88e4-451c-a3d9-c9c4358bc0e5", "raw_size": "2336x1744", "size": "2336x1744", "mode": "RGB", "lum_pct": 56.4, "note": ""}
+{"date": "2026-10-11", "kind": "generate", "target": "cu_z04_folder (разделение по решению автора), проба 1", "model": "gpt_image_2_5", "params": "high 2k 16:9", "job_id": "c28574b1-ac81-49bd-b609-300d673520f3"}
+{"date": "2026-10-11", "kind": "fetch", "target": "cu_z04_folder_1.png", "job_id": "c28574b1-ac81-49bd-b609-300d673520f3", "raw_size": "2688x1520", "size": "1920x1080", "mode": "RGB", "lum_pct": 76.1, "note": ""}
+{"date": "2026-10-11", "kind": "generate", "target": "cu_z04_folder, проба 2", "model": "gpt_image_2_5", "params": "high 2k 16:9", "job_id": "06bd65b9-c0ee-415d-b60f-b02aed9987b7"}
+{"date": "2026-10-11", "kind": "fetch", "target": "cu_z04_folder_2.png", "job_id": "06bd65b9-c0ee-415d-b60f-b02aed9987b7", "raw_size": "2688x1520", "size": "1920x1080", "mode": "RGB", "lum_pct": 78.3, "note": ""}
+{"date": "2026-10-11", "kind": "generate", "target": "cu_z04_key, проба 1", "model": "gpt_image_2_5", "params": "high 2k 16:9", "job_id": "1199c279-db4e-44c9-881b-63442537df0b"}
+{"date": "2026-10-11", "kind": "fetch", "target": "cu_z04_key_1.png", "job_id": "1199c279-db4e-44c9-881b-63442537df0b", "raw_size": "2688x1520", "size": "1920x1080", "mode": "RGB", "lum_pct": 52.8, "note": ""}
+{"date": "2026-10-11", "kind": "generate", "target": "cu_z04_key, проба 2", "model": "gpt_image_2_5", "params": "high 2k 16:9", "job_id": "4ae684be-889e-43dd-b4c6-2fd1d0b2512d"}
+{"date": "2026-10-11", "kind": "fetch", "target": "cu_z04_key_2.png", "job_id": "4ae684be-889e-43dd-b4c6-2fd1d0b2512d", "raw_size": "2688x1520", "size": "1920x1080", "mode": "RGB", "lum_pct": 55.4, "note": ""}
