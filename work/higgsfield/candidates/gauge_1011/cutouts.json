@@ -6,6 +6,13 @@
   "w": 1395,
   "h": 419
  },
+ "st_w4_source_water": {
+  "base": "room_w4.png",
+  "x": 743,
+  "y": 599,
+  "w": 352,
+  "h": 106
+ },
  "st_w6_needle_up": {
   "base": "room_w6.png",
   "x": 1746,
