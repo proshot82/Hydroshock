@@ -1437,3 +1437,25 @@
 {"date": "2026-10-11", "kind": "upload", "file": "ref_w4_glass.png: вырезка room_w4 680,480–1200,780 ×3", "media_id": "f18c1d0f-2962-4332-85fd-6d6301601ef1", "role": "эталон st_w4_source_water"}
 {"date": "2026-10-11", "kind": "generate", "target": "fr_a4_cascade_duck (решение автора 11.10.2026), пробы 1–2", "model": "gpt_image_2_5", "params": "high 2k 16:9", "job_id": "665a881e-f9a5-4131-a3da-4460ebaeb4c0, 98b8df56-98f9-4a20-8a79-59dee73cf69d"}
 {"date": "2026-10-11", "kind": "generate", "target": "st_w4_source_water, участок ×3, пробы 1–2", "model": "gpt_image_2_5", "params": "high 2k", "job_id": "1e75d73c-5f7d-4470-aa5e-60bb799c3142, 7328894c-5b4c-42a4-add2-b2d8c3adf951"}
+{"date": "2026-10-11", "kind": "accept", "target": "room_w2.png (ред.: настенный индикатор снят)", "note": "принят автором («да», 11.10.2026); README gauge_1011 / z13_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "room_w6.png (ред.: манометр 0–10, «атм.», зоны, стрелка на нуле)", "note": "принят автором («да», 11.10.2026); README gauge_1011 / z13_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "zoom_z13.png (ред.: манометр)", "note": "принят автором («да», 11.10.2026); README gauge_1011 / z13_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "fr_a4_cascade_duck.png", "note": "принят автором («да», 11.10.2026); README gauge_1011 / z13_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_w2_cascade_on.png", "note": "принят автором («да», 11.10.2026); README gauge_1011 / z13_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_w4_source_water.png", "note": "принят автором («да», 11.10.2026); README gauge_1011 / z13_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_w6_needle_up.png", "note": "принят автором («да», 11.10.2026); README gauge_1011 / z13_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_w6_water.png", "note": "принят автором («да», 11.10.2026); README gauge_1011 / z13_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z13_hand_plunger.png", "note": "принят автором («да», 11.10.2026); README gauge_1011 / z13_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z13_hand_wheel.png", "note": "принят автором («да», 11.10.2026); README gauge_1011 / z13_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z13_mug.png", "note": "принят автором («да», 11.10.2026); README gauge_1011 / z13_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z13_needle_up.png", "note": "принят автором («да», 11.10.2026); README gauge_1011 / z13_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z13_postcard.png", "note": "принят автором («да», 11.10.2026); README gauge_1011 / z13_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z13_seal.png", "note": "принят автором («да», 11.10.2026); README gauge_1011 / z13_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z13_seal_torn.png", "note": "принят автором («да», 11.10.2026); README gauge_1011 / z13_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z13_spot_mug.png", "note": "принят автором («да», 11.10.2026); README gauge_1011 / z13_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z13_spot_postcard.png", "note": "принят автором («да», 11.10.2026); README gauge_1011 / z13_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z13_spot_token.png", "note": "принят автором («да», 11.10.2026); README gauge_1011 / z13_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z13_tentacle.png", "note": "принят автором («да», 11.10.2026); README gauge_1011 / z13_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z13_token.png", "note": "принят автором («да», 11.10.2026); README gauge_1011 / z13_states_1011"}
+{"date": "2026-10-11", "kind": "reject", "target": "st_w6_needle_zero.png", "note": "снят: стрелка на нуле — на базе / настенный индикатор W2 убран (решения автора 11.10.2026); копия в work/orig_gfx/cutouts"}
+{"date": "2026-10-11", "kind": "reject", "target": "st_w2_gauge_up.png", "note": "снят: стрелка на нуле — на базе / настенный индикатор W2 убран (решения автора 11.10.2026); копия в work/orig_gfx/cutouts"}
