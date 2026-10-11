@@ -29,17 +29,17 @@
  },
  "st_z11_finger_down": {
   "base": "zoom_z11.png",
-  "x": 116,
-  "y": 471,
-  "w": 373,
-  "h": 56
+  "x": 93,
+  "y": 356,
+  "w": 414,
+  "h": 191
  },
  "st_z11_hand_plunger": {
   "base": "zoom_z11.png",
-  "x": 691,
-  "y": 241,
-  "w": 354,
-  "h": 263
+  "x": 369,
+  "y": 0,
+  "w": 1551,
+  "h": 1080
  },
  "st_z11_lamp_off": {
   "base": "zoom_z11.png",
