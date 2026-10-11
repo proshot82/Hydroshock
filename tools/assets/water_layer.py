@@ -96,7 +96,7 @@ def main(argv=None):
     layer.putalpha(M)
     layer.crop(bb).save(out / f"{a.name}.png")
     coords[a.name] = {"base": Path(a.base).name, "x": bb[0], "y": bb[1], "w": bb[2] - bb[0], "h": bb[3] - bb[1]}
-    cj.write_text(json.dumps(coords, ensure_ascii=False, indent=1, sort_keys=True) + "\n", encoding="utf-8")
+    cj.write_text(json.dumps({k: {f: v[f] for f in ("base", "x", "y", "w", "h")} for k, v in sorted(coords.items())}, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     print(json.dumps({"name": a.name, "bbox": list(bb), "area_pct": round(100 * (np.asarray(M) > 8).mean(), 1)}))
     return 0
 

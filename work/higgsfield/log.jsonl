@@ -1351,3 +1351,13 @@
 {"date": "2026-10-11", "kind": "upload", "file": "ref_door2.png: кадр 67a4ed6e (st_w5_door_office ред. 2, проба 1) ×3", "media_id": "82ca71db-9fac-4387-9833-ecc5ca1e30a3", "role": "убрать стул посетителя в проёме"}
 {"date": "2026-10-11", "kind": "generate", "target": "st_w5_door_office ред. 2: без стула в проёме, пробы 1–2", "model": "gpt_image_2_5", "params": "high 2k", "job_id": "552b2201-6483-4fe5-9cf9-b4a72b341ed6, 9013eae2-dbbc-43f5-bf4c-ff320ebef4b8"}
 {"date": "2026-10-11", "kind": "generate", "target": "room_w6: фото в рамке — портрет Ктулху как на Z13 (c7bf3acb), пробы 1–2", "model": "gpt_image_2_5", "params": "high 2k", "job_id": "9c4a20ac-b2d7-4c74-979f-93684b1ddf90, 3e4bfe90-1ea8-419b-bcd4-2dd903721789"}
+{"date": "2026-10-11", "kind": "accept", "target": "room_w6.png (ред.: фото семьи — портрет Ктулху)", "note": "принят автором («да», 11.10.2026); README low_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "zoom_z13.png", "note": "принят автором («да», 11.10.2026); README low_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_w5_door_office.png", "note": "принят автором («да», 11.10.2026); README low_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_w5_goods.png", "note": "принят автором («да», 11.10.2026); README low_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_w5_trolley.png", "note": "принят автором («да», 11.10.2026); README low_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_w5_water.png", "note": "принят автором («да», 11.10.2026); README low_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_w6_needle_up.png", "note": "принят автором («да», 11.10.2026); README low_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_w6_needle_zero.png", "note": "принят автором («да», 11.10.2026); README low_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_w6_seal.png", "note": "принят автором («да», 11.10.2026); README low_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_w6_water.png", "note": "принят автором («да», 11.10.2026); README low_1011"}
