@@ -789,3 +789,7 @@
 {"date": "2026-10-11", "kind": "generate", "target": "st_z11_hand_plunger: выпад во весь рост, большая уточка прикрывает", "model": "gpt_image_2_5", "params": "high 2k 16:9", "job_id": "fcdf0850-17b7-43d7-8495-c59dcbf23ad6"}
 {"date": "2026-10-11", "kind": "generate", "target": "st_z11_mirror: стоит во весь рост, большая уточка по образцу fcdf0850", "model": "gpt_image_2_5", "params": "high 2k 16:9", "job_id": "b80fae6a-ffb3-4f90-bec1-70196368bf84"}
 {"date": "2026-10-11", "kind": "fetch", "target": "zoom_z11__st_z11_mirror_duck2.png", "job_id": "b80fae6a", "raw_size": "2688x1520", "size": "1920x1080", "mode": "RGB", "lum_pct": 61.7, "note": "duck3"}
+{"date": "2026-10-11", "kind": "generate", "target": "st_z11_hand_plunger: нормальные пропорции, ручка вантуза отражения целиком (замечание автора)", "model": "gpt_image_2_5", "params": "high 2k 16:9", "job_id": "98533ff6-a178-4d03-94dc-f1d994b269db"}
+{"date": "2026-10-11", "kind": "generate", "target": "st_z11_mirror: нормальные пропорции (замечание автора)", "model": "gpt_image_2_5", "params": "high 2k 16:9", "job_id": "f64b760e-5d06-4e82-bb25-a9b095c6ea1e"}
+{"date": "2026-10-11", "kind": "fetch", "target": "zoom_z11__st_z11_hand_plunger_p.png", "job_id": "98533ff6", "raw_size": "2688x1520", "size": "1920x1080", "mode": "RGB", "lum_pct": 63.1, "note": "p"}
+{"date": "2026-10-11", "kind": "fetch", "target": "zoom_z11__st_z11_mirror_p.png", "job_id": "f64b760e", "raw_size": "2688x1520", "size": "1920x1080", "mode": "RGB", "lum_pct": 62.4, "note": "p"}
