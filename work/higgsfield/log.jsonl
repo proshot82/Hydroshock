@@ -1361,3 +1361,46 @@
 {"date": "2026-10-11", "kind": "accept", "target": "st_w6_needle_zero.png", "note": "принят автором («да», 11.10.2026); README low_1011"}
 {"date": "2026-10-11", "kind": "accept", "target": "st_w6_seal.png", "note": "принят автором («да», 11.10.2026); README low_1011"}
 {"date": "2026-10-11", "kind": "accept", "target": "st_w6_water.png", "note": "принят автором («да», 11.10.2026); README low_1011"}
+{"date": "2026-10-11", "kind": "upload", "file": "z13_base.png", "media_id": "26fe6ee2-906c-42b3-a121-c0661a1f78b5", "role": "основа zoom_z13 (принятая) — эталон состояний st_z13_*"}
+{"date": "2026-10-11", "kind": "upload", "file": "p_left.png", "media_id": "1519d69c-a986-40ad-9e9f-aaf0d275f4af", "role": "zoom_z13 0,420–440,720 ×3 (левое место)"}
+{"date": "2026-10-11", "kind": "upload", "file": "p_mid.png", "media_id": "299aece8-883d-4cb1-8170-dc7190cf20fd", "role": "zoom_z13 600,400–1000,600 ×3 (среднее место)"}
+{"date": "2026-10-11", "kind": "upload", "file": "p_right.png", "media_id": "647e5b65-110a-43b5-86c6-76c001a4d067", "role": "zoom_z13 1220,460–1660,720 ×3 (правое место)"}
+{"date": "2026-10-11", "kind": "upload", "file": "p_valve.png", "media_id": "4a5d9832-0b61-4afa-ac8e-dc1336f8fbf1", "role": "zoom_z13 1460,340–1740,600 ×4 (маховик)"}
+{"date": "2026-10-11", "kind": "upload", "file": "p_gauge.png", "media_id": "b5b0f514-f4f3-45ef-ad51-f01208e1555e", "role": "zoom_z13 1700,200–1910,420 ×4 (манометр)"}
+{"date": "2026-10-11", "kind": "upload", "file": "r_seal.png", "media_id": "8cc10434-d1e4-4a5c-b8b0-61602d0496c5", "role": "room_w6 + st_w6_seal 1490,420–1720,640 ×4 (эталон пломбы)"}
+{"date": "2026-10-11", "kind": "upload", "file": "r_mug.png", "media_id": "a4c8e19f-1d78-4661-be2e-081af079a401", "role": "zoom_z04 + st_z04_lowdrawer_mug, кружка ×4 (эталон R3)"}
+{"date": "2026-10-11", "kind": "upload", "file": "r_postcard.png", "media_id": "ec05fb2f-36d5-4634-b03b-c151b05f117e", "role": "zoom_z08 + st_z08_inner_postcard, открытка ×5 (эталон R2)"}
+{"date": "2026-10-11", "kind": "upload", "file": "r_plunger.png", "media_id": "77e7da9a-0495-4d79-bffc-904dc341518c", "role": "zoom_z01 + st_z01_plunger ×3 (эталон вантуза)"}
+{"date": "2026-10-11", "kind": "upload", "file": "r_hand.png", "media_id": "326e8d2a-2229-49e5-a1d0-383b7a5ca166", "role": "zoom_z11 + st_z11_mirror + st_z11_hand_plunger 640,550–1571,1080 (эталон мыльной руки)"}
+{"date": "2026-10-11", "kind": "upload", "file": "r_tentacle.png", "media_id": "aea5c715-718d-4ee0-aa30-b57267aa8e31", "role": "room_w5 + st_w5_kuh 560,380–1200,620 ×2 (эталон щупальца в нарукавнике)"}
+{"date": "2026-10-11", "kind": "generate", "target": "st_z13_seal, участок ×4, проба 1", "model": "gpt_image_2_5", "params": "high 2k", "job_id": "7408ce8b-9c5e-49e6-8a59-95b315257014"}
+{"date": "2026-10-11", "kind": "generate", "target": "st_z13_seal_torn, весь кадр, проба 1", "model": "gpt_image_2_5", "params": "high 2k", "job_id": "0e7c050e-6381-44f1-b860-8781bb34e168"}
+{"date": "2026-10-11", "kind": "generate", "target": "st_z13_needle_zero, участок ×4", "model": "gpt_image_2_5", "params": "high 2k", "job_id": "3ae0c43f-958c-4506-9136-2ed3b7255cce"}
+{"date": "2026-10-11", "kind": "generate", "target": "st_z13_needle_up, участок ×4", "model": "gpt_image_2_5", "params": "high 2k", "job_id": "e5cd8352-6460-47f8-9040-3edec02327bd"}
+{"date": "2026-10-11", "kind": "generate", "target": "st_z13_token, участок ×3", "model": "gpt_image_2_5", "params": "high 2k", "job_id": "67f7933d-0baf-47f6-ab39-97f4f877ddd0"}
+{"date": "2026-10-11", "kind": "generate", "target": "st_z13_postcard, участок ×3", "model": "gpt_image_2_5", "params": "high 2k", "job_id": "1bef9e1f-661c-49d0-a631-b21612bb760b"}
+{"date": "2026-10-11", "kind": "generate", "target": "st_z13_mug, участок ×3", "model": "gpt_image_2_5", "params": "high 2k", "job_id": "222ee9f4-6976-4be1-ade5-f2a520d7e4ae"}
+{"date": "2026-10-11", "kind": "generate", "target": "st_z13_spot_token, участок ×3", "model": "gpt_image_2_5", "params": "high 2k", "job_id": "d22b9923-f28b-4e7b-b508-7ff6ca5c06bc"}
+{"date": "2026-10-11", "kind": "generate", "target": "st_z13_spot_postcard, участок ×3", "model": "gpt_image_2_5", "params": "high 2k", "job_id": "b0481e72-e9d2-40ac-ab53-f34c1c4757b5"}
+{"date": "2026-10-11", "kind": "generate", "target": "st_z13_spot_mug, участок ×3", "model": "gpt_image_2_5", "params": "high 2k", "job_id": "4f73f2cb-0989-45b1-b1ca-9ba6631dc69b"}
+{"date": "2026-10-11", "kind": "generate", "target": "st_z13_hand_plunger, весь кадр", "model": "gpt_image_2_5", "params": "high 2k", "job_id": "fba15184-9917-4b99-a2f9-957a3f29e056"}
+{"date": "2026-10-11", "kind": "generate", "target": "st_z13_tentacle, весь кадр", "model": "gpt_image_2_5", "params": "high 2k", "job_id": "f997f9db-46db-43f7-a52b-b27dd935235e"}
+{"date": "2026-10-11", "kind": "generate", "target": "st_z13_hand_wheel, весь кадр", "model": "gpt_image_2_5", "params": "high 2k", "job_id": "df740928-1dc2-44a9-ae64-30a09e21ddc3"}
+{"date": "2026-10-11", "kind": "generate", "target": "st_z13_seal, участок ×4, проба 2", "model": "gpt_image_2_5", "params": "high 2k", "job_id": "fc562082-87ff-495c-a87b-983c9349a270"}
+{"date": "2026-10-11", "kind": "fetch", "target": "z13seal_1.png", "job_id": "7408ce8b-9c5e-49e6-8a59-95b315257014", "raw_size": "2160x1920", "size": "1120x1040", "mode": "RGB", "lum_pct": 35.7, "note": ""}
+{"date": "2026-10-11", "kind": "fetch", "target": "z13torn_1.png", "job_id": "0e7c050e-6381-44f1-b860-8781bb34e168", "raw_size": "2688x1520", "size": "1920x1080", "mode": "RGB", "lum_pct": 36.3, "note": ""}
+{"date": "2026-10-11", "kind": "fetch", "target": "z13zero_1.png", "job_id": "3ae0c43f-958c-4506-9136-2ed3b7255cce", "raw_size": "2048x2048", "size": "840x880", "mode": "RGB", "lum_pct": 37.2, "note": ""}
+{"date": "2026-10-11", "kind": "fetch", "target": "z13up_1.png", "job_id": "e5cd8352-6460-47f8-9040-3edec02327bd", "raw_size": "2048x2048", "size": "840x880", "mode": "RGB", "lum_pct": 37.7, "note": ""}
+{"date": "2026-10-11", "kind": "fetch", "target": "z13token_1.png", "job_id": "67f7933d-0baf-47f6-ab39-97f4f877ddd0", "raw_size": "2048x1360", "size": "1320x900", "mode": "RGB", "lum_pct": 45.0, "note": ""}
+{"date": "2026-10-11", "kind": "fetch", "target": "z13postcard_1.png", "job_id": "1bef9e1f-661c-49d0-a631-b21612bb760b", "raw_size": "2816x1408", "size": "1200x600", "mode": "RGB", "lum_pct": 48.6, "note": ""}
+{"date": "2026-10-11", "kind": "fetch", "target": "z13mug_1.png", "job_id": "222ee9f4-6976-4be1-ade5-f2a520d7e4ae", "raw_size": "2592x1536", "size": "1320x780", "mode": "RGB", "lum_pct": 43.8, "note": ""}
+{"date": "2026-10-11", "kind": "fetch", "target": "z13spottoken_1.png", "job_id": "d22b9923-f28b-4e7b-b508-7ff6ca5c06bc", "raw_size": "2048x1360", "size": "1320x900", "mode": "RGB", "lum_pct": 42.5, "note": ""}
+{"date": "2026-10-11", "kind": "fetch", "target": "z13spotpostcard_1.png", "job_id": "b0481e72-e9d2-40ac-ab53-f34c1c4757b5", "raw_size": "2816x1408", "size": "1200x600", "mode": "RGB", "lum_pct": 45.6, "note": ""}
+{"date": "2026-10-11", "kind": "fetch", "target": "z13spotmug_1.png", "job_id": "4f73f2cb-0989-45b1-b1ca-9ba6631dc69b", "raw_size": "2592x1536", "size": "1320x780", "mode": "RGB", "lum_pct": 46.8, "note": ""}
+{"date": "2026-10-11", "kind": "fetch", "target": "z13handpl_1.png", "job_id": "fba15184-9917-4b99-a2f9-957a3f29e056", "raw_size": "2688x1520", "size": "1920x1080", "mode": "RGB", "lum_pct": 37.3, "note": ""}
+{"date": "2026-10-11", "kind": "fetch", "target": "z13tent_1.png", "job_id": "f997f9db-46db-43f7-a52b-b27dd935235e", "raw_size": "2688x1520", "size": "1920x1080", "mode": "RGB", "lum_pct": 35.4, "note": ""}
+{"date": "2026-10-11", "kind": "fetch", "target": "z13wheel_1.png", "job_id": "df740928-1dc2-44a9-ae64-30a09e21ddc3", "raw_size": "2688x1520", "size": "1920x1080", "mode": "RGB", "lum_pct": 37.9, "note": ""}
+{"date": "2026-10-11", "kind": "fetch", "target": "z13seal_2.png", "job_id": "fc562082-87ff-495c-a87b-983c9349a270", "raw_size": "2160x1920", "size": "1120x1040", "mode": "RGB", "lum_pct": 36.1, "note": ""}
+{"date": "2026-10-11", "kind": "fetch", "target": "z13spottoken_2.png", "job_id": "a9f1cc7f-be2a-47e8-99e9-034928005c14", "raw_size": "2048x1360", "size": "1320x900", "mode": "RGB", "lum_pct": 47.0, "note": ""}
+{"date": "2026-10-11", "kind": "fetch", "target": "z13spottoken_3.png", "job_id": "5af33eda-e36f-46e7-9d88-8d25e810159d", "raw_size": "2048x1360", "size": "1320x900", "mode": "RGB", "lum_pct": 47.6, "note": ""}
+{"date": "2026-10-11", "kind": "generate", "target": "st_z13_spot_token: из кадра жетона (67f7933d) убран жетон, пробы 1–2", "model": "gpt_image_2_5", "params": "high 2k", "job_id": "a9f1cc7f-be2a-47e8-99e9-034928005c14, 5af33eda-e36f-46e7-9d88-8d25e810159d"}
