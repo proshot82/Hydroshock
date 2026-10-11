@@ -589,10 +589,10 @@
  },
  "st_z05_tag_folded": {
   "base": "zoom_z05.png",
-  "x": 685,
-  "y": 0,
-  "w": 184,
-  "h": 107
+  "x": 692,
+  "y": 132,
+  "w": 166,
+  "h": 176
  },
  "st_z06_blink": {
   "base": "zoom_z06.png",
