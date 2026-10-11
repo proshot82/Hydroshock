@@ -1,4 +1,67 @@
 {
+ "st_w1_juice_empty": {
+  "base": "room_w1.png",
+  "x": 763,
+  "y": 535,
+  "w": 85,
+  "h": 116
+ },
+ "st_w1_trolley": {
+  "base": "room_w1.png",
+  "x": 505,
+  "y": 486,
+  "w": 750,
+  "h": 579
+ },
+ "st_w1_trolley_folded": {
+  "base": "room_w1.png",
+  "x": 505,
+  "y": 485,
+  "w": 750,
+  "h": 580
+ },
+ "st_w2_cascade_on": {
+  "base": "room_w2.png",
+  "x": 335,
+  "y": 175,
+  "w": 1395,
+  "h": 419
+ },
+ "st_w2_trolley": {
+  "base": "room_w2.png",
+  "x": 25,
+  "y": 491,
+  "w": 254,
+  "h": 301
+ },
+ "st_w2_tt_key": {
+  "base": "room_w2.png",
+  "x": 65,
+  "y": 463,
+  "w": 234,
+  "h": 144
+ },
+ "st_w2_tt_mug": {
+  "base": "room_w2.png",
+  "x": 51,
+  "y": 467,
+  "w": 243,
+  "h": 107
+ },
+ "st_w2_tt_payment": {
+  "base": "room_w2.png",
+  "x": 64,
+  "y": 474,
+  "w": 237,
+  "h": 105
+ },
+ "st_w4_board_floor": {
+  "base": "room_w4.png",
+  "x": 244,
+  "y": 590,
+  "w": 134,
+  "h": 72
+ },
  "st_w4_cabin_empty": {
   "base": "room_w4.png",
   "x": 219,
@@ -19,6 +82,13 @@
   "y": 341,
   "w": 162,
   "h": 270
+ },
+ "st_w4_design_board": {
+  "base": "room_w4.png",
+  "x": 449,
+  "y": 546,
+  "w": 263,
+  "h": 165
  },
  "st_w4_films": {
   "base": "room_w4.png",
@@ -48,12 +118,54 @@
   "w": 90,
   "h": 96
  },
+ "st_w4_ramp": {
+  "base": "room_w4.png",
+  "x": 240,
+  "y": 588,
+  "w": 357,
+  "h": 199
+ },
  "st_w4_stairs_open": {
   "base": "room_w4.png",
   "x": 587,
   "y": 247,
   "w": 199,
   "h": 336
+ },
+ "st_w4_trolley_hall": {
+  "base": "room_w4.png",
+  "x": 1169,
+  "y": 459,
+  "w": 314,
+  "h": 262
+ },
+ "st_w4_tt_marked": {
+  "base": "room_w4.png",
+  "x": 1185,
+  "y": 423,
+  "w": 272,
+  "h": 135
+ },
+ "st_w4_tt_payment": {
+  "base": "room_w4.png",
+  "x": 1183,
+  "y": 428,
+  "w": 277,
+  "h": 118
+ },
+ "st_w4_tt_returned": {
+  "base": "room_w4.png",
+  "x": 1183,
+  "y": 423,
+  "w": 304,
+  "h": 139
+ },
+ "st_w4_tt_water": {
+  "base": "room_w4.png",
+  "x": 1183,
+  "y": 426,
+  "w": 284,
+  "h": 116
  },
  "st_w4_tube_photo": {
   "base": "room_w4.png",
@@ -75,6 +187,20 @@
   "y": 159,
   "w": 1202,
   "h": 862
+ },
+ "st_w5_mark": {
+  "base": "room_w5.png",
+  "x": 1066,
+  "y": 512,
+  "w": 121,
+  "h": 58
+ },
+ "st_w5_trolley": {
+  "base": "room_w5.png",
+  "x": 419,
+  "y": 419,
+  "w": 481,
+  "h": 406
  },
  "st_w5u_reach": {
   "base": "room_w5_under.png",
@@ -103,5 +229,131 @@
   "y": 42,
   "w": 603,
   "h": 929
+ },
+ "st_z03_juice_empty": {
+  "base": "zoom_z03.png",
+  "x": 759,
+  "y": 101,
+  "w": 119,
+  "h": 240
+ },
+ "st_z03_skirt_open": {
+  "base": "zoom_z03.png",
+  "x": 241,
+  "y": 429,
+  "w": 1408,
+  "h": 651
+ },
+ "st_z03_skirt_open_folded": {
+  "base": "zoom_z03.png",
+  "x": 147,
+  "y": 367,
+  "w": 1620,
+  "h": 713
+ },
+ "st_z03_stars_folded": {
+  "base": "zoom_z03.png",
+  "x": 280,
+  "y": 439,
+  "w": 1331,
+  "h": 269
+ },
+ "st_z11_board_floor": {
+  "base": "zoom_z11.png",
+  "x": 691,
+  "y": 817,
+  "w": 507,
+  "h": 186
+ },
+ "st_z11_cabin_empty": {
+  "base": "zoom_z11.png",
+  "x": 631,
+  "y": 281,
+  "w": 638,
+  "h": 788
+ },
+ "st_z11_cabin_full": {
+  "base": "zoom_z11.png",
+  "x": 631,
+  "y": 281,
+  "w": 638,
+  "h": 788
+ },
+ "st_z11_finger_call": {
+  "base": "zoom_z11.png",
+  "x": 117,
+  "y": 363,
+  "w": 369,
+  "h": 144
+ },
+ "st_z11_finger_down": {
+  "base": "zoom_z11.png",
+  "x": 93,
+  "y": 356,
+  "w": 414,
+  "h": 191
+ },
+ "st_z11_hand_plunger": {
+  "base": "zoom_z11.png",
+  "x": 369,
+  "y": 0,
+  "w": 1551,
+  "h": 1080
+ },
+ "st_z11_lamp_off": {
+  "base": "zoom_z11.png",
+  "x": 446,
+  "y": 380,
+  "w": 72,
+  "h": 78
+ },
+ "st_z11_mirror": {
+  "base": "zoom_z11.png",
+  "x": 382,
+  "y": 0,
+  "w": 933,
+  "h": 1039
+ },
+ "st_z11_mirror_aside": {
+  "base": "zoom_z11.png",
+  "x": 1249,
+  "y": 157,
+  "w": 482,
+  "h": 864
+ },
+ "st_z11_ramp": {
+  "base": "zoom_z11.png",
+  "x": 692,
+  "y": 808,
+  "w": 424,
+  "h": 272
+ },
+ "st_z11_trolley_marked": {
+  "base": "zoom_z11.png",
+  "x": 631,
+  "y": 261,
+  "w": 638,
+  "h": 819
+ },
+ "st_z11_trolley_returned": {
+  "base": "zoom_z11.png",
+  "x": 631,
+  "y": 261,
+  "w": 638,
+  "h": 819
+ },
+ "st_z11_trolley_stuck": {
+  "base": "zoom_z11.png",
+  "x": 389,
+  "y": 529,
+  "w": 471,
+  "h": 442
+ },
+ "st_z11_trolley_water": {
+  "base": "zoom_z11.png",
+  "x": 631,
+  "y": 261,
+  "w": 638,
+  "h": 819
  }
 }

@@ -20,6 +20,7 @@ cutouts.json пишется --base-name (настоящая база экран�
 
 Результат: assets/gfx/cutouts/<имя>.png — RGBA, обрезан по маске; координаты левого
 верхнего угла — assets/gfx/cutouts/cutouts.json (генерируется, руками не править);
+--out ПАПКА — то же в другую папку (кандидаты до приёмки автором — work/higgsfield/candidates/…);
 проверочная склейка «база + вырезка» и маска — work/higgsfield/cutout_preview/.
 """
 import argparse
@@ -103,7 +104,10 @@ def main(argv=None):
     ap.add_argument("--grow", type=int, default=0)
     ap.add_argument("--base-name", default=None,
                     help="имя базы для cutouts.json, если БАЗА — склейка (база + нижние слои)")
+    ap.add_argument("--out", default=None,
+                    help="папка результата вместо assets/gfx/cutouts (кандидаты до приёмки — в work/)")
     a = ap.parse_args(argv)
+    out = Path(a.out) if a.out else OUT
 
     base = Image.open(a.base).convert("RGB")
     var = Image.open(a.variant).convert("RGB")
@@ -146,10 +150,10 @@ def main(argv=None):
     bbox = alpha.point(lambda p: 255 if p > 2 else 0).getbbox()
     cut = rgba.crop(bbox)
 
-    OUT.mkdir(parents=True, exist_ok=True)
+    out.mkdir(parents=True, exist_ok=True)
     PREVIEW.mkdir(parents=True, exist_ok=True)
-    cut.save(OUT / f"{a.name}.png")
-    coords_path = OUT / "cutouts.json"
+    cut.save(out / f"{a.name}.png")
+    coords_path = out / "cutouts.json"
     coords = json.loads(coords_path.read_text(encoding="utf-8")) if coords_path.exists() else {}
     coords[a.name] = {"base": a.base_name or Path(a.base).name, "x": bbox[0], "y": bbox[1],
                       "w": cut.width, "h": cut.height}
