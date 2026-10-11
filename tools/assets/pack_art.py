@@ -34,7 +34,7 @@ PLACE = {"room_w1": "W1_room317", "zoom_z01": "W1_room317", "zoom_z02": "W1_room
          "room_w6": "W6_office", "zoom_z13": "W6_office"}
 SCHEMES = {"hotel_topology.png": "hotel_topology.png", "ground_floor_plan.png": "ground_floor_plan.png",
            "w2_counter_layout.png": "W2_counter_layout.png", "w3_plan.png": "W3_laundry_plan.png",
-           "w4_plan.png": "W4_hall_plan.png"}
+           "w4_plan.png": "W4_hall_plan.png", "stairs_lift_route.png": "stairs_and_lift_route.png"}
 
 README = """«Латунный янычар: Гидроудар» — все картинки игры (копия для просмотра)
 
@@ -53,7 +53,8 @@ W5_reception_cave — приёмный пункт (и вид из-под юбк�
 W6_office — контора старшего по воде
 portraits — портреты (lap — Лапидус, iz — Изольда, kuh — Кухтулху, anc — Предок), на сером фоне
 cursors — курсоры из BJ2
-schemes — топология отеля, план первого этажа, схема стойки W2, планы W3 и W4
+schemes — топология отеля, план первого этажа, схема стойки W2, планы W3 и W4,
+  куда ведёт винтовая лестница и куда приходит лифт (stairs_and_lift_route)
 
 Картинки — JPEG высокого качества в полном размере 1920×1080; схемы — PNG.
 Оригиналы PNG — в репозитории proshot82/Hydroshock: assets/gfx (принятое) и work/higgsfield/candidates (кандидаты).
