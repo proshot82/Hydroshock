@@ -1246,3 +1246,47 @@
 {"date": "2026-10-11", "kind": "fetch", "target": "cu_z04_key_1.png", "job_id": "1199c279-db4e-44c9-881b-63442537df0b", "raw_size": "2688x1520", "size": "1920x1080", "mode": "RGB", "lum_pct": 52.8, "note": ""}
 {"date": "2026-10-11", "kind": "generate", "target": "cu_z04_key, проба 2", "model": "gpt_image_2_5", "params": "high 2k 16:9", "job_id": "4ae684be-889e-43dd-b4c6-2fd1d0b2512d"}
 {"date": "2026-10-11", "kind": "fetch", "target": "cu_z04_key_2.png", "job_id": "4ae684be-889e-43dd-b4c6-2fd1d0b2512d", "raw_size": "2688x1520", "size": "1920x1080", "mode": "RGB", "lum_pct": 55.4, "note": ""}
+{"date": "2026-10-11", "kind": "accept", "target": "zoom_z04.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); ред. 3 шире; README zoom_z04_rev3; прежняя — work/orig_gfx"}
+{"date": "2026-10-11", "kind": "accept", "target": "cu_z04_forms.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_z04_rev3"}
+{"date": "2026-10-11", "kind": "accept", "target": "cu_z04_kefir_hands.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_z04_rev3"}
+{"date": "2026-10-11", "kind": "accept", "target": "cu_z04_folder.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_z04_rev3"}
+{"date": "2026-10-11", "kind": "accept", "target": "cu_z04_key.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_z04_rev3"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z01_head_running.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z01_plunger.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z02_kombucha_empty.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z02_lemonade_empty.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z02_menu.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z02_mineral_empty.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z02_voucher_soaked.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z05_open.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z05_palm.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z05_ring.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z05_tag.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z05_tag_folded.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z06_blink.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z06_spin.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z08_inner_empty.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z08_inner_postcard.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z09_flap_open.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z09_plate.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z09_stripes.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z10_bottle.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z10_photo.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z10_tube_open.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z12_door_open.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_cu_z04_forms_stapled.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_z04_rev3"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z04_bill_mp.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_z04_rev3"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z04_bill_stamped.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_z04_rev3"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z04_complaints.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_z04_rev3"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z04_drawer_kefir.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_z04_rev3"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z04_folder.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_z04_rev3"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z04_forms1.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_z04_rev3"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z04_forms3.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_z04_rev3"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z04_iz_hand.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_z04_rev3"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z04_kefir.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_z04_rev3"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z04_lowdrawer_empty.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_z04_rev3"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z04_lowdrawer_mug.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_z04_rev3"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z04_map.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_z04_rev3"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z04_pump_lamp.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); README zoom_z04_rev3"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_w2_tt_payment.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); оттиск на счёте — печать отеля; README stamp_violet_1011; прежний — work/orig_gfx/cutouts"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_w4_tt_payment.png", "note": "принят автором («да, слияние и новая сессия», 11.10.2026); оттиск на счёте — печать отеля; README stamp_violet_1011; прежний — work/orig_gfx/cutouts"}

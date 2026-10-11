@@ -26,6 +26,7 @@ TOP = "Hydroudar_art"
 
 PLACE = {"room_w1": "W1_room317", "zoom_z01": "W1_room317", "zoom_z02": "W1_room317", "zoom_z03": "W1_room317",
          "room_w2": "W2_lobby", "zoom_z04": "W2_lobby", "zoom_z05": "W2_lobby",
+         "cu_z04_forms": "W2_lobby", "cu_z04_folder": "W2_lobby", "cu_z04_key": "W2_lobby", "cu_z04_kefir_hands": "W2_lobby",
          "room_w2_under": "W2u_lobby_under_trolley",
          "room_w3": "W3_laundry", "zoom_z06": "W3_laundry", "zoom_z07": "W3_laundry", "zoom_z08": "W3_laundry",
          "room_w4": "W4_hall", "zoom_z09": "W4_hall", "zoom_z10": "W4_hall", "zoom_z11": "W4_hall",
@@ -44,7 +45,7 @@ NEW_ в начале имени — кандидат на приёмке, ещё
 Если у NEW_ и у принятой картинки одно имя — NEW_ её заменит после «да» автора (например, NEW_zoom_z11__st_z11_mirror_aside).
 
 W1_room317 — номер 317 (Z01 душевая, Z02 стол и мини-бар, Z03 тележка)
-W2_lobby — вестибюль (Z04 стойка Изольды, Z05 витрина из-под тележки)
+W2_lobby — вестибюль (Z04 стойка Изольды и её крупные планы cu_z04_*, Z05 витрина из-под тележки)
 W2u_lobby_under_trolley — вестибюль из-под юбки тележки
 W3_laundry — прачечная (Z06 барабаны, Z07 декоративная стена, Z08 шкаф)
 W4_hall — зал прекраснодушия (Z09 доска почёта, Z10 стол и люк, Z11 лифт)
