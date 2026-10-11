@@ -99,10 +99,10 @@
  },
  "st_w2u_gate_open": {
   "base": "room_w2_under.png",
-  "x": 821,
-  "y": 351,
-  "w": 298,
-  "h": 318
+  "x": 1240,
+  "y": 411,
+  "w": 277,
+  "h": 358
  },
  "st_w2u_parted": {
   "base": "room_w2_under.png",
