@@ -1023,3 +1023,4 @@
 {"date": "2026-10-11", "kind": "generate", "target": "st_w2u_gate_open по всему кадру W2u (91806e9c), проба 8", "model": "gpt_image_2_5", "params": "high 2k 16:9", "job_id": "71911be0-0b38-4944-8818-17468deb5d23"}
 {"date": "2026-10-11", "kind": "generate", "target": "проба 9", "model": "gpt_image_2_5", "params": "high 2k 16:9", "job_id": "dd2e3b54-9789-44ae-b0c6-14c6f105b6b5"}
 {"date": "2026-10-11", "kind": "generate", "target": "проба 10", "model": "gpt_image_2_5", "params": "high 2k 16:9", "job_id": "93d6ba3d-b775-4edd-89b6-1c472149c47b"}
+{"date": "2026-10-11", "kind": "fetch", "target": "zoom_z06_nolamp.png", "job_id": "bfa89a28-d338-4b06-a29f-e6dd6c71b327", "raw_size": "2688x1520", "size": "1920x1080", "mode": "RGB", "lum_pct": 57.4, "note": "zoom_z06 без красных ламп (решение автора)"}
