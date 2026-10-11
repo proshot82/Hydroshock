@@ -1459,3 +1459,16 @@
 {"date": "2026-10-11", "kind": "accept", "target": "st_z13_token.png", "note": "принят автором («да», 11.10.2026); README gauge_1011 / z13_states_1011"}
 {"date": "2026-10-11", "kind": "reject", "target": "st_w6_needle_zero.png", "note": "снят: стрелка на нуле — на базе / настенный индикатор W2 убран (решения автора 11.10.2026); копия в work/orig_gfx/cutouts"}
 {"date": "2026-10-11", "kind": "reject", "target": "st_w2_gauge_up.png", "note": "снят: стрелка на нуле — на базе / настенный индикатор W2 убран (решения автора 11.10.2026); копия в work/orig_gfx/cutouts"}
+{"date": "2026-10-11", "kind": "fetch", "target": "meter_1.png", "job_id": "2e426284-92d2-4e2b-8479-18354e434e76", "raw_size": "2240x1792", "size": "900x720", "mode": "RGB", "lum_pct": 67.8, "note": ""}
+{"date": "2026-10-11", "kind": "fetch", "target": "meter_2.png", "job_id": "85e2d40f-b400-4e9d-a3d0-2a684dbab16e", "raw_size": "2240x1792", "size": "900x720", "mode": "RGB", "lum_pct": 67.0, "note": ""}
+{"date": "2026-10-11", "kind": "fetch", "target": "meter_3.png", "job_id": "aa5a1ab1-29b8-4801-9ecb-e74cef06f6ca", "raw_size": "2240x1792", "size": "900x720", "mode": "RGB", "lum_pct": 67.3, "note": ""}
+{"date": "2026-10-11", "kind": "upload", "file": "ref_z05_dial.png: вырезка zoom_z05 620,0–920,240 ×3", "media_id": "318aed6d-6b89-4312-aea8-6d1e97c22dee", "role": "шкала счётчика воды (решение автора 11.10.2026)"}
+{"date": "2026-10-11", "kind": "generate", "target": "zoom_z05: шкала счётчика 0–9, «ведра», стрелка и окошко на месте, пробы 1–3", "model": "gpt_image_2_5", "params": "high 2k", "job_id": "2e426284-92d2-4e2b-8479-18354e434e76, 85e2d40f-b400-4e9d-a3d0-2a684dbab16e, aa5a1ab1-29b8-4801-9ecb-e74cef06f6ca"}
+{"date": "2026-10-11", "kind": "accept", "target": "zoom_z05.png (ред.: шкала счётчика)", "note": "решение автора «да, сделать. потом слить все» (11.10.2026); README meter_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "room_w2.png (ред.: шкала счётчика)", "note": "решение автора «да, сделать. потом слить все» (11.10.2026); README meter_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "fr_a4_cascade_duck.png (ред.: шкала счётчика)", "note": "решение автора «да, сделать. потом слить все» (11.10.2026); README meter_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_w2_vitrine_open.png (ред.: шкала счётчика)", "note": "решение автора «да, сделать. потом слить все» (11.10.2026); README meter_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z05_open.png (ред.: шкала счётчика)", "note": "решение автора «да, сделать. потом слить все» (11.10.2026); README meter_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z05_ring.png (ред.: шкала счётчика)", "note": "решение автора «да, сделать. потом слить все» (11.10.2026); README meter_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z05_tag.png (ред.: шкала счётчика)", "note": "решение автора «да, сделать. потом слить все» (11.10.2026); README meter_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z05_tag_folded.png (ред.: шкала счётчика)", "note": "решение автора «да, сделать. потом слить все» (11.10.2026); README meter_1011"}
