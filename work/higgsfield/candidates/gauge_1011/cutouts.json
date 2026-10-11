@@ -6,13 +6,6 @@
   "w": 1395,
   "h": 419
  },
- "st_w2_gauge_up": {
-  "base": "room_w2.png",
-  "x": 1212,
-  "y": 172,
-  "w": 116,
-  "h": 106
- },
  "st_w6_needle_up": {
   "base": "room_w6.png",
   "x": 1746,
