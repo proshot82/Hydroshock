@@ -1,5 +1,7 @@
 # Кандидаты 11.10.2026: состояния W2, W2 из-под юбки и W3 (остаток пакета 2), ред. 2
 
+**Принято автором («да», 11.10.2026).** 17 слоёв перенесены в `assets/gfx/cutouts/` (записи — `assets/gfx/cutouts/cutouts.json`), кадры-варианты — `work/higgsfield/variants/<база>__<слой>.png` (кадр генератора, где он целый, иначе склейка «база + слой»), `accept` в журнале. Прежний `st_z11_mirror_aside` — `work/orig_gfx/cutouts/st_z11_mirror_aside__маленькое_до_11.10.png`.
+
 **На приёмке у автора.** Лист — `work/higgsfield/sheet_1011_w2_w3_states_v2.png` (16 кадров: склейка «база + слой», крупно вокруг изменения). Слои — здесь же (`st_*.png`, координаты — `cutouts.json`); склейки и маски — `work/higgsfield/cutout_preview/`; кадры-варианты — `work/higgsfield/staging/` (не в git, любой кадр скачивается заново по job). После «да» — повторный запуск `tools/assets/cutout.py` с теми же ключами без `--out`, варианты — в `work/higgsfield/variants/`, `accept` в журнал.
 
 **Замечания автора к ред. 1 (лист `work/higgsfield/rejected_sheets/sheet_1011_w2_w3_states.png`) и что сделано:**

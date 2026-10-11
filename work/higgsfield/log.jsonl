@@ -1047,3 +1047,29 @@
 {"date": "2026-10-11", "kind": "fetch", "target": "zoom_z01_7.png", "job_id": "503a64b2-cd09-4429-92d4-4f2bda4f5c03", "raw_size": "2688x1520", "size": "1920x1080", "mode": "RGB", "lum_pct": 43.2, "note": ""}
 {"date": "2026-10-11", "kind": "generate", "target": "zoom_z01 ред. 3: мокрый круг на 4-й пиктограмме по 054df1f1", "model": "gpt_image_2_5", "params": "high 2k 16:9", "job_id": "dc923f09-017d-4a69-8dfb-ec27b6b0843d"}
 {"date": "2026-10-11", "kind": "fetch", "target": "zoom_z01_8.png", "job_id": "dc923f09-017d-4a69-8dfb-ec27b6b0843d", "raw_size": "2688x1520", "size": "1920x1080", "mode": "RGB", "lum_pct": 45.9, "note": ""}
+{"date": "2026-10-11", "kind": "accept", "target": "zoom_z01.png", "note": "принят автором («да», 11.10.2026; листы sheet_1011_zooms_v2, sheet_1011_w2_w3_states_v2); параметры — README zooms_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "zoom_z04.png", "note": "принят автором («да», 11.10.2026; листы sheet_1011_zooms_v2, sheet_1011_w2_w3_states_v2); параметры — README zooms_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "zoom_z05.png", "note": "принят автором («да», 11.10.2026; листы sheet_1011_zooms_v2, sheet_1011_w2_w3_states_v2); параметры — README zooms_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "zoom_z06.png", "note": "принят автором («да», 11.10.2026; листы sheet_1011_zooms_v2, sheet_1011_w2_w3_states_v2); параметры — README zooms_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "zoom_z07.png", "note": "принят автором («да», 11.10.2026; листы sheet_1011_zooms_v2, sheet_1011_w2_w3_states_v2); параметры — README zooms_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "zoom_z08.png", "note": "принят автором («да», 11.10.2026; листы sheet_1011_zooms_v2, sheet_1011_w2_w3_states_v2); параметры — README zooms_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "zoom_z09.png", "note": "принят автором («да», 11.10.2026; листы sheet_1011_zooms_v2, sheet_1011_w2_w3_states_v2); параметры — README zooms_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "zoom_z10.png", "note": "принят автором («да», 11.10.2026; листы sheet_1011_zooms_v2, sheet_1011_w2_w3_states_v2); параметры — README zooms_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "zoom_z12.png", "note": "принят автором («да», 11.10.2026; листы sheet_1011_zooms_v2, sheet_1011_w2_w3_states_v2); параметры — README zooms_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_w2_complaints.png", "note": "принят автором («да», 11.10.2026; листы sheet_1011_zooms_v2, sheet_1011_w2_w3_states_v2); параметры — README states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_w2_folder.png", "note": "принят автором («да», 11.10.2026; листы sheet_1011_zooms_v2, sheet_1011_w2_w3_states_v2); параметры — README states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_w2_forms1.png", "note": "принят автором («да», 11.10.2026; листы sheet_1011_zooms_v2, sheet_1011_w2_w3_states_v2); параметры — README states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_w2_forms3.png", "note": "принят автором («да», 11.10.2026; листы sheet_1011_zooms_v2, sheet_1011_w2_w3_states_v2); параметры — README states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_w2_gauge_up.png", "note": "принят автором («да», 11.10.2026; листы sheet_1011_zooms_v2, sheet_1011_w2_w3_states_v2); параметры — README states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_w2_iz.png", "note": "принят автором («да», 11.10.2026; листы sheet_1011_zooms_v2, sheet_1011_w2_w3_states_v2); параметры — README states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_w2_iz_mic.png", "note": "принят автором («да», 11.10.2026; листы sheet_1011_zooms_v2, sheet_1011_w2_w3_states_v2); параметры — README states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_w2_kefir.png", "note": "принят автором («да», 11.10.2026; листы sheet_1011_zooms_v2, sheet_1011_w2_w3_states_v2); параметры — README states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_w2_lowdrawer_open.png", "note": "принят автором («да», 11.10.2026; листы sheet_1011_zooms_v2, sheet_1011_w2_w3_states_v2); параметры — README states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_w2_map.png", "note": "принят автором («да», 11.10.2026; листы sheet_1011_zooms_v2, sheet_1011_w2_w3_states_v2); параметры — README states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_w2_pump_lamp.png", "note": "принят автором («да», 11.10.2026; листы sheet_1011_zooms_v2, sheet_1011_w2_w3_states_v2); параметры — README states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_w2_vitrine_open.png", "note": "принят автором («да», 11.10.2026; листы sheet_1011_zooms_v2, sheet_1011_w2_w3_states_v2); параметры — README states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_w2u_crowd.png", "note": "принят автором («да», 11.10.2026; листы sheet_1011_zooms_v2, sheet_1011_w2_w3_states_v2); параметры — README states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_w2u_gate_open.png", "note": "принят автором («да», 11.10.2026; листы sheet_1011_zooms_v2, sheet_1011_w2_w3_states_v2); параметры — README states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_w2u_parted.png", "note": "принят автором («да», 11.10.2026; листы sheet_1011_zooms_v2, sheet_1011_w2_w3_states_v2); параметры — README states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_w3_cabinet_open.png", "note": "принят автором («да», 11.10.2026; листы sheet_1011_zooms_v2, sheet_1011_w2_w3_states_v2); параметры — README states_1011"}
+{"date": "2026-10-11", "kind": "accept", "target": "st_z11_mirror_aside.png", "note": "принят автором («да», 11.10.2026; листы sheet_1011_zooms_v2, sheet_1011_w2_w3_states_v2); параметры — README states_1011 (заменил прежний — work/orig_gfx/cutouts)"}
