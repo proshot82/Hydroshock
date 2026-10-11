@@ -1,0 +1,100 @@
+{
+ "st_z11_board_floor": {
+  "base": "zoom_z11.png",
+  "x": 691,
+  "y": 817,
+  "w": 507,
+  "h": 186
+ },
+ "st_z11_cabin_empty": {
+  "base": "zoom_z11.png",
+  "x": 631,
+  "y": 281,
+  "w": 638,
+  "h": 788
+ },
+ "st_z11_cabin_full": {
+  "base": "zoom_z11.png",
+  "x": 631,
+  "y": 281,
+  "w": 638,
+  "h": 788
+ },
+ "st_z11_finger_call": {
+  "base": "zoom_z11.png",
+  "x": 19,
+  "y": 388,
+  "w": 530,
+  "h": 221
+ },
+ "st_z11_finger_down": {
+  "base": "zoom_z11.png",
+  "x": 100,
+  "y": 405,
+  "w": 414,
+  "h": 224
+ },
+ "st_z11_hand_plunger": {
+  "base": "zoom_z11.png",
+  "x": 369,
+  "y": 143,
+  "w": 1551,
+  "h": 937
+ },
+ "st_z11_lamp_off": {
+  "base": "zoom_z11.png",
+  "x": 446,
+  "y": 380,
+  "w": 72,
+  "h": 78
+ },
+ "st_z11_mirror": {
+  "base": "zoom_z11.png",
+  "x": 382,
+  "y": 0,
+  "w": 933,
+  "h": 1039
+ },
+ "st_z11_mirror_aside": {
+  "base": "zoom_z11.png",
+  "x": 1249,
+  "y": 157,
+  "w": 482,
+  "h": 864
+ },
+ "st_z11_ramp": {
+  "base": "zoom_z11.png",
+  "x": 692,
+  "y": 808,
+  "w": 424,
+  "h": 272
+ },
+ "st_z11_trolley_marked": {
+  "base": "zoom_z11.png",
+  "x": 631,
+  "y": 261,
+  "w": 638,
+  "h": 819
+ },
+ "st_z11_trolley_returned": {
+  "base": "zoom_z11.png",
+  "x": 631,
+  "y": 261,
+  "w": 638,
+  "h": 819
+ },
+ "st_z11_trolley_stuck": {
+  "base": "zoom_z11.png",
+  "x": 389,
+  "y": 529,
+  "w": 471,
+  "h": 442
+ },
+ "st_z11_trolley_water": {
+  "base": "zoom_z11.png",
+  "x": 631,
+  "y": 261,
+  "w": 638,
+  "h": 819
+ }
+}
