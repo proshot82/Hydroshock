@@ -1,10 +1,10 @@
 {
  "st_w5_door_office": {
   "base": "room_w5.png",
-  "h": 295,
-  "w": 181,
   "x": 1262,
-  "y": 235
+  "y": 235,
+  "w": 181,
+  "h": 295
  },
  "st_w5_goods": {
   "base": "room_w5.png",
