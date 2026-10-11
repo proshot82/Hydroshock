@@ -62,13 +62,6 @@
   "w": 391,
   "h": 178
  },
- "st_w2_gauge_up": {
-  "base": "room_w2.png",
-  "x": 1212,
-  "y": 172,
-  "w": 116,
-  "h": 106
- },
  "st_w2_iz": {
   "base": "room_w2.png",
   "x": 125,
@@ -244,6 +237,13 @@
   "w": 357,
   "h": 199
  },
+ "st_w4_source_water": {
+  "base": "room_w4.png",
+  "x": 743,
+  "y": 599,
+  "w": 352,
+  "h": 106
+ },
  "st_w4_stairs_open": {
   "base": "room_w4.png",
   "x": 587,
@@ -300,6 +300,20 @@
   "w": 68,
   "h": 105
  },
+ "st_w5_door_office": {
+  "base": "room_w5.png",
+  "x": 1262,
+  "y": 235,
+  "w": 181,
+  "h": 295
+ },
+ "st_w5_goods": {
+  "base": "room_w5.png",
+  "x": 1351,
+  "y": 431,
+  "w": 136,
+  "h": 133
+ },
  "st_w5_kuh": {
   "base": "room_w5.png",
   "x": 529,
@@ -320,6 +334,13 @@
   "y": 419,
   "w": 481,
   "h": 406
+ },
+ "st_w5_water": {
+  "base": "room_w5.png",
+  "x": 0,
+  "y": 0,
+  "w": 1920,
+  "h": 1080
  },
  "st_w5u_reach": {
   "base": "room_w5_under.png",
@@ -348,6 +369,27 @@
   "y": 42,
   "w": 603,
   "h": 929
+ },
+ "st_w6_needle_up": {
+  "base": "room_w6.png",
+  "x": 1746,
+  "y": 285,
+  "w": 117,
+  "h": 121
+ },
+ "st_w6_seal": {
+  "base": "room_w6.png",
+  "x": 1497,
+  "y": 440,
+  "w": 202,
+  "h": 199
+ },
+ "st_w6_water": {
+  "base": "room_w6.png",
+  "x": 0,
+  "y": 0,
+  "w": 1920,
+  "h": 1080
  },
  "st_z01_head_running": {
   "base": "zoom_z01.png",
@@ -726,5 +768,89 @@
   "y": 207,
   "w": 358,
   "h": 565
+ },
+ "st_z13_hand_plunger": {
+  "base": "zoom_z13.png",
+  "x": 0,
+  "y": 172,
+  "w": 909,
+  "h": 908
+ },
+ "st_z13_hand_wheel": {
+  "base": "zoom_z13.png",
+  "x": 1421,
+  "y": 331,
+  "w": 499,
+  "h": 749
+ },
+ "st_z13_mug": {
+  "base": "zoom_z13.png",
+  "x": 1262,
+  "y": 470,
+  "w": 388,
+  "h": 245
+ },
+ "st_z13_needle_up": {
+  "base": "zoom_z13.png",
+  "x": 1742,
+  "y": 243,
+  "w": 129,
+  "h": 128
+ },
+ "st_z13_postcard": {
+  "base": "zoom_z13.png",
+  "x": 786,
+  "y": 403,
+  "w": 154,
+  "h": 133
+ },
+ "st_z13_seal": {
+  "base": "zoom_z13.png",
+  "x": 1484,
+  "y": 372,
+  "w": 213,
+  "h": 231
+ },
+ "st_z13_seal_torn": {
+  "base": "zoom_z13.png",
+  "x": 1270,
+  "y": 709,
+  "w": 231,
+  "h": 107
+ },
+ "st_z13_spot_mug": {
+  "base": "zoom_z13.png",
+  "x": 1262,
+  "y": 470,
+  "w": 388,
+  "h": 245
+ },
+ "st_z13_spot_postcard": {
+  "base": "zoom_z13.png",
+  "x": 625,
+  "y": 415,
+  "w": 365,
+  "h": 165
+ },
+ "st_z13_spot_token": {
+  "base": "zoom_z13.png",
+  "x": 0,
+  "y": 425,
+  "w": 430,
+  "h": 290
+ },
+ "st_z13_tentacle": {
+  "base": "zoom_z13.png",
+  "x": 891,
+  "y": 0,
+  "w": 718,
+  "h": 709
+ },
+ "st_z13_token": {
+  "base": "zoom_z13.png",
+  "x": 0,
+  "y": 425,
+  "w": 430,
+  "h": 290
  }
 }

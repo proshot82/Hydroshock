@@ -1,0 +1,37 @@
+{
+ "st_w2_vitrine_open": {
+  "base": "room_w2.png",
+  "x": 1310,
+  "y": 328,
+  "w": 171,
+  "h": 169
+ },
+ "st_z05_open": {
+  "base": "zoom_z05.png",
+  "x": 331,
+  "y": 0,
+  "w": 878,
+  "h": 587
+ },
+ "st_z05_ring": {
+  "base": "zoom_z05.png",
+  "x": 690,
+  "y": 170,
+  "w": 200,
+  "h": 260
+ },
+ "st_z05_tag": {
+  "base": "zoom_z05.png",
+  "x": 698,
+  "y": 134,
+  "w": 143,
+  "h": 115
+ },
+ "st_z05_tag_folded": {
+  "base": "zoom_z05.png",
+  "x": 685,
+  "y": 0,
+  "w": 184,
+  "h": 107
+ }
+}

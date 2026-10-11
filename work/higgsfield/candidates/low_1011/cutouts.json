@@ -1,0 +1,58 @@
+{
+ "st_w5_door_office": {
+  "base": "room_w5.png",
+  "x": 1262,
+  "y": 235,
+  "w": 181,
+  "h": 295
+ },
+ "st_w5_goods": {
+  "base": "room_w5.png",
+  "h": 133,
+  "w": 136,
+  "x": 1351,
+  "y": 431
+ },
+ "st_w5_trolley": {
+  "base": "room_w5.png",
+  "h": 406,
+  "w": 481,
+  "x": 419,
+  "y": 419
+ },
+ "st_w5_water": {
+  "base": "room_w5.png",
+  "h": 1080,
+  "w": 1920,
+  "x": 0,
+  "y": 0
+ },
+ "st_w6_needle_up": {
+  "base": "room_w6.png",
+  "h": 65,
+  "w": 45,
+  "x": 1786,
+  "y": 294
+ },
+ "st_w6_needle_zero": {
+  "base": "room_w6.png",
+  "h": 63,
+  "w": 57,
+  "x": 1756,
+  "y": 334
+ },
+ "st_w6_seal": {
+  "base": "room_w6.png",
+  "h": 199,
+  "w": 202,
+  "x": 1497,
+  "y": 440
+ },
+ "st_w6_water": {
+  "base": "room_w6.png",
+  "h": 1080,
+  "w": 1920,
+  "x": 0,
+  "y": 0
+ }
+}

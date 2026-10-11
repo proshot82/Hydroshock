@@ -1,0 +1,30 @@
+{
+ "st_w2_cascade_on": {
+  "base": "room_w2.png",
+  "x": 335,
+  "y": 175,
+  "w": 1395,
+  "h": 419
+ },
+ "st_w4_source_water": {
+  "base": "room_w4.png",
+  "x": 743,
+  "y": 599,
+  "w": 352,
+  "h": 106
+ },
+ "st_w6_needle_up": {
+  "base": "room_w6.png",
+  "x": 1746,
+  "y": 285,
+  "w": 117,
+  "h": 121
+ },
+ "st_w6_water": {
+  "base": "room_w6.png",
+  "x": 0,
+  "y": 0,
+  "w": 1920,
+  "h": 1080
+ }
+}
