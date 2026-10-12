@@ -56,9 +56,53 @@ textarea:focus-visible,.opt input:focus-visible{outline:2px solid var(--deep);ou
 <header class="lead">
 <h1>Все мелодии на новой модели</h1>
 <p>Каждая мелодия игры заново сделана новой моделью ElevenLabs Music v2.5 по тому же заданию, что принятая; рядом — принятая сейчас. Громкость у всех одинаковая (−18 LUFS), чтобы сравнивать честно. Тема финала уже на новой модели (c4, ваш выбор) — её здесь нет.</p>
-<p>Отметьте для каждой мелодии, какую оставить. «Принятая сейчас» — ничего не меняется. Если не подходит ничего — «переделать» и пара слов в замечании.</p>
+<p><b>Шаг 1 сделан</b> — ваши отметки ниже. <b>Шаг 2:</b> из выбранных вырезаны петли (музыка в игре крутится по кругу); послушайте склейку каждой и отметьте «шов не слышен» или «перерезать». После этого и вашего «да» всё уходит в игру.</p>
 <div id="banner" class="note">Загружаю отметки…</div>
 </header>
+<h1 style="font-size:1.6rem">Шаг 2 — швы петель (новое)</h1>
+<section data-slot="seam_bgm_title"><h2>Шов петли: титул</h2>
+<div class="moment"><p><b>seam_bgm_title.</b> Ваш выбор: новая модель, 1. Из него вырезана петля 51 с; ниже — 12 секунд её конца и 12 секунд начала подряд, склейка ровно посередине. Слышен ли шов?</p></div>
+<div class="opts"><div class="opt"><input type="radio" name="seam_bgm_title" id="seam_bgm_title-ok" value="ok"><label for="seam_bgm_title-ok">шов не слышен</label><audio controls preload="none" src="listen/seam_bgm_title_ok.mp3"></audio></div>
+<div class="opt"><input type="radio" name="seam_bgm_title" id="seam_bgm_title-redo" value="redo"><label for="seam_bgm_title-redo">шов слышен — перерезать</label></div></div>
+<label class="note" for="seam_bgm_title-note">Замечание (необязательно)</label>
+<textarea id="seam_bgm_title-note" data-note="seam_bgm_title" placeholder="например: темп побыстрее, без тромбона"></textarea>
+<div class="state" data-state="seam_bgm_title"></div></section>
+<section data-slot="seam_bgm_hotel"><h2>Шов петли: отель</h2>
+<div class="moment"><p><b>seam_bgm_hotel.</b> Ваш выбор: новая модель, 1. Из него вырезана петля 77 с; ниже — 12 секунд её конца и 12 секунд начала подряд, склейка ровно посередине. Слышен ли шов?</p></div>
+<div class="opts"><div class="opt"><input type="radio" name="seam_bgm_hotel" id="seam_bgm_hotel-ok" value="ok"><label for="seam_bgm_hotel-ok">шов не слышен</label><audio controls preload="none" src="listen/seam_bgm_hotel_ok.mp3"></audio></div>
+<div class="opt"><input type="radio" name="seam_bgm_hotel" id="seam_bgm_hotel-redo" value="redo"><label for="seam_bgm_hotel-redo">шов слышен — перерезать</label></div></div>
+<label class="note" for="seam_bgm_hotel-note">Замечание (необязательно)</label>
+<textarea id="seam_bgm_hotel-note" data-note="seam_bgm_hotel" placeholder="например: темп побыстрее, без тромбона"></textarea>
+<div class="state" data-state="seam_bgm_hotel"></div></section>
+<section data-slot="seam_bgm_service"><h2>Шов петли: служебные коридоры</h2>
+<div class="moment"><p><b>seam_bgm_service.</b> Ваш выбор: новая модель, 1. Из него вырезана петля 77 с; ниже — 12 секунд её конца и 12 секунд начала подряд, склейка ровно посередине. Слышен ли шов?</p></div>
+<div class="opts"><div class="opt"><input type="radio" name="seam_bgm_service" id="seam_bgm_service-ok" value="ok"><label for="seam_bgm_service-ok">шов не слышен</label><audio controls preload="none" src="listen/seam_bgm_service_ok.mp3"></audio></div>
+<div class="opt"><input type="radio" name="seam_bgm_service" id="seam_bgm_service-redo" value="redo"><label for="seam_bgm_service-redo">шов слышен — перерезать</label></div></div>
+<label class="note" for="seam_bgm_service-note">Замечание (необязательно)</label>
+<textarea id="seam_bgm_service-note" data-note="seam_bgm_service" placeholder="например: темп побыстрее, без тромбона"></textarea>
+<div class="state" data-state="seam_bgm_service"></div></section>
+<section data-slot="seam_bgm_below"><h2>Шов петли: пещера Кухтулху</h2>
+<div class="moment"><p><b>seam_bgm_below.</b> Ваш выбор: новая модель, 2. Из него вырезана петля 78 с; ниже — 12 секунд её конца и 12 секунд начала подряд, склейка ровно посередине. Слышен ли шов?</p></div>
+<div class="opts"><div class="opt"><input type="radio" name="seam_bgm_below" id="seam_bgm_below-ok" value="ok"><label for="seam_bgm_below-ok">шов не слышен</label><audio controls preload="none" src="listen/seam_bgm_below_ok.mp3"></audio></div>
+<div class="opt"><input type="radio" name="seam_bgm_below" id="seam_bgm_below-redo" value="redo"><label for="seam_bgm_below-redo">шов слышен — перерезать</label></div></div>
+<label class="note" for="seam_bgm_below-note">Замечание (необязательно)</label>
+<textarea id="seam_bgm_below-note" data-note="seam_bgm_below" placeholder="например: темп побыстрее, без тромбона"></textarea>
+<div class="state" data-state="seam_bgm_below"></div></section>
+<section data-slot="seam_mus_hold"><h2>Шов петли: музыка ожидания</h2>
+<div class="moment"><p><b>seam_mus_hold.</b> Ваш выбор: новая модель, 1 (через «трубку»). Из него вырезана петля 25 с; ниже — 8 секунд её конца и 8 секунд начала подряд, склейка ровно посередине. Слышен ли шов?</p></div>
+<div class="opts"><div class="opt"><input type="radio" name="seam_mus_hold" id="seam_mus_hold-ok" value="ok"><label for="seam_mus_hold-ok">шов не слышен</label><audio controls preload="none" src="listen/seam_mus_hold_ok.mp3"></audio></div>
+<div class="opt"><input type="radio" name="seam_mus_hold" id="seam_mus_hold-redo" value="redo"><label for="seam_mus_hold-redo">шов слышен — перерезать</label></div></div>
+<label class="note" for="seam_mus_hold-note">Замечание (необязательно)</label>
+<textarea id="seam_mus_hold-note" data-note="seam_mus_hold" placeholder="например: темп побыстрее, без тромбона"></textarea>
+<div class="state" data-state="seam_mus_hold"></div></section>
+<section data-slot="seam_bgm_epilogue"><h2>Шов петли: финал и эпилог</h2>
+<div class="moment"><p><b>seam_bgm_epilogue.</b> Ваш выбор: c4, мультяшный джаз. Из него вырезана петля 91 с; ниже — 12 секунд её конца и 12 секунд начала подряд, склейка ровно посередине. Слышен ли шов?</p></div>
+<div class="opts"><div class="opt"><input type="radio" name="seam_bgm_epilogue" id="seam_bgm_epilogue-ok" value="ok"><label for="seam_bgm_epilogue-ok">шов не слышен</label><audio controls preload="none" src="listen/seam_bgm_epilogue_ok.mp3"></audio></div>
+<div class="opt"><input type="radio" name="seam_bgm_epilogue" id="seam_bgm_epilogue-redo" value="redo"><label for="seam_bgm_epilogue-redo">шов слышен — перерезать</label></div></div>
+<label class="note" for="seam_bgm_epilogue-note">Замечание (необязательно)</label>
+<textarea id="seam_bgm_epilogue-note" data-note="seam_bgm_epilogue" placeholder="например: темп побыстрее, без тромбона"></textarea>
+<div class="state" data-state="seam_bgm_epilogue"></div></section>
+<h1 style="font-size:1.6rem">Шаг 1 — выбор модели (ваши отметки)</h1>
 <section data-slot="bgm_title"><h2>Титул</h2>
 <div class="moment"><p><b>bgm_title.</b> Главное меню: фон «Три плаката», логотип с «II» из труб. Принята v5 прежней модели: загадочный, чуть жутковатый весёлый джаз.</p></div>
 <div class="opts"><div class="opt"><input type="radio" name="bgm_title" id="bgm_title-cur" value="cur"><label for="bgm_title-cur">принятая сейчас (v1)</label><audio controls preload="none" src="listen/bgm_title_cur.mp3"></audio></div>
@@ -141,15 +185,10 @@ textarea:focus-visible,.opt input:focus-visible{outline:2px solid var(--deep);ou
 <label class="note" for="sting_water-note">Замечание (необязательно)</label>
 <textarea id="sting_water-note" data-note="sting_water" placeholder="например: темп побыстрее, без тромбона"></textarea>
 <div class="state" data-state="sting_water"></div></section>
-<section><h2>Тема финала c4 — петля готова</h2>
-<div class="moment"><p><b>bgm_epilogue.</b> Ваш выбор c4 (мультяшный джаз, новая модель) заменит прежнюю тему эпилога и зазвучит с первого кадра финального монтажа. Вырезана петля 91 с; шов — 12 секунд конца и 12 секунд начала подряд, склейка на 0:12. Если шов слышен, напишите в чат.</p></div>
-<div class="grid"><article class="card"><span class="name">петля c4</span><audio controls preload="none" src="listen/bgm_epilogue_c4_loop.mp3"></audio></article>
-<article class="card demo"><span class="name">проверка шва</span><audio controls preload="none" src="listen/seam_bgm_epilogue_c4.mp3"></audio></article></div>
-</section>
-<footer>Новые темы — пока сырые исходники длиной 90 с (титул 60 с, музыка ожидания 30 с); петли с бесшовным швом режу после вашего выбора, как с принятыми. Подробности — work/audio/candidates/s5_v25_1012/README.md.</footer>
+<footer>Петли режет tools/music/make_loop.py (шов по долям, перехлёст, −18 LUFS). Подробности — work/audio/candidates/s5_v25_1012/README.md.</footer>
 </div>
 <script>
-const SLOTS = ["bgm_title", "bgm_hotel", "bgm_service", "bgm_deep", "bgm_below", "mus_hold", "sting_solved", "sting_relic", "sting_water"];
+const SLOTS = ["seam_bgm_title", "seam_bgm_hotel", "seam_bgm_service", "seam_bgm_below", "seam_mus_hold", "seam_bgm_epilogue", "bgm_title", "bgm_hotel", "bgm_service", "bgm_deep", "bgm_below", "mus_hold", "sting_solved", "sting_relic", "sting_water"];
 const banner = document.getElementById('banner');
 const queue = {};
 function say(slot, text, cls) { const el = document.querySelector('[data-state="' + slot + '"]'); el.textContent = text; el.className = 'state ' + (cls || ''); }

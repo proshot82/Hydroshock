@@ -24,6 +24,19 @@ textarea:focus-visible,.opt input:focus-visible{outline:2px solid var(--deep);ou
 </style>""")
 
 CUR = "принятая сейчас"
+SEAMS = [
+    (f"seam_{k}", f"Шов петли: {t}", f"Ваш выбор: {c}. Из него вырезана петля {d}; ниже — {n} секунд её конца и {n} секунд начала подряд, склейка ровно посередине. Слышен ли шов?",
+     [("ok", "шов не слышен")])
+    for k, t, c, d, n in [
+        ("bgm_title", "титул", "новая модель, 1", "51 с", 12),
+        ("bgm_hotel", "отель", "новая модель, 1", "77 с", 12),
+        ("bgm_service", "служебные коридоры", "новая модель, 1", "77 с", 12),
+        ("bgm_below", "пещера Кухтулху", "новая модель, 2", "78 с", 12),
+        ("mus_hold", "музыка ожидания", "новая модель, 1 (через «трубку»)", "25 с", 8),
+        ("bgm_epilogue", "финал и эпилог", "c4, мультяшный джаз", "91 с", 12),
+    ]
+]
+
 SLOTS = [
     ("bgm_title", "Титул", "Главное меню: фон «Три плаката», логотип с «II» из труб. Принята v5 прежней модели: загадочный, чуть жутковатый весёлый джаз.",
      [("cur", CUR + " (v1)"), ("v25_1", "новая модель, 1"), ("v25_2", "новая модель, 2")]),
@@ -53,18 +66,23 @@ def opt(slot, key, label):
             f'<audio controls preload="none" src="listen/{slot}_{key}.mp3"></audio></div>')
 
 
-parts = []
-for slot, title, about, opts in SLOTS:
+def section(slot, title, about, opts, redo_label):
     rows = "\n".join(opt(slot, k, l) for k, l in opts)
     redo = (f'<div class="opt"><input type="radio" name="{slot}" id="{slot}-redo" value="redo">'
-            f'<label for="{slot}-redo">ничего не подходит — переделать</label></div>')
-    parts.append(f'''<section data-slot="{slot}"><h2>{html.escape(title)}</h2>
+            f'<label for="{slot}-redo">{redo_label}</label></div>')
+    return (f'''<section data-slot="{slot}"><h2>{html.escape(title)}</h2>
 <div class="moment"><p><b>{slot}.</b> {html.escape(about)}</p></div>
 <div class="opts">{rows}
 {redo}</div>
 <label class="note" for="{slot}-note">Замечание (необязательно)</label>
 <textarea id="{slot}-note" data-note="{slot}" placeholder="например: темп побыстрее, без тромбона"></textarea>
 <div class="state" data-state="{slot}"></div></section>''')
+
+
+parts = ['<h1 style="font-size:1.6rem">Шаг 2 — швы петель (новое)</h1>']
+parts += [section(*s, "шов слышен — перерезать") for s in SEAMS]
+parts += ['<h1 style="font-size:1.6rem">Шаг 1 — выбор модели (ваши отметки)</h1>']
+parts += [section(*s, "ничего не подходит — переделать") for s in SLOTS]
 
 SCRIPT = """<script>
 const SLOTS = %s;
@@ -103,7 +121,7 @@ async function start() {
   }, () => { banner.textContent = 'Связь с хранилищем отметок прервалась. Обновите страницу.'; });
 }
 start();
-</script>""" % json.dumps([s[0] for s in SLOTS])
+</script>""" % json.dumps([s[0] for s in SEAMS + SLOTS])
 
 page = f"""<title>Гидроудар: мелодии v2.5</title>
 <meta charset="utf-8">
@@ -114,16 +132,11 @@ page = f"""<title>Гидроудар: мелодии v2.5</title>
 <header class="lead">
 <h1>Все мелодии на новой модели</h1>
 <p>Каждая мелодия игры заново сделана новой моделью ElevenLabs Music v2.5 по тому же заданию, что принятая; рядом — принятая сейчас. Громкость у всех одинаковая (−18 LUFS), чтобы сравнивать честно. Тема финала уже на новой модели (c4, ваш выбор) — её здесь нет.</p>
-<p>Отметьте для каждой мелодии, какую оставить. «Принятая сейчас» — ничего не меняется. Если не подходит ничего — «переделать» и пара слов в замечании.</p>
+<p><b>Шаг 1 сделан</b> — ваши отметки ниже. <b>Шаг 2:</b> из выбранных вырезаны петли (музыка в игре крутится по кругу); послушайте склейку каждой и отметьте «шов не слышен» или «перерезать». После этого и вашего «да» всё уходит в игру.</p>
 <div id="banner" class="note">Загружаю отметки…</div>
 </header>
 {chr(10).join(parts)}
-<section><h2>Тема финала c4 — петля готова</h2>
-<div class="moment"><p><b>bgm_epilogue.</b> Ваш выбор c4 (мультяшный джаз, новая модель) заменит прежнюю тему эпилога и зазвучит с первого кадра финального монтажа. Вырезана петля 91 с; шов — 12 секунд конца и 12 секунд начала подряд, склейка на 0:12. Если шов слышен, напишите в чат.</p></div>
-<div class="grid"><article class="card"><span class="name">петля c4</span><audio controls preload="none" src="listen/bgm_epilogue_c4_loop.mp3"></audio></article>
-<article class="card demo"><span class="name">проверка шва</span><audio controls preload="none" src="listen/seam_bgm_epilogue_c4.mp3"></audio></article></div>
-</section>
-<footer>Новые темы — пока сырые исходники длиной 90 с (титул 60 с, музыка ожидания 30 с); петли с бесшовным швом режу после вашего выбора, как с принятыми. Подробности — work/audio/candidates/s5_v25_1012/README.md.</footer>
+<footer>Петли режет tools/music/make_loop.py (шов по долям, перехлёст, −18 LUFS). Подробности — work/audio/candidates/s5_v25_1012/README.md.</footer>
 </div>
 {SCRIPT}
 """
