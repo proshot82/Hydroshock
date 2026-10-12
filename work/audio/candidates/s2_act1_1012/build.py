@@ -118,21 +118,57 @@ def lufs_gain(y, target):
     return y * 10 ** ((target - m.integrated_loudness(y.T if y.ndim > 1 else y)) / 20)
 
 
-def opening(thud_v):
+def big_boom(v):
+    """Гидроудар «почти взрыв» (замечание автора 12.10.2026): удар ElevenLabs + инфранизкий «бум»
+    + гул содрогающегося здания (дрожь 9 Гц) + большой зал (стерео); громче всех эффектов, −12 LUFS."""
+    from scipy.signal import butter, sosfilt, fftconvolve
+    lp = lambda x, f: sosfilt(butter(4, f, btype="low", fs=SR, output="sos"), x)
+    el = load(f"sfx_shock_boom_{v}.mp3")
+    on = int(np.argmax(np.abs(el) > np.abs(el).max() * 0.1))
+    el = el[max(0, on - 100):]
+    n = int(6.5 * SR)
+    t = np.arange(n) / SR
+    out = np.zeros(n)
+    out[: min(n, len(el))] += el[:n] / (np.abs(el).max() + 1e-9)
+    f = 68 * np.exp(-t / 0.6) + 32                      # «бум»: тон падает 100 → 32 Гц
+    sub = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t / 0.9)
+    sub[: int(0.005 * SR)] *= np.linspace(0, 1, int(0.005 * SR))
+    out += 0.9 * sub
+    rumble = lp(rng.standard_normal(n), 120)
+    rumble *= np.exp(-t / 1.6) * (1 + 0.6 * np.sin(2 * np.pi * 9 * t))
+    out += 0.5 * rumble / np.abs(rumble).max()
+    out = np.tanh(1.6 * out) / np.tanh(1.6)              # мягкое насыщение
+    stereo = []
+    for ch in range(2):                                    # зал: свой хвост на каждый канал
+        m = int(4.0 * SR)
+        ir = lp(rng.standard_normal(m), 3500) * np.exp(-np.linspace(0, 7, m))
+        ir /= np.sqrt((ir ** 2).sum())
+        stereo.append(out + 0.45 * fftconvolve(out, ir)[:n])
+    y = np.vstack(stereo)
+    y[:, -int(1.0 * SR):] *= np.linspace(1, 0, int(1.0 * SR))
+    p = write_tmp(y, f"boom_{v}.wav")
+    run(p, OUT / f"sfx_shock_boom_{v}.mp3", "--keep-head", "--lufs", "-12", "--peak", "-1", "--fade", "0")
+    return p
+
+
+def opening(thud_v, boom=None):
     """Демо начала игры: номер, душ льётся; удар — вода обрывается; тишина номера."""
     room = lufs_gain(load("amb_room_1.mp3"), -30)[: 11 * SR]
     shower = lufs_gain(load("sfx_shower_run_1.mp3"), -20)
-    thud = lufs_gain(load(f"sfx_shock_thud_{thud_v}.mp3"), -16)
+    thud = lufs_gain(load(f"sfx_shock_thud_{thud_v}.mp3"), -16) if boom is None else \
+        lufs_gain(librosa.load(boom, sr=SR, mono=True)[0], -12)
     on = int(np.argmax(np.abs(thud) > np.abs(thud).max() * 0.1))
     thud = thud[max(0, on - 200):]
     cut = int(5.5 * SR)
     sh = shower[:cut].copy()
     sh[-int(0.06 * SR):] *= np.linspace(1, 0, int(0.06 * SR))
-    out = room.copy()
-    out[:cut] += sh[: len(out)]
+    out = np.concatenate([room, np.zeros(max(0, cut + len(thud) - len(room)))])
+    out[:cut] += sh[:cut]
     out[cut: cut + len(thud)] += thud[: len(out) - cut]
     out[-SR:] *= np.linspace(1, 0, SR)
-    mp3(write_tmp(out, f"opening_{thud_v}.wav"), OUT / f"demo_opening_{thud_v}.mp3")
+    name = f"demo_opening_{thud_v}" if boom is None else f"demo_opening_boom_{thud_v}"
+    out = out / max(1.0, np.abs(out).max() / 0.89)
+    mp3(write_tmp(out, f"{name}.wav"), OUT / f"{name}.mp3")
 
 
 def main():
@@ -145,6 +181,10 @@ def main():
     run(phone(), OUT / "sfx_phone_pickup_4.mp3", "--mono", "--lufs", "-16")
     for v in "abc":
         run(RAW / f"sfx_pa_chime_synth_{v}.wav", OUT / f"sfx_pa_chime_synth_{v}.mp3", "--mono", "--lufs", "-16", "--fade", "0.05")
+    for v in (1, 2, 3, 4):
+        opening(v, big_boom(v))
+    for v in (4, 5, 6):
+        run(RAW / f"sfx_crowd_part_{v}.mp3", OUT / f"sfx_crowd_part_{v}.mp3", "--mono", "--max", "2.5", "--fade", "0.4", "--lufs", "-16")
     for v in (1, 2, 3):
         amb(f"sfx_shower_run_{v}.mp3")
         opening(v)
