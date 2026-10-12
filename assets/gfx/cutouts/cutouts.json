@@ -57,10 +57,10 @@
  },
  "st_w2_cascade_on": {
   "base": "room_w2.png",
-  "x": 335,
+  "x": 297,
   "y": 175,
-  "w": 1395,
-  "h": 419
+  "w": 1446,
+  "h": 428
  },
  "st_w2_complaints": {
   "base": "room_w2.png",

@@ -1,0 +1,58 @@
+{
+ "st_w2_cascade_on": {
+  "base": "room_w2.png",
+  "x": 297,
+  "y": 175,
+  "w": 1446,
+  "h": 428
+ },
+ "st_w2_forms1": {
+  "base": "room_w2.png",
+  "x": 491,
+  "y": 531,
+  "w": 314,
+  "h": 198
+ },
+ "st_w2_forms3": {
+  "base": "room_w2.png",
+  "x": 495,
+  "y": 533,
+  "w": 391,
+  "h": 178
+ },
+ "st_w2_iz_mic": {
+  "base": "room_w2.png",
+  "x": 129,
+  "y": 171,
+  "w": 1791,
+  "h": 909
+ },
+ "st_w2_kefir": {
+  "base": "room_w2.png",
+  "x": 563,
+  "y": 496,
+  "w": 239,
+  "h": 183
+ },
+ "st_w2_vitrine_open": {
+  "base": "room_w2.png",
+  "x": 1310,
+  "y": 328,
+  "w": 171,
+  "h": 169
+ },
+ "st_w2u_crowd": {
+  "base": "room_w2_under.png",
+  "x": 0,
+  "y": 0,
+  "w": 1920,
+  "h": 1080
+ },
+ "st_w2u_parted": {
+  "base": "room_w2_under.png",
+  "x": 0,
+  "y": 0,
+  "w": 1920,
+  "h": 1080
+ }
+}
