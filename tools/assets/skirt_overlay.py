@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Оверлей юбки тележки из картинки на мадженте (ASSET_SPEC §2.7: ov_skirt, ov_skirt_open).
 
-  python tools/assets/skirt_overlay.py ВХОД.png ВЫХОД.png [--top 0.21] [--side 0.09]
+  python tools/assets/skirt_overlay.py ВХОД.png ВЫХОД.png [--top 0.21] [--side 0.09] [--panel 0.12]
 
 Маджента #FF00FF вырезается в прозрачность (мягкий край, без розовой каймы). Генератор рисует
 верхнюю полосу ткани с бахромой толще, чем по спеке, поэтому кадр по вертикали переводится
@@ -9,7 +9,10 @@
 и кончается на --top высоты кадра), а всё ниже нижнего края бахромы растягивается до низа —
 боковые полотнища остаются стоять на полу. Бока не
 трогаются; их ширина печатается для сверки со спекой (--side — норма, только для отчёта).
-Нижний край бахромы ищется по средней трети ширины кадра. Результат — 1920×1080 RGBA.
+Нижний край бахромы ищется по средней трети ширины кадра. --panel — сузить полотнища штор у левого
+и правого края до этой доли ширины кадра (кусочное сжатие по горизонтали: полотнища сжимаются,
+середина растягивается — штанга и пустая середина от этого не меняются; складки становятся
+плотнее). Ширина полотнища меряется по строке на 60 % высоты. Результат — 1920×1080 RGBA.
 """
 import argparse
 
@@ -48,6 +51,7 @@ def main(argv=None):
     ap.add_argument("out")
     ap.add_argument("--top", type=float, default=0.21)
     ap.add_argument("--side", type=float, default=0.09)
+    ap.add_argument("--panel", type=float, default=0.0)
     a = ap.parse_args(argv)
     im = Image.open(a.src).convert("RGB").resize((W, H), Image.LANCZOS)
     rgb, alpha = key(np.asarray(im))
@@ -59,6 +63,18 @@ def main(argv=None):
     target = round(a.top * H)
     if hem > target:
         rgb, alpha = remap_rows(rgb, hem, target), remap_rows(alpha, hem, target)
+    if a.panel:
+        r = alpha[int(H * 0.6)] > 0.5
+        L = int(np.argmax(~r)) if r[0] else 0
+        R = int(np.argmax(~r[::-1])) if r[-1] else 0
+        tl, tr = round(a.panel * W) if L else 0, round(a.panel * W) if R else 0
+        x = np.arange(W, dtype=float)
+        src = np.where(x < tl, x * L / max(tl, 1),
+                       np.where(x >= W - tr, W - R + (x - (W - tr)) * R / max(tr, 1),
+                                L + (x - tl) * (W - R - L) / (W - tr - tl)))
+        idx = np.clip(np.round(src).astype(int), 0, W - 1)
+        rgb, alpha = rgb[:, idx], alpha[:, idx]
+        print(f"полотнища: слева {L / W:.1%} → {tl / W:.1%}, справа {R / W:.1%} → {tr / W:.1%}")
     row = alpha[H // 2]
     left = int(np.argmax(row < 0.5))
     right = W - int(np.argmax(row[::-1] < 0.5))
