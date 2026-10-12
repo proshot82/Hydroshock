@@ -107,13 +107,15 @@ def demo_valve(v):
     mp3(out, OUT / f"demo_valve_{v}.mp3")
 
 
-def demo_finale(music):
-    """Громкая связь тонет → четыре кадра монтажа по ~3,5 с; музыка — по варианту."""
-    pa = at(trim_head(load(RAW / "sfx_pa_drown_2.mp3"))[: 3 * SR], -16)
-    shots = [at(trim_head(load(RAW / "sfx_fin_shower_1.mp3"))[: int(3.6 * SR)], -16),
-             at(load(cascade(1, 3)), -16),
-             at(trim_head(load(RAW / "sfx_drums_turn_2.mp3"))[: 3 * SR], -16),
-             at(trim_head(load(RAW / "sfx_fin_spring_2.mp3"))[: 3 * SR], -16)]
+def demo_finale(music, chosen=False, name=None):
+    """Громкая связь тонет → четыре кадра монтажа по ~3,5 с; музыка — по варианту.
+    chosen — звуки по выбору автора 12.10.2026; music — имя в assets/audio или путь к файлу."""
+    v = (3, 3, 2, 3, 3) if chosen else (2, 1, 1, 2, 2)
+    pa = at(trim_head(load(RAW / f"sfx_pa_drown_{v[0]}.mp3"))[: 3 * SR], -16)
+    shots = [at(trim_head(load(RAW / f"sfx_fin_shower_{v[1]}.mp3"))[: int(3.6 * SR)], -16),
+             at(load(cascade(v[2], {1: 3, 2: 1, 3: 3}[v[2]])), -16),
+             at(trim_head(load(RAW / f"sfx_drums_turn_{v[3]}.mp3"))[: 3 * SR], -16),
+             at(trim_head(load(RAW / f"sfx_fin_spring_{v[4]}.mp3"))[: 3 * SR], -16)]
     total = 3.2 + sum(len(s) / SR + 0.3 for s in shots) + 3.0
     out = np.zeros(int(total * SR))
     place(out, pa, 0)
@@ -124,12 +126,14 @@ def demo_finale(music):
         place(out, s, t)
         t += len(s) / SR + 0.3
     if music:
-        m = at(load(AUD / f"{music}.ogg")[: int((total - 3.2) * SR)], -24)
+        src = Path(music) if "/" in str(music) else AUD / f"{music}.ogg"
+        m = at(load(src)[: int((total - 3.2) * SR)], -24)
         m[: int(0.8 * SR)] *= np.linspace(0, 1, int(0.8 * SR))
         m[-2 * SR:] *= np.linspace(1, 0, 2 * SR)
         place(out, m, 3.2)
     out[-SR:] *= np.linspace(1, 0, SR)
-    mp3(out, OUT / f"demo_finale_{ {'bgm_epilogue': 'A', None: 'B', 'bgm_below': 'V'}[music] }.mp3")
+    name = name or f"demo_finale_{ {'bgm_epilogue': 'A', None: 'B', 'bgm_below': 'V'}[music] }"
+    mp3(out, OUT / f"{name}.mp3")
 
 
 def blip_demo(name, step=0.058):
@@ -162,5 +166,30 @@ def main():
         blip_demo(b)
 
 
+# выбор автора 12.10.2026 → final/*.ogg (имена игры); sfx_door_clicks — ждёт выбора
+CHOICE = {"sfx_wet_steps": 2, "sfx_wet_stamp": 2, "sfx_pen_scratch": 1, "sfx_pen_roll": 3, "sfx_soap_smear": 2,
+          "sfx_seal_tear": 1, "sfx_valve_turn": 2, "sfx_building_exhale": 3, "sfx_pa_drown": 3, "sfx_fin_shower": 3,
+          "sfx_drums_turn": 3, "sfx_fin_spring": 3}
+
+
+def finale_themes():
+    """Тема финала «пободрее, больше духовых» (замечание автора 12.10.2026): для прослушки −18 LUFS и демо финала."""
+    for v in "abcd":
+        run(RAW / f"bgm_finale_{v}.mp3", OUT / f"bgm_finale_{v}.mp3", "--keep-head", "--lufs", "-18", "--fade", "0.05")
+        demo_finale(str(RAW / f"bgm_finale_{v}.mp3"), chosen=True, name=f"demo_finale_brass_{v}")
+
+
+def final():
+    fin = HERE / "final"
+    fin.mkdir(exist_ok=True)
+    for name, v in CHOICE.items():
+        mx, fade = SFX[name]
+        run(RAW / f"{name}_{v}.mp3", fin / f"{name}.ogg", "--mono", "--max", str(mx), "--fade", str(fade), "--lufs", "-16")
+    run(cascade(2, 1), fin / "sfx_fin_cascade.ogg", "--mono", "--keep-head", "--lufs", "-16", "--fade", "0")
+    run(RAW / "amb_below_3.mp3", fin / "amb_below.ogg", "--loop", "--lufs", "-26")
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(RAW / "blip_kuh_a.wav"), "-ac", "1",
+                    "-c:a", "libvorbis", "-q:a", "5", str(fin / "blip_kuh.ogg")], check=True)
+
+
 if __name__ == "__main__":
-    main()
+    {"--final": final, "--themes": finale_themes}.get(sys.argv[1] if sys.argv[1:] else "", main)()

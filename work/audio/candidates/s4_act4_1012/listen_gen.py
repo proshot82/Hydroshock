@@ -6,11 +6,23 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 S1 = HERE.parent / "s1_music_1012" / "listen.html"
-STYLE = re.search(r"<style>.*?</style>", S1.read_text(encoding="utf-8"), re.S).group(0)
+STYLE = re.search(r"<style>.*?</style>", S1.read_text(encoding="utf-8"), re.S).group(0).replace(
+    "</style>", ".chosen{border-color:var(--brass);box-shadow:inset 3px 0 0 var(--brass)}"
+    ".pick{font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--brass);font-weight:700;margin-left:auto}</style>")
 V3 = lambda n: [(f"{n}_{i}", "") for i in (1, 2, 3)]
 
+CHOSEN = {"sfx_wet_steps_2", "sfx_wet_stamp_2", "sfx_pen_scratch_1", "demo_come_out_pen_1", "sfx_pen_roll_3",
+          "sfx_soap_smear_2", "sfx_seal_tear_1", "sfx_valve_turn_2", "sfx_building_exhale_3", "sfx_pa_drown_3",
+          "sfx_fin_shower_3", "sfx_fin_cascade_2", "sfx_drums_turn_3", "sfx_fin_spring_3", "amb_below_3_x2", "blip_kuh_a_demo"}
+
 SECTIONS = [
-    ("Вопрос 3: музыка в финальном монтаже", "demo_finale",
+    ("Тема финала, ред. 2: бодрее и больше духовых", "bgm_finale",
+     "Ваше замечание: «тему финала хочется пободрее, больше духовых — игра же про трубы». Это новые кандидаты на музыку финала и эпилога вместо принятой bgm_epilogue; она звучала бы с первого кадра монтажа (вариант А). a — диксиленд-бэнд: трубы и корнеты перекликаются, туба «умпа», кларнет, банджо, быстрый свинг около 150 ударов в минуту. b — курортный духовой оркестр в парке санатория: корнеты, флюгельгорны, баритоны, тубы, большой барабан с тарелками, весёлая полька; по спектру в середине около 12 секунд почти тишины, петлю вырежу без неё. c — бодрый биг-бэнд: секция труб, соло засурдиненной трубы, саксофоны, сузафон, щётки, страйд-пианино. d — то же, что a, новой моделью ElevenLabs. Ниже каждой темы — демо всего финала с ней и с выбранными вами звуками: громкая связь тонет, душ, каскад с уточкой, барабаны, источник. Раньше вы говорили, что тромбон режет ухо (тема отеля); здесь его просят только косвенно, через диксиленд, — если резанёт, уберу.",
+     [("bgm_finale_a", "a — диксиленд"), ("demo_finale_brass_a", "демо финала с темой a"),
+      ("bgm_finale_b", "b — духовой оркестр в парке санатория"), ("demo_finale_brass_b", "демо финала с темой b"),
+      ("bgm_finale_c", "c — биг-бэнд"), ("demo_finale_brass_c", "демо финала с темой c"),
+      ("bgm_finale_d", "d — как a, новая модель"), ("demo_finale_brass_d", "демо финала с темой d")]),
+    ("Вопрос 3: музыка в финальном монтаже (ред. 1)", "demo_finale",
      "Чтобы было проще решить, вот финал целиком в трёх вариантах музыки: громкая связь тонет, затем четыре кадра монтажа — душ в номере, каскад с уточкой, барабаны прачечной, источник под стеклом. А — тема эпилога вступает с первого кадра и идёт под водой. Б — без музыки, только вода. В — под монтажом хабанера Кухтулху. Звуки в демо — первые варианты; ваш выбор их заменит.",
      [("demo_finale_A", "А — тема эпилога под монтажом"), ("demo_finale_B", "Б — без музыки"), ("demo_finale_V", "В — хабанера под монтажом")]),
     ("Мокрые шаги щупалец", "sfx_wet_steps",
@@ -67,7 +79,11 @@ SECTIONS = [
 def card(fn, note):
     tag = f'<span class="tag">{html.escape(note)}</span>' if note else ""
     cls = "card demo" if fn.startswith("demo_") else "card"
-    return (f'<article class="{cls}"><div class="head"><span class="name">{fn}</span>{tag}</div>'
+    pick = ""
+    if fn in CHOSEN:
+        cls += " chosen"
+        pick = '<span class="pick">выбран</span>'
+    return (f'<article class="{cls}"><div class="head"><span class="name">{fn}</span>{tag}{pick}</div>'
             f'<audio controls preload="none" src="listen/{fn}.mp3"></audio></article>')
 
 
@@ -86,7 +102,7 @@ page = f"""<title>Гидроудар: звук З4</title>
 <header class="lead">
 <h1>Звук, пакет З4: Акт IV и финальная вода</h1>
 <p>Кандидаты, в игру ещё не перенесены. Органика и фон сделаны в ElevenLabs Sound Effects, блип Кухтулху синтезирован, каскад собран вместе с писком уточки. Демо сцен собраны из принятых тем и стингеров. Громкость: эффекты −16 LUFS, фон −26.</p>
-<p class="note">Нужен ответ: номер варианта для каждого звука и вариант музыки финала (А, Б или В).</p>
+<p class="note">Ваш выбор 12.10.2026 отмечен «выбран». Новое — первым: тема финала бодрее и с духовыми. Не выбран вариант «щелчков дверей» — нужен номер.</p>
 </header>
 {chr(10).join(parts)}
 <footer>Ни одна улика не держится на звуке: у каждого звука есть титр или смена кадра. Подробности — work/audio/candidates/s4_act4_1012/README.md.</footer>
