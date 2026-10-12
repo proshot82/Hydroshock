@@ -10,7 +10,8 @@
 
 Коррекция: в линейном свете яркость умножается на --k, светлые места (лампы, блики) защищены —
 чем ярче пиксель, тем меньше его гасят; тени холодеют (меньше красного, больше синего);
-по краям кадра виньетка.
+по краям кадра виньетка. --no-protect — без защиты светлого: для оверлея юбки
+(ov_skirt_dark), где светлая ткань не лампа и должна погаснуть вместе с кадром.
 """
 import argparse
 
@@ -20,12 +21,12 @@ from PIL import Image
 W, H = 1920, 1080
 
 
-def grade(rgb, ox, oy, k):
+def grade(rgb, ox, oy, k, keep_lights=True):
     s = rgb / 255.0
     lin = s ** 2.2
     lum = 0.2126 * s[..., 0] + 0.7152 * s[..., 1] + 0.0722 * s[..., 2]
     t = np.clip((lum - 0.55) / 0.40, 0, 1)
-    protect = t * t * (3 - 2 * t)
+    protect = t * t * (3 - 2 * t) if keep_lights else np.zeros_like(t)
     f = k + (1 - k) * 0.85 * protect
     out = lin * f[..., None]
     cool = 1 - protect
@@ -44,12 +45,14 @@ def main(argv=None):
     ap.add_argument("dst")
     ap.add_argument("--offset", default="0,0")
     ap.add_argument("--k", type=float, default=0.32)
+    ap.add_argument("--no-protect", action="store_true",
+                    help="не беречь светлое: для ткани юбки, которая светлая сама по себе, а не лампа")
     a = ap.parse_args(argv)
     ox, oy = map(int, a.offset.split(","))
     im = Image.open(a.src)
     rgba = im.mode == "RGBA"
     arr = np.asarray(im.convert("RGBA" if rgba else "RGB")).astype(float)
-    out = grade(arr[..., :3], ox, oy, a.k)
+    out = grade(arr[..., :3], ox, oy, a.k, keep_lights=not a.no_protect)
     if rgba:
         out = np.dstack([out, arr[..., 3].astype(np.uint8)])
     Image.fromarray(out, "RGBA" if rgba else "RGB").save(a.dst)
