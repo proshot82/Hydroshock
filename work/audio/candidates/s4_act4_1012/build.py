@@ -174,7 +174,7 @@ CHOICE = {"sfx_wet_steps": 2, "sfx_wet_stamp": 2, "sfx_pen_scratch": 1, "sfx_pen
 
 def finale_themes():
     """Тема финала «пободрее, больше духовых» (замечание автора 12.10.2026): для прослушки −18 LUFS и демо финала."""
-    for v in "abcd":
+    for v in sys.argv[2:] or list("abcd"):
         run(RAW / f"bgm_finale_{v}.mp3", OUT / f"bgm_finale_{v}.mp3", "--keep-head", "--lufs", "-18", "--fade", "0.05")
         demo_finale(str(RAW / f"bgm_finale_{v}.mp3"), chosen=True, name=f"demo_finale_brass_{v}")
 
