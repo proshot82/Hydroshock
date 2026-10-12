@@ -12,7 +12,7 @@
 | Зумы Z01–Z13 и четыре крупных плана Z04 | `assets/gfx/zooms/` | 1920×1080 RGB | 17 |
 | Кадры немых сцен | `assets/gfx/frames/` | 1920×1080 RGB | 19 |
 | Состояния (сдаются полным кадром-вариантом, §1.2) | `assets/gfx/cutouts/` | сдача 1920×1080 RGB → у меня RGBA-вырезка | 127 |
-| Оверлеи юбки тележки | `assets/gfx/cutouts/` | 1920×1080 RGBA | 2 |
+| Оверлеи юбки тележки | `assets/gfx/cutouts/` | 1920×1080 RGBA | 3 |
 | Портреты (с вариантами пены) | `assets/gfx/portraits/` | 512×512 RGBA | 42 (+4 Предка из BJ2) |
 | Иконки предметов | `assets/gfx/icons/` | 128×128 RGBA | 9 |
 | Носители документов, фото, планы | `assets/gfx/docs/` | 1400×980 | 31 |
@@ -21,7 +21,7 @@
 | Шрифты | `assets/fonts/` | TTF | 0 — поставлены этой сессией (§8) |
 | Звуки, амбиенты, музыка | `assets/audio/` | OGG | 59 (+9 из BJ2, §9.5) |
 
-Итого генерировать: **графика 263 файла, звук 59 файлов.** Точные списки — в таблицах ниже; счёт сверяет `tools/check_asset_spec.py`.
+Итого генерировать: **графика 264 файла, звук 59 файлов.** Точные списки — в таблицах ниже; счёт сверяет `tools/check_asset_spec.py`.
 
 ## 1. Общие правила
 
@@ -261,6 +261,7 @@
 |---|---|---|
 | `ov_skirt.png` | 1920×1080 RGBA | вид изнутри тележки (решения автора 12.10.2026; раскладка — `work/higgsfield/layout/skirt_front_mock_1012.png`): сверху низ столешницы в перспективе (≈ 5 % высоты), у левого и правого края **голые боковые стенки тележки** уходят в глубину — тёмное дерево с латунной окантовкой, без ткани (≈ 3 % ширины; рама сделана тоньше по ответу автора 12.10.2026; решение автора 12.10.2026: «по бокам должны быть голые стенки тележки»), за ними передние латунные стойки и прямая штанга между ними; на штанге **в передней плоскости, прямо перед глазами**, раздвинутая влево и вправо передняя шторка — два плоских полотнища сразу внутри стоек (≈ 11 % ширины каждое), изнанка ткани со швами кармашков, бахрома внизу; внизу — днище тележки (доски с латунной окантовкой, ≈ 4 % высоты; замечание автора 12.10.2026: «тележка как бы без пола»), его дальний край — латунная перекладина между низами стоек; середина открыта. Расположение передних штор — как на картинке автора `work/higgsfield/ref_author_curtains_1012.jpg` (только расположение, не стиль). Не поднимать ткань вверх; передние шторы не рисовать вдоль боковых стенок. Накладывается на все виды «из-под юбки» |
 | `ov_skirt_open.png` | 1920×1080 RGBA | то же, передние полотнища раздвинуты до упора и туго собраны у стоек. Для `zoom_z05.png` |
+| `ov_skirt_dark.png` | 1920×1080 RGBA | `ov_skirt`, затемнённый той же коррекцией, что кадры до появления Кухтулху (`tools/assets/grade_dark.py --no-protect --k 0.30`; решение автора 12.10.2026) — для слотов от `SEQ.descent` до `SEQ.wait` |
 
 ### 2.8. W6 — контора старшего по воде · `room_w6.png`
 
@@ -457,15 +458,15 @@
 | `SEQ.load` | III | `cu_z04_kefir_hands.png` |
 | `SEQ.report` | III | `room_w2.png` + `st_w2_iz_mic.png` + `st_w2_trolley.png` + `st_w2_tt_payment.png`, затем `fr_a3_lobby_hush.png` + `ov_skirt.png` |
 | `SEQ.ride` | III | `fr_a3_ride_under.png` (рамка тележки в кадре, оверлея нет) |
-| `SEQ.descent` | III | `fr_a3_dark.png`, затем `fr_a3_under_arrive.png` + `ov_skirt.png` |
-| `END.act3` | III | `fr_a3_under_arrive.png` + `ov_skirt.png` |
+| `SEQ.descent` | III | `fr_a3_dark.png`, затем `fr_a3_under_arrive.png` + `ov_skirt_dark.png` |
+| `END.act3` | III | `fr_a3_under_arrive.png` + `ov_skirt_dark.png` |
 | `SEQ.counter.again` | III | экран назначения с текущими состояниями |
-| `OPEN.arrive` | IV | `fr_a3_under_arrive.png` + `ov_skirt.png` |
-| `OPEN.steps` | IV | `fr_a3_under_arrive.png` + `st_fr_a3_under_arrive_tentacles.png` + `ov_skirt.png` |
+| `OPEN.arrive` | IV | `fr_a3_under_arrive.png` + `ov_skirt_dark.png` |
+| `OPEN.steps` | IV | `fr_a3_under_arrive.png` + `st_fr_a3_under_arrive_tentacles.png` + `ov_skirt_dark.png` |
 | `OPEN.anc` | IV | как `OPEN.steps` |
-| `SEQ.rollout` | IV | `room_w5_under.png` + `st_w5u_reach.png` + `ov_skirt.png` |
-| `SEQ.rollout.empty` | IV | `room_w5_under.png` + `st_w5u_reach.png` + `ov_skirt.png` |
-| `SEQ.goods` | IV | `room_w5_under.png` + `st_w5u_tentacles.png` + `ov_skirt.png` |
+| `SEQ.rollout` | IV | `room_w5_under.png` + `st_w5u_reach.png` + `ov_skirt_dark.png` |
+| `SEQ.rollout.empty` | IV | `room_w5_under.png` + `st_w5u_reach.png` + `ov_skirt_dark.png` |
+| `SEQ.goods` | IV | `room_w5_under.png` + `st_w5u_tentacles.png` + `ov_skirt_dark.png` |
 | `SEQ.goods.prior` | IV | как `SEQ.goods` |
 | `SEQ.debt` | IV | как `SEQ.goods` |
 | `SEQ.note_fix` | IV | как `SEQ.goods` |
