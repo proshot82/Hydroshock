@@ -99,6 +99,17 @@ def blip_guest():
     return norm(x, -6)
 
 
+def blip_kuh(f0=180, f1=420, sec=0.07, wet=0.0):
+    """Кухтулху: влажный низкий «плюх» капли — тон с быстрым подъёмом высоты, как капля в воде."""
+    n = int(sec * SR)
+    t = t_(sec)
+    f = f0 * (f1 / f0) ** np.clip(t / (sec * 0.6), 0, 1)
+    x = np.sin(2 * np.pi * np.cumsum(f) / SR) * env_ar(n, 0.002, 1.8)
+    if wet:
+        x += wet * band(rng.standard_normal(n), 200, 1500) * np.exp(-np.linspace(0, 10, n))
+    return norm(x, -6)
+
+
 # ---- позывной громкой связи ------------------------------------------------
 
 def bell(f, sec, bright=1.0):
@@ -150,6 +161,8 @@ SOUNDS = {
     "blip_pa_b": blip_pa_b,
     "blip_guest_a": blip_guest,
     # нисходящее «динь-дон-дон»: до–ля–фа (мажорное трезвучие сверху вниз)
+    "blip_kuh_a": lambda: blip_kuh(180, 420, 0.07),
+    "blip_kuh_b": lambda: blip_kuh(130, 300, 0.08, wet=0.3),
     "sfx_pa_chime_synth_a": lambda: pa_chime([1046.5, 880.0, 698.5]),
     # восходящее «динь-динь-дон»: соль–си–ре
     "sfx_pa_chime_synth_b": lambda: pa_chime([784.0, 987.8, 1174.7]),

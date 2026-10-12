@@ -104,5 +104,25 @@ def main():
             amb(f"{n}_{v}.mp3")
 
 
+# выбор автора 12.10.2026 → final/*.ogg (имена игры)
+CHOICE = {"sfx_pump_dry": 1, "sfx_phone_ring": 3, "sfx_latch_click": 1, "sfx_tag_fold": 1, "sfx_plunger_press": 1,
+          "sfx_paint_scrape": 2, "sfx_token_drop": 2, "sfx_drawer_click": 2, "sfx_key_door": 1, "sfx_trolley_jam": 2,
+          "sfx_wheel_bump": 3, "sfx_board_lay": 1, "sfx_suction_glass": 3, "sfx_switch": 1, "sfx_grille_shut": 2,
+          "sfx_lift_down": 3, "sfx_lift_up": 1, "sfx_stamp": 2, "sfx_bottle_catch": 1, "sfx_descent": 3}
+
+
+def final():
+    fin = HERE / "final"
+    fin.mkdir(exist_ok=True)
+    for name, v in CHOICE.items():
+        mx, fade, _ = SFX[name]
+        run(RAW / f"{name}_{v}.mp3", fin / f"{name}.ogg", "--mono", "--max", str(mx), "--fade", str(fade), "--lufs", "-16")
+    run(knock("knock_one_2.mp3", [0.36, 0.34], "knock_b.wav"), fin / "sfx_knock.ogg", "--mono", "--keep-head", "--lufs", "-16", "--fade", "0")
+    run(hush(), fin / "sfx_lobby_hush.ogg", "--keep-head", "--lufs", "-20", "--fade", "0")
+    run(RAW / "sfx_drum_beep_synth_a.wav", fin / "sfx_drum_beep.ogg", "--mono", "--keep-head", "--lufs", "-16", "--fade", "0.05")
+    run(RAW / "amb_laundry_2.mp3", fin / "amb_laundry.ogg", "--loop", "--lufs", "-26")
+    run(RAW / "amb_hall_1.mp3", fin / "amb_hall.ogg", "--loop", "--lufs", "-26")
+
+
 if __name__ == "__main__":
-    main()
+    final() if sys.argv[1:] == ["--final"] else main()
