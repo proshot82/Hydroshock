@@ -116,7 +116,8 @@ def final():
     fin.mkdir(exist_ok=True)
     for name, v in CHOICE.items():
         mx, fade, _ = SFX[name]
-        run(RAW / f"{name}_{v}.mp3", fin / f"{name}.ogg", "--mono", "--max", str(mx), "--fade", str(fade), "--lufs", "-16")
+        peak = ["--peak", "-2.5"] if name == "sfx_lift_down" else []   # Vorbis поднимал пик до −0,8 dBFS
+        run(RAW / f"{name}_{v}.mp3", fin / f"{name}.ogg", "--mono", "--max", str(mx), "--fade", str(fade), "--lufs", "-16", *peak)
     run(knock("knock_one_2.mp3", [0.36, 0.34], "knock_b.wav"), fin / "sfx_knock.ogg", "--mono", "--keep-head", "--lufs", "-16", "--fade", "0")
     run(hush(), fin / "sfx_lobby_hush.ogg", "--keep-head", "--lufs", "-20", "--fade", "0")
     run(RAW / "sfx_drum_beep_synth_a.wav", fin / "sfx_drum_beep.ogg", "--mono", "--keep-head", "--lufs", "-16", "--fade", "0.05")
