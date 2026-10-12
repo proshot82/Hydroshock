@@ -44,8 +44,29 @@ footer{color:var(--muted);font-size:.88rem;border-top:1px solid var(--line);padd
   <header class="lead">
     <h1>Звук, пакет З1: музыка низа и стингеры</h1>
     <p>Кандидаты, в игру ещё не перенесены. Все сделаны ElevenLabs Music, как пять принятых тем, и выровнены по громкости (−18 LUFS), чтобы сравнивать честно. Описания составлены по заданию и по спектру, а не на слух: характер решает ваше ухо.</p>
-    <p class="note">Нужен ответ: какой вариант темы, какой из каждого стингера; или «переделать» с замечаниями.</p>
+    <p class="note">Ваш выбор 12.10.2026: тема «a», смена как в демо «a», стингеры solved_2, relic_1, water_2. Ниже готовые файлы для игры; нужно «да» на перенос в игру и проверка шва петли.</p>
   </header>
+
+  <section>
+    <h2>Готово к переносу</h2>
+    <div class="moment">
+      <p><b>Петля темы.</b> Из варианта «a» вырезан кусок 10,5–75,9 с (65 секунд), конец сшит с началом двухсекундным перехлёстом, громкость −18 LUFS, как у остальных тем. Петля короче нормы спеки (80–120 с): дальше в исходнике начинается затухание. Принятые <span class="name">bgm_title</span> (48 с) и <span class="name">bgm_epilogue</span> (77 с) тоже короче.</p>
+      <p><b>Шов</b> — 12 секунд до конца петли и 12 секунд её начала подряд: склейка ровно посередине. Если шов слышен, перережу.</p>
+    </div>
+    <article class="card">
+      <div class="head"><span class="name">bgm_deep</span><span class="tag">петля 65 с, играет по кругу</span></div>
+      <audio controls loop preload="none"><source src="final/bgm_deep.ogg" type="audio/ogg"><source src="final/bgm_deep.mp3" type="audio/mpeg"></audio>
+    </article>
+    <article class="card demo">
+      <div class="head"><span class="name">seam_bgm_deep</span><span class="tag">проверка шва, склейка на 0:12</span></div>
+      <audio controls preload="none" src="final/seam_bgm_deep.mp3"></audio>
+    </article>
+    <div class="grid">
+      <article class="card"><div class="head"><span class="name">sting_solved</span><span class="tag">из варианта 2</span></div><audio controls preload="none"><source src="final/sting_solved.ogg" type="audio/ogg"><source src="final/sting_solved.mp3" type="audio/mpeg"></audio></article>
+      <article class="card"><div class="head"><span class="name">sting_relic</span><span class="tag">из варианта 1</span></div><audio controls preload="none"><source src="final/sting_relic.ogg" type="audio/ogg"><source src="final/sting_relic.mp3" type="audio/mpeg"></audio></article>
+      <article class="card"><div class="head"><span class="name">sting_water</span><span class="tag">из варианта 2</span></div><audio controls preload="none"><source src="final/sting_water.ogg" type="audio/ogg"><source src="final/sting_water.mp3" type="audio/mpeg"></audio></article>
+    </div>
+  </section>
 
   <section>
     <h2>Тема «чудовище из глубины»</h2>
