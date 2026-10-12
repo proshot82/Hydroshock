@@ -1,10 +1,10 @@
 {
  "st_fr_a3_under_arrive_tentacles": {
   "base": "fr_a3_under_arrive.png",
-  "x": 863,
-  "y": 448,
-  "w": 814,
-  "h": 602
+  "x": 672,
+  "y": 0,
+  "w": 1036,
+  "h": 1080
  },
  "st_w1_cistern_open": {
   "base": "room_w1.png",

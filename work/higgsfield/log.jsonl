@@ -1520,3 +1520,6 @@
 {"date": "2026-10-11", "kind": "fetch", "target": "mark_plunger.png", "job_id": "cede690e-efc4-4109-8c28-2d30eec6db07", "raw_size": "1024x1024", "size": "300x300", "mode": "RGBA", "lum_pct": 29.3, "note": "mark_plunger"}
 {"date": "2026-10-11", "kind": "fetch", "target": "mark_thumb.png", "job_id": "a58046a3-9dc0-42e3-9c33-aed3f413db29", "raw_size": "880x1168", "size": "140x180", "mode": "RGBA", "lum_pct": 6.1, "note": "mark_thumb"}
 {"date": "2026-10-11", "kind": "fetch", "target": "mark_soap.png", "job_id": "bad4dc17-127e-42e6-adc0-b11c4ca31aec", "raw_size": "1168x880", "size": "260x200", "mode": "RGBA", "lum_pct": 21.7, "note": "mark_soap"}
+{"date": "2026-10-12", "kind": "fetch", "target": "tent_A3.png", "job_id": "cffe6230-f0ba-4535-a131-dd987388db65", "raw_size": "2688x1520", "size": "1920x1080", "mode": "RGB", "lum_pct": 31.6, "note": "щупальца ред. 2 (хозяйка у кабины) проба 1"}
+{"date": "2026-10-12", "kind": "fetch", "target": "tent_A4.png", "job_id": "fa9c2d0d-e283-4c0a-9938-5556861fa3a1", "raw_size": "2688x1520", "size": "1920x1080", "mode": "RGB", "lum_pct": 31.1, "note": "щупальца ред. 2 проба 2"}
+{"date": "2026-10-12", "kind": "fetch", "target": "tent_A5.png", "job_id": "8b502035-286e-411f-b9f7-68843e8a275d", "raw_size": "2688x1520", "size": "1920x1080", "mode": "RGB", "lum_pct": 29.6, "note": "щупальца ред. 2 проба 3"}
