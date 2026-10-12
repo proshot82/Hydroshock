@@ -1,0 +1,127 @@
+<title>Гидроудар: звук З3</title>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Old+Standard+TT:wght@400;700&family=PT+Sans:wght@400;700&family=PT+Mono&display=swap">
+<style>
+/* Лист приёмки конторы водолечебницы: латунь и мокрый кафель; одна колонка карточек-звуков */
+:root{
+  --bg:#e9efed; --paper:#f8faf8; --fg:#1d2826; --muted:#56655f; --line:#c7d3ce;
+  --brass:#8c6118; --brass-soft:#efe1c3; --deep:#1f4a52; --deep-soft:#d6e6e8; --bad:#9b3326;
+  --display:"Old Standard TT",Georgia,"Times New Roman",serif;
+  --body:"PT Sans","Segoe UI",Arial,sans-serif;
+  --mono:"PT Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121a1a; --paper:#1a2524; --fg:#e4ebe8; --muted:#9aaba5; --line:#2f3f3d;
+  --brass:#d8a650; --brass-soft:#3a2f1a; --deep:#8cc5cc; --deep-soft:#1d3336; --bad:#e58b7c; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121a1a; --paper:#1a2524; --fg:#e4ebe8; --muted:#9aaba5; --line:#2f3f3d;
+  --brass:#d8a650; --brass-soft:#3a2f1a; --deep:#8cc5cc; --deep-soft:#1d3336; --bad:#e58b7c; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:16px/1.55 var(--body);margin:0}
+.wrap{max-width:760px;margin:0 auto;padding-inline:16px;padding-block:28px 56px;display:grid;gap:28px}
+h1,h2{font-family:var(--display);font-weight:700;text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:2rem} h2{font-size:1.45rem;color:var(--brass)}
+p{margin:0;max-width:65ch}
+.lead{display:grid;gap:10px}
+.note{color:var(--muted);font-size:.93rem}
+section{display:grid;gap:14px}
+.moment{background:var(--deep-soft);border-left:3px solid var(--deep);padding:12px 14px;border-radius:2px;display:grid;gap:6px}
+.moment b{color:var(--deep)}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:14px;display:grid;gap:8px;min-width:0}
+.head{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:baseline}
+.name{font-family:var(--mono);font-size:.95rem;color:var(--brass);font-weight:700}
+.tag{font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.card h3{margin:0;font-family:var(--display);font-size:1.15rem}
+.card p{font-size:.95rem}
+audio{width:100%;height:40px}
+.demo{border-color:var(--deep);border-style:dashed}
+.rej{color:var(--bad);font-size:.9rem}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+footer{color:var(--muted);font-size:.88rem;border-top:1px solid var(--line);padding-top:14px}
+</style>
+<div class="wrap">
+<header class="lead">
+<h1>Звук, пакет З3: Акты II–III</h1>
+<p>Кандидаты, в игру ещё не перенесены. Органика и фоны сделаны в ElevenLabs Sound Effects. Писк табло синтезирован, стук ×3 и затихание вестибюля собраны. Громкость: эффекты −16 LUFS, фоны −26.</p>
+<p class="note">Нужен ответ: номер варианта для каждого звука или «переделать» с замечаниями.</p>
+</header>
+<h1 style="font-size:1.6rem">Акт II</h1>
+<section><h2>Насос каскада вхолостую</h2><div class="moment"><p><b>sfx_pump_dry.</b> В вестибюле стоит декоративный каскад, сухой. Изольда нажимает кнопку под стойкой: насос гудит, на камнях загорается подсветка, весь вестибюль поворачивается к каскаду, а воды нет. Позже Лапидус включает насос сам, чтобы отвлечь зал. Щелчка защиты в конце нет (ваше «да» по пункту 5). Дубль: подсветка камней, толпа повёрнута к каскаду.</p></div><div class="grid"><article class="card"><div class="head"><span class="name">sfx_pump_dry_1</span></div><audio controls preload="none" src="listen/sfx_pump_dry_1.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_pump_dry_2</span></div><audio controls preload="none" src="listen/sfx_pump_dry_2.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_pump_dry_3</span></div><audio controls preload="none" src="listen/sfx_pump_dry_3.mp3"></audio></article></div></section>
+<section><h2>Телефон стойки</h2><div class="moment"><p><b>sfx_phone_ring.</b> Открытие Акта II: Изольда звонит в аварийную службу и диктует заявки. Звонок старого настольного телефона, трубку снимают. Дубль: плашка «Автоответчик», титр.</p></div><div class="grid"><article class="card"><div class="head"><span class="name">sfx_phone_ring_1</span></div><audio controls preload="none" src="listen/sfx_phone_ring_1.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_phone_ring_2</span></div><audio controls preload="none" src="listen/sfx_phone_ring_2.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_phone_ring_3</span></div><audio controls preload="none" src="listen/sfx_phone_ring_3.mp3"></audio></article></div></section>
+<section><h2>Писк табло барабанов</h2><div class="moment"><p><b>sfx_drum_beep.</b> Прачечная: все барабаны стоят на одной и той же минуте. Лапидус жмёт «перезапуск»: писк, табло мигает «Нет подачи воды». Три писка точнее делать синтезом.</p></div><div class="grid"><article class="card"><div class="head"><span class="name">sfx_drum_beep_synth_a</span><span class="tag">пьезопищалка 2,4 кГц, коротко</span></div><audio controls preload="none" src="listen/sfx_drum_beep_synth_a.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_drum_beep_synth_b</span><span class="tag">ниже, 1,8 кГц, длиннее</span></div><audio controls preload="none" src="listen/sfx_drum_beep_synth_b.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_drum_beep_synth_c</span><span class="tag">чистый тон 3 кГц, отрывисто</span></div><audio controls preload="none" src="listen/sfx_drum_beep_synth_c.mp3"></audio></article></div></section>
+<section><h2>Щелчок защёлки витрины</h2><div class="moment"><p><b>sfx_latch_click.</b> Пока зал смотрит на подсвеченные камни, Лапидус из-под юбки давит ладонью на стекло музейной витрины: щелчок, дверца открыта. Дубль: титр «Щелчок. Дверца открыта».</p></div><div class="grid"><article class="card"><div class="head"><span class="name">sfx_latch_click_1</span></div><audio controls preload="none" src="listen/sfx_latch_click_1.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_latch_click_2</span></div><audio controls preload="none" src="listen/sfx_latch_click_2.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_latch_click_3</span></div><audio controls preload="none" src="listen/sfx_latch_click_3.mp3"></audio></article></div></section>
+<section><h2>Бирка отгибается</h2><div class="moment"><p><b>sfx_tag_fold.</b> В витрине старый счётчик с бумажной биркой «Экспонат № 1». Лапидус отгибает бирку, а под ней циферблат с показаниями 40 712. Шелест бумаги, отклеивается скотч. Дубль: бирка отогнута.</p></div><div class="grid"><article class="card"><div class="head"><span class="name">sfx_tag_fold_1</span></div><audio controls preload="none" src="listen/sfx_tag_fold_1.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_tag_fold_2</span></div><audio controls preload="none" src="listen/sfx_tag_fold_2.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_tag_fold_3</span></div><audio controls preload="none" src="listen/sfx_tag_fold_3.mp3"></audio></article></div></section>
+<section><h2>Вантуз о стекло</h2><div class="moment"><p><b>sfx_plunger_press.</b> Лапидус прижимает вантуз к стеклу у пломбы счётчика и сравнивает два круга (Акт II); тот же звук — в Акте IV, вантуз прижат к журналу. Влажный чмок. Дубль: два круга на стекле / круг в журнале.</p></div><div class="grid"><article class="card"><div class="head"><span class="name">sfx_plunger_press_1</span></div><audio controls preload="none" src="listen/sfx_plunger_press_1.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_plunger_press_2</span></div><audio controls preload="none" src="listen/sfx_plunger_press_2.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_plunger_press_3</span></div><audio controls preload="none" src="listen/sfx_plunger_press_3.mp3"></audio></article></div></section>
+<section><h2>Ламинат по свежей краске</h2><div class="moment"><p><b>sfx_paint_scrape.</b> Кромкой ламинированного меню Лапидус соскребает бежевую краску с таблички; под ней латунь. Скрежет и липкий мазок. Дубль: полосы, табличка.</p></div><div class="grid"><article class="card"><div class="head"><span class="name">sfx_paint_scrape_1</span></div><audio controls preload="none" src="listen/sfx_paint_scrape_1.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_paint_scrape_2</span></div><audio controls preload="none" src="listen/sfx_paint_scrape_2.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_paint_scrape_3</span></div><audio controls preload="none" src="listen/sfx_paint_scrape_3.mp3"></audio></article></div></section>
+<section><h2>Жетон из заслонки</h2><div class="moment"><p><b>sfx_token_drop.</b> Заслонка автомата щёлкает, в ладонь падает латунный жетон «на одно погружение» (одна из трёх реликвий; повтор — в Акте IV). Дубль: титр, жетон.</p></div><div class="grid"><article class="card"><div class="head"><span class="name">sfx_token_drop_1</span></div><audio controls preload="none" src="listen/sfx_token_drop_1.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_token_drop_2</span></div><audio controls preload="none" src="listen/sfx_token_drop_2.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_token_drop_3</span></div><audio controls preload="none" src="listen/sfx_token_drop_3.mp3"></audio></article></div></section>
+<section><h2>Нижний ящик</h2><div class="moment"><p><b>sfx_drawer_click.</b> Нижний ящик стойки щёлкает и выезжает; в нём кружка Изольды с отбитым краем (повтор в Акте IV — вместе со стуком печати). Дубль: кружка.</p></div><div class="grid"><article class="card"><div class="head"><span class="name">sfx_drawer_click_1</span></div><audio controls preload="none" src="listen/sfx_drawer_click_1.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_drawer_click_2</span></div><audio controls preload="none" src="listen/sfx_drawer_click_2.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_drawer_click_3</span></div><audio controls preload="none" src="listen/sfx_drawer_click_3.mp3"></audio></article></div></section>
+<section><h2>Ключ и дверь лестницы</h2><div class="moment"><p><b>sfx_key_door.</b> Ключ поворачивается в замке служебной двери, за ней узкая лестница вниз. Дубль: дверь открыта, ключ в замке.</p></div><div class="grid"><article class="card"><div class="head"><span class="name">sfx_key_door_1</span></div><audio controls preload="none" src="listen/sfx_key_door_1.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_key_door_2</span></div><audio controls preload="none" src="listen/sfx_key_door_2.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_key_door_3</span></div><audio controls preload="none" src="listen/sfx_key_door_3.mp3"></audio></article></div></section>
+<section><h2>Стук в дверь конторы</h2><div class="moment"><p><b>sfx_knock.</b> Внизу у двери конторы старшего по воде: «Стук. Тишина.» Три стука и долгая тишина после. Тот же звук — для повторных стуков. Собран из одного удара ElevenLabs.</p></div><div class="grid"><article class="card"><div class="head"><span class="name">sfx_knock_a</span><span class="tag">собран, ровнее</span></div><audio controls preload="none" src="listen/sfx_knock_a.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_knock_b</span><span class="tag">собран, медленнее</span></div><audio controls preload="none" src="listen/sfx_knock_b.mp3"></audio></article></div></section>
+<h1 style="font-size:1.6rem">Акт III</h1>
+<section><h2>Тележка застревает на лестнице</h2><div class="moment"><p><b>sfx_trolley_jam.</b> Лапидус пытается спустить тележку по винтовой лестнице: колесо повисает над ступенью, тележка упирается — ни с места. Тот же звук — когда тележка застревает в двери номера в Акте I. Дубль: тележка у лестницы.</p></div><div class="grid"><article class="card"><div class="head"><span class="name">sfx_trolley_jam_1</span></div><audio controls preload="none" src="listen/sfx_trolley_jam_1.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_trolley_jam_2</span></div><audio controls preload="none" src="listen/sfx_trolley_jam_2.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_trolley_jam_3</span></div><audio controls preload="none" src="listen/sfx_trolley_jam_3.mp3"></audio></article></div></section>
+<section><h2>Колёса о порожек</h2><div class="moment"><p><b>sfx_wheel_bump.</b> Грузовой лифт: латунные колёса тележки упираются в порожек кабины. «Толчок, второй. Тележка стоит на месте.»</p></div><div class="grid"><article class="card"><div class="head"><span class="name">sfx_wheel_bump_1</span></div><audio controls preload="none" src="listen/sfx_wheel_bump_1.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_wheel_bump_2</span></div><audio controls preload="none" src="listen/sfx_wheel_bump_2.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_wheel_bump_3</span></div><audio controls preload="none" src="listen/sfx_wheel_bump_3.mp3"></audio></article></div></section>
+<section><h2>Доска-трап</h2><div class="moment"><p><b>sfx_board_lay.</b> Лапидус кладёт доску с меловой надписью «НАШЕ» через порожек; колёса въезжают по ней в кабину. Дубль: доска на порожке.</p></div><div class="grid"><article class="card"><div class="head"><span class="name">sfx_board_lay_1</span></div><audio controls preload="none" src="listen/sfx_board_lay_1.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_board_lay_2</span></div><audio controls preload="none" src="listen/sfx_board_lay_2.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_board_lay_3</span></div><audio controls preload="none" src="listen/sfx_board_lay_3.mp3"></audio></article></div></section>
+<section><h2>Присоска на зеркале</h2><div class="moment"><p><b>sfx_suction_glass.</b> Вантуз впивается в огромное зеркало зала прекраснодушия; зеркало снято с крюков и отставлено к стене, за ним решётка грузового лифта. Дубль: зеркало у стены.</p></div><div class="grid"><article class="card"><div class="head"><span class="name">sfx_suction_glass_1</span></div><audio controls preload="none" src="listen/sfx_suction_glass_1.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_suction_glass_2</span></div><audio controls preload="none" src="listen/sfx_suction_glass_2.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_suction_glass_3</span></div><audio controls preload="none" src="listen/sfx_suction_glass_3.mp3"></audio></article></div></section>
+<section><h2>Рубильник</h2><div class="moment"><p><b>sfx_switch.</b> Старый рубильник у лифта: «Щелчок. Лампа поста гаснет… Щелчок. Лампа снова горит». Дубль: лампа.</p></div><div class="grid"><article class="card"><div class="head"><span class="name">sfx_switch_1</span></div><audio controls preload="none" src="listen/sfx_switch_1.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_switch_2</span></div><audio controls preload="none" src="listen/sfx_switch_2.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_switch_3</span></div><audio controls preload="none" src="listen/sfx_switch_3.mp3"></audio></article></div></section>
+<section><h2>Решётка лифта изнутри (новый звук)</h2><div class="moment"><p><b>sfx_grille_shut.</b> Лапидус ныряет под юбку тележки в кабине и задёргивает решётку изнутри: «Щелчок». Новый файл по вашему «да».</p></div><div class="grid"><article class="card"><div class="head"><span class="name">sfx_grille_shut_1</span></div><audio controls preload="none" src="listen/sfx_grille_shut_1.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_grille_shut_2</span></div><audio controls preload="none" src="listen/sfx_grille_shut_2.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_grille_shut_3</span></div><audio controls preload="none" src="listen/sfx_grille_shut_3.mp3"></audio></article></div></section>
+<section><h2>Лифт вниз</h2><div class="moment"><p><b>sfx_lift_down.</b> Пробный пуск: тележка в кабине, решётка закрыта, «Вниз». Кабина уходит, гул, потом тишина. Дубль: пустая шахта.</p></div><div class="grid"><article class="card"><div class="head"><span class="name">sfx_lift_down_1</span></div><audio controls preload="none" src="listen/sfx_lift_down_1.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_lift_down_2</span></div><audio controls preload="none" src="listen/sfx_lift_down_2.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_lift_down_3</span></div><audio controls preload="none" src="listen/sfx_lift_down_3.mp3"></audio></article></div></section>
+<section><h2>Лифт вверх</h2><div class="moment"><p><b>sfx_lift_up.</b> «Вызов». Гул снизу, кабина возвращается, лязг решётки — и на бутылке мокрый оттиск и записка. Дубль: кабина на месте.</p></div><div class="grid"><article class="card"><div class="head"><span class="name">sfx_lift_up_1</span></div><audio controls preload="none" src="listen/sfx_lift_up_1.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_lift_up_2</span></div><audio controls preload="none" src="listen/sfx_lift_up_2.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_lift_up_3</span></div><audio controls preload="none" src="listen/sfx_lift_up_3.mp3"></audio></article></div></section>
+<section><h2>Печать</h2><div class="moment"><p><b>sfx_stamp.</b> Изольда штампует жалобы, не читая: «Шлёп, „Принято“. Шлёп, „Принято“». Тот же сухой стук — счёт и накладная. Дубль: оттиски.</p></div><div class="grid"><article class="card"><div class="head"><span class="name">sfx_stamp_1</span></div><audio controls preload="none" src="listen/sfx_stamp_1.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_stamp_2</span></div><audio controls preload="none" src="listen/sfx_stamp_2.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_stamp_3</span></div><audio controls preload="none" src="listen/sfx_stamp_3.mp3"></audio></article></div></section>
+<section><h2>Бутылка поймана</h2><div class="moment"><p><b>sfx_bottle_catch.</b> Кефир на стойке: бутылка выскальзывает из мыльных рук, стукается о край стойки и поймана. Дубль: титр.</p></div><div class="grid"><article class="card"><div class="head"><span class="name">sfx_bottle_catch_1</span></div><audio controls preload="none" src="listen/sfx_bottle_catch_1.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_bottle_catch_2</span></div><audio controls preload="none" src="listen/sfx_bottle_catch_2.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_bottle_catch_3</span></div><audio controls preload="none" src="listen/sfx_bottle_catch_3.mp3"></audio></article></div></section>
+<section><h2>Вестибюль затихает</h2><div class="moment"><p><b>sfx_lobby_hush.</b> Изольда берёт микрофон и впервые сама докладывает старшему по воде; «Вестибюль затихает». Гул людного вестибюля обрывается до тишины. ElevenLabs до настоящей тишины не доходит, поэтому «a» собран из принятого фона вестибюля. В игре фон вестибюля в этот момент тоже гасится. Дубль: кадр затихшего вестибюля.</p></div><div class="grid"><article class="card"><div class="head"><span class="name">sfx_lobby_hush_a</span><span class="tag">собран из принятого фона вестибюля</span></div><audio controls preload="none" src="listen/sfx_lobby_hush_a.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_lobby_hush_1</span><span class="tag">ElevenLabs</span></div><audio controls preload="none" src="listen/sfx_lobby_hush_1.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_lobby_hush_2</span><span class="tag">ElevenLabs</span></div><audio controls preload="none" src="listen/sfx_lobby_hush_2.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_lobby_hush_3</span><span class="tag">ElevenLabs</span></div><audio controls preload="none" src="listen/sfx_lobby_hush_3.mp3"></audio></article></div></section>
+<section><h2>Спуск в темноте</h2><div class="moment"><p><b>sfx_descent.</b> Конец Акта III: Лапидус под юбкой, кабина идёт вниз. «Темнота. Гул. Только внизу… тонкая полоска света. Лязг. Решётка открывается. Мокрый кафель». Здесь же начинается тема «чудовище из глубины». Дубль: тёмный кадр.</p></div><div class="grid"><article class="card"><div class="head"><span class="name">sfx_descent_1</span></div><audio controls preload="none" src="listen/sfx_descent_1.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_descent_2</span></div><audio controls preload="none" src="listen/sfx_descent_2.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">sfx_descent_3</span></div><audio controls preload="none" src="listen/sfx_descent_3.mp3"></audio></article></div></section>
+<h1 style="font-size:1.6rem">Фоны</h1>
+<section><h2>Остановленная прачечная</h2><div class="moment"><p><b>amb_laundry.</b> Фон экрана W3: машины стоят, гудят лампы, изредка трещит реле, воды нет. Петля 30 с, склеена дважды: шов на 0:30.</p></div><div class="grid"><article class="card"><div class="head"><span class="name">amb_laundry_1_x2</span></div><audio controls preload="none" src="listen/amb_laundry_1_x2.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">amb_laundry_2_x2</span></div><audio controls preload="none" src="listen/amb_laundry_2_x2.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">amb_laundry_3_x2</span></div><audio controls preload="none" src="listen/amb_laundry_3_x2.mp3"></audio></article></div></section>
+<section><h2>Зал прекраснодушия</h2><div class="moment"><p><b>amb_hall.</b> Фон экрана W4: огромный гулкий зал с мраморным полом, эхо, далёкий гул шахты лифта. Шов на 0:30.</p></div><div class="grid"><article class="card"><div class="head"><span class="name">amb_hall_1_x2</span></div><audio controls preload="none" src="listen/amb_hall_1_x2.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">amb_hall_2_x2</span></div><audio controls preload="none" src="listen/amb_hall_2_x2.mp3"></audio></article>
+<article class="card"><div class="head"><span class="name">amb_hall_3_x2</span></div><audio controls preload="none" src="listen/amb_hall_3_x2.mp3"></audio></article></div></section>
+<footer>Ни одна улика не держится на звуке: у каждого звука есть титр или смена кадра. Подробности — work/audio/candidates/s3_act23_1012/README.md.</footer>
+</div>

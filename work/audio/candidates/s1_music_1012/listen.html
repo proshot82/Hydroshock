@@ -1,0 +1,153 @@
+<title>Гидроудар: звук З1</title>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Old+Standard+TT:wght@400;700&family=PT+Sans:wght@400;700&family=PT+Mono&display=swap">
+<style>
+/* Лист приёмки конторы водолечебницы: латунь и мокрый кафель; одна колонка карточек-звуков */
+:root{
+  --bg:#e9efed; --paper:#f8faf8; --fg:#1d2826; --muted:#56655f; --line:#c7d3ce;
+  --brass:#8c6118; --brass-soft:#efe1c3; --deep:#1f4a52; --deep-soft:#d6e6e8; --bad:#9b3326;
+  --display:"Old Standard TT",Georgia,"Times New Roman",serif;
+  --body:"PT Sans","Segoe UI",Arial,sans-serif;
+  --mono:"PT Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121a1a; --paper:#1a2524; --fg:#e4ebe8; --muted:#9aaba5; --line:#2f3f3d;
+  --brass:#d8a650; --brass-soft:#3a2f1a; --deep:#8cc5cc; --deep-soft:#1d3336; --bad:#e58b7c; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121a1a; --paper:#1a2524; --fg:#e4ebe8; --muted:#9aaba5; --line:#2f3f3d;
+  --brass:#d8a650; --brass-soft:#3a2f1a; --deep:#8cc5cc; --deep-soft:#1d3336; --bad:#e58b7c; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:16px/1.55 var(--body);margin:0}
+.wrap{max-width:760px;margin:0 auto;padding-inline:16px;padding-block:28px 56px;display:grid;gap:28px}
+h1,h2{font-family:var(--display);font-weight:700;text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:2rem} h2{font-size:1.45rem;color:var(--brass)}
+p{margin:0;max-width:65ch}
+.lead{display:grid;gap:10px}
+.note{color:var(--muted);font-size:.93rem}
+section{display:grid;gap:14px}
+.moment{background:var(--deep-soft);border-left:3px solid var(--deep);padding:12px 14px;border-radius:2px;display:grid;gap:6px}
+.moment b{color:var(--deep)}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:14px;display:grid;gap:8px;min-width:0}
+.head{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:baseline}
+.name{font-family:var(--mono);font-size:.95rem;color:var(--brass);font-weight:700}
+.tag{font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.card h3{margin:0;font-family:var(--display);font-size:1.15rem}
+.card p{font-size:.95rem}
+audio{width:100%;height:40px}
+.demo{border-color:var(--deep);border-style:dashed}
+.rej{color:var(--bad);font-size:.9rem}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+footer{color:var(--muted);font-size:.88rem;border-top:1px solid var(--line);padding-top:14px}
+</style>
+
+<div class="wrap">
+  <header class="lead">
+    <h1>Звук, пакет З1: музыка низа и стингеры</h1>
+    <p>Кандидаты, в игру ещё не перенесены. Все сделаны ElevenLabs Music, как пять принятых тем, и выровнены по громкости (−18 LUFS), чтобы сравнивать честно. Описания составлены по заданию и по спектру, а не на слух: характер решает ваше ухо.</p>
+    <p class="note">Ваш выбор 12.10.2026: тема «a», смена как в демо «a», стингеры solved_2, relic_1, water_2. Ниже готовые файлы для игры; нужно «да» на перенос в игру и проверка шва петли.</p>
+  </header>
+
+  <section>
+    <h2>Готово к переносу</h2>
+    <div class="moment">
+      <p><b>Петля темы.</b> Из варианта «a» вырезан кусок 10,5–75,9 с (65 секунд), конец сшит с началом двухсекундным перехлёстом, громкость −18 LUFS, как у остальных тем. Петля короче нормы спеки (80–120 с): дальше в исходнике начинается затухание. Принятые <span class="name">bgm_title</span> (48 с) и <span class="name">bgm_epilogue</span> (77 с) тоже короче.</p>
+      <p><b>Шов</b> — 12 секунд до конца петли и 12 секунд её начала подряд: склейка ровно посередине. Если шов слышен, перережу.</p>
+    </div>
+    <article class="card">
+      <div class="head"><span class="name">bgm_deep</span><span class="tag">петля 65 с, играет по кругу</span></div>
+      <audio controls loop preload="none"><source src="final/bgm_deep.ogg" type="audio/ogg"><source src="final/bgm_deep.mp3" type="audio/mpeg"></audio>
+    </article>
+    <article class="card demo">
+      <div class="head"><span class="name">seam_bgm_deep</span><span class="tag">проверка шва, склейка на 0:12</span></div>
+      <audio controls preload="none" src="final/seam_bgm_deep.mp3"></audio>
+    </article>
+    <div class="grid">
+      <article class="card"><div class="head"><span class="name">sting_solved</span><span class="tag">из варианта 2</span></div><audio controls preload="none"><source src="final/sting_solved.ogg" type="audio/ogg"><source src="final/sting_solved.mp3" type="audio/mpeg"></audio></article>
+      <article class="card"><div class="head"><span class="name">sting_relic</span><span class="tag">из варианта 1</span></div><audio controls preload="none"><source src="final/sting_relic.ogg" type="audio/ogg"><source src="final/sting_relic.mp3" type="audio/mpeg"></audio></article>
+      <article class="card"><div class="head"><span class="name">sting_water</span><span class="tag">из варианта 2</span></div><audio controls preload="none"><source src="final/sting_water.ogg" type="audio/ogg"><source src="final/sting_water.mp3" type="audio/mpeg"></audio></article>
+    </div>
+  </section>
+
+  <section>
+    <h2>Тема «чудовище из глубины»</h2>
+    <div class="moment">
+      <p><b>Момент в игре.</b> Конец Акта III: голый Лапидус прячется под юбкой тележки, и лифт везёт его вниз, в «приёмный пункт», полузатопленную подземную пещеру. Под юбкой темно, видна только полоска у пола: мокрый кафель, ножка стола, потом кончики щупалец в чёрных нарукавниках. Игрок должен ждать чудовище. Потом Лапидус вылезает, а за столом сидит усталая дама-бухгалтер в очках, и начинается принятая хабанера.</p>
+      <p><b>Где звучит.</b> От «Темнота. Гул.» при спуске до титра «Стол приёма в полный рост». Под юбкой можно просидеть долго, поэтому после выбора из темы делается бесшовная петля.</p>
+    </div>
+
+    <article class="card">
+      <div class="head"><span class="name">bgm_deep_a</span><span class="tag">всерьёз тревожно</span></div>
+      <p>Что-то огромное поднимается из глубины. Очень низкие контрафагот и бас-кларнет тянут звук, далеко бьётся сердце литавр, звенит стеклянная гармоника, капает вода, скрипят трубы. Ритма шагов нет; ровный низкий гул и редкие события сверху; к минуте появляется высокий звенящий слой.</p>
+      <audio controls preload="none" src="listen/bgm_deep_a.mp3"></audio>
+    </article>
+    <article class="card">
+      <div class="head"><span class="name">bgm_deep_b</span><span class="tag">тревожно с подмигиванием</span></div>
+      <p>Крадущийся монстр в духе классических юмористических квестов: низкая «крадущаяся» линия бас-кларнета и контрафагота, пиццикато контрабаса как шаги, глиссандо арфы. Фразы с паузами: шаг, шаг, замер. Самый «квестовый» и наименее страшный.</p>
+      <audio controls preload="none" src="listen/bgm_deep_b.mp3"></audio>
+    </article>
+    <article class="card">
+      <div class="head"><span class="name">bgm_deep_c</span><span class="tag">тёмный гул без мелодии</span></div>
+      <p>Тёмный эмбиент затопленной пещеры: контрабас смычком и контрафагот тянут низкие ноты, медленно бьёт большой барабан, пузыри. Самый страшный и самый однообразный; при долгом сидении под юбкой может утомить.</p>
+      <audio controls preload="none" src="listen/bgm_deep_c.mp3"></audio>
+    </article>
+    <article class="card">
+      <div class="head"><span class="name">bgm_deep_d</span><span class="tag">хабанера в темноте</span></div>
+      <p>Тот же медленный ритм хабанеры, но в миноре и едва слышно под жутью. Задумано как родственник принятой темы: при появлении ритм тот же, только при свете. По спектру ровная пульсация от начала до конца; насколько вышла хабанера, проверьте на слух.</p>
+      <audio controls preload="none" src="listen/bgm_deep_d.mp3"></audio>
+    </article>
+    <article class="card">
+      <div class="head"><span class="name">bgm_deep_e</span><span class="tag">как «a», новая модель</span></div>
+      <p>То же задание, что у «a», но новой моделью ElevenLabs (music_v2_5; темы делались прежней). Первые 30 секунд шорох и гул, затем вступает мерный низкий пульс, как сердцебиение; есть нарастание к середине.</p>
+      <audio controls preload="none" src="listen/bgm_deep_e.mp3"></audio>
+    </article>
+  </section>
+
+  <section>
+    <h2>Как сменится на хабанеру</h2>
+    <div class="moment">
+      <p><b>Предложение.</b> Тема обрывается на титре «Стол приёма в полный рост», секунда тишины со скрипом пера Кухтулху, затем с начала идёт хабанера. Ужас лопается, и это смешно.</p>
+      <p><b>Демо:</b> 20 секунд темы, обрыв, 1,5 секунды тишины (там будет скрип пера, его ещё нет), первые 20 секунд принятой хабанеры.</p>
+    </div>
+    <div class="grid">
+      <article class="card demo"><span class="name">demo · a</span><audio controls preload="none" src="listen/demo_come_out_a.mp3"></audio></article>
+      <article class="card demo"><span class="name">demo · b</span><audio controls preload="none" src="listen/demo_come_out_b.mp3"></audio></article>
+      <article class="card demo"><span class="name">demo · c</span><audio controls preload="none" src="listen/demo_come_out_c.mp3"></audio></article>
+      <article class="card demo"><span class="name">demo · d</span><audio controls preload="none" src="listen/demo_come_out_d.mp3"></audio></article>
+      <article class="card demo"><span class="name">demo · e</span><audio controls preload="none" src="listen/demo_come_out_e.mp3"></audio></article>
+    </div>
+  </section>
+
+  <section>
+    <h2>Стингер «загадка решена»</h2>
+    <div class="moment"><p><b>Момент.</b> Лапидус сделал то, что сдвинуло дело: снял вантуз с панели, открыл витрину, отправил лифт. Короткое «ура» на 2–3 секунды. Засурдиненная труба и кларнет, пиццикато, светлый мажорный аккорд в конце; тромбона нет.</p></div>
+    <div class="grid">
+      <article class="card"><div class="head"><span class="name">sting_solved_1</span><span class="tag">несколько нот и аккорд</span></div><audio controls preload="none" src="listen/sting_solved_1.mp3"></audio></article>
+      <article class="card"><div class="head"><span class="name">sting_solved_2</span><span class="tag">один аккорд, долгий звон</span></div><audio controls preload="none" src="listen/sting_solved_2.mp3"></audio></article>
+      <article class="card"><div class="head"><span class="name">sting_solved_3</span><span class="tag">три удара-ступеньки</span></div><audio controls preload="none" src="listen/sting_solved_3.mp3"></audio></article>
+    </div>
+  </section>
+
+  <section>
+    <h2>Стингер «реликвия»</h2>
+    <div class="moment"><p><b>Момент.</b> Найдена одна из трёх старых вещей хозяйки низа: жетон «на одно погружение», открытка «тов. К.», кружка Изольды. От их числа зависит эпилог. Колокольчик и арфа: «нашёл сокровище».</p></div>
+    <div class="grid">
+      <article class="card"><div class="head"><span class="name">sting_relic_1</span><span class="tag">арфа и колокольчики</span></div><audio controls preload="none" src="listen/sting_relic_1.mp3"></audio></article>
+      <article class="card"><div class="head"><span class="name">sting_relic_3</span><span class="tag">арфа и колокольчики</span></div><audio controls preload="none" src="listen/sting_relic_3.mp3"></audio></article>
+      <article class="card"><div class="head"><span class="name">sting_relic_4</span><span class="tag">арфа, затем челеста</span></div><audio controls preload="none" src="listen/sting_relic_4.mp3"></audio></article>
+      <article class="card"><div class="head"><span class="name">sting_relic_5</span><span class="tag">арфа, затем челеста</span></div><audio controls preload="none" src="listen/sting_relic_5.mp3"></audio></article>
+    </div>
+    <p class="rej">Вариант 2 и первая попытка 4 отбракованы: вместо музыки пришло высокое шипение.</p>
+  </section>
+
+  <section>
+    <h2>Стингер «пуск воды»</h2>
+    <div class="moment"><p><b>Момент.</b> Лапидус поворачивает маховик в конторе Кухтулху, стрелка манометра отрывается от нуля, по зданию идёт долгий влажный выдох. Стингер — оркестровый разворот поверх этого выдоха, 5–7 секунд: струнные поднимаются, глиссандо арфы, расцветает аккорд меди, кларнет. Демо вместе с выдохом здания будет в пакете З4.</p></div>
+    <div class="grid">
+      <article class="card"><span class="name">sting_water_1</span><audio controls preload="none" src="listen/sting_water_1.mp3"></audio></article>
+      <article class="card"><span class="name">sting_water_2</span><audio controls preload="none" src="listen/sting_water_2.mp3"></audio></article>
+      <article class="card"><span class="name">sting_water_3</span><audio controls preload="none" src="listen/sting_water_3.mp3"></audio></article>
+    </div>
+  </section>
+
+  <footer>Ни одна улика не держится на музыке: смена темы совпадает с титром и сменой кадра, у каждого стингера есть своё событие на экране. Исходники и подробности — work/audio/candidates/s1_music_1012/README.md.</footer>
+</div>
