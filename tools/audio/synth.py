@@ -4,7 +4,7 @@
 Блипы BJ2 (blip_lap 263 Гц, blip_anc 145 Гц) — короткие тоновые всплески с яркими
 обертонами; блипы BJ3 сделаны в той же манере, каждому голосу — своя высота и тембр.
 
-  python tools/audio/synth.py ПАПКА        # все звуки в ПАПКА/*.wav
+  python tools/audio/synth.py ПАПКА [ПРЕФИКС]   # звуки (с этим началом имени) в ПАПКА/*.wav
 
 Нужны: numpy, scipy, soundfile.
 """
@@ -132,6 +132,17 @@ def pa_chime(notes, gap=0.32, tail=0.9):
     return norm(out, -3)
 
 
+def drum_beep(f=2400, n=3, on=0.12, off=0.1, square=True):
+    """Табло барабанов прачечной: писк ×3 — пьезопищалка (прямоугольник) или чистый тон."""
+    out = []
+    for i in range(n):
+        x = pulse(f, on, duty=0.5, harmonics=6) if square else np.sin(2 * np.pi * f * t_(on))
+        x = x * env_ar(len(x), 0.003, 0.3)
+        out += [x, np.zeros(int(off * SR))]
+    y = np.concatenate(out + [np.zeros(int(0.3 * SR))])
+    return norm(room(y, 0.5, 0.15), -3)
+
+
 SOUNDS = {
     "blip_iz_a": blip_iz,
     "blip_iz_b": blip_iz_b,
@@ -144,13 +155,19 @@ SOUNDS = {
     "sfx_pa_chime_synth_b": lambda: pa_chime([784.0, 987.8, 1174.7]),
     # вокзальное: ми–до–соль ниже
     "sfx_pa_chime_synth_c": lambda: pa_chime([659.3, 523.3, 392.0], gap=0.38),
+    "sfx_drum_beep_synth_a": lambda: drum_beep(2400, 3, 0.12, 0.10),
+    "sfx_drum_beep_synth_b": lambda: drum_beep(1800, 3, 0.18, 0.12),
+    "sfx_drum_beep_synth_c": lambda: drum_beep(3000, 3, 0.08, 0.08, square=False),
 }
 
 
 def main():
     out = Path(sys.argv[1])
     out.mkdir(parents=True, exist_ok=True)
+    only = sys.argv[2] if len(sys.argv) > 2 else ""
     for name, fn in SOUNDS.items():
+        if only and not name.startswith(only):
+            continue
         x = fn()
         sf.write(out / f"{name}.wav", x, SR, subtype="PCM_24")
         print(name, f"{len(x) / SR:.3f} с")
