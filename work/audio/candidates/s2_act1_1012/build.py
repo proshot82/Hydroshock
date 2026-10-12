@@ -202,5 +202,41 @@ def main():
         blip_demo(f"{b}_bj2")
 
 
+# выбор автора 12.10.2026 → final/*.ogg (имена игры)
+CHOICE = {
+    "sfx_shower_run": ("sfx_shower_run_1.mp3", ["--loop", "--lufs", "-20"]),
+    "sfx_shower_sigh": ("sfx_shower_sigh_1.mp3", ["--mono", "--max", "1.0", "--fade", "0.2", "--lufs", "-16"]),
+    "sfx_plunger_pop": ("sfx_plunger_pop_1.mp3", ["--mono", "--max", "0.5", "--fade", "0.1", "--lufs", "-16"]),
+    "sfx_foam_swell": ("sfx_foam_swell_3.mp3", ["--mono", "--max", "1.5", "--fade", "0.3", "--lufs", "-16"]),
+    "sfx_trolley_creak": ("sfx_trolley_creak_2.mp3", ["--mono", "--max", "1.5", "--fade", "0.3", "--lufs", "-16"]),
+    "sfx_crowd_part": ("sfx_crowd_part_6.mp3", ["--mono", "--max", "2.5", "--fade", "0.4", "--lufs", "-16"]),
+    "sfx_pa_chime": ("sfx_pa_chime_synth_c.wav", ["--mono", "--fade", "0.05", "--lufs", "-16"]),
+    "amb_room": ("amb_room_2.mp3", ["--loop", "--lufs", "-26"]),
+    "amb_lobby": ("amb_lobby_3.mp3", ["--loop", "--lufs", "-26"]),
+}
+
+
+def final():
+    global rng
+    fin = HERE / "final"
+    fin.mkdir(exist_ok=True)
+    for name, (src, args) in CHOICE.items():
+        run(RAW / src, fin / f"{name}.ogg", *args)
+    # сборные звуки со случайностью: тот же порядок вызовов, что в main(), — те же отсчёты, что слушал автор
+    rng = np.random.default_rng(317)
+    stars(0.32, "stars_a.wav")
+    stars_b = stars(0.24, "stars_b.wav")
+    booms = [big_boom(v) for v in (1, 2, 3, 4)]
+    run(booms[3], fin / "sfx_shock_thud.ogg", "--keep-head", "--lufs", "-12", "--peak", "-1", "--fade", "0")
+    run(stars_b, fin / "sfx_stars_fold.ogg", "--mono", "--keep-head", "--lufs", "-16")
+    run(phone(), fin / "sfx_phone_pickup.ogg", "--mono", "--lufs", "-16")
+    for game, src in (("blip_iz", "blip_iz_b"), ("blip_pa", "blip_pa_a"), ("blip_guest", "blip_guest_a")):
+        subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(RAW / f"{src}.wav"), "-ac", "1",
+                        "-c:a", "libvorbis", "-q:a", "5", str(fin / f"{game}.ogg")], check=True)
+
+
 if __name__ == "__main__":
-    main()
+    if sys.argv[1:] == ["--final"]:
+        final()
+    else:
+        main()

@@ -2,7 +2,7 @@
 """Доводка короткого звука: срез тишины в начале, длина, затухание, громкость, OGG/MP3.
 
   python tools/audio/finish.py ВХОД ВЫХОД.ogg [--max 3.5] [--fade 1.0] [--lufs -18]
-                               [--peak -1.5] [--mono] [--keep-head]
+                               [--peak -1.5] [--mono] [--keep-head] [--loop]
 
 Громкость меряется по ITU-R BS.1770 (pyloudnorm); если после нормировки пик выше
 --peak, громкость снижается до пика. Формат выхода — по расширению (.ogg q5 / .mp3 192k).
@@ -30,10 +30,13 @@ def main():
     ap.add_argument("--peak", type=float, default=-1.5)
     ap.add_argument("--mono", action="store_true")
     ap.add_argument("--keep-head", action="store_true", help="не срезать тишину в начале")
+    ap.add_argument("--loop", action="store_true", help="петля: ни среза, ни затуханий — только громкость")
     a = ap.parse_args()
 
     y, _ = librosa.load(a.src, sr=SR, mono=a.mono)
     y = np.atleast_2d(y)                                   # (каналы, отсчёты)
+    if a.loop:
+        a.keep_head, a.max, a.fade = True, 0.0, 0.0
     if not a.keep_head:
         env = np.abs(y).max(axis=0)
         on = np.flatnonzero(env > 10 ** (-50 / 20))
@@ -44,7 +47,8 @@ def main():
     n = min(int(a.fade * SR), y.shape[1])
     if n:
         y[:, -n:] *= np.linspace(1, 0, n) ** 2
-    y[:, : int(0.003 * SR)] *= np.linspace(0, 1, int(0.003 * SR))
+    if not a.loop:
+        y[:, : int(0.003 * SR)] *= np.linspace(0, 1, int(0.003 * SR))
 
     meter = pyloudnorm.Meter(SR, block_size=min(0.4, y.shape[1] / SR * 0.9))
     loud = meter.integrated_loudness(y.T)
