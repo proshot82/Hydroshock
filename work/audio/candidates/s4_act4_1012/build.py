@@ -166,8 +166,8 @@ def main():
         blip_demo(b)
 
 
-# выбор автора 12.10.2026 → final/*.ogg (имена игры); sfx_door_clicks — ждёт выбора
-CHOICE = {"sfx_wet_steps": 2, "sfx_wet_stamp": 2, "sfx_pen_scratch": 1, "sfx_pen_roll": 3, "sfx_soap_smear": 2,
+# выбор автора 12.10.2026 → final/*.ogg (имена игры); тема финала c4 → final/bgm_epilogue.ogg (make_loop.py --min 60)
+CHOICE = {"sfx_door_clicks": 1, "sfx_wet_steps": 2, "sfx_wet_stamp": 2, "sfx_pen_scratch": 1, "sfx_pen_roll": 3, "sfx_soap_smear": 2,
           "sfx_seal_tear": 1, "sfx_valve_turn": 2, "sfx_building_exhale": 3, "sfx_pa_drown": 3, "sfx_fin_shower": 3,
           "sfx_drums_turn": 3, "sfx_fin_spring": 3}
 

@@ -1,0 +1,188 @@
+<title>Гидроудар: мелодии v2.5</title>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Old+Standard+TT:wght@400;700&family=PT+Sans:wght@400;700&family=PT+Mono&display=swap">
+<style>
+/* Лист приёмки конторы водолечебницы: латунь и мокрый кафель; одна колонка карточек-звуков */
+:root{
+  --bg:#e9efed; --paper:#f8faf8; --fg:#1d2826; --muted:#56655f; --line:#c7d3ce;
+  --brass:#8c6118; --brass-soft:#efe1c3; --deep:#1f4a52; --deep-soft:#d6e6e8; --bad:#9b3326;
+  --display:"Old Standard TT",Georgia,"Times New Roman",serif;
+  --body:"PT Sans","Segoe UI",Arial,sans-serif;
+  --mono:"PT Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121a1a; --paper:#1a2524; --fg:#e4ebe8; --muted:#9aaba5; --line:#2f3f3d;
+  --brass:#d8a650; --brass-soft:#3a2f1a; --deep:#8cc5cc; --deep-soft:#1d3336; --bad:#e58b7c; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121a1a; --paper:#1a2524; --fg:#e4ebe8; --muted:#9aaba5; --line:#2f3f3d;
+  --brass:#d8a650; --brass-soft:#3a2f1a; --deep:#8cc5cc; --deep-soft:#1d3336; --bad:#e58b7c; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:16px/1.55 var(--body);margin:0}
+.wrap{max-width:760px;margin:0 auto;padding-inline:16px;padding-block:28px 56px;display:grid;gap:28px}
+h1,h2{font-family:var(--display);font-weight:700;text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:2rem} h2{font-size:1.45rem;color:var(--brass)}
+p{margin:0;max-width:65ch}
+.lead{display:grid;gap:10px}
+.note{color:var(--muted);font-size:.93rem}
+section{display:grid;gap:14px}
+.moment{background:var(--deep-soft);border-left:3px solid var(--deep);padding:12px 14px;border-radius:2px;display:grid;gap:6px}
+.moment b{color:var(--deep)}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:14px;display:grid;gap:8px;min-width:0}
+.head{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:baseline}
+.name{font-family:var(--mono);font-size:.95rem;color:var(--brass);font-weight:700}
+.tag{font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.card h3{margin:0;font-family:var(--display);font-size:1.15rem}
+.card p{font-size:.95rem}
+audio{width:100%;height:40px}
+.demo{border-color:var(--deep);border-style:dashed}
+.rej{color:var(--bad);font-size:.9rem}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+footer{color:var(--muted);font-size:.88rem;border-top:1px solid var(--line);padding-top:14px}
+
+.opts{display:grid;gap:8px}
+.opt{display:grid;grid-template-columns:auto 1fr;gap:6px 10px;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:10px 12px;min-width:0}
+.opt:has(input:checked){border-color:var(--brass);box-shadow:inset 3px 0 0 var(--brass)}
+.opt input{width:20px;height:20px;accent-color:var(--brass);margin:0}
+.opt label{font-weight:700;cursor:pointer}
+.opt .tag{grid-column:2}
+.opt audio{grid-column:1 / -1}
+textarea{width:100%;box-sizing:border-box;min-height:56px;font:inherit;color:var(--fg);background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:8px}
+textarea:focus-visible,.opt input:focus-visible{outline:2px solid var(--deep);outline-offset:2px}
+.state{font-size:.85rem;color:var(--muted);min-height:1.2em}
+.state.ok{color:var(--deep)} .state.err{color:var(--bad)}
+#banner{background:var(--brass-soft);border:1px solid var(--brass);border-radius:4px;padding:10px 12px}
+</style>
+<div class="wrap">
+<header class="lead">
+<h1>Все мелодии на новой модели</h1>
+<p>Каждая мелодия игры заново сделана новой моделью ElevenLabs Music v2.5 по тому же заданию, что принятая; рядом — принятая сейчас. Громкость у всех одинаковая (−18 LUFS), чтобы сравнивать честно. Тема финала уже на новой модели (c4, ваш выбор) — её здесь нет.</p>
+<p>Отметьте для каждой мелодии, какую оставить. «Принятая сейчас» — ничего не меняется. Если не подходит ничего — «переделать» и пара слов в замечании.</p>
+<div id="banner" class="note">Загружаю отметки…</div>
+</header>
+<section data-slot="bgm_title"><h2>Титул</h2>
+<div class="moment"><p><b>bgm_title.</b> Главное меню: фон «Три плаката», логотип с «II» из труб. Принята v5 прежней модели: загадочный, чуть жутковатый весёлый джаз.</p></div>
+<div class="opts"><div class="opt"><input type="radio" name="bgm_title" id="bgm_title-cur" value="cur"><label for="bgm_title-cur">принятая сейчас (v1)</label><audio controls preload="none" src="listen/bgm_title_cur.mp3"></audio></div>
+<div class="opt"><input type="radio" name="bgm_title" id="bgm_title-v25_1" value="v25_1"><label for="bgm_title-v25_1">новая модель, 1</label><audio controls preload="none" src="listen/bgm_title_v25_1.mp3"></audio></div>
+<div class="opt"><input type="radio" name="bgm_title" id="bgm_title-v25_2" value="v25_2"><label for="bgm_title-v25_2">новая модель, 2</label><audio controls preload="none" src="listen/bgm_title_v25_2.mp3"></audio></div>
+<div class="opt"><input type="radio" name="bgm_title" id="bgm_title-redo" value="redo"><label for="bgm_title-redo">ничего не подходит — переделать</label></div></div>
+<label class="note" for="bgm_title-note">Замечание (необязательно)</label>
+<textarea id="bgm_title-note" data-note="bgm_title" placeholder="например: темп побыстрее, без тромбона"></textarea>
+<div class="state" data-state="bgm_title"></div></section>
+<section data-slot="bgm_hotel"><h2>Отель (W1–W2)</h2>
+<div class="moment"><p><b>bgm_hotel.</b> Номер 317 и вестибюль, Акты I–II: главная уютная тема, свинг с кларнетом и флейтой.</p></div>
+<div class="opts"><div class="opt"><input type="radio" name="bgm_hotel" id="bgm_hotel-cur" value="cur"><label for="bgm_hotel-cur">принятая сейчас (v1)</label><audio controls preload="none" src="listen/bgm_hotel_cur.mp3"></audio></div>
+<div class="opt"><input type="radio" name="bgm_hotel" id="bgm_hotel-v25_1" value="v25_1"><label for="bgm_hotel-v25_1">новая модель, 1</label><audio controls preload="none" src="listen/bgm_hotel_v25_1.mp3"></audio></div>
+<div class="opt"><input type="radio" name="bgm_hotel" id="bgm_hotel-v25_2" value="v25_2"><label for="bgm_hotel-v25_2">новая модель, 2</label><audio controls preload="none" src="listen/bgm_hotel_v25_2.mp3"></audio></div>
+<div class="opt"><input type="radio" name="bgm_hotel" id="bgm_hotel-redo" value="redo"><label for="bgm_hotel-redo">ничего не подходит — переделать</label></div></div>
+<label class="note" for="bgm_hotel-note">Замечание (необязательно)</label>
+<textarea id="bgm_hotel-note" data-note="bgm_hotel" placeholder="например: темп побыстрее, без тромбона"></textarea>
+<div class="state" data-state="bgm_hotel"></div></section>
+<section data-slot="bgm_service"><h2>Служебные коридоры (W3–W4)</h2>
+<div class="moment"><p><b>bgm_service.</b> Прачечная и зал прекраснодушия: ленивый уютный блюз, фагот и кларнет.</p></div>
+<div class="opts"><div class="opt"><input type="radio" name="bgm_service" id="bgm_service-cur" value="cur"><label for="bgm_service-cur">принятая сейчас (v1)</label><audio controls preload="none" src="listen/bgm_service_cur.mp3"></audio></div>
+<div class="opt"><input type="radio" name="bgm_service" id="bgm_service-v25_1" value="v25_1"><label for="bgm_service-v25_1">новая модель, 1</label><audio controls preload="none" src="listen/bgm_service_v25_1.mp3"></audio></div>
+<div class="opt"><input type="radio" name="bgm_service" id="bgm_service-v25_2" value="v25_2"><label for="bgm_service-v25_2">новая модель, 2</label><audio controls preload="none" src="listen/bgm_service_v25_2.mp3"></audio></div>
+<div class="opt"><input type="radio" name="bgm_service" id="bgm_service-redo" value="redo"><label for="bgm_service-redo">ничего не подходит — переделать</label></div></div>
+<label class="note" for="bgm_service-note">Замечание (необязательно)</label>
+<textarea id="bgm_service-note" data-note="bgm_service" placeholder="например: темп побыстрее, без тромбона"></textarea>
+<div class="state" data-state="bgm_service"></div></section>
+<section data-slot="bgm_deep"><h2>Чудовище из глубины</h2>
+<div class="moment"><p><b>bgm_deep.</b> Спуск под юбкой тележки и начало Акта IV, пока игрок ждёт чудовище; обрывается при появлении Кухтулху. Вариант 3 — «e» из первого круга, тоже новая модель.</p></div>
+<div class="opts"><div class="opt"><input type="radio" name="bgm_deep" id="bgm_deep-cur" value="cur"><label for="bgm_deep-cur">принятая сейчас (v1, вариант a)</label><audio controls preload="none" src="listen/bgm_deep_cur.mp3"></audio></div>
+<div class="opt"><input type="radio" name="bgm_deep" id="bgm_deep-v25_1" value="v25_1"><label for="bgm_deep-v25_1">новая модель, 1</label><audio controls preload="none" src="listen/bgm_deep_v25_1.mp3"></audio></div>
+<div class="opt"><input type="radio" name="bgm_deep" id="bgm_deep-v25_2" value="v25_2"><label for="bgm_deep-v25_2">новая модель, 2</label><audio controls preload="none" src="listen/bgm_deep_v25_2.mp3"></audio></div>
+<div class="opt"><input type="radio" name="bgm_deep" id="bgm_deep-v25_3" value="v25_3"><label for="bgm_deep-v25_3">новая модель, 3 (бывший e)</label><audio controls preload="none" src="listen/bgm_deep_v25_3.mp3"></audio></div>
+<div class="opt"><input type="radio" name="bgm_deep" id="bgm_deep-redo" value="redo"><label for="bgm_deep-redo">ничего не подходит — переделать</label></div></div>
+<label class="note" for="bgm_deep-note">Замечание (необязательно)</label>
+<textarea id="bgm_deep-note" data-note="bgm_deep" placeholder="например: темп побыстрее, без тромбона"></textarea>
+<div class="state" data-state="bgm_deep"></div></section>
+<section data-slot="bgm_below"><h2>Пещера Кухтулху (W5–W6)</h2>
+<div class="moment"><p><b>bgm_below.</b> После появления Кухтулху: лукавая медленная хабанера. Принята v9 прежней модели.</p></div>
+<div class="opts"><div class="opt"><input type="radio" name="bgm_below" id="bgm_below-cur" value="cur"><label for="bgm_below-cur">принятая сейчас (v1, v9)</label><audio controls preload="none" src="listen/bgm_below_cur.mp3"></audio></div>
+<div class="opt"><input type="radio" name="bgm_below" id="bgm_below-v25_1" value="v25_1"><label for="bgm_below-v25_1">новая модель, 1</label><audio controls preload="none" src="listen/bgm_below_v25_1.mp3"></audio></div>
+<div class="opt"><input type="radio" name="bgm_below" id="bgm_below-v25_2" value="v25_2"><label for="bgm_below-v25_2">новая модель, 2</label><audio controls preload="none" src="listen/bgm_below_v25_2.mp3"></audio></div>
+<div class="opt"><input type="radio" name="bgm_below" id="bgm_below-redo" value="redo"><label for="bgm_below-redo">ничего не подходит — переделать</label></div></div>
+<label class="note" for="bgm_below-note">Замечание (необязательно)</label>
+<textarea id="bgm_below-note" data-note="bgm_below" placeholder="например: темп побыстрее, без тромбона"></textarea>
+<div class="state" data-state="bgm_below"></div></section>
+<section data-slot="mus_hold"><h2>Музыка ожидания</h2>
+<div class="moment"><p><b>mus_hold.</b> Автоответчик стойки в Акте I: «оставайтесь на линии». Принята версия из сэмплера; новые — ElevenLabs, пропущены через ту же «трубку».</p></div>
+<div class="opts"><div class="opt"><input type="radio" name="mus_hold" id="mus_hold-cur" value="cur"><label for="mus_hold-cur">принятая сейчас (сэмплер)</label><audio controls preload="none" src="listen/mus_hold_cur.mp3"></audio></div>
+<div class="opt"><input type="radio" name="mus_hold" id="mus_hold-v25_1" value="v25_1"><label for="mus_hold-v25_1">новая модель, 1</label><audio controls preload="none" src="listen/mus_hold_v25_1.mp3"></audio></div>
+<div class="opt"><input type="radio" name="mus_hold" id="mus_hold-v25_2" value="v25_2"><label for="mus_hold-v25_2">новая модель, 2</label><audio controls preload="none" src="listen/mus_hold_v25_2.mp3"></audio></div>
+<div class="opt"><input type="radio" name="mus_hold" id="mus_hold-redo" value="redo"><label for="mus_hold-redo">ничего не подходит — переделать</label></div></div>
+<label class="note" for="mus_hold-note">Замечание (необязательно)</label>
+<textarea id="mus_hold-note" data-note="mus_hold" placeholder="например: темп побыстрее, без тромбона"></textarea>
+<div class="state" data-state="mus_hold"></div></section>
+<section data-slot="sting_solved"><h2>Стингер «загадка решена»</h2>
+<div class="moment"><p><b>sting_solved.</b> Короткое «ура», когда Лапидус сдвинул дело.</p></div>
+<div class="opts"><div class="opt"><input type="radio" name="sting_solved" id="sting_solved-cur" value="cur"><label for="sting_solved-cur">принятая сейчас (v1, вариант 2)</label><audio controls preload="none" src="listen/sting_solved_cur.mp3"></audio></div>
+<div class="opt"><input type="radio" name="sting_solved" id="sting_solved-v25_1" value="v25_1"><label for="sting_solved-v25_1">новая модель, 1</label><audio controls preload="none" src="listen/sting_solved_v25_1.mp3"></audio></div>
+<div class="opt"><input type="radio" name="sting_solved" id="sting_solved-v25_2" value="v25_2"><label for="sting_solved-v25_2">новая модель, 2</label><audio controls preload="none" src="listen/sting_solved_v25_2.mp3"></audio></div>
+<div class="opt"><input type="radio" name="sting_solved" id="sting_solved-redo" value="redo"><label for="sting_solved-redo">ничего не подходит — переделать</label></div></div>
+<label class="note" for="sting_solved-note">Замечание (необязательно)</label>
+<textarea id="sting_solved-note" data-note="sting_solved" placeholder="например: темп побыстрее, без тромбона"></textarea>
+<div class="state" data-state="sting_solved"></div></section>
+<section data-slot="sting_relic"><h2>Стингер «реликвия»</h2>
+<div class="moment"><p><b>sting_relic.</b> Найдена одна из трёх старых вещей хозяйки низа.</p></div>
+<div class="opts"><div class="opt"><input type="radio" name="sting_relic" id="sting_relic-cur" value="cur"><label for="sting_relic-cur">принятая сейчас (v1, вариант 1)</label><audio controls preload="none" src="listen/sting_relic_cur.mp3"></audio></div>
+<div class="opt"><input type="radio" name="sting_relic" id="sting_relic-v25_1" value="v25_1"><label for="sting_relic-v25_1">новая модель, 1</label><audio controls preload="none" src="listen/sting_relic_v25_1.mp3"></audio></div>
+<div class="opt"><input type="radio" name="sting_relic" id="sting_relic-v25_2" value="v25_2"><label for="sting_relic-v25_2">новая модель, 2</label><audio controls preload="none" src="listen/sting_relic_v25_2.mp3"></audio></div>
+<div class="opt"><input type="radio" name="sting_relic" id="sting_relic-redo" value="redo"><label for="sting_relic-redo">ничего не подходит — переделать</label></div></div>
+<label class="note" for="sting_relic-note">Замечание (необязательно)</label>
+<textarea id="sting_relic-note" data-note="sting_relic" placeholder="например: темп побыстрее, без тромбона"></textarea>
+<div class="state" data-state="sting_relic"></div></section>
+<section data-slot="sting_water"><h2>Стингер «пуск воды»</h2>
+<div class="moment"><p><b>sting_water.</b> Маховик повёрнут, по зданию идёт выдох; оркестровый разворот поверх.</p></div>
+<div class="opts"><div class="opt"><input type="radio" name="sting_water" id="sting_water-cur" value="cur"><label for="sting_water-cur">принятая сейчас (v1, вариант 2)</label><audio controls preload="none" src="listen/sting_water_cur.mp3"></audio></div>
+<div class="opt"><input type="radio" name="sting_water" id="sting_water-v25_1" value="v25_1"><label for="sting_water-v25_1">новая модель, 1</label><audio controls preload="none" src="listen/sting_water_v25_1.mp3"></audio></div>
+<div class="opt"><input type="radio" name="sting_water" id="sting_water-v25_2" value="v25_2"><label for="sting_water-v25_2">новая модель, 2</label><audio controls preload="none" src="listen/sting_water_v25_2.mp3"></audio></div>
+<div class="opt"><input type="radio" name="sting_water" id="sting_water-redo" value="redo"><label for="sting_water-redo">ничего не подходит — переделать</label></div></div>
+<label class="note" for="sting_water-note">Замечание (необязательно)</label>
+<textarea id="sting_water-note" data-note="sting_water" placeholder="например: темп побыстрее, без тромбона"></textarea>
+<div class="state" data-state="sting_water"></div></section>
+<section><h2>Тема финала c4 — петля готова</h2>
+<div class="moment"><p><b>bgm_epilogue.</b> Ваш выбор c4 (мультяшный джаз, новая модель) заменит прежнюю тему эпилога и зазвучит с первого кадра финального монтажа. Вырезана петля 91 с; шов — 12 секунд конца и 12 секунд начала подряд, склейка на 0:12. Если шов слышен, напишите в чат.</p></div>
+<div class="grid"><article class="card"><span class="name">петля c4</span><audio controls preload="none" src="listen/bgm_epilogue_c4_loop.mp3"></audio></article>
+<article class="card demo"><span class="name">проверка шва</span><audio controls preload="none" src="listen/seam_bgm_epilogue_c4.mp3"></audio></article></div>
+</section>
+<footer>Новые темы — пока сырые исходники длиной 90 с (титул 60 с, музыка ожидания 30 с); петли с бесшовным швом режу после вашего выбора, как с принятыми. Подробности — work/audio/candidates/s5_v25_1012/README.md.</footer>
+</div>
+<script>
+const SLOTS = ["bgm_title", "bgm_hotel", "bgm_service", "bgm_deep", "bgm_below", "mus_hold", "sting_solved", "sting_relic", "sting_water"];
+const banner = document.getElementById('banner');
+const queue = {};
+function say(slot, text, cls) { const el = document.querySelector('[data-state="' + slot + '"]'); el.textContent = text; el.className = 'state ' + (cls || ''); }
+function current(slot) {
+  const r = document.querySelector('input[name="' + slot + '"]:checked');
+  return { choice: r ? r.value : null, comment: document.getElementById(slot + '-note').value.trim() };
+}
+async function start() {
+  let db = null;
+  try { db = window.claude ? await window.claude.use('db') : null; } catch (e) { db = null; }
+  if (!db) { banner.textContent = 'Отметки на этой странице сейчас не сохраняются (страница открыта не в claude.ai или без входа). Напишите выбор в чат.'; return; }
+  banner.textContent = 'Отметки сохраняются сами, сразу после выбора; замечание — когда уходите из поля. Claude прочитает их отсюда.';
+  function save(slot) {
+    const body = Object.assign(current(slot), { at: new Date().toISOString() });
+    say(slot, 'Сохраняю…');
+    queue[slot] = (queue[slot] || Promise.resolve()).then(() => db.doc('picks/' + slot).set(body))
+      .then(() => say(slot, 'Сохранено', 'ok'))
+      .catch(e => say(slot, 'Не сохранилось: ' + (e && e.code === 'permission_denied' ? 'нет прав на запись' : 'ошибка связи, выберите ещё раз'), 'err'));
+  }
+  SLOTS.forEach(slot => {
+    document.querySelectorAll('input[name="' + slot + '"]').forEach(r => r.addEventListener('change', () => save(slot)));
+    document.getElementById(slot + '-note').addEventListener('change', () => save(slot));
+  });
+  db.collection('picks').onSnapshot(snap => {
+    snap.docs.forEach(d => {
+      if (!SLOTS.includes(d.id)) return;
+      const v = d.data() || {};
+      if (v.choice) { const r = document.getElementById(d.id + '-' + v.choice); if (r) r.checked = true; }
+      const ta = document.getElementById(d.id + '-note');
+      if (document.activeElement !== ta && typeof v.comment === 'string') ta.value = v.comment;
+      if (!d.metadata.hasPendingWrites && v.choice) say(d.id, 'Сохранено', 'ok');
+    });
+  }, () => { banner.textContent = 'Связь с хранилищем отметок прервалась. Обновите страницу.'; });
+}
+start();
+</script>
