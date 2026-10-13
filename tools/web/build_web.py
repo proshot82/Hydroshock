@@ -117,7 +117,7 @@ def act_data(acts):
         def effs(es):
             for e in es:
                 for k in ("sfx", "loop", "stop", "music", "amb"):
-                    if k in e:
+                    if k in e and not (k == "music" and e[k] == "стоп"):   # «музыка:стоп» — обрыв, не файл
                         audio.add(e[k])
                 if "frame" in e:
                     for f in e["frame"]:

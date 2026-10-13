@@ -142,7 +142,9 @@ class MergeTest(unittest.TestCase):
         self.assertIn("Z01.plunger.look", report["edit"])
         # 12.10.2026 — правка автора SEQ.peek.3_lobby («не вполне голые»), толпа раздета (спека §1.4)
         self.assertIn("SEQ.peek.3_lobby", report["edit"])
-        self.assertEqual(len(report["edit"]), 39)
+        # 13.10.2026 — разбор игры: строка автора в OPEN.1_voucher, коридор и лифт (SEQ.peek.1/2)
+        self.assertIn("SEQ.peek.2_lift", report["edit"])
+        self.assertEqual(len(report["edit"]), 41)
         # Z01.plunger.pull (новый слот, раньше — «по правилам ТЗ») теперь из правки автора
         self.assertEqual(sorted(report["rule"]), [])
         self.assertIn("Z01.plunger.pull", report["edit"])

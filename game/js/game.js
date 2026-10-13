@@ -43,6 +43,9 @@ let docsPanel = null;     // {items}
 let endCard = null;
 let dryPortrait = false;
 let lastPointer = null;
+const CUT_PAUSE = 700;    // мс тишины между обрывом музыки и гидроударом
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
 const masks = new Map();  // слой → альфа для попадания
 const log = [];           // журнал для автотестов: слоты по порядку
 
@@ -65,7 +68,9 @@ export async function start(actData, state) {
   preloadAct();
   if (st.ended) { showEnd(); return; }
   if (fresh && data.scenes.open) {
-    enterView(st.view, false);
+    // музыку вступления ставит сама сцена, если у неё своя тема
+    const own = data.scenes.open.some((s) => s.sound.some((e) => e.music) || s.effects.some((e) => e.music));
+    enterView(st.view, false, !own);
     await runScript(async () => { await runScene("open"); });
   } else {
     enterView(st.view, false);
@@ -102,11 +107,14 @@ function viewMusic(vid) {
   return { music, amb };
 }
 
-function enterView(vid, sound = true) {
+function enterView(vid, sound = true, withMusic = true) {
   if (!data.views[vid]) return;
   const prev = st.view;
   st.view = vid;
   verbMenu = null;
+  // экранные флаги `scr_*` живут, пока игрок на этом виде (шторка тележки, каскад)
+  if (prev !== vid) for (const f of [...st.flags]) if (f.startsWith("scr_")) st.flags.delete(f);
+  if (!withMusic) return;
   const m = viewMusic(vid);
   audio.music(m.music || null);
   audio.ambience(m.amb || null);
@@ -196,6 +204,11 @@ async function runScene(name) {
     const before = { flags: [...st.flags].sort().join(",") };
     const frames = step.frames.filter((f) => Array.isArray(f));
     frame = frames.length ? frames : null;
+    // «музыка:стоп» — обрыв музыки и амбиента, миг тишины, потом звуки шага (гидроудар в тишине)
+    const mus = [...step.sound, ...step.effects].find((e) => e.music);
+    if (mus && mus.music === "стоп") { audio.cut(); await sleep(CUT_PAUSE); }
+    else if (mus) audio.music(mus.music);
+    else if (step.frames.some((f) => !Array.isArray(f) && f.view)) restoreViewSound();
     applyNow(step.sound);
     applyNow(step.effects);
     if (step.effects.some((e) => e.portrait)) {
@@ -208,6 +221,13 @@ async function runScene(name) {
     changed(before);
   }
   frame = null;
+  restoreViewSound();
+}
+
+function restoreViewSound() {
+  const m = viewMusic(st.view);
+  audio.music(m.music || null);
+  audio.ambience(m.amb || null);
 }
 
 async function openDoc(docId) {

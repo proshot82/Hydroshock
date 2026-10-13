@@ -1,0 +1,128 @@
+{
+ "chunks": [
+  {
+   "text": "[Lazy Resort Theme]\n[Instrumental]",
+   "duration_ms": 30000,
+   "positive_styles": [
+    "instrumental, no vocals",
+    "quirky point-and-click adventure game soundtrack",
+    "clear hummable main melody",
+    "warm vintage small live band recording",
+    "82 BPM",
+    "lazy laid-back bossa nova",
+    "vibraphone plays the melody",
+    "nylon-string guitar",
+    "soft flute",
+    "brushed snare and shaker",
+    "upright bass",
+    "sunny seaside holiday afternoon",
+    "major key, carefree"
+   ],
+   "negative_styles": [
+    "vocals",
+    "singing",
+    "humming",
+    "choir",
+    "spoken word",
+    "electronic beats",
+    "heavy drums",
+    "horror"
+   ],
+   "context_adherence": "high",
+   "conditioning_ref": null,
+   "condition_strength": null
+  },
+  {
+   "text": "[Lazy Resort Theme]\n[Instrumental]",
+   "duration_ms": 30000,
+   "positive_styles": [
+    "instrumental, no vocals",
+    "quirky point-and-click adventure game soundtrack",
+    "clear hummable main melody",
+    "warm vintage small live band recording",
+    "82 BPM",
+    "lazy laid-back bossa nova",
+    "vibraphone plays the melody",
+    "nylon-string guitar",
+    "soft flute",
+    "brushed snare and shaker",
+    "upright bass",
+    "sunny seaside holiday afternoon",
+    "major key, carefree"
+   ],
+   "negative_styles": [
+    "vocals",
+    "singing",
+    "humming",
+    "choir",
+    "spoken word",
+    "electronic beats",
+    "heavy drums",
+    "horror"
+   ],
+   "context_adherence": "high",
+   "conditioning_ref": null,
+   "condition_strength": null
+  },
+  {
+   "text": "[Anxious Variation]\n[Instrumental]",
+   "duration_ms": 30000,
+   "positive_styles": [
+    "instrumental, no vocals",
+    "quirky point-and-click adventure game soundtrack",
+    "clear hummable main melody",
+    "warm vintage small live band recording",
+    "100 BPM",
+    "the same melody in a minor key",
+    "nervous but comedic",
+    "pizzicato strings",
+    "bassoon and clarinet trade the melody",
+    "ticking woodblock",
+    "cartoon suspense, playful worry, not scary"
+   ],
+   "negative_styles": [
+    "vocals",
+    "singing",
+    "humming",
+    "choir",
+    "spoken word",
+    "electronic beats",
+    "heavy drums",
+    "horror"
+   ],
+   "context_adherence": "high",
+   "conditioning_ref": null,
+   "condition_strength": null
+  },
+  {
+   "text": "[Anxious Variation]\n[Instrumental]",
+   "duration_ms": 30000,
+   "positive_styles": [
+    "instrumental, no vocals",
+    "quirky point-and-click adventure game soundtrack",
+    "clear hummable main melody",
+    "warm vintage small live band recording",
+    "100 BPM",
+    "the same melody in a minor key",
+    "nervous but comedic",
+    "pizzicato strings",
+    "bassoon and clarinet trade the melody",
+    "ticking woodblock",
+    "cartoon suspense, playful worry, not scary"
+   ],
+   "negative_styles": [
+    "vocals",
+    "singing",
+    "humming",
+    "choir",
+    "spoken word",
+    "electronic beats",
+    "heavy drums",
+    "horror"
+   ],
+   "context_adherence": "high",
+   "conditioning_ref": null,
+   "condition_strength": null
+  }
+ ]
+}

@@ -92,7 +92,7 @@
 | `Z03.stars.look.folded` | `zoom:Z03` ∧ `stars_folded` | — | — |
 | `Z03.stars.pull` | `zoom:Z03` ∧ ¬`knows_stars_fold`, отломать | — (D18) | — |
 | `Z03.stars.fold` | `zoom:Z03` ∧ `knows_stars_fold` ∧ ¬`stars_folded` | A06_fold_stars | `stars_folded`, `plate_revealed` |
-| `Z03.plate.look` | `zoom:Z03` ∧ `plate_revealed` | — → `DOC.plate` | — |
+| `Z03.plate.look` | `zoom:Z03` ∧ шторка отодвинута (экранное состояние, снимается при уходе с зума; разбор автора 13.10.2026) | — → `DOC.plate` | — |
 | `Z03.skirt.look` | `zoom:Z03` ∧ ¬`knows_trolley_chamber` | — | — |
 | `Z03.skirt.use` | `zoom:Z03` ∧ ¬`knows_trolley_chamber` | A04_try_skirt | `knows_trolley_chamber` |
 | `Z03.skirt.use.again` | `zoom:Z03` ∧ `knows_trolley_chamber`, снять юбку | — | — |
@@ -110,8 +110,8 @@
 | `Z03.under.no_flow` | залезть под тележку ∧ `foam_class_closed` ∧ ¬`knows_foam_flow` | — | — |
 | `Z03.under.no_call` | залезть под тележку ∧ `knows_foam_flow` ∧ ¬`reception_called` | — (D21) | — |
 | `Z03.under.stars` | залезть под тележку ∧ остальные условия A08 ∧ ¬`stars_folded` (проверки идут в этом порядке: no_peek, no_wash, no_flow, no_call, stars) | — (D17) | — |
-| `SEQ.peek.1_corridor` | выйти из W1 без тележки ∧ ¬`need_cover` ∧ `shock_done` — кадр 1 | A07_peek_lobby | — |
-| `SEQ.peek.2_lift` | A07, кадр 2 | A07_peek_lobby | — |
+| `SEQ.peek.1_corridor` | выйти из W1 без тележки ∧ ¬`need_cover` ∧ `shock_done`, первый раз; дальше коридор — экран, лифт — по щелчку игрока (разбор автора 13.10.2026) | — | — |
+| `SEQ.peek.2_lift` | в коридоре щелчок по служебному лифту, первый раз; дальше панель лифта — экран, A07 — по кнопке «Вестибюль» | — | — |
 | `SEQ.peek.3_lobby` | A07, кадр 3 | A07_peek_lobby | `crowd_seen`, `cascade_dry_seen`, `poster_seen`, `knows_bath_day`, `iz_folder_seen` |
 | `SEQ.peek.4_waiter` | A07, кадр 4 | A07_peek_lobby | `knows_waiter_call` |
 | `SEQ.peek.5_back` | A07, кадр 5 | A07_peek_lobby | `need_cover` |

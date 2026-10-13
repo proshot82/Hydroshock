@@ -193,15 +193,34 @@ function check(ok, msg) {
   check(has(s, "knows_stars_fold") && lastSlot(s) === "Z03.stars.look", "осмотр звёзд — «МИНУС четыре звезды» (A05)");
   s = await verb("stars", "сложить");
   check(has(s, "stars_folded"), "звёзды сложены (A06)");
+  check(!s.zones.some((z) => z.id === "plate"), "табличку под юбкой не видно, пока шторка задвинута");
   s = await verb("skirt", "снять_юбку");
-  check(has(s, "knows_trolley_chamber"), "юбку не снять — внутри пусто (A04)");
-  s = await verb("skirt", "пластина");
+  check(has(s, "knows_trolley_chamber") && has(s, "scr_skirt_open"), "юбку не снять, шторка отъехала — внутри пусто (A04)");
+  check(s.zones.some((z) => z.id === "plate"), "шторка отодвинута — видна табличка на раме");
+  check(!(await hasVerb("skirt", "отодвинуть")), "«отодвинуть шторку» скрыто, пока она отодвинута");
+  s = await look("plate");
   check(s.log.includes("DOC.plate"), "пластина водолечебницы (DOC.plate)");
   await snap("z03_after");
   s = await back();
-  // P03: разведка
+  check(!has(s, "scr_skirt_open"), "ушёл с зума — шторка снова задвинута (экранный флаг снят)");
+  s = await go("trolley_f");
+  check(!s.zones.some((z) => z.id === "plate"), "вернулся к тележке — таблички не видно");
+  s = await verb("skirt", "отодвинуть");
+  check(has(s, "scr_skirt_open") && s.zones.some((z) => z.id === "plate"), "«отодвинуть шторку» — табличка снова видна");
+  s = await back();
+  // P03: разведка — игрок сам выходит в коридор, идёт к лифту и жмёт «Вестибюль»
   s = await verb("door", "выйти");
-  check(has(s, "need_cover") && s.log.includes("SEQ.peek.5_back") && s.view === "W1", "разведка: коридор, лифт, вестибюль, назад (A07)");
+  check(s.view === "C1" && lastSlot(s) === "SEQ.peek.1_corridor" && !has(s, "need_cover"), "дверь → коридор (SEQ.peek.1), дальше — сам игрок");
+  await snap("c1_corridor");
+  s = await back();
+  check(s.view === "W1", "из коридора можно вернуться в номер");
+  s = await verb("door", "выйти");
+  check(s.view === "C1" && s.log.filter((x) => x === "SEQ.peek.1_corridor").length === 1, "второй выход в коридор — без повтора реплики");
+  s = await go("lift");
+  check(s.view === "L1" && lastSlot(s) === "SEQ.peek.2_lift", "щелчок по лифту → панель лифта (SEQ.peek.2)");
+  await snap("l1_lift");
+  s = await go("lobby");
+  check(has(s, "need_cover") && s.log.includes("SEQ.peek.5_back") && s.view === "W1", "кнопка «Вестибюль» → вестибюль из кабины, назад в номер (A07)");
   s = await verb("door", "выйти");
   check(lastSlot(s) === "W1.door.again", "выйти голым ещё раз — W1.door.again");
   // проезд

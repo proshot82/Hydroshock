@@ -11,6 +11,8 @@
 - **Правила одной зоны и глагола** проверяются сверху вниз, срабатывает первое с истинным условием; пункт меню виден, если хоть одно правило глагола истинно.
 - **Слот:** id слота текстов; `@группа` — выбрать слот из «Цепочек»; `—` — без реплик.
 - **Эффекты** через запятую: `+флаг`, `-флаг`; `pos=…`; `probe+`, `call+`; `вид:ВИД`; `док:DOC.x`; `сцена:ИМЯ`; `меню:ИМЯ`; `цепочка:ИМЯ` (после реплик слота); `звук:ИМЯ`; `музыка:ИМЯ` (на время слота); `кадр:слой+слой…` (картинка на время слота); `акт:N`; `портрет:сухой` (Лапидус без пены — только `OPEN.1_voucher`).
+- **Экранный флаг** `scr_…` — состояние экрана, а не сюжета (отодвинутая шторка тележки): ставится и снимается эффектами, как флаг графа, но движок снимает все экранные флаги, когда игрок уходит с вида (решение автора 13.10.2026, «да на все» по Р7). В графе их нет.
+- **Музыка в сценах:** `музыка:ИМЯ` в шаге сцены — тема с этого шага до конца сцены или до шага «как вид»; `музыка:стоп` — обрыв музыки и амбиента, миг тишины (0,7 с), потом звуки шага (гидроудар в тишине — решение автора 13.10.2026).
 - **Где** у зоны: `x,y,w,h` (несколько через `;`) или `слой ИМЯ` — по непрозрачным пикселям слоя. Зоны-слои лежат поверх прямоугольных; среди равных первой ловит меньшая.
 
 ## Виды
@@ -21,6 +23,8 @@
 | Z01 | зум | zooms/zoom_z01 | W1 | — | — |
 | Z02 | зум | zooms/zoom_z02 | W1 | — | — |
 | Z03 | зум | zooms/zoom_z03 | W1 | — | — |
+| C1 | экран | frames/fr_a1_corridor | W1 | — | — |
+| L1 | экран | frames/fr_a1_lift_panel | C1 | — | — |
 | W2u | экран | rooms/room_w2_under | — | bgm_hotel | amb_lobby |
 | W2s | кадр | frames/fr_a1_under_service | — | bgm_hotel | amb_lobby |
 
@@ -44,6 +48,8 @@
 | Z02 | st_z02_menu | ¬has_menu_card |
 | Z03 | st_z03_juice_empty | shown(PROBE.juice) |
 | Z03 | st_z03_stars_folded | stars_folded |
+| Z03 | st_z03_skirt_open | scr_skirt_open ∧ ¬stars_folded |
+| Z03 | st_z03_skirt_open_folded | scr_skirt_open ∧ stars_folded |
 | W2u | st_w2u_crowd | ¬trolley_service_side |
 | W2u | ov_skirt |  |
 | W2s | ov_skirt |  |
@@ -77,11 +83,15 @@
 | Z03 | pot | Кофейник | 430,30,290,220 | act |  |  |
 | Z03 | cup | Чашка | 560,250,220,170 | act |  |  |
 | Z03 | juice | Стакан сока | 770,110,100,230 | act |  |  |
-| Z03 | cloche | Колпак | 860,70,360,280;1180,260,280,170 | act |  |  |
+| Z03 | cloche | Колпак | 860,70,360,280 | act |  |  |
 | Z03 | napkin | Салфетка | 850,370,280,130 | act |  |  |
 | Z03 | stars | Звёзды | 300,450,1300,160 | act |  |  |
 | Z03 | skirt | Юбка тележки | 280,610,1350,390 | act |  |  |
 | Z03 | handle | Тележка | 1480,60,240,400 | act |  |  |
+| Z03 | plate | Латунная табличка | 720,600,230,100 | look | scr_skirt_open |  |
+| C1 | lift | Служебный лифт | 800,300,190,270 | move |  |  |
+| C1 | room | Назад в номер 317 | 1560,60,360,900 | move |  |  |
+| L1 | lobby | Кнопка «Вестибюль» | 790,495,220,100 | act |  |  |
 | W2u | crowd | Толпа | 300,60,1320,880 | act | ¬trolley_service_side |  |
 | W2u | counter | Стойка | 1240,430,280,330 | act |  |  |
 | W2u | lobby | Вестибюль за толпой | 1060,80,200,160 | act |  |  |
@@ -93,7 +103,8 @@
 | Зона | Глагол | Условие | Слот | Граф | Эффекты |
 |---|---|---|---|---|---|
 | W1.door | осмотр |  | W1.door.look | A12_inspect_room | +room_bare_seen, +knows_bath_day, док:DOC.bathday |
-| W1.door | выйти | ¬need_cover | — | A07_peek_lobby | сцена:peek |
+| W1.door | выйти | ¬need_cover ∧ ¬shown(SEQ.peek.1_corridor) | SEQ.peek.1_corridor | — | кадр:frames/fr_a1_corridor, вид:C1 |
+| W1.door | выйти | ¬need_cover | — | — | вид:C1 |
 | W1.door | выйти | need_cover | W1.door.again | — |  |
 | W1.hooks | осмотр |  | W1.hooks | A12_inspect_room | +room_bare_seen |
 | W1.bed | осмотр |  | W1.bed | A12_inspect_room | +room_bare_seen |
@@ -107,6 +118,10 @@
 | W1.cistern | осмотр |  | W1.cistern.look | — |  |
 | W1.cistern | облиться | foam_active ∧ ¬foam_class_closed | PROBE.cistern | A02f_probe_cistern | +foam_class_closed, +foam_swollen, +knows_soap_grip, звук:sfx_foam_swell, цепочка:probe_rule |
 | W1.cistern | облиться | foam_class_closed | @probe_repeat | — |  |
+| C1.lift | клик | ¬shown(SEQ.peek.2_lift) | SEQ.peek.2_lift | — | кадр:frames/fr_a1_lift_panel, вид:L1 |
+| C1.lift | клик |  | — | — | вид:L1 |
+| C1.room | клик |  | — | — | вид:W1 |
+| L1.lobby | клик | ¬need_cover | — | A07_peek_lobby | звук:sfx_lift_down, сцена:peek |
 | Z01.head | осмотр |  | Z01.head.look | — |  |
 | Z01.head | включить | ¬shown(Z01.head.use) | Z01.head.use | — | звук:sfx_shower_sigh |
 | Z01.head | включить | shown(Z01.head.use) | Z01.head.use.repeat | — | звук:sfx_shower_sigh |
@@ -158,11 +173,10 @@
 | Z03.stars | сложить | knows_stars_fold ∧ ¬stars_folded | Z03.stars.fold | A06_fold_stars | +stars_folded, звук:sfx_stars_fold |
 | Z03.skirt | осмотр | ¬knows_trolley_chamber | Z03.skirt.look | — |  |
 | Z03.skirt | осмотр | knows_trolley_chamber | Z03.skirt.look.after | — |  |
-| Z03.skirt | снять_юбку | ¬knows_trolley_chamber ∧ ¬stars_folded | Z03.skirt.use | A04_try_skirt | +knows_trolley_chamber, +plate_revealed, кадр:zooms/zoom_z03+st_z03_skirt_open |
-| Z03.skirt | снять_юбку | ¬knows_trolley_chamber ∧ stars_folded | Z03.skirt.use | A04_try_skirt | +knows_trolley_chamber, +plate_revealed, кадр:zooms/zoom_z03+st_z03_skirt_open_folded |
+| Z03.skirt | снять_юбку | ¬knows_trolley_chamber | Z03.skirt.use | A04_try_skirt | +knows_trolley_chamber, +plate_revealed, +scr_skirt_open |
 | Z03.skirt | снять_юбку | knows_trolley_chamber | Z03.skirt.use.again | — |  |
-| Z03.skirt | пластина | plate_revealed ∧ ¬stars_folded | Z03.plate.look | — | док:DOC.plate, кадр:zooms/zoom_z03+st_z03_skirt_open |
-| Z03.skirt | пластина | plate_revealed ∧ stars_folded | Z03.plate.look | — | док:DOC.plate, кадр:zooms/zoom_z03+st_z03_skirt_open_folded |
+| Z03.skirt | отодвинуть | knows_trolley_chamber ∧ ¬scr_skirt_open | — | — | +scr_skirt_open |
+| Z03.plate | осмотр |  | Z03.plate.look | — | док:DOC.plate |
 | Z03.skirt | под_тележку | trolley_at_crowd | — | — | сцена:drive_again |
 | Z03.skirt | под_тележку | ¬need_cover | Z03.under.no_peek | — |  |
 | Z03.skirt | под_тележку | ¬foam_class_closed | Z03.under.no_wash | — |  |
@@ -214,13 +228,11 @@
 
 | Сцена | Слот | Кадр | Звук | Эффекты |
 |---|---|---|---|---|
-| open | OPEN.1_voucher | frames/fr_a1_voucher |  | портрет:сухой |
+| open | OPEN.1_voucher | frames/fr_a1_voucher | музыка:bgm_hotel | портрет:сухой |
 | open | OPEN.2_shower | zooms/zoom_z01+st_z01_head_running+st_z01_plunger | петля:sfx_shower_run |  |
-| open | OPEN.3_shock | zooms/zoom_z01+st_z01_plunger | стоп:sfx_shower_run, sfx_shock_thud |  |
+| open | OPEN.3_shock | zooms/zoom_z01+st_z01_plunger | музыка:стоп, стоп:sfx_shower_run, sfx_shock_thud |  |
 | open | OPEN.4_after | вид:W1 |  |  |
 | open | OPEN.5_anc | вид:W1 |  |  |
-| peek | SEQ.peek.1_corridor | frames/fr_a1_corridor |  |  |
-| peek | SEQ.peek.2_lift | frames/fr_a1_lift_panel |  |  |
 | peek | SEQ.peek.3_lobby | frames/fr_a1_lobby_peek | sfx_pa_chime, амбиент:amb_lobby | +crowd_seen, +cascade_dry_seen, +poster_seen, +knows_bath_day, +iz_folder_seen |
 | peek | SEQ.peek.4_waiter | frames/fr_a1_lobby_waiter | sfx_crowd_part | +knows_waiter_call |
 | peek | SEQ.peek.5_back | frames/fr_a1_lift_close |  | +need_cover, вид:W1 |

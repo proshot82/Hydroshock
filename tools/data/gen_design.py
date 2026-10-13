@@ -91,7 +91,7 @@ def build(act):
             err(where, str(e))
             return None
         for f in L.cond_flags(tree):
-            if f not in gflags:
+            if f not in gflags and not L.is_screen(f):
                 err(where, f"флаг «{f}» не из графа")
         for s in L.cond_slots(tree):
             if s not in texts:
@@ -146,11 +146,11 @@ def build(act):
             return []
         for e in effs:
             for k in ("add", "remove"):
-                if k in e and e[k] not in gflags:
+                if k in e and e[k] not in gflags and not L.is_screen(e[k]):
                     err(where, f"флаг «{e[k]}» не из графа")
             if "sfx" in e or "loop" in e or "stop" in e or "music" in e or "amb" in e:
                 nm = e.get("sfx") or e.get("loop") or e.get("stop") or e.get("music") or e.get("amb")
-                if not (AUDIO / f"{nm}.ogg").is_file():
+                if not (e.get("music") == "стоп" or (AUDIO / f"{nm}.ogg").is_file()):
                     err(where, f"звука {nm}.ogg нет")
             if "frame" in e:
                 e["frame"] = frame(e["frame"], where)

@@ -147,6 +147,8 @@ class Sim:
                 later.append(e)
         for e in later:
             if "view" in e:
+                if e["view"] != st["view"]:
+                    L.drop_screen(st["flags"])
                 st["view"] = e["view"]
                 st["menu"] = None
             elif "scene" in e:
@@ -233,6 +235,7 @@ class Sim:
         if view["parent"]:
             st2 = self.copy(st)
             st2["view"] = view["parent"]
+            L.drop_screen(st2["flags"])
             out.append(("назад", st2))
         return out
 

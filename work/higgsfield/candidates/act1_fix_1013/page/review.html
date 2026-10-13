@@ -1,0 +1,144 @@
+<title>Гидроудар: разбор Акта I</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Old+Standard+TT:wght@400;700&family=PT+Sans:wght@400;700&family=PT+Mono&display=swap">
+<style>
+/* Лист приёмки конторы водолечебницы: латунь и мокрый кафель; одна колонка карточек-звуков */
+:root{
+  --bg:#e9efed; --paper:#f8faf8; --fg:#1d2826; --muted:#56655f; --line:#c7d3ce;
+  --brass:#8c6118; --brass-soft:#efe1c3; --deep:#1f4a52; --deep-soft:#d6e6e8; --bad:#9b3326;
+  --display:"Old Standard TT",Georgia,"Times New Roman",serif;
+  --body:"PT Sans","Segoe UI",Arial,sans-serif;
+  --mono:"PT Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121a1a; --paper:#1a2524; --fg:#e4ebe8; --muted:#9aaba5; --line:#2f3f3d;
+  --brass:#d8a650; --brass-soft:#3a2f1a; --deep:#8cc5cc; --deep-soft:#1d3336; --bad:#e58b7c; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121a1a; --paper:#1a2524; --fg:#e4ebe8; --muted:#9aaba5; --line:#2f3f3d;
+  --brass:#d8a650; --brass-soft:#3a2f1a; --deep:#8cc5cc; --deep-soft:#1d3336; --bad:#e58b7c; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:16px/1.55 var(--body);margin:0}
+.wrap{max-width:760px;margin:0 auto;padding-inline:16px;padding-block:28px 56px;display:grid;gap:28px}
+h1,h2{font-family:var(--display);font-weight:700;text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:2rem} h2{font-size:1.45rem;color:var(--brass)}
+p{margin:0;max-width:65ch}
+.lead{display:grid;gap:10px}
+.note{color:var(--muted);font-size:.93rem}
+section{display:grid;gap:14px}
+.moment{background:var(--deep-soft);border-left:3px solid var(--deep);padding:12px 14px;border-radius:2px;display:grid;gap:6px}
+.moment b{color:var(--deep)}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:14px;display:grid;gap:8px;min-width:0}
+.head{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:baseline}
+.name{font-family:var(--mono);font-size:.95rem;color:var(--brass);font-weight:700}
+.tag{font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.card h3{margin:0;font-family:var(--display);font-size:1.15rem}
+.card p{font-size:.95rem}
+audio{width:100%;height:40px}
+.demo{border-color:var(--deep);border-style:dashed}
+.rej{color:var(--bad);font-size:.9rem}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+footer{color:var(--muted);font-size:.88rem;border-top:1px solid var(--line);padding-top:14px}
+
+.opts{display:grid;gap:8px}
+.opt{display:grid;grid-template-columns:auto 1fr;gap:6px 10px;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:10px 12px;min-width:0}
+.opt:has(input:checked){border-color:var(--brass);box-shadow:inset 3px 0 0 var(--brass)}
+.opt input{width:20px;height:20px;accent-color:var(--brass);margin:0}
+.opt label{font-weight:700;cursor:pointer}
+.opt .tag{grid-column:2}
+.opt audio{grid-column:1 / -1}
+textarea{width:100%;box-sizing:border-box;min-height:56px;font:inherit;color:var(--fg);background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:8px}
+textarea:focus-visible,.opt input:focus-visible{outline:2px solid var(--deep);outline-offset:2px}
+.state{font-size:.85rem;color:var(--muted);min-height:1.2em}
+.state.ok{color:var(--deep)} .state.err{color:var(--bad)}
+#banner{background:var(--brass-soft);border:1px solid var(--brass);border-radius:4px;padding:10px 12px}
+.wrap{max-width:980px}
+figure{margin:0;display:grid;gap:4px;min-width:0}
+figure img{width:100%;height:auto;border:1px solid var(--line);border-radius:2px;display:block}
+figcaption{font-size:.85rem;color:var(--muted)}
+.pair{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.line{font-size:.95rem;background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:10px 12px;display:grid;gap:4px}
+.line .who{font-family:var(--mono);font-size:.8rem;color:var(--brass)}
+.line.old{opacity:.75}
+.line.old .txt{text-decoration:line-through;text-decoration-color:var(--muted)}
+h1.step{font-size:1.6rem}
+</style>
+<div class="wrap">
+<header class="lead">
+<h1>Разбор Акта I: что поправлено</h1>
+<p>Ваши замечания от 13.10.2026 по первой игре в Акт I. Всё, что меняет логику, уже в игре по прежней ссылке: юбка-шторка остаётся отодвинутой, пока вы у тележки (табличку видно только тогда); коридор и лифт — экраны, куда игрок идёт сам; музыка обрывается перед ударом. Картинки и музыка ниже — кандидаты: в игру уйдут после вашего выбора и «да».</p>
+<div id="banner" class="note">Загружаю отметки…</div>
+</header>
+<h1 class="step">Картинки</h1>
+<section data-slot="voucher"><h2>Первый кадр: путёвка в голых руках</h2><div class="moment"><p><b>Что не так было.</b> На самом первом кадре игры Лапидус держит путёвку в рукавах пиджака и манжетах рубашки, а портрет рядом уже голый, и через секунду он в душе. Вы предложили: путёвку он держит уже голыми руками.</p><p><b>Что сделано.</b> Кадр перерисован по образцу: всё как было, только руки голые до локтя. Два варианта, отличаются положением рук.</p></div><div class="pair"><figure><img src="img/voucher_0.webp" alt="было: рукава пиджака" loading="lazy"><figcaption>было: рукава пиджака</figcaption></figure><figure><img src="img/voucher_a.webp" alt="вариант А" loading="lazy"><figcaption>вариант А</figcaption></figure><figure><img src="img/voucher_b.webp" alt="вариант Б" loading="lazy"><figcaption>вариант Б</figcaption></figure></div><div class="opts"><div class="opt"><input type="radio" name="voucher" id="voucher-a" value="a"><label for="voucher-a">вариант А</label></div>
+<div class="opt"><input type="radio" name="voucher" id="voucher-b" value="b"><label for="voucher-b">вариант Б</label></div>
+<div class="opt"><input type="radio" name="voucher" id="voucher-redo" value="redo"><label for="voucher-redo">оба не годятся — переделать</label></div></div><label class="note" for="voucher-note">Замечание (необязательно)</label><textarea id="voucher-note" data-note="voucher" placeholder="например: руки покороче, путёвку ближе"></textarea><div class="state" data-state="voucher"></div></section>
+<section data-slot="dispenser"><h2>Флакон с дозатором в душе: надпись на этикетке</h2><div class="moment"><p><b>Что не так было.</b> На флаконе в душе пустая этикетка, хотя вся завязка держится на этой пене: «премиум»-концентрат, который не смывается порциями.</p><p><b>Что сделано.</b> На этикетке напечатано «ПЕНА · концентрат · «премиум»» шрифтами игры, с лёгким размытием, чтобы надпись выглядела нарисованной, а не наклеенной поверх. Буквы проверены по одной.</p></div><div class="pair"><figure><img src="img/disp_0.webp" alt="было: пустая этикетка" loading="lazy"><figcaption>было: пустая этикетка</figcaption></figure><figure><img src="img/disp_1.webp" alt="стало" loading="lazy"><figcaption>стало</figcaption></figure></div><figure><img src="img/disp_full.webp" alt="весь кадр душевой панели" loading="lazy"><figcaption>весь кадр душевой панели</figcaption></figure><div class="opts"><div class="opt"><input type="radio" name="dispenser" id="dispenser-ok" value="ok"><label for="dispenser-ok">так хорошо</label></div>
+<div class="opt"><input type="radio" name="dispenser" id="dispenser-redo" value="redo"><label for="dispenser-redo">переделать</label></div></div><label class="note" for="dispenser-note">Замечание (необязательно)</label><textarea id="dispenser-note" data-note="dispenser" placeholder="например: только «ПРЕМИУМ», крупнее"></textarea><div class="state" data-state="dispenser"></div></section>
+<section data-slot="croissant"><h2>Круассан под колпаком</h2><div class="moment"><p><b>Что не так было.</b> Текст говорит «под колпаком один круассан», а на картинке круассан лежит рядом на тарелке; и зона круассана называлась «Колпак». Здесь побеждает замороженная сдача Акта I: шутка «колпак прикрывает круассан, а не меня» (D16) держится на том, что круассан под колпаком. Поэтому исправлена картинка, а не текст.</p><p><b>Что сделано.</b> Тарелка с круассаном убрана с подноса на всех трёх картинках с тележкой (зум тележки и два слоя тележки в номере). Зона «Колпак» теперь только на колпаке. Вариант А оставляет на подносе пустое латунное блюдо, вариант Б — чистый поднос с еле заметным бликом.</p></div><div class="pair"><figure><img src="img/z03_0.webp" alt="было" loading="lazy"><figcaption>было</figcaption></figure><figure><img src="img/z03_a.webp" alt="вариант А: пустое блюдо" loading="lazy"><figcaption>вариант А: пустое блюдо</figcaption></figure><figure><img src="img/z03_b.webp" alt="вариант Б: чистый поднос" loading="lazy"><figcaption>вариант Б: чистый поднос</figcaption></figure></div><div class="pair"><figure><img src="img/z03_open_b.webp" alt="Б со сложенными звёздами и отодвинутой шторкой" loading="lazy"><figcaption>Б со сложенными звёздами и отодвинутой шторкой</figcaption></figure><figure><img src="img/w1_0.webp" alt="тележка в номере: было" loading="lazy"><figcaption>тележка в номере: было</figcaption></figure><figure><img src="img/w1_b.webp" alt="в номере, Б" loading="lazy"><figcaption>в номере, Б</figcaption></figure><figure><img src="img/w1_fb.webp" alt="в номере, звёзды сложены, Б" loading="lazy"><figcaption>в номере, звёзды сложены, Б</figcaption></figure></div><div class="opts"><div class="opt"><input type="radio" name="croissant" id="croissant-a" value="a"><label for="croissant-a">вариант А (пустое блюдо)</label></div>
+<div class="opt"><input type="radio" name="croissant" id="croissant-b" value="b"><label for="croissant-b">вариант Б (чистый поднос)</label></div>
+<div class="opt"><input type="radio" name="croissant" id="croissant-redo" value="redo"><label for="croissant-redo">не так — переделать</label></div></div><label class="note" for="croissant-note">Замечание (необязательно)</label><textarea id="croissant-note" data-note="croissant" placeholder="например: пусть круассан всё-таки останется, а текст поменять"></textarea><div class="state" data-state="croissant"></div></section>
+<section data-slot="snow"><h2>Вестибюль из лифта: «снег»</h2><div class="moment"><p><b>Что не так было.</b> На двух кадрах вестибюля (Лапидус выглядывает из лифта; официант с тележкой) по волосам, лицам и мрамору рассыпаны белые и тёмные точки — след многократных перегенераций.</p><p><b>Что сделано.</b> Отдельные точки найдены программой (крошечные пятна, резко отличающиеся от соседей) и заменены цветом окружения. Контуры и штрихи рисунка не тронуты. Ниже — самые «заснеженные» места крупно, было и стало, и оба кадра целиком.</p></div><div class="pair"><figure><img src="img/fr_a1_lobby_peek_0_0.webp" alt="толпа: было" loading="lazy"><figcaption>толпа: было</figcaption></figure><figure><img src="img/fr_a1_lobby_peek_0_1.webp" alt="толпа: стало" loading="lazy"><figcaption>толпа: стало</figcaption></figure></div><div class="pair"><figure><img src="img/fr_a1_lobby_peek_1_0.webp" alt="толпа, другое место: было" loading="lazy"><figcaption>толпа, другое место: было</figcaption></figure><figure><img src="img/fr_a1_lobby_peek_1_1.webp" alt="стало" loading="lazy"><figcaption>стало</figcaption></figure></div><div class="pair"><figure><img src="img/fr_a1_lobby_waiter_0_0.webp" alt="официант: было" loading="lazy"><figcaption>официант: было</figcaption></figure><figure><img src="img/fr_a1_lobby_waiter_0_1.webp" alt="официант: стало" loading="lazy"><figcaption>официант: стало</figcaption></figure></div><div class="pair"><figure><img src="img/fr_a1_lobby_peek_full.webp" alt="кадр «из лифта» целиком, стало" loading="lazy"><figcaption>кадр «из лифта» целиком, стало</figcaption></figure><figure><img src="img/fr_a1_lobby_waiter_full.webp" alt="кадр с официантом целиком, стало" loading="lazy"><figcaption>кадр с официантом целиком, стало</figcaption></figure></div><div class="opts"><div class="opt"><input type="radio" name="snow" id="snow-ok" value="ok"><label for="snow-ok">так хорошо</label></div>
+<div class="opt"><input type="radio" name="snow" id="snow-redo" value="redo"><label for="snow-redo">мало — перерисовать кадры заново</label></div></div><label class="note" for="snow-note">Замечание (необязательно)</label><textarea id="snow-note" data-note="snow" placeholder="например: на лицах ещё видны точки"></textarea><div class="state" data-state="snow"></div></section>
+<h1 class="step">Музыка вступления</h1>
+<section data-slot="music"><h2>Курортная тема, обрыв, гидроудар, тревожная вариация</h2><div class="moment"><p><b>Что вы просили.</b> В номере в начале — что-то более вальяжно-курортное. За мгновение до гидроудара музыка обрывается, удар звучит в тишине. После него — вариация той же темы, тревожнее, но всё ещё с юмором.</p><p><b>Как сделано.</b> Каждое демо собрано так, как будет в игре: курортная тема (38 с) → обрыв → 0,7 с тишины → удар из игры → вариация. Вариация сделана новой моделью ElevenLabs «по образцу» — ей дают кусок самой темы, и она играет её же, другими инструментами и с другим настроением. «Свободнее» — образец держит слабее: мелодия узнаётся меньше, зато настроение меняется сильнее. Описания — по заданию и анализу спектра, не на слух: решает ваше ухо. Я проверил тональность программой: во всех вариациях, кроме гавайской «ещё свободнее», остался мажор, тревогу дают инструменты и темп. Если нужен явный минор — скажите, сделаю следующий круг.</p><p><b>В игре уже работает</b> (по ссылке на игру): обрыв музыки и звука номера перед ударом, удар в тишине, потом тема номера входит плавно. Пока на старой теме — новая встанет после вашего выбора.</p></div><div class="opts"><div class="opt"><input type="radio" name="music" id="music-p1_bossa" value="p1_bossa"><label for="music-p1_bossa">Ленивая босса-нова — 1</label><span class="tag">вибрафон, нейлоновая гитара, флейта, щётки</span><audio controls preload="none" src="audio/demo_p1_bossa.mp3"></audio></div>
+<div class="opt"><input type="radio" name="music" id="music-p1_bossa_b" value="p1_bossa_b"><label for="music-p1_bossa_b">Ленивая босса-нова — 2</label><span class="tag">вибрафон, нейлоновая гитара, флейта, щётки</span><audio controls preload="none" src="audio/demo_p1_bossa_b.mp3"></audio></div>
+<div class="opt"><input type="radio" name="music" id="music-p1_bossa_b_medium" value="p1_bossa_b_medium"><label for="music-p1_bossa_b_medium">Ленивая босса-нова — 2, вариация свободнее</label><span class="tag">вибрафон, нейлоновая гитара, флейта, щётки</span><audio controls preload="none" src="audio/demo_p1_bossa_b_medium.mp3"></audio></div>
+<div class="opt"><input type="radio" name="music" id="music-p1_bossa_b_low" value="p1_bossa_b_low"><label for="music-p1_bossa_b_low">Ленивая босса-нова — 2, вариация ещё свободнее</label><span class="tag">вибрафон, нейлоновая гитара, флейта, щётки</span><audio controls preload="none" src="audio/demo_p1_bossa_b_low.mp3"></audio></div>
+<div class="opt"><input type="radio" name="music" id="music-p2_hawaii" value="p2_hawaii"><label for="music-p2_hawaii">Гавайский шезлонг — 1</label><span class="tag">гавайская гитара с глиссандо, укулеле, маримба</span><audio controls preload="none" src="audio/demo_p2_hawaii.mp3"></audio></div>
+<div class="opt"><input type="radio" name="music" id="music-p2_hawaii_medium" value="p2_hawaii_medium"><label for="music-p2_hawaii_medium">Гавайский шезлонг — 1, вариация свободнее</label><span class="tag">гавайская гитара с глиссандо, укулеле, маримба</span><audio controls preload="none" src="audio/demo_p2_hawaii_medium.mp3"></audio></div>
+<div class="opt"><input type="radio" name="music" id="music-p2_hawaii_low" value="p2_hawaii_low"><label for="music-p2_hawaii_low">Гавайский шезлонг — 1, вариация ещё свободнее</label><span class="tag">гавайская гитара с глиссандо, укулеле, маримба</span><audio controls preload="none" src="audio/demo_p2_hawaii_low.mp3"></audio></div>
+<div class="opt"><input type="radio" name="music" id="music-p2_hawaii_b" value="p2_hawaii_b"><label for="music-p2_hawaii_b">Гавайский шезлонг — 2</label><span class="tag">гавайская гитара с глиссандо, укулеле, маримба</span><audio controls preload="none" src="audio/demo_p2_hawaii_b.mp3"></audio></div>
+<div class="opt"><input type="radio" name="music" id="music-p3_sanatorium" value="p3_sanatorium"><label for="music-p3_sanatorium">Черноморский санаторий 60-х — 1</label><span class="tag">аккордеон, мандолина, вибрафон, кларнет — эстрада советского курорта</span><audio controls preload="none" src="audio/demo_p3_sanatorium.mp3"></audio></div>
+<div class="opt"><input type="radio" name="music" id="music-p3_sanatorium_b" value="p3_sanatorium_b"><label for="music-p3_sanatorium_b">Черноморский санаторий 60-х — 2</label><span class="tag">аккордеон, мандолина, вибрафон, кларнет — эстрада советского курорта</span><audio controls preload="none" src="audio/demo_p3_sanatorium_b.mp3"></audio></div>
+<div class="opt"><input type="radio" name="music" id="music-p3_sanatorium_b_medium" value="p3_sanatorium_b_medium"><label for="music-p3_sanatorium_b_medium">Черноморский санаторий 60-х — 2, вариация свободнее</label><span class="tag">аккордеон, мандолина, вибрафон, кларнет — эстрада советского курорта</span><audio controls preload="none" src="audio/demo_p3_sanatorium_b_medium.mp3"></audio></div>
+<div class="opt"><input type="radio" name="music" id="music-p3_sanatorium_b_low" value="p3_sanatorium_b_low"><label for="music-p3_sanatorium_b_low">Черноморский санаторий 60-х — 2, вариация ещё свободнее</label><span class="tag">аккордеон, мандолина, вибрафон, кларнет — эстрада советского курорта</span><audio controls preload="none" src="audio/demo_p3_sanatorium_b_low.mp3"></audio></div>
+<div class="opt"><input type="radio" name="music" id="music-redo" value="redo"><label for="music-redo">ничего не подходит — новый круг</label></div></div><label class="note" for="music-note">Замечание (необязательно)</label><textarea id="music-note" data-note="music" placeholder="например: тема из 2-го, вариация из 1-го; темп медленнее"></textarea><div class="state" data-state="music"></div></section>
+<section data-slot="music_scope"><h2>Где звучит тревожная вариация</h2><div class="moment"><p>Сейчас в номере и вестибюле (Акты I–II) играет одна тема отеля. Тревожная вариация может её заменить, или звучать только в Акте I после удара, а в Акте II вернётся прежняя тема отеля.</p><p><b>Мой совет:</b> заменить в Акте I, а в Акте II оставить прежнюю тему отеля: к середине игры Лапидус уже освоился, тревога сменяется азартом.</p></div><div class="opts"><div class="opt"><input type="radio" name="music_scope" id="music_scope-act1" value="act1"><label for="music_scope-act1">вариация только в Акте I, в Акте II — прежняя тема отеля (совет)</label></div>
+<div class="opt"><input type="radio" name="music_scope" id="music_scope-all" value="all"><label for="music_scope-all">вариация вместо темы отеля везде (Акты I–II)</label></div>
+<div class="opt"><input type="radio" name="music_scope" id="music_scope-redo" value="redo"><label for="music_scope-redo">по-другому — напишу</label></div></div><label class="note" for="music_scope-note">Замечание (необязательно)</label><textarea id="music_scope-note" data-note="music_scope" placeholder=""></textarea><div class="state" data-state="music_scope"></div></section>
+<h1 class="step">Тексты</h1>
+<section data-slot="txt_open"><h2>Переход к душу: ваша строка</h2><div class="moment"><p>После слов о путёвке добавлена ваша строка; ТЗ Акта I для этого слота расширено до четырёх реплик.</p></div><div class="line"><span class="who">Лапидус</span><span class="txt">Пятнадцать лет без больничных. Имею право.</span></div><div class="line"><span class="who">Лапидус</span><span class="txt">Что ж, всю одежду в стирку, Лапидуса — в чистку.</span></div><div class="opts"><div class="opt"><input type="radio" name="txt_open" id="txt_open-ok" value="ok"><label for="txt_open-ok">так</label></div>
+<div class="opt"><input type="radio" name="txt_open" id="txt_open-redo" value="redo"><label for="txt_open-redo">поправить</label></div></div><label class="note" for="txt_open-note">Замечание (необязательно)</label><textarea id="txt_open-note" data-note="txt_open" placeholder=""></textarea><div class="state" data-state="txt_open"></div></section>
+<section data-slot="txt_stars"><h2>Как Лапидус понимает, что звёзды складываются</h2><div class="moment"><p><b>Что не так было.</b> Вторая реплика при осмотре звёзд говорила только «звёзды на петлях» — игроку непонятно, откуда вывод, что их можно сложить. По ТЗ здесь нужна улика: петли и потёртые дуги на бортике.</p><p><b>Что сделано.</b> Добавлены дуги: бортик протёрт, значит звёзды откидывали не раз. Ваша шутка про звезду в петличку осталась. На картинке петли видны у каждой звезды.</p></div><div class="line old"><span class="who">Лапидус — было</span><span class="txt">Звёзды на петлях. За такую наблюдательность мне звезду в петличку.</span></div><div class="line"><span class="who">Лапидус</span><span class="txt">Стоп, звёзды-то на петлях. И бортик под ними протёрт дугами: их откидывали, и не раз. За такую наблюдательность мне звезду в петличку.</span></div><div class="opts"><div class="opt"><input type="radio" name="txt_stars" id="txt_stars-ok" value="ok"><label for="txt_stars-ok">так</label></div>
+<div class="opt"><input type="radio" name="txt_stars" id="txt_stars-redo" value="redo"><label for="txt_stars-redo">поправить</label></div></div><label class="note" for="txt_stars-note">Замечание (необязательно)</label><textarea id="txt_stars-note" data-note="txt_stars" placeholder=""></textarea><div class="state" data-state="txt_stars"></div></section>
+<section data-slot="txt_peek"><h2>Коридор и лифт: теперь игрок идёт сам</h2><div class="moment"><p><b>Что не так было.</b> Выйдя в коридор, Лапидус сам собой заходил в лифт и ехал вниз — и при этом говорил, что к людям не хочет.</p><p><b>Что сделано.</b> Коридор и кабина лифта стали обычными экранами. Щелчок по двери номера — Лапидус выглядывает в коридор; можно вернуться в номер. Щелчок по лифту — он в кабине у панели; можно выйти. Кнопка «Вестибюль» — двери открываются в вестибюль, Лапидус смотрит из кабины и едет обратно. Реплика в лифте теперь объясняет, зачем он едет: только посмотреть, не выходя.</p></div><div class="line"><span class="who">Титр (коридор)</span><span class="txt">Пустой коридор. Ковровая дорожка, двери номеров, в конце служебный лифт.</span></div><div class="line old"><span class="who">Лапидус — было</span><span class="txt">Иду по коридору так, будто на этом этаже такой дресс-код.</span></div><div class="line"><span class="who">Лапидус</span><span class="txt">Никого. Если идти уверенно, все решат, что на этом этаже такой дресс-код.</span></div><div class="line old"><span class="who">Титр (лифт) — было</span><span class="txt">Лифт приехал. На панели только этажи номеров и вестибюль.</span></div><div class="line"><span class="who">Титр (лифт)</span><span class="txt">Служебный лифт приходит сразу. На панели только этажи номеров и вестибюль.</span></div><div class="line old"><span class="who">Лапидус — было</span><span class="txt">Ни прачечной, ни служебных этажей. Только вниз, к людям. А к людям мне сейчас хочется меньше всего.</span></div><div class="line"><span class="who">Лапидус</span><span class="txt">Ни прачечной, ни служебных этажей. Выходить к людям я не собираюсь: доеду до вестибюля, гляну из кабины, что там творится, и сразу обратно.</span></div><div class="opts"><div class="opt"><input type="radio" name="txt_peek" id="txt_peek-ok" value="ok"><label for="txt_peek-ok">так</label></div>
+<div class="opt"><input type="radio" name="txt_peek" id="txt_peek-redo" value="redo"><label for="txt_peek-redo">поправить</label></div></div><label class="note" for="txt_peek-note">Замечание (необязательно)</label><textarea id="txt_peek-note" data-note="txt_peek" placeholder=""></textarea><div class="state" data-state="txt_peek"></div></section>
+<footer>Кандидаты картинок — work/higgsfield/candidates/act1_fix_1013/ (README), музыки — work/audio/candidates/s6_resort_1013/ (README).</footer>
+</div>
+<script>
+const SLOTS = ["voucher", "dispenser", "croissant", "snow", "music", "music_scope", "txt_open", "txt_stars", "txt_peek"];
+const banner = document.getElementById('banner');
+const queue = {};
+function say(slot, text, cls) { const el = document.querySelector('[data-state="' + slot + '"]'); el.textContent = text; el.className = 'state ' + (cls || ''); }
+function current(slot) {
+  const r = document.querySelector('input[name="' + slot + '"]:checked');
+  return { choice: r ? r.value : null, comment: document.getElementById(slot + '-note').value.trim() };
+}
+async function start() {
+  let db = null;
+  try { db = window.claude ? await window.claude.use('db') : null; } catch (e) { db = null; }
+  if (!db) { banner.textContent = 'Отметки на этой странице сейчас не сохраняются (страница открыта не в claude.ai или без входа). Напишите выбор в чат.'; return; }
+  banner.textContent = 'Отметки сохраняются сами, сразу после выбора; замечание — когда уходите из поля. Claude прочитает их отсюда.';
+  function save(slot) {
+    const body = Object.assign(current(slot), { at: new Date().toISOString() });
+    say(slot, 'Сохраняю…');
+    queue[slot] = (queue[slot] || Promise.resolve()).then(() => db.doc('picks/' + slot).set(body))
+      .then(() => say(slot, 'Сохранено', 'ok'))
+      .catch(e => say(slot, 'Не сохранилось: ' + (e && e.code === 'permission_denied' ? 'нет прав на запись' : 'ошибка связи, выберите ещё раз'), 'err'));
+  }
+  SLOTS.forEach(slot => {
+    document.querySelectorAll('input[name="' + slot + '"]').forEach(r => r.addEventListener('change', () => save(slot)));
+    document.getElementById(slot + '-note').addEventListener('change', () => save(slot));
+  });
+  db.collection('picks').onSnapshot(snap => {
+    snap.docs.forEach(d => {
+      if (!SLOTS.includes(d.id)) return;
+      const v = d.data() || {};
+      if (v.choice) { const r = document.getElementById(d.id + '-' + v.choice); if (r) r.checked = true; }
+      const ta = document.getElementById(d.id + '-note');
+      if (document.activeElement !== ta && typeof v.comment === 'string') ta.value = v.comment;
+      if (!d.metadata.hasPendingWrites && v.choice) say(d.id, 'Сохранено', 'ok');
+    });
+  }, () => { banner.textContent = 'Связь с хранилищем отметок прервалась. Обновите страницу.'; });
+}
+start();
+</script>

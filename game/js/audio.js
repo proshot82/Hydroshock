@@ -95,10 +95,30 @@ export async function music(name) {
   const gain = ac.createGain();
   const t = ac.currentTime;
   gain.gain.setValueAtTime(0, t);
-  gain.gain.linearRampToValueAtTime(1, t + (old ? FADE : 0.05));
+  gain.gain.linearRampToValueAtTime(1, t + (old ? FADE : afterCut ? 2 * FADE : 0.05));
+  afterCut = false;
   src.connect(gain).connect(musicBus);
   src.start();
   current = { name, src, gain };
+}
+
+// Оборвать музыку и амбиент разом (за мгновение до гидроудара — решение автора 13.10.2026):
+// короткий спад 60 мс, чтобы без щелчка. Следующая тема после обрыва входит плавно.
+let afterCut = false;
+export function cut() {
+  wanted = null;
+  if (!ac) return;
+  const t = ac.currentTime;
+  for (const m of [current, amb]) {
+    if (!m) continue;
+    m.gain.gain.cancelScheduledValues(t);
+    m.gain.gain.setValueAtTime(m.gain.gain.value, t);
+    m.gain.gain.linearRampToValueAtTime(0, t + 0.06);
+    m.src.stop(t + 0.1);
+  }
+  current = null;
+  amb = null;
+  afterCut = true;
 }
 
 function fadeOut(m) {
