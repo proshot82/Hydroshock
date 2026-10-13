@@ -78,7 +78,7 @@ def ui_texts():
     src = ROOT / "texts" / "ui" / "UI_TEXTS.md"
     out = {}
     for n, line in enumerate(src.read_text(encoding="utf-8").splitlines(), 1):
-        m = re.match(r"([a-z0-9_]+)\s*\|\s*(\S.*)$", line.strip())
+        m = re.match(r"([a-zа-яё0-9_]+)\s*\|\s*(\S.*)$", line.strip())
         if not m:
             continue   # заголовки, пояснения
         k, v = m.group(1), m.group(2).strip()
