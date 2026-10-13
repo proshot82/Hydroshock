@@ -643,7 +643,7 @@ function drawHud() {
   if (quiet) return;
   button(HUD.hint, T.hint_btn, hoverHud === "hint", { stroke: hoverHud === "hint" ? "#b8d4f0" : C.steel, color: "#d6e6f5" });
   button(HUD.docs, T.docs_btn, hoverHud === "docs");
-  button(HUD.menu, "МЕНЮ", hoverHud === "menu");
+  button(HUD.menu, T.menu_btn, hoverHud === "menu");
   if (data.views[st.view].parent) button(HUD.back, T.back.toUpperCase(), hoverHud === "back", { font: '700 30px "PT Sans"' });
 }
 
@@ -749,10 +749,10 @@ function drawEnd() {
   ctx.fillText(T[`act_${endCard.act}`] || "", W / 2, 360);
   ctx.font = '400 36px "PT Sans"';
   ctx.fillStyle = C.text;
-  ctx.fillText(`Конец акта ${data.roman}.`, W / 2, 450);
+  ctx.fillText((T.act_end || "%s").replace("%s", data.roman), W / 2, 450);
   ctx.fillStyle = C.dim;
   const nextT = T[`act_${endCard.act + 1}`];
-  if (nextT) ctx.fillText(`${nextT} — в следующей сборке.`, W / 2, 510);
+  if (nextT) ctx.fillText((T.act_next || "%s").replace("%s", nextT), W / 2, 510);
   button(END_BTN, T.to_title, inRect(lastPointer, END_BTN), { font: '700 34px "PT Sans"' });
 }
 
