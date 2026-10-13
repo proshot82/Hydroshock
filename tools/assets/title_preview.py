@@ -2,12 +2,15 @@
 """Превью титульного экрана: фон + логотип + кнопки меню там, где их нарисует движок.
 
   python tools/assets/title_preview.py ФОН.png ЛОГОТИП.png ПРЕВЬЮ.png
-         [--logo-x 40 --logo-y 30 --logo-w 860] [--btn-x 270 --btn-y 470 --btn-gap 92]
+         [--logo-x 30 --logo-y 30 --logo-w 840] [--btn-x 160 --btn-y 450 --btn-gap 92]
          [--keep X0,Y0,X1,Y1]
 
 Логотип масштабируется до ширины --logo-w (предумноженная альфа). Четыре кнопки 400×72 —
 столбиком от (--btn-x, --btn-y). --keep — прямоугольник, который нельзя перекрывать
 (например, плакаты); скрипт печатает, задевают ли его логотип и кнопки.
+
+По умолчанию — раскладка спеки §10 (решения автора 12.10 и 13.10.2026): логотип в (30, 30),
+кнопки по центру части BJ2 логотипа (x 30 + 330 = 360, «II» не в счёт) — от (160, 450).
 """
 import argparse
 import sys
@@ -23,11 +26,11 @@ def main(argv=None):
     ap.add_argument("bg")
     ap.add_argument("logo")
     ap.add_argument("dst")
-    ap.add_argument("--logo-x", type=int, default=40)
+    ap.add_argument("--logo-x", type=int, default=30)
     ap.add_argument("--logo-y", type=int, default=30)
-    ap.add_argument("--logo-w", type=int, default=860)
-    ap.add_argument("--btn-x", type=int, default=270)
-    ap.add_argument("--btn-y", type=int, default=470)
+    ap.add_argument("--logo-w", type=int, default=840)
+    ap.add_argument("--btn-x", type=int, default=160)
+    ap.add_argument("--btn-y", type=int, default=450)
     ap.add_argument("--btn-gap", type=int, default=92)
     ap.add_argument("--keep")
     a = ap.parse_args(argv)
@@ -40,7 +43,7 @@ def main(argv=None):
     boxes = [("логотип", (a.logo_x, a.logo_y, a.logo_x + a.logo_w, a.logo_y + h))]
     d = ImageDraw.Draw(bg)
     font = ImageFont.truetype(str(ROOT / "assets/fonts/PTSans-Bold.ttf"), 34)
-    for i, t in enumerate(["Начать", "Продолжить", "Настройки", "Выход"]):
+    for i, t in enumerate(["НАЧАТЬ", "ПРОДОЛЖИТЬ", "НАСТРОЙКИ", "ВО ВЕСЬ ЭКРАН"]):
         x, y = a.btn_x, a.btn_y + i * a.btn_gap
         d.rounded_rectangle((x, y, x + 400, y + 72), 12, fill=(34, 34, 42, 235), outline=(200, 160, 80), width=2)
         d.text((x + 200, y + 36), t, font=font, fill=(235, 225, 200), anchor="mm")

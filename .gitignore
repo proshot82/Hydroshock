@@ -5,3 +5,5 @@ review/REVIEW_PACKAGE.zip
 review/REVIEW_PACKAGE.md
 work/higgsfield/raw/
 work/higgsfield/staging/
+dist/
+work/web_cache/
