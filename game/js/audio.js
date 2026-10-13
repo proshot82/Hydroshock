@@ -109,6 +109,57 @@ function fadeOut(m) {
   m.src.stop(t + FADE + 0.05);
 }
 
+// Амбиент экрана (тихая петля под текстом, спека §9.2); null — тишина. Та же — не перезапускается.
+let amb = null;
+const AMB_VOL = 0.55;
+export async function ambience(name) {
+  if (!ac) return;
+  if (amb && amb.name === name) return;
+  const old = amb;
+  amb = null;
+  if (old) fadeOut(old);
+  if (!name) return;
+  const buf = await buffer(name);
+  if (!buf || (amb && amb.name === name)) return;
+  const src = ac.createBufferSource();
+  src.buffer = buf;
+  src.loop = true;
+  const gain = ac.createGain();
+  const t = ac.currentTime;
+  gain.gain.setValueAtTime(0, t);
+  gain.gain.linearRampToValueAtTime(AMB_VOL, t + FADE);
+  src.connect(gain).connect(sfxBus);
+  src.start();
+  amb = { name, src, gain };
+}
+
+// Петля эффекта (душ во вступлении) и её обрыв.
+const loops = new Map();
+export async function loop(name) {
+  if (!ac || loops.has(name)) return;
+  loops.set(name, null);
+  const buf = await buffer(name);
+  if (!buf || !loops.has(name)) return;
+  const src = ac.createBufferSource();
+  src.buffer = buf;
+  src.loop = true;
+  const gain = ac.createGain();
+  src.connect(gain).connect(sfxBus);
+  src.start();
+  loops.set(name, { src, gain });
+}
+
+export function stopLoop(name) {
+  const l = loops.get(name);
+  loops.delete(name);
+  if (l && ac) {
+    const t = ac.currentTime;
+    l.gain.gain.setValueAtTime(l.gain.gain.value, t);
+    l.gain.gain.linearRampToValueAtTime(0, t + 0.08);   // обрыв, а не затухание: воду отрезало
+    l.src.stop(t + 0.1);
+  }
+}
+
 // Эффект; возвращает Promise, который ждёт загрузки (длительность — из файла).
 export async function sfx(name, volume = 1) {
   if (!ac || !settings.sound) return;
@@ -128,5 +179,6 @@ export function isUnlocked() {
 
 // Для автотестов: состояние контекста, что звучит, какой формат выбран.
 export function status() {
-  return { state: ac ? ac.state : "нет", music: current ? current.name : null, format: useOgg ? "ogg" : "mp3" };
+  return { state: ac ? ac.state : "нет", music: current ? current.name : null, amb: amb ? amb.name : null,
+    loops: [...loops.keys()], format: useOgg ? "ogg" : "mp3" };
 }

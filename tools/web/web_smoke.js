@@ -84,10 +84,6 @@ async function clickButton(page, id) {
   await page.waitForTimeout(100);
   check((await page.evaluate(() => document.getElementById("game").style.cursor)).includes("cursor_normal"), "курсор мимо кнопок — cursor_normal");
 
-  await clickButton(page, "start");
-  await page.waitForTimeout(200);
-  await page.screenshot({ path: path.join(OUT, "03_start_toast.png") });
-
   await clickButton(page, "settings");
   const sb = await page.evaluate(() => window.__bj3.buttons());
   check(sb.map((b) => b.id).join(",") === "opt_music,opt_sound,opt_fasttext,back", "панель настроек: музыка, звуки, быстрый текст, назад");

@@ -35,10 +35,13 @@ let hover = null;
 let focus = -1;             // кнопка под клавиатурой
 let toast = null;           // {text, t0}
 let onStart = () => {};
+let onSettingsChange = () => {};
 
 export function init(uiTexts, handlers) {
   T = uiTexts;
   onStart = handlers.onStart || onStart;
+  onSettingsChange = handlers.onSettings || onSettingsChange;
+  onSettingsChange(settings);
   audio.applySettings(settings);
   document.addEventListener("fullscreenchange", () => { /* подпись кнопки сменится в draw */ });
 }
@@ -85,6 +88,34 @@ const OPTS = ["music", "sound", "fasttext"];
 const PANEL = { w: 600, h: 110 + OPTS.length * 68 + 40 + 64 + 44 };
 PANEL.x = (W - PANEL.w) / 2;
 PANEL.y = Math.round((H - PANEL.h) / 2);
+
+const CONFIRM = { w: 760, h: 300 };
+CONFIRM.x = (W - CONFIRM.w) / 2;
+CONFIRM.y = 390;
+
+function layoutConfirm() {
+  return [
+    { id: "yes", t: T.yes, x: CONFIRM.x + 80, y: CONFIRM.y + 190, w: 260, h: 72, enabled: true },
+    { id: "no", t: T.no, x: CONFIRM.x + CONFIRM.w - 340, y: CONFIRM.y + 190, w: 260, h: 72, enabled: true },
+  ];
+}
+
+function drawConfirm() {
+  ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
+  ctx.fillRect(0, 0, W, H);
+  roundRect(CONFIRM.x, CONFIRM.y, CONFIRM.w, CONFIRM.h, 14);
+  ctx.fillStyle = C.panel;
+  ctx.fill();
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = C.brass;
+  ctx.stroke();
+  ctx.font = '400 34px "PT Sans"';
+  ctx.fillStyle = C.text;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(T.new_game_confirm, W / 2, CONFIRM.y + 100);
+  buttons.forEach((b, i) => drawButton(b, hover === b.id || focus === i));
+}
 
 function layoutSettings() {
   const top = PANEL.y + 110;
@@ -213,6 +244,9 @@ export function draw(now) {
   if (mode === "title") {
     buttons = layoutTitle();
     buttons.forEach((b, i) => drawButton(b, b.enabled && (hover === b.id || focus === i)));
+  } else if (mode === "confirm") {
+    buttons = layoutConfirm();
+    drawConfirm();
   } else {
     buttons = layoutSettings();
     drawSettings();
@@ -243,7 +277,17 @@ function activate(b) {
   audio.sfx("ui_click");
   switch (b.id) {
     case "start":
-      onStart();
+      if (store.hasSave()) { mode = "confirm"; focus = -1; hover = null; }
+      else onStart();
+      break;
+    case "yes":
+      mode = "title";
+      onStart({ fresh: true });
+      break;
+    case "no":
+      mode = "title";
+      focus = -1;
+      hover = null;
       break;
     case "cont":
       onStart({ continue: true });
@@ -262,11 +306,7 @@ function activate(b) {
       hover = null;
       break;
     default:
-      if (b.toggle) {
-        settings = { ...settings, [b.toggle]: !settings[b.toggle] };
-        store.saveSettings(settings);
-        audio.applySettings(settings);
-      }
+      if (b.toggle) toggleSetting(b.toggle);
   }
 }
 
@@ -290,11 +330,19 @@ export function key(e) {
       if (focus >= 0 && buttons[focus] && buttons[focus].enabled) activate(buttons[focus]);
       return true;
     case "Escape":
-      if (mode === "settings") { mode = "title"; focus = -1; return true; }
+      if (mode === "settings" || mode === "confirm") { mode = "title"; focus = -1; return true; }
       return false;
     default:
       return false;
   }
+}
+
+export function toggleSetting(k) {
+  settings = { ...settings, [k]: !settings[k] };
+  store.saveSettings(settings);
+  audio.applySettings(settings);
+  onSettingsChange(settings);
+  return settings;
 }
 
 export function getButtons() {

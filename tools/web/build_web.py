@@ -88,6 +88,76 @@ def ui_texts():
     return out
 
 
+def act_data(acts):
+    """Данные движка из файлов логики (tools/data/gen_design.py) и всё, на что они ссылаются."""
+    sys.path.insert(0, str(ROOT / "tools" / "data"))
+    import gen_design as G
+    out, gfx, audio = {}, set(), set()
+    for act in acts:
+        try:
+            d = G.build(act)
+        except G.DesignError as e:
+            sys.exit(f"Акт {act}: ошибки логики —\n  " + "\n  ".join(e.errors))
+        out[act] = d
+
+        def lay(lst):
+            for l in lst:
+                gfx.add(l["img"])
+
+        for v in d["views"].values():
+            gfx.add(v["bg"])
+            lay(v["layers"])
+            for z in v["zones"]:
+                if "layer" in z:
+                    gfx.add(z["layer"]["img"])
+            for k in ("music", "amb"):
+                if v[k]:
+                    audio.add(v[k])
+
+        def effs(es):
+            for e in es:
+                for k in ("sfx", "loop", "stop", "music", "amb"):
+                    if k in e:
+                        audio.add(e[k])
+                if "frame" in e:
+                    for f in e["frame"]:
+                        lay(f)
+
+        for z in d["rules"].values():
+            for rs in z.values():
+                for r in rs:
+                    effs(r["effects"])
+        for g in d["chains"].values():
+            for r in g:
+                effs(r["effects"])
+        for m in d["menus"].values():
+            for it in m:
+                for r in it["rules"]:
+                    effs(r["effects"])
+        for steps in d["scenes"].values():
+            for stp in steps:
+                effs(stp["sound"])
+                effs(stp["effects"])
+                for f in stp["frames"]:
+                    if isinstance(f, list):
+                        lay(f)
+        for it in d["items"].values():
+            gfx.add(it["icon"])
+        for doc in d["docs"].values():
+            gfx.add(doc["carrier"])
+        gfx.update({"docs/stamp_kuh", "docs/stamp_hotel", "docs/mark_thumb"})
+        for t in d["texts"].values():
+            for l in t["lines"]:
+                e = l["e"]
+                if l["s"] in ("lap", "iz", "kuh", "anc") and e and e != "none":
+                    gfx.add(f"portraits/port_{e}")
+                    if e.startswith("lap_soap_"):
+                        gfx.update({f"portraits/port_{e}_foam", f"portraits/port_{e}_cap"})
+    audio.update({"bgm_title", "ui_click", "ui_error", "ui_paper", "ui_pickup", "ui_transition", "ui_zoom_in",
+                  "ui_zoom_out", "blip_lap", "blip_anc", "blip_iz", "blip_kuh", "blip_pa", "blip_guest"})
+    return out, gfx, audio
+
+
 def build_id():
     try:
         rev = subprocess.run(["git", "rev-parse", "--short", "HEAD"], cwd=ROOT,
@@ -101,12 +171,17 @@ def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default=str(ROOT / "dist" / "web"))
     ap.add_argument("--gfx", nargs="*", help="только эти папки assets/gfx (по умолчанию все)")
+    ap.add_argument("--acts", type=int, nargs="*",
+                    help="только эти акты: данные и их ассеты (лёгкая сборка превью); по умолчанию — все акты с логикой")
     ap.add_argument("--serve", type=int, help="после сборки поднять локальный сервер на порту")
     a = ap.parse_args(argv)
     out = Path(a.out)
     if out.exists():
         shutil.rmtree(out)
     shutil.copytree(GAME, out)
+    acts = a.acts or sorted(int(p.name[3]) for p in (ROOT / "design" / "logic").glob("ACT*_LOGIC.md"))
+    acts_data, need_gfx, need_audio = act_data(acts)
+    only = bool(a.acts)
 
     manifest = {"build": build_id(), "gfx": {}, "audio": {}}
     gfx_root = ASSETS / "gfx"
@@ -121,6 +196,8 @@ def main(argv=None):
     for folder in folders:
         for src in sorted((gfx_root / folder).glob("*.png")):
             name = f"{folder}/{src.stem}"
+            if only and folder not in ("ui", "cursors") and name not in need_gfx:
+                continue
             if folder in PNG_AS_IS:
                 rel = f"{folder}/{src.name}"
                 dst = out / "assets" / "gfx" / rel
@@ -137,6 +214,8 @@ def main(argv=None):
 
     n_snd = 0
     for src in sorted((ASSETS / "audio").glob("*.ogg")):
+        if only and src.stem not in need_audio:
+            continue
         dst = out / "assets" / "audio" / src.name
         dst.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(src, dst)
@@ -154,6 +233,13 @@ def main(argv=None):
     data.mkdir(parents=True, exist_ok=True)
     (data / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=1), encoding="utf-8")
     (data / "ui.json").write_text(json.dumps(ui_texts(), ensure_ascii=False, indent=1), encoding="utf-8")
+    for act, d in acts_data.items():
+        (data / f"act{act}.json").write_text(json.dumps(d, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    manifest["acts"] = sorted(acts_data)
+    (data / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=1), encoding="utf-8")
+    missing = sorted(n for n in need_gfx if n not in manifest["gfx"]) + sorted(n for n in need_audio if n not in manifest["audio"])
+    if missing:
+        sys.exit("нет ассетов, на которые ссылаются данные: " + ", ".join(missing))
 
     # Страница для приватного превью на claude.ai: там документ оборачивается в свой
     # каркас (doctype/head/body), поэтому кладём содержимое head и body без обёртки.

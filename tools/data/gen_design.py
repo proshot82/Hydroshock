@@ -49,6 +49,18 @@ def ui_keys():
     return out
 
 
+def speaker_names():
+    """Плашки говорящих — таблицы §5 ТЗ актов: | `id` | ПЛАШКА | …"""
+    out = {}
+    for f in sorted(ROOT.glob("texts/act*/BRIEF_ACT*_TEXTS.md")):
+        for line in f.read_text(encoding="utf-8").splitlines():
+            m = re.match(r"\|\s*`([a-z]+)`\s*\|\s*([^|]+?)\s*\|", line)
+            name = m.group(2).split(" (")[0].strip() if m else ""   # «ГРОМКАЯ СВЯЗЬ (голос Изольды)» → плашка
+            if m and name.isupper() and m.group(1) not in out:
+                out[m.group(1)] = name
+    return out
+
+
 def gfx_exists(name):
     return (GFX / f"{name}.png").is_file()
 
@@ -346,12 +358,25 @@ def build(act):
 
     other = {r["Слот"]: r["Где звучит"] for r in L.table(S, "Прочее")}
 
+    # служебные советы Предка: «Подожди» и первое нажатие есть только в Акте I — в других актах
+    # движок берёт их оттуда (SLOT_FLAGS, Акты II–IV: «та же реплика»)
+    hint_slots = {"intro": "HINT.intro", "cooldown": "HINT.cooldown", "done": "HINT.done"}
+    if act != 1:
+        t1, _ = CT.parse_texts(ROOT / "texts" / "act1" / "ACT1_TEXTS_FINAL.md")
+        for k in ("HINT.intro", "HINT.cooldown"):
+            if k not in out_texts:
+                out_texts[k] = {"lines": [{"s": l["speaker"], "e": l["emotion"], "t": l["text"]} for l in t1[k]["lines"]]}
+    for k, v in hint_slots.items():
+        if v not in out_texts:
+            err(lname, f"нет слота {v} для совета Предка")
+
     data = {
         "act": act, "roman": ROMAN[act], "start_flags": graph["start_flags"], "goal_flags": graph["act_goal_flags"],
         "graph": {a["id"]: {"requires": a["requires"], "adds": a["adds"], "removes": a["removes"],
                             "optional": a["optional"]} for a in graph["actions"]},
         "flags": sorted(gflags), "views": views, "rules": rules, "chains": groups, "scenes": scenes,
-        "menus": menus, "hints": hints, "items": items, "docs": docs, "texts": out_texts, "other": other,
+        "menus": menus, "hints": hints, "hint_slots": hint_slots, "items": items, "docs": docs,
+        "texts": out_texts, "other": other, "speakers": speaker_names(),
     }
     if errors:
         raise DesignError(errors)
