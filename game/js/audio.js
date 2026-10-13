@@ -2,7 +2,7 @@
 // поэтому контекст создаётся в unlock(), который вызывается из обработчика
 // кнопки «Играть». Музыка — петли со сменой через кроссфейд 1,5 с (как в BJ2),
 // эффекты — короткие буферы. Формат: OGG Vorbis, где браузер его не играет
-// (старые Safari) — копия в M4A (AAC), её кладёт сборка.
+// (старые Safari) — копия в MP3, её кладёт сборка.
 
 import { getManifest } from "./assets.js";
 
@@ -44,7 +44,7 @@ function url(name) {
   const m = getManifest();
   const e = m && m.audio[name];
   if (!e) return null;
-  return "assets/audio/" + (useOgg ? e.ogg : e.m4a || e.ogg);
+  return "assets/audio/" + (useOgg ? e.ogg : e.mp3 || e.ogg);
 }
 
 function buffer(name) {
@@ -128,5 +128,5 @@ export function isUnlocked() {
 
 // Для автотестов: состояние контекста, что звучит, какой формат выбран.
 export function status() {
-  return { state: ac ? ac.state : "нет", music: current ? current.name : null, format: useOgg ? "ogg" : "m4a" };
+  return { state: ac ? ac.state : "нет", music: current ? current.name : null, format: useOgg ? "ogg" : "mp3" };
 }

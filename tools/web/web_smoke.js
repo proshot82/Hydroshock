@@ -130,6 +130,23 @@ async function clickButton(page, id) {
       `окно ${w}×${h}: кадр ${Math.round(e.x - c.x)}×${Math.round(e.y - c.y)} от (${c.x.toFixed(1)}, ${c.y.toFixed(1)}), 16:9`);
   }
 
+  // браузер без Vorbis (старые Safari): звук берётся из запасного MP3
+  const ctx2 = await browser.newContext({ viewport: { width: 1280, height: 720 } });
+  await ctx2.addInitScript(() => {
+    const orig = HTMLMediaElement.prototype.canPlayType;
+    HTMLMediaElement.prototype.canPlayType = function (t) { return /ogg/.test(t) ? "" : orig.call(this, t); };
+  });
+  const page2 = await ctx2.newPage();
+  page2.on("pageerror", (e) => errors.push(String(e)));
+  const ready3 = page2.waitForEvent("console", { predicate: (m) => m.text() === "BJ3 READY", timeout: 30000 });
+  await page2.goto(URL);
+  await ready3;
+  await page2.click("#play");
+  await page2.waitForFunction(() => window.__bj3.audio().music === "bgm_title", null, { timeout: 15000 }).catch(() => {});
+  const au2 = await page2.evaluate(() => window.__bj3.audio());
+  check(au2.format === "mp3" && au2.music === "bgm_title", `без Vorbis: формат ${au2.format}, музыка ${au2.music}`);
+  await ctx2.close();
+
   check(errors.length === 0, `ошибок страницы нет${errors.length ? ": " + errors.join(" | ") : ""}`);
   await browser.close();
   console.log(fails.length ? `\nПРОВАЛОВ: ${fails.length}` : "\nWEB SMOKE OK");

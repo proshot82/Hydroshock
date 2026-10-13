@@ -8,7 +8,7 @@
   * assets/gfx/**/*.png → OUT/assets/gfx/**/*.webp: без прозрачности — WebP q90,
     с прозрачностью — WebP q90 с альфой без потерь; курсоры остаются PNG (их рисует
     браузер в CSS). --gfx ui rooms … — только эти папки (быстрая сборка превью);
-  * assets/audio/*.ogg → OUT/assets/audio/ + копия .m4a (AAC) для браузеров без Vorbis;
+  * assets/audio/*.ogg → OUT/assets/audio/ + копия .mp3 для браузеров без Vorbis (старые Safari);
   * assets/fonts/*.ttf и лицензии → OUT/assets/fonts/;
   * OUT/data/manifest.json — имена ассетов → файлы, номер сборки;
   * OUT/data/ui.json — строки интерфейса из texts/ui/UI_TEXTS.md.
@@ -35,7 +35,7 @@ GAME = ROOT / "game"
 ASSETS = ROOT / "assets"
 CACHE = ROOT / "work" / "web_cache"
 WEBP_Q = 90
-AAC_RATE = {"bgm": "160k", "mus": "160k", "amb": "128k"}   # остальное — 96k
+MP3_RATE = {"bgm": "160k", "mus": "160k", "amb": "128k", "sting": "160k"}   # остальное — 96k
 PNG_AS_IS = {"cursors"}   # папки gfx, которые остаются PNG
 
 
@@ -60,15 +60,15 @@ def to_webp(src, dst):
     shutil.copyfile(cached, dst)
 
 
-def to_m4a(src, dst):
-    rate = AAC_RATE.get(src.stem.split("_")[0], "96k")
-    key = sha(src, f"aac{rate}")
-    cached = CACHE / "audio" / f"{key}.m4a"
+def to_mp3(src, dst):
+    rate = MP3_RATE.get(src.stem.split("_")[0], "96k")
+    key = sha(src, f"mp3{rate}")
+    cached = CACHE / "audio" / f"{key}.mp3"
     if not cached.exists():
         cached.parent.mkdir(parents=True, exist_ok=True)
-        tmp = cached.with_suffix(".tmp.m4a")
+        tmp = cached.with_suffix(".tmp.mp3")
         subprocess.run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-i", str(src),
-                        "-c:a", "aac", "-b:a", rate, "-movflags", "+faststart", str(tmp)], check=True)
+                        "-c:a", "libmp3lame", "-b:a", rate, str(tmp)], check=True)
         tmp.replace(cached)
     dst.parent.mkdir(parents=True, exist_ok=True)
     shutil.copyfile(cached, dst)
@@ -140,8 +140,8 @@ def main(argv=None):
         dst = out / "assets" / "audio" / src.name
         dst.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(src, dst)
-        to_m4a(src, dst.with_suffix(".m4a"))
-        manifest["audio"][src.stem] = {"ogg": src.name, "m4a": src.stem + ".m4a"}
+        to_mp3(src, dst.with_suffix(".mp3"))
+        manifest["audio"][src.stem] = {"ogg": src.name, "mp3": src.stem + ".mp3"}
         n_snd += 1
 
     fonts = out / "assets" / "fonts"
