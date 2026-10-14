@@ -17,16 +17,18 @@
 
 ## Виды
 
+Музыка Акта I (решение автора 14.10.2026): до удара — `bgm_resort` (сцена `open`), после удара — тревожная вариация той же темы `bgm_hotel_tense`; в Акте II — снова `bgm_hotel`.
+
 | Вид | Тип | Фон | Родитель | Музыка | Амбиент |
 |---|---|---|---|---|---|
-| W1 | экран | rooms/room_w1 | — | bgm_hotel | amb_room |
+| W1 | экран | rooms/room_w1 | — | bgm_hotel_tense | amb_room |
 | Z01 | зум | zooms/zoom_z01 | W1 | — | — |
 | Z02 | зум | zooms/zoom_z02 | W1 | — | — |
 | Z03 | зум | zooms/zoom_z03 | W1 | — | — |
 | C1 | экран | frames/fr_a1_corridor | W1 | — | — |
 | L1 | экран | frames/fr_a1_lift_panel | C1 | — | — |
-| W2u | экран | rooms/room_w2_under | — | bgm_hotel | amb_lobby |
-| W2s | кадр | frames/fr_a1_under_service | — | bgm_hotel | amb_lobby |
+| W2u | экран | rooms/room_w2_under | — | bgm_hotel_tense | amb_lobby |
+| W2s | кадр | frames/fr_a1_under_service | — | bgm_hotel_tense | amb_lobby |
 
 ## Слои
 
@@ -84,6 +86,7 @@
 | Z03 | cup | Чашка | 560,250,220,170 | act |  |  |
 | Z03 | juice | Стакан сока | 770,110,100,230 | act |  |  |
 | Z03 | cloche | Колпак | 860,70,360,280 | act |  |  |
+| Z03 | egg | Яйцо всмятку | 1190,230,280,200 | look |  |  |
 | Z03 | napkin | Салфетка | 850,370,280,130 | act |  |  |
 | Z03 | stars | Звёзды | 300,450,1300,160 | act |  |  |
 | Z03 | skirt | Юбка тележки | 280,610,1350,390 | act |  |  |
@@ -195,6 +198,7 @@
 | Z03.juice | осмотр |  | Z03.juice.look | — |  |
 | Z03.juice | облиться | foam_active ∧ ¬foam_class_closed | PROBE.juice | A02d_probe_juice | +foam_class_closed, +foam_swollen, +knows_soap_grip, звук:sfx_foam_swell, цепочка:probe_rule |
 | Z03.juice | облиться | foam_class_closed | @probe_repeat | — |  |
+| Z03.egg | осмотр |  | Z03.egg.look | — |  |
 | Z03.cloche | осмотр |  | Z03.cloche.look | — |  |
 | Z03.cloche | прикрыться |  | Z03.cloche.use | — |  |
 | Z03.napkin | осмотр |  | Z03.napkin.look | — |  |
@@ -228,7 +232,7 @@
 
 | Сцена | Слот | Кадр | Звук | Эффекты |
 |---|---|---|---|---|
-| open | OPEN.1_voucher | frames/fr_a1_voucher | музыка:bgm_hotel | портрет:сухой |
+| open | OPEN.1_voucher | frames/fr_a1_voucher | музыка:bgm_resort | портрет:сухой |
 | open | OPEN.2_shower | zooms/zoom_z01+st_z01_head_running+st_z01_plunger | петля:sfx_shower_run |  |
 | open | OPEN.3_shock | zooms/zoom_z01+st_z01_plunger | музыка:стоп, стоп:sfx_shower_run, sfx_shock_thud |  |
 | open | OPEN.4_after | вид:W1 |  |  |

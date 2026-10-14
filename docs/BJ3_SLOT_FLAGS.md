@@ -102,6 +102,7 @@
 | `Z03.juice.look` | `zoom:Z03` ∧ `breakfast_on_trolley` | — | — |
 | `Z03.cloche.look` | `zoom:Z03` ∧ `breakfast_on_trolley` | — | — |
 | `Z03.cloche.use` | `zoom:Z03` ∧ `breakfast_on_trolley`, прикрыться | — (D16) | — |
+| `Z03.egg.look` | `zoom:Z03` ∧ `breakfast_on_trolley` (решение автора 14.10.2026) | — | — |
 | `Z03.napkin.look` | `zoom:Z03` ∧ `breakfast_on_trolley` | — | — |
 | `Z03.napkin.use` | `zoom:Z03`, взять салфетку ∨ `combo(салфетка, пена)` | — (D8) | — |
 | `Z03.porcelain.take` | `zoom:Z03`, взять кофейник или чашку | — (D5) | — |
@@ -110,8 +111,8 @@
 | `Z03.under.no_flow` | залезть под тележку ∧ `foam_class_closed` ∧ ¬`knows_foam_flow` | — | — |
 | `Z03.under.no_call` | залезть под тележку ∧ `knows_foam_flow` ∧ ¬`reception_called` | — (D21) | — |
 | `Z03.under.stars` | залезть под тележку ∧ остальные условия A08 ∧ ¬`stars_folded` (проверки идут в этом порядке: no_peek, no_wash, no_flow, no_call, stars) | — (D17) | — |
-| `SEQ.peek.1_corridor` | выйти из W1 без тележки ∧ ¬`need_cover` ∧ `shock_done`, первый раз; дальше коридор — экран, лифт — по щелчку игрока (разбор автора 13.10.2026) | — | — |
-| `SEQ.peek.2_lift` | в коридоре щелчок по служебному лифту, первый раз; дальше панель лифта — экран, A07 — по кнопке «Вестибюль» | — | — |
+| `SEQ.peek.1_corridor` | выйти из W1 без тележки ∧ ¬`need_cover` ∧ `shock_done`, первый раз; дальше коридор — экран, лифт — по щелчку игрока (разбор автора 13.10.2026) | A07_peek_lobby | — |
+| `SEQ.peek.2_lift` | в коридоре щелчок по служебному лифту, первый раз; дальше панель лифта — экран, A07 — по кнопке «Вестибюль» | A07_peek_lobby | — |
 | `SEQ.peek.3_lobby` | A07, кадр 3 | A07_peek_lobby | `crowd_seen`, `cascade_dry_seen`, `poster_seen`, `knows_bath_day`, `iz_folder_seen` |
 | `SEQ.peek.4_waiter` | A07, кадр 4 | A07_peek_lobby | `knows_waiter_call` |
 | `SEQ.peek.5_back` | A07, кадр 5 | A07_peek_lobby | `need_cover` |

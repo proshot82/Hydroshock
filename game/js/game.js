@@ -87,6 +87,14 @@ function preloadAct() {
     steps.forEach((s) => s.frames.forEach((f) => Array.isArray(f) && f.forEach((l) => names.add(l.img))));
   }
   Object.values(data.items).forEach((i) => names.add(i.icon));
+  // музыка и амбиент акта — заранее, чтобы тема после удара вошла сразу, а не после загрузки
+  const sounds = new Set();
+  for (const v of Object.values(data.views)) [v.music, v.amb].forEach((n) => n && sounds.add(n));
+  for (const steps of Object.values(data.scenes)) steps.forEach((s) => [...s.sound, ...s.effects].forEach((e) => {
+    if (e.music && e.music !== "стоп") sounds.add(e.music);
+    if (e.amb) sounds.add(e.amb);
+  }));
+  audio.preload([...sounds]);
   // сначала то, что на экране, потом остальное
   const v = data.views[st.view];
   [v.bg, ...v.layers.map((l) => l.img)].forEach((n) => loadImage(n).catch(() => {}));

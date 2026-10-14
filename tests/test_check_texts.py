@@ -56,7 +56,7 @@ def before_rules(items):
 class BriefTest(unittest.TestCase):
     def test_brief_parsed(self):
         b = ct.parse_brief(BRIEF)
-        self.assertEqual(len(b), 155)   # ТЗ 1.4 (09.10.2026): добавлен Z01.plunger.pull
+        self.assertEqual(len(b), 156)   # ТЗ 1.4 (09.10.2026): добавлен Z01.plunger.pull; 14.10.2026 — Z03.egg.look
         self.assertEqual(len(ct.parse_brief(FROZEN[1])), 154)
         self.assertEqual(b["Z03.stars.look"]["min"], 2)
         self.assertEqual(b["Z03.stars.look"]["max"], 2)

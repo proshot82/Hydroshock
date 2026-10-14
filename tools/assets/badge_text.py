@@ -27,6 +27,7 @@ def main(argv=None):
     ap.add_argument("--box", required=True)
     ap.add_argument("--text", required=True)
     ap.add_argument("--fill", type=float, default=0.86, help="доля высоты поля под буквы")
+    ap.add_argument("--ink", help="цвет букв R,G,B, если в поле мало тёмного (бледная надпись генератора)")
     a = ap.parse_args(argv)
     x0, y0, x1, y1 = (int(v) for v in a.box.split(","))
     im = Image.open(a.src).convert("RGB")
@@ -35,6 +36,8 @@ def main(argv=None):
     light = field[lum >= np.median(lum)]
     dark = field[lum <= np.percentile(lum, 10)]
     paper, ink = np.median(light, axis=0), np.median(dark, axis=0)
+    if a.ink:
+        ink = np.array([float(v) for v in a.ink.split(",")])
     w, h = x1 - x0, y1 - y0
     # фон поля: цвет таблички, сверху на 6 % светлее, снизу на 6 % темнее
     grad = np.linspace(1.06, 0.94, h)[:, None, None]

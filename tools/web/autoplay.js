@@ -193,6 +193,8 @@ function check(ok, msg) {
   check(has(s, "knows_stars_fold") && lastSlot(s) === "Z03.stars.look", "осмотр звёзд — «МИНУС четыре звезды» (A05)");
   s = await verb("stars", "сложить");
   check(has(s, "stars_folded"), "звёзды сложены (A06)");
+  s = await look("egg");
+  check(lastSlot(s) === "Z03.egg.look", "яйцо всмятку рядом с колпаком — своя зона (Z03.egg.look)");
   check(!s.zones.some((z) => z.id === "plate"), "табличку под юбкой не видно, пока шторка задвинута");
   s = await verb("skirt", "снять_юбку");
   check(has(s, "knows_trolley_chamber") && has(s, "scr_skirt_open"), "юбку не снять, шторка отъехала — внутри пусто (A04)");

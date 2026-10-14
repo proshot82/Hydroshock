@@ -174,7 +174,16 @@ def main(argv=None):
     ap.add_argument("--acts", type=int, nargs="*",
                     help="только эти акты: данные и их ассеты (лёгкая сборка превью); по умолчанию — все акты с логикой")
     ap.add_argument("--serve", type=int, help="после сборки поднять локальный сервер на порту")
+    ap.add_argument("--try", dest="try_", nargs="*", default=[], metavar="ПАПКА/ИМЯ=ФАЙЛ",
+                    help="превью с кандидатом вместо картинки assets/gfx (до «да» автора; assets/ не трогается), "
+                         "например zooms/zoom_z03=work/higgsfield/candidates/act1_fix_1013/zoom_z03__a.png")
     a = ap.parse_args(argv)
+    tries = {}
+    for t in a.try_:
+        k, v = t.split("=", 1)
+        if not Path(v).is_file():
+            sys.exit(f"кандидата {v} нет")
+        tries[k] = Path(v)
     out = Path(a.out)
     if out.exists():
         shutil.rmtree(out)
@@ -183,7 +192,7 @@ def main(argv=None):
     acts_data, need_gfx, need_audio = act_data(acts)
     only = bool(a.acts)
 
-    manifest = {"build": build_id(), "gfx": {}, "audio": {}}
+    manifest = {"build": build_id(), "gfx": {}, "audio": {}, "candidates": sorted(tries)}
     gfx_root = ASSETS / "gfx"
     folders = sorted(p.name for p in gfx_root.iterdir() if p.is_dir())
     if a.gfx:
@@ -196,6 +205,9 @@ def main(argv=None):
     for folder in folders:
         for src in sorted((gfx_root / folder).glob("*.png")):
             name = f"{folder}/{src.stem}"
+            if name in tries:
+                print(f"[web] кандидат вместо {name}: {tries[name]}")
+                src = tries[name]
             if only and folder not in ("ui", "cursors") and name not in need_gfx:
                 continue
             if folder in PNG_AS_IS:
