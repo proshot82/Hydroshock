@@ -6,4 +6,4 @@
 
 **Где посмотреть.** Страница выбора https://claude.ai/artifact/9j3eFwwkW88PBjMqBSBxaL (круг 4, вопрос 1: было/стало). В превью игры https://claude.ai/artifact/E2YwhX4ZapWa6rPZ721VLQ кандидат уже подставлен сборкой (`build_web.py --try cutouts/st_w2_cascade_on=…`), `assets/` не тронут.
 
-**После «да» автора:** прежний файл — в `work/orig_gfx/cutouts/st_w2_cascade_on__с_прибором_до_14.10.png`, кандидат — в `assets/gfx/cutouts/st_w2_cascade_on.png`.
+**Принято автором 14.10.2026** (страница выбора, круг 4: «убрать прибор»): кандидат перенесён в `assets/gfx/cutouts/st_w2_cascade_on.png`, прежний файл — `work/orig_gfx/cutouts/st_w2_cascade_on__с_прибором_до_14.10.png`; спека §2.2 дополнена.

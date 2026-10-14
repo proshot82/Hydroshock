@@ -238,7 +238,7 @@
 | `W4.hatch.look` | `room:W4`, люк под стеклом | — | — |
 | `W4.stairs.look` | `room:W4`, дверь «Служебное помещение» ∧ ¬`stairs_open` | — | — |
 | `W4.stairs.locked` | `room:W4`, открыть дверь ∧ ¬`has_stairs_key` | — (D30) | — |
-| `W4.stairs.no_plan` | `room:W4`, открыть дверь ∧ `has_stairs_key` ∧ ¬`topology_known` (добавлено при сборке 14.10.2026, на решение автора) | — | — |
+| `W4.stairs.no_plan` | `room:W4`, открыть дверь ∧ `has_stairs_key` ∧ ¬`topology_known` (добавлено при сборке 14.10.2026, решение автора 14.10.2026) | — | — |
 | `Z09.board.look` | `zoom:Z09` ∧ ¬`knows_plate_under_paint` | B11_inspect_board → `DOC.paint_act` | `knows_plate_under_paint`, `knows_paint_fresh`, `paint_act_read`, `chalk_sample_seen` |
 | `Z09.chalk.look` | `zoom:Z09` ∧ `chalk_sample_seen`, меловое «НАШЕ» на раме | — | — |
 | `Z09.paint.rub` | `zoom:Z09` ∧ `knows_plate_under_paint` ∧ ¬`name_revealed`, тереть пальцами | — (D20) | — |
@@ -332,10 +332,10 @@
 | `HINT.paint.1` | тема `paint`: `knows_plate_under_paint` ∧ ¬`name_revealed` (по желанию); ступень 0 | — | ступень 1, `hint.lock` |
 | `HINT.paint.2` | тема `paint`; ступень 1 | — | ступень 2, `hint.lock` |
 | `HINT.paint.3` | тема `paint`; ступень ≥ 2 | — | ступень 3, `hint.lock` |
-| `HINT.witness.1` | тема `witness`: `layoff_read` ∧ `requests_stapled` ∧ ¬`iz_admits_facts`; ступень 0 | — | ступень 1, `hint.lock` |
+| `HINT.witness.1` | тема `witness`: `requests_stapled` ∧ ¬`iz_admits_facts` (решение автора 14.10.2026: третья ступень сама велит прочитать распоряжение — без этого совет молчал бы); ступень 0 | — | ступень 1, `hint.lock` |
 | `HINT.witness.2` | тема `witness`; ступень 1 | — | ступень 2, `hint.lock` |
 | `HINT.witness.3` | тема `witness`; ступень ≥ 2 | — | ступень 3, `hint.lock` |
-| `HINT.down.1` | тема `down`: `has_stairs_key` ∧ ¬`stairs_open`; ступень 0 | — | ступень 1, `hint.lock` |
+| `HINT.down.1` | тема `down`: `has_stairs_key` ∧ ¬`midpoint_known` (решение автора 14.10.2026: до конца акта — внизу ещё дверь и стук); ступень 0 | — | ступень 1, `hint.lock` |
 | `HINT.down.2` | тема `down`; ступень 1 | — | ступень 2, `hint.lock` |
 | `HINT.down.3` | тема `down`; ступень ≥ 2 | — | ступень 3, `hint.lock` |
 | `DOC.notice_counter` | открыт из `TALK.iz.folder` | — | — |
