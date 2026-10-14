@@ -1,0 +1,106 @@
+{
+ "chunks": [
+  {
+   "text": "[Anxious Variation]\n[Instrumental]",
+   "duration_ms": 30000,
+   "positive_styles": [
+    "instrumental, no vocals",
+    "quirky point-and-click adventure game soundtrack",
+    "warm vintage small live band recording",
+    "the same melody re-harmonized in a minor key",
+    "anxious, fidgety, but still comedic and light",
+    "pizzicato strings",
+    "bassoon and clarinet trade the melody",
+    "ticking woodblock",
+    "vibraphone tremolo",
+    "nylon guitar",
+    "slightly faster than the original",
+    "cartoon suspense, playful worry, not scary"
+   ],
+   "negative_styles": [
+    "vocals",
+    "singing",
+    "humming",
+    "choir",
+    "electronic beats",
+    "heavy drums",
+    "horror",
+    "major key",
+    "carefree"
+   ],
+   "context_adherence": "high",
+   "conditioning_ref": {
+    "song_id": "UGmFx7Eauhgi1eqf2ybh_upload",
+    "range": {
+     "start_ms": 10000,
+     "end_ms": 40000
+    }
+   },
+   "condition_strength": "high"
+  },
+  {
+   "text": "[Anxious Variation]\n[Instrumental]",
+   "duration_ms": 30000,
+   "positive_styles": [
+    "instrumental, no vocals",
+    "quirky point-and-click adventure game soundtrack",
+    "warm vintage small live band recording",
+    "the same melody re-harmonized in a minor key",
+    "anxious, fidgety, but still comedic and light",
+    "pizzicato strings",
+    "bassoon and clarinet trade the melody",
+    "ticking woodblock",
+    "vibraphone tremolo",
+    "nylon guitar",
+    "slightly faster than the original",
+    "cartoon suspense, playful worry, not scary"
+   ],
+   "negative_styles": [
+    "vocals",
+    "singing",
+    "humming",
+    "choir",
+    "electronic beats",
+    "heavy drums",
+    "horror",
+    "major key",
+    "carefree"
+   ],
+   "context_adherence": "high",
+   "conditioning_ref": null,
+   "condition_strength": null
+  },
+  {
+   "text": "[Anxious Variation]\n[Instrumental]",
+   "duration_ms": 30000,
+   "positive_styles": [
+    "instrumental, no vocals",
+    "quirky point-and-click adventure game soundtrack",
+    "warm vintage small live band recording",
+    "the same melody re-harmonized in a minor key",
+    "anxious, fidgety, but still comedic and light",
+    "pizzicato strings",
+    "bassoon and clarinet trade the melody",
+    "ticking woodblock",
+    "vibraphone tremolo",
+    "nylon guitar",
+    "slightly faster than the original",
+    "cartoon suspense, playful worry, not scary"
+   ],
+   "negative_styles": [
+    "vocals",
+    "singing",
+    "humming",
+    "choir",
+    "electronic beats",
+    "heavy drums",
+    "horror",
+    "major key",
+    "carefree"
+   ],
+   "context_adherence": "high",
+   "conditioning_ref": null,
+   "condition_strength": null
+  }
+ ]
+}

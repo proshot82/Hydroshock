@@ -1,0 +1,112 @@
+<title>Гидроудар: разбор Акта I</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Old+Standard+TT:wght@400;700&family=PT+Sans:wght@400;700&family=PT+Mono&display=swap">
+<style>
+/* Лист приёмки конторы водолечебницы: латунь и мокрый кафель; одна колонка карточек-звуков */
+:root{
+  --bg:#e9efed; --paper:#f8faf8; --fg:#1d2826; --muted:#56655f; --line:#c7d3ce;
+  --brass:#8c6118; --brass-soft:#efe1c3; --deep:#1f4a52; --deep-soft:#d6e6e8; --bad:#9b3326;
+  --display:"Old Standard TT",Georgia,"Times New Roman",serif;
+  --body:"PT Sans","Segoe UI",Arial,sans-serif;
+  --mono:"PT Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121a1a; --paper:#1a2524; --fg:#e4ebe8; --muted:#9aaba5; --line:#2f3f3d;
+  --brass:#d8a650; --brass-soft:#3a2f1a; --deep:#8cc5cc; --deep-soft:#1d3336; --bad:#e58b7c; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121a1a; --paper:#1a2524; --fg:#e4ebe8; --muted:#9aaba5; --line:#2f3f3d;
+  --brass:#d8a650; --brass-soft:#3a2f1a; --deep:#8cc5cc; --deep-soft:#1d3336; --bad:#e58b7c; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:16px/1.55 var(--body);margin:0}
+.wrap{max-width:760px;margin:0 auto;padding-inline:16px;padding-block:28px 56px;display:grid;gap:28px}
+h1,h2{font-family:var(--display);font-weight:700;text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:2rem} h2{font-size:1.45rem;color:var(--brass)}
+p{margin:0;max-width:65ch}
+.lead{display:grid;gap:10px}
+.note{color:var(--muted);font-size:.93rem}
+section{display:grid;gap:14px}
+.moment{background:var(--deep-soft);border-left:3px solid var(--deep);padding:12px 14px;border-radius:2px;display:grid;gap:6px}
+.moment b{color:var(--deep)}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:14px;display:grid;gap:8px;min-width:0}
+.head{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:baseline}
+.name{font-family:var(--mono);font-size:.95rem;color:var(--brass);font-weight:700}
+.tag{font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.card h3{margin:0;font-family:var(--display);font-size:1.15rem}
+.card p{font-size:.95rem}
+audio{width:100%;height:40px}
+.demo{border-color:var(--deep);border-style:dashed}
+.rej{color:var(--bad);font-size:.9rem}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+footer{color:var(--muted);font-size:.88rem;border-top:1px solid var(--line);padding-top:14px}
+
+.opts{display:grid;gap:8px}
+.opt{display:grid;grid-template-columns:auto 1fr;gap:6px 10px;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:10px 12px;min-width:0}
+.opt:has(input:checked){border-color:var(--brass);box-shadow:inset 3px 0 0 var(--brass)}
+.opt input{width:20px;height:20px;accent-color:var(--brass);margin:0}
+.opt label{font-weight:700;cursor:pointer}
+.opt .tag{grid-column:2}
+.opt audio{grid-column:1 / -1}
+textarea{width:100%;box-sizing:border-box;min-height:56px;font:inherit;color:var(--fg);background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:8px}
+textarea:focus-visible,.opt input:focus-visible{outline:2px solid var(--deep);outline-offset:2px}
+.state{font-size:.85rem;color:var(--muted);min-height:1.2em}
+.state.ok{color:var(--deep)} .state.err{color:var(--bad)}
+#banner{background:var(--brass-soft);border:1px solid var(--brass);border-radius:4px;padding:10px 12px}
+.wrap{max-width:980px}
+figure{margin:0;display:grid;gap:4px;min-width:0}
+figure img{width:100%;height:auto;border:1px solid var(--line);border-radius:2px;display:block}
+figcaption{font-size:.85rem;color:var(--muted)}
+.pair{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.line{font-size:.95rem;background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:10px 12px;display:grid;gap:4px}
+.line .who{font-family:var(--mono);font-size:.8rem;color:var(--brass)}
+.line.old{opacity:.75}
+.line.old .txt{text-decoration:line-through;text-decoration-color:var(--muted)}
+h1.step{font-size:1.6rem}
+</style>
+<div class="wrap">
+<header class="lead">
+<h1>Разбор Акта I: последний вопрос</h1>
+<p>Сделано по вашим отметкам и стоит в игре (ссылка на игру прежняя):</p>
+<ul><li>Тревожная тема — «Крадущийся саспенс», дубль 2, в игре после удара.</li><li>Шов курортной темы — принят.</li><li>Раньше: вестибюль начисто, яйцо всмятку, путёвка, флакон, курортная тема, тексты.</li></ul>
+<div id="banner" class="note">Загружаю отметки…</div>
+</header>
+<section data-slot="seam_tense2"><h2>Шов тревожной темы</h2><div class="moment"><p>Ваш выбор: «Крадущийся саспенс», дубль 2 — уже в игре после удара (только Акт I). Из него вырезана петля 66 секунд: музыка в игре крутится по кругу. Ниже 12 секунд конца петли и 12 секунд её начала подряд, склейка ровно посередине. Слышен ли шов?</p></div><audio controls preload="none" src="audio/seam_bgm_hotel_tense_v2.mp3"></audio><div class="opts"><div class="opt"><input type="radio" name="seam_tense2" id="seam_tense2-ok" value="ok"><label for="seam_tense2-ok">шов не слышен</label></div>
+<div class="opt"><input type="radio" name="seam_tense2" id="seam_tense2-redo" value="redo"><label for="seam_tense2-redo">шов слышен — перерезать</label></div></div><label class="note" for="seam_tense2-note">Замечание (необязательно)</label><textarea id="seam_tense2-note" data-note="seam_tense2" placeholder=""></textarea><div class="state" data-state="seam_tense2"></div></section>
+<footer>Музыка — work/audio/candidates/s6_resort_1013/ (README).</footer>
+</div>
+<script>
+const SLOTS = ["seam_tense2"];
+const banner = document.getElementById('banner');
+const queue = {};
+function say(slot, text, cls) { const el = document.querySelector('[data-state="' + slot + '"]'); el.textContent = text; el.className = 'state ' + (cls || ''); }
+function current(slot) {
+  const r = document.querySelector('input[name="' + slot + '"]:checked');
+  return { choice: r ? r.value : null, comment: document.getElementById(slot + '-note').value.trim() };
+}
+async function start() {
+  let db = null;
+  try { db = window.claude ? await window.claude.use('db') : null; } catch (e) { db = null; }
+  if (!db) { banner.textContent = 'Отметки на этой странице сейчас не сохраняются (страница открыта не в claude.ai или без входа). Напишите выбор в чат.'; return; }
+  banner.textContent = 'Отметки сохраняются сами, сразу после выбора; замечание — когда уходите из поля. Claude прочитает их отсюда.';
+  function save(slot) {
+    const body = Object.assign(current(slot), { at: new Date().toISOString() });
+    say(slot, 'Сохраняю…');
+    queue[slot] = (queue[slot] || Promise.resolve()).then(() => db.doc('picks/' + slot).set(body))
+      .then(() => say(slot, 'Сохранено', 'ok'))
+      .catch(e => say(slot, 'Не сохранилось: ' + (e && e.code === 'permission_denied' ? 'нет прав на запись' : 'ошибка связи, выберите ещё раз'), 'err'));
+  }
+  SLOTS.forEach(slot => {
+    document.querySelectorAll('input[name="' + slot + '"]').forEach(r => r.addEventListener('change', () => save(slot)));
+    document.getElementById(slot + '-note').addEventListener('change', () => save(slot));
+  });
+  db.collection('picks').onSnapshot(snap => {
+    snap.docs.forEach(d => {
+      if (!SLOTS.includes(d.id)) return;
+      const v = d.data() || {};
+      if (v.choice) { const r = document.getElementById(d.id + '-' + v.choice); if (r) r.checked = true; }
+      const ta = document.getElementById(d.id + '-note');
+      if (document.activeElement !== ta && typeof v.comment === 'string') ta.value = v.comment;
+      if (!d.metadata.hasPendingWrites && v.choice) say(d.id, 'Сохранено', 'ok');
+    });
+  }, () => { banner.textContent = 'Связь с хранилищем отметок прервалась. Обновите страницу.'; });
+}
+start();
+</script>

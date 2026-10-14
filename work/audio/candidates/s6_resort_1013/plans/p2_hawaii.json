@@ -1,0 +1,126 @@
+{
+ "chunks": [
+  {
+   "text": "[Lazy Resort Theme]\n[Instrumental]",
+   "duration_ms": 30000,
+   "positive_styles": [
+    "instrumental, no vocals",
+    "quirky point-and-click adventure game soundtrack",
+    "clear hummable main melody",
+    "warm vintage small live band recording",
+    "78 BPM",
+    "lazy hawaiian lounge",
+    "steel guitar glissandos play the melody",
+    "ukulele strumming",
+    "marimba",
+    "soft upright bass",
+    "hammock by the sea, sleepy and blissful",
+    "major key"
+   ],
+   "negative_styles": [
+    "vocals",
+    "singing",
+    "humming",
+    "choir",
+    "spoken word",
+    "electronic beats",
+    "heavy drums",
+    "horror"
+   ],
+   "context_adherence": "high",
+   "conditioning_ref": null,
+   "condition_strength": null
+  },
+  {
+   "text": "[Lazy Resort Theme]\n[Instrumental]",
+   "duration_ms": 30000,
+   "positive_styles": [
+    "instrumental, no vocals",
+    "quirky point-and-click adventure game soundtrack",
+    "clear hummable main melody",
+    "warm vintage small live band recording",
+    "78 BPM",
+    "lazy hawaiian lounge",
+    "steel guitar glissandos play the melody",
+    "ukulele strumming",
+    "marimba",
+    "soft upright bass",
+    "hammock by the sea, sleepy and blissful",
+    "major key"
+   ],
+   "negative_styles": [
+    "vocals",
+    "singing",
+    "humming",
+    "choir",
+    "spoken word",
+    "electronic beats",
+    "heavy drums",
+    "horror"
+   ],
+   "context_adherence": "high",
+   "conditioning_ref": null,
+   "condition_strength": null
+  },
+  {
+   "text": "[Anxious Variation]\n[Instrumental]",
+   "duration_ms": 30000,
+   "positive_styles": [
+    "instrumental, no vocals",
+    "quirky point-and-click adventure game soundtrack",
+    "clear hummable main melody",
+    "warm vintage small live band recording",
+    "98 BPM",
+    "the same melody in a minor key",
+    "staccato tuba and muted trumpet",
+    "nervous pizzicato strings",
+    "clarinet runs",
+    "tense comedic sneaking feel",
+    "light and funny, not scary"
+   ],
+   "negative_styles": [
+    "vocals",
+    "singing",
+    "humming",
+    "choir",
+    "spoken word",
+    "electronic beats",
+    "heavy drums",
+    "horror"
+   ],
+   "context_adherence": "high",
+   "conditioning_ref": null,
+   "condition_strength": null
+  },
+  {
+   "text": "[Anxious Variation]\n[Instrumental]",
+   "duration_ms": 30000,
+   "positive_styles": [
+    "instrumental, no vocals",
+    "quirky point-and-click adventure game soundtrack",
+    "clear hummable main melody",
+    "warm vintage small live band recording",
+    "98 BPM",
+    "the same melody in a minor key",
+    "staccato tuba and muted trumpet",
+    "nervous pizzicato strings",
+    "clarinet runs",
+    "tense comedic sneaking feel",
+    "light and funny, not scary"
+   ],
+   "negative_styles": [
+    "vocals",
+    "singing",
+    "humming",
+    "choir",
+    "spoken word",
+    "electronic beats",
+    "heavy drums",
+    "horror"
+   ],
+   "context_adherence": "high",
+   "conditioning_ref": null,
+   "condition_strength": null
+  }
+ ]
+}

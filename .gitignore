@@ -5,3 +5,9 @@ review/REVIEW_PACKAGE.zip
 review/REVIEW_PACKAGE.md
 work/higgsfield/raw/
 work/higgsfield/staging/
+dist/
+work/web_cache/
+work/verify/
+work/web_shots/
+# копия демо пакета З6 (work/audio/candidates/s6_resort_1013/listen/) для публикации страницы выбора
+work/higgsfield/candidates/act1_fix_1013/page/audio/

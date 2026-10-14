@@ -1,0 +1,106 @@
+{
+ "chunks": [
+  {
+   "text": "[Anxious Variation in C minor]\n[Instrumental]",
+   "duration_ms": 30000,
+   "positive_styles": [
+    "instrumental, no vocals",
+    "quirky point-and-click adventure game soundtrack",
+    "1960s soviet black-sea sanatorium estrada band: accordion, mandolin, clarinet, upright bass",
+    "warm vintage small live band recording",
+    "clearly in C minor, minor-key harmony throughout",
+    "128 BPM",
+    "comic suspense polka chase",
+    "mandolin tremolo",
+    "fast clarinet runs",
+    "ticking woodblock",
+    "accordion bellows shakes",
+    "anxious but playful"
+   ],
+   "negative_styles": [
+    "vocals",
+    "singing",
+    "humming",
+    "choir",
+    "electronic beats",
+    "heavy drums",
+    "horror",
+    "major key",
+    "carefree",
+    "relaxed",
+    "lazy"
+   ],
+   "context_adherence": "high",
+   "conditioning_ref": null,
+   "condition_strength": null
+  },
+  {
+   "text": "[Anxious Variation in C minor]\n[Instrumental]",
+   "duration_ms": 30000,
+   "positive_styles": [
+    "instrumental, no vocals",
+    "quirky point-and-click adventure game soundtrack",
+    "1960s soviet black-sea sanatorium estrada band: accordion, mandolin, clarinet, upright bass",
+    "warm vintage small live band recording",
+    "clearly in C minor, minor-key harmony throughout",
+    "128 BPM",
+    "comic suspense polka chase",
+    "mandolin tremolo",
+    "fast clarinet runs",
+    "ticking woodblock",
+    "accordion bellows shakes",
+    "anxious but playful"
+   ],
+   "negative_styles": [
+    "vocals",
+    "singing",
+    "humming",
+    "choir",
+    "electronic beats",
+    "heavy drums",
+    "horror",
+    "major key",
+    "carefree",
+    "relaxed",
+    "lazy"
+   ],
+   "context_adherence": "high",
+   "conditioning_ref": null,
+   "condition_strength": null
+  },
+  {
+   "text": "[Anxious Variation in C minor]\n[Instrumental]",
+   "duration_ms": 30000,
+   "positive_styles": [
+    "instrumental, no vocals",
+    "quirky point-and-click adventure game soundtrack",
+    "1960s soviet black-sea sanatorium estrada band: accordion, mandolin, clarinet, upright bass",
+    "warm vintage small live band recording",
+    "clearly in C minor, minor-key harmony throughout",
+    "128 BPM",
+    "comic suspense polka chase",
+    "mandolin tremolo",
+    "fast clarinet runs",
+    "ticking woodblock",
+    "accordion bellows shakes",
+    "anxious but playful"
+   ],
+   "negative_styles": [
+    "vocals",
+    "singing",
+    "humming",
+    "choir",
+    "electronic beats",
+    "heavy drums",
+    "horror",
+    "major key",
+    "carefree",
+    "relaxed",
+    "lazy"
+   ],
+   "context_adherence": "high",
+   "conditioning_ref": null,
+   "condition_strength": null
+  }
+ ]
+}

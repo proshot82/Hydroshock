@@ -117,7 +117,7 @@ class MergeTest(unittest.TestCase):
                              f"ACT{n}_TEXTS_FINAL.md правили руками — правки вносятся в texts/rewrite/ACT{n}_TEXTS_EDITS.md")
 
     def test_final_passes_brief(self):
-        for n, slots in ((1, 155), (2, 167), (3, 134), (4, 77)):
+        for n, slots in ((1, 156), (2, 167), (3, 134), (4, 77)):
             brief = ROOT / "texts" / f"act{n}" / f"BRIEF_ACT{n}_TEXTS.md"
             texts, fmt = ct.parse_texts(ROOT / "texts" / f"act{n}" / f"ACT{n}_TEXTS_FINAL.md")
             errs, warns, stats = ct.check(ct.parse_brief(brief), texts, fmt, ct.detect_act(brief))
@@ -140,11 +140,17 @@ class MergeTest(unittest.TestCase):
         self.assertEqual(report["claude"], [])
         self.assertEqual(report["other"], [])
         self.assertIn("Z01.plunger.look", report["edit"])
-        self.assertEqual(len(report["edit"]), 38)
+        # 12.10.2026 — правка автора SEQ.peek.3_lobby («не вполне голые»), толпа раздета (спека §1.4)
+        self.assertIn("SEQ.peek.3_lobby", report["edit"])
+        # 13.10.2026 — разбор игры: строка автора в OPEN.1_voucher, коридор и лифт (SEQ.peek.1/2)
+        self.assertIn("SEQ.peek.2_lift", report["edit"])
+        # 14.10.2026 — яйцо всмятку рядом с колпаком (Z03.egg.look, новый слот по решению автора)
+        self.assertIn("Z03.egg.look", report["edit"])
+        self.assertEqual(len(report["edit"]), 42)
         # Z01.plunger.pull (новый слот, раньше — «по правилам ТЗ») теперь из правки автора
         self.assertEqual(sorted(report["rule"]), [])
         self.assertIn("Z01.plunger.pull", report["edit"])
-        self.assertEqual(sum(len(v) for v in report.values()), 155)
+        self.assertEqual(sum(len(v) for v in report.values()), 156)
         _, report = self.build_final(2)
         self.assertIn("OPEN.demo", report["rule"])
         self.assertIn("TALK.iz.duty", report["rule"])
