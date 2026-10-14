@@ -5,7 +5,7 @@
 //   NODE_PATH=$(npm root -g) node tools/web/autoplay.js http://127.0.0.1:8766/ [ПАПКА_СКРИНОВ]
 //
 // Сценарий: Акт I (кратчайший путь + негативы: ранние попытки, повторы, советы, сохранение и
-// «Продолжить»), кнопка «Дальше» и Акт II целиком — с ложными попытками, каскадом-ширмой, плёнками,
+// «Продолжить»), без паузы — Акт II целиком — с ложными попытками, каскадом-ширмой, плёнками,
 // разговором с Изольдой, сейвом посреди акта и концом акта. Код выхода 0 — AUTOPLAY OK.
 
 const { chromium } = require("playwright");
@@ -265,17 +265,15 @@ function check(ok, msg) {
   s = await choose("clothes");
   s = await choose("clothes");
   check(lastSlot(s) === "TALK.iz.again", "повтор темы — TALK.iz.again");
+  // актов для игрока нет (решение автора 14.10.2026): за последней репликой Акта I сразу идёт Акт II —
+  // без заставки и кнопок; settle пролистывает и конец Акта I, и вступление Акта II
   s = await choose("exit");
-  check(s.ended, "конец акта (END.act1)");
+  if (s.act !== 2) { await page.waitForFunction(() => window.__bj3.game() && window.__bj3.game().act === 2, null, { timeout: 30000 }); s = await settle(); }
+  check(!s.ended && s.log.indexOf("END.act1") >= 0 && s.log.indexOf("END.act1") < s.log.indexOf("OPEN.counter"),
+    "конец Акта I (END.act1) — и сразу Акт II, без заставки и кнопок");
   check(["trolley_service_side", "shock_report_known", "iz_rules_all_shown", "w3_open", "w4_open"].every((f) => has(s, f)), "цели Акта I выполнены");
-  await snap("end");
 
   // ================================================================ Акт II
-  s = await g();
-  check(!!s.hud.next, "конец Акта I: есть кнопка «Дальше»");
-  await clickAt(s.hud.next);
-  await page.waitForFunction(() => window.__bj3.game() && window.__bj3.game().act === 2);
-  s = await settle();
   const open2 = ["OPEN.counter", "OPEN.demo", "OPEN.requests", "OPEN.pa", "OPEN.pa.board", "OPEN.anc"];
   const i0 = s.log.indexOf("OPEN.counter");
   check(i0 >= 0 && s.log.slice(i0, i0 + 6).join(",") === open2.join(","), "Акт II: вступление OPEN.counter … OPEN.anc по порядку");
@@ -427,6 +425,7 @@ function check(ok, msg) {
   s = await look("door");
   check(s.ended && has(s, "midpoint_known") && s.log.includes("END.act2"), "уведомление на двери и итог акта (END.act2)");
   check(["midpoint_known", "stairs_open", "office_notice_read", "iz_admits_facts"].every((f) => has(s, f)), "цели Акта II выполнены");
+  check(s.ended, "Акта III в этой сборке нет — служебная карточка «Продолжение — в следующей сборке»");
   await snap("a2_end");
 
   check(errors.length === 0, `ошибок страницы нет${errors.length ? ": " + errors.join(" | ") : ""}`);

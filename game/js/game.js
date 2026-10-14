@@ -440,8 +440,16 @@ function goBack() {
   if (v.parent) { enterView(v.parent); saveState(st); }
 }
 
+// Конец акта. Для игрока актов нет — одна цельная игра (решение автора 14.10.2026): следующий акт
+// начинается сразу своей сценой, без заставки и кнопок; пока он грузится — чёрный экран. Карточка
+// с кнопкой «На титул» — только когда следующего акта нет в этой сборке превью.
 function showEnd() {
-  endCard = { act: data.act, next: !!(onNext && onNext.has(data.act + 1)) };
+  if (onNext && onNext.has(data.act + 1)) {
+    endCard = { transit: true };
+    nextAct();
+    return;
+  }
+  endCard = { act: data.act };
   audio.ambience(null);
 }
 
@@ -449,7 +457,6 @@ function showEnd() {
 // счётчики и прочитанные бумаги остаются; советы Предка — заново (темы у акта свои).
 function nextAct() {
   const n = data.act + 1;
-  endCard = null;
   onNext.start(n, (next) => {
     st.act = n;
     st.ended = false;
@@ -527,8 +534,7 @@ export function pointerMove(p) {
 export function pointerDown(p, button = 0) {
   if (!data || !p) return false;
   if (endCard) {
-    if (inRect(p, END_BTN)) { audio.sfx("ui_click"); onExit(); }
-    else if (endCard.next && inRect(p, NEXT_BTN)) { audio.sfx("ui_click"); nextAct(); }
+    if (!endCard.transit && inRect(p, END_BTN)) { audio.sfx("ui_click"); onExit(); }
     return true;
   }
   if (pause) {
@@ -812,26 +818,18 @@ function drawDocs() {
   rs.forEach((r) => button(r, r.label, inRect(lastPointer, r), { align: "left", font: '400 28px "PT Sans"' }));
 }
 
-const END_BTN = { x: 760, y: 700, w: 400, h: 72 };
-const NEXT_BTN = { x: 760, y: 600, w: 400, h: 72 };
+const END_BTN = { x: 760, y: 600, w: 400, h: 72 };
 
 function drawEnd() {
   if (!endCard) return;
   ctx.fillStyle = "#0b0c10";
   ctx.fillRect(0, 0, W, H);
+  if (endCard.transit) return;   // переход к следующей части игры: чёрный экран, пока она грузится
   ctx.textAlign = "center";
   ctx.textBaseline = "alphabetic";
-  ctx.font = '700 60px "PT Sans"';
-  ctx.fillStyle = C.brassHi;
-  ctx.fillText(T[`act_${endCard.act}`] || "", W / 2, 360);
   ctx.font = '400 36px "PT Sans"';
   ctx.fillStyle = C.text;
-  ctx.fillText((T.act_end || "%s").replace("%s", data.roman), W / 2, 450);
-  ctx.fillStyle = C.dim;
-  const nextT = T[`act_${endCard.act + 1}`];
-  if (nextT && !endCard.next) ctx.fillText((T.act_next || "%s").replace("%s", nextT), W / 2, 510);
-  if (nextT && endCard.next) ctx.fillText(nextT, W / 2, 510);
-  if (endCard.next) button(NEXT_BTN, T.next_act || "Дальше", inRect(lastPointer, NEXT_BTN), { font: '700 34px "PT Sans"' });
+  ctx.fillText(T.build_end || "", W / 2, 470);
   button(END_BTN, T.to_title, inRect(lastPointer, END_BTN), { font: '700 34px "PT Sans"' });
 }
 
@@ -866,7 +864,7 @@ export function draw() {
 export function debug() {
   if (!data) return null;
   return {
-    act: data.act, view: st.view, busy, ended: !!endCard, frame: !!frame, pos: st.pos,
+    act: data.act, view: st.view, busy: busy || !!(endCard && endCard.transit), ended: !!(endCard && !endCard.transit), frame: !!frame, pos: st.pos,
     flags: [...st.flags].sort(), dialog: dialog.active() ? dialog.currentLine() : null,
     reader: reader.currentDoc(), choice: choice ? choice.items.map((i) => ({ id: i.id, label: i.label })) : null,
     verbs: verbMenu ? verbMenu.items.map((i) => i.verb) : null, selected,
@@ -874,8 +872,7 @@ export function debug() {
     items: invSlots().map((s) => ({ id: s.id, at: [s.x + s.w / 2, s.y + s.h / 2] })),
     menuItems: verbMenu ? menuRects(verbMenu.items, verbMenu.x, verbMenu.y).map((r) => ({ verb: r.verb, at: [r.x + r.w / 2, r.y + r.h / 2] }))
       : choice ? choiceRects().map((r) => ({ id: r.id, at: [r.x + r.w / 2, r.y + r.h / 2] })) : null,
-    hud: { hint: center(HUD.hint), docs: center(HUD.docs), back: center(HUD.back), end: center(END_BTN),
-      next: endCard && endCard.next ? center(NEXT_BTN) : null },
+    hud: { hint: center(HUD.hint), docs: center(HUD.docs), back: center(HUD.back), end: center(END_BTN) },
     log: log.slice(),
     n: { ...st.n }, hint: { ...st.hint },
   };
