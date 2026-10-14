@@ -72,7 +72,90 @@ class Sim:
                 for r in it["rules"]:
                     if progress(r):
                         scan(r["when"])
-        self.key_slots = set(self.watch)   # счётчики в ключе состояния перебора
+        self.key_flags, self.key_slots = self.significant(data)
+
+    @staticmethod
+    def significant(data):
+        """Что различает состояния перебора: флаги и показы слотов, от которых зависит, куда игрок
+        может прийти. Значимое правило меняет значимый флаг, тележку, вид, меню (не своё же), сцену,
+        акт, значимый счётчик показов или зовёт значимую цепочку; значимы флаги и показы, которые
+        читают условия значимых правил (вместе с условием зоны и предмета), требования действий
+        графа, цели акта и экранные флаги. Неподвижная точка. Остальное — необязательные находки,
+        которые ничего дальше не открывают (реликвии, витрина, журнал, памятка): состояния,
+        различные лишь ими, ведут себя одинаково, и перебор их не множит (иначе Акт II — десятки
+        миллионов состояний). Их реплики и действия проверяют те же ходы и случайные прохождения."""
+        flags = set(data["goal_flags"]) | set(data.get("screen_scopes", {}))
+        for g in data["graph"].values():
+            flags |= set(g["requires"])
+        entries = []   # (условия, слот, эффекты, меню-источник)
+        for vid, v in data["views"].items():
+            for z in v["zones"]:
+                for verb, rs in data["rules"].get(f"{vid}.{z['id']}", {}).items():
+                    extra = []
+                    if verb.startswith("предмет:") and verb[8:] in data["items"]:
+                        extra = [data["items"][verb[8:]]["when"]]
+                    for r in rs:
+                        entries.append(([z["when"], r["when"]] + extra, r["slot"], r["effects"], None))
+        for g in data["chains"].values():
+            for r in g:
+                entries.append(([r["when"]], r["slot"], r["effects"], None))
+        for name, m in data["menus"].items():
+            for it in m:
+                for r in it["rules"]:
+                    entries.append(([r["when"]], r["slot"], r["effects"], name))
+        counters = set()
+        for conds, _, _, _ in entries:
+            for t in conds:
+                Sim._counters(t, counters)
+        slots = set()
+
+        def sig_chain(name, seen=()):
+            return any(sig(r["slot"], r["effects"], None, seen + (name,)) for r in data["chains"].get(name, []))
+
+        def sig(slot, effects, ctx, seen=()):
+            if slot and slot.startswith("@") and slot[1:] not in seen and sig_chain(slot[1:], seen):
+                return True
+            if slot in slots:
+                return True
+            for e in effects:
+                if ("add" in e and e["add"] in flags) or ("remove" in e and e["remove"] in flags):
+                    return True
+                if any(k in e for k in ("pos", "view", "scene", "act")):
+                    return True
+                if "menu" in e and e["menu"] != ctx:
+                    return True
+                if "inc" in e and e["inc"] in counters:
+                    return True
+                if "chain" in e and e["chain"] not in seen and sig_chain(e["chain"], seen):
+                    return True
+            return False
+
+        changed = True
+        while changed:
+            changed = False
+            for conds, slot, effects, ctx in entries:
+                if not sig(slot, effects, ctx):
+                    continue
+                for t in conds:
+                    nf = L.cond_flags(t) - flags
+                    ns = L.cond_slots(t) - slots
+                    if nf or ns:
+                        flags |= nf
+                        slots |= ns
+                        changed = True
+        return flags, slots
+
+    @staticmethod
+    def _counters(tree, acc):
+        if tree is None:
+            return
+        if "cmp" in tree and not tree["cmp"].startswith("n:") and tree["cmp"] != "act":
+            acc.add(tree["cmp"])
+        for k in ("and", "or"):
+            for e in tree.get(k, []):
+                Sim._counters(e, acc)
+        if "not" in tree:
+            Sim._counters(tree["not"], acc)
 
     # ------------------------------------------------------------ состояние
     def start(self):
@@ -85,7 +168,7 @@ class Sim:
         return st
 
     def key(self, st):
-        return (frozenset(st["flags"]), st["pos"], st["view"], st["menu"], st["end"],
+        return (frozenset(st["flags"] & self.key_flags), st["pos"], st["view"], st["menu"], st["end"],
                 tuple(sorted((k, v) for k, v in st["n"].items() if k in self.key_slots)))
 
     @staticmethod
@@ -148,7 +231,7 @@ class Sim:
         for e in later:
             if "view" in e:
                 if e["view"] != st["view"]:
-                    L.drop_screen(st["flags"])
+                    L.drop_screen(st["flags"], e["view"], self.d.get("screen_scopes"))
                 st["view"] = e["view"]
                 st["menu"] = None
             elif "scene" in e:
@@ -235,7 +318,7 @@ class Sim:
         if view["parent"]:
             st2 = self.copy(st)
             st2["view"] = view["parent"]
-            L.drop_screen(st2["flags"])
+            L.drop_screen(st2["flags"], view["parent"], self.d.get("screen_scopes"))
             out.append(("назад", st2))
         return out
 
@@ -353,7 +436,7 @@ def check_data(data, verbose=False, seed=0, walks=3000):
             errors.append(f"действие {a}: правила снимают {sorted(rems)}, граф — {sorted(g['removes'])}")
     # покрытие слотов
     hint_slots = {f"HINT.{h['topic']}.{k}" for h in data["hints"] for k in (1, 2, 3)} | {"HINT.intro", "HINT.cooldown", "HINT.done"}
-    skip = hint_slots | set(data["other"])
+    skip = hint_slots | set(data["other"]) | set(data.get("borrowed", ()))
     silent = sorted(s for s in data["texts"] if s not in sim.played and s not in skip)
     if silent:
         errors.append(f"слоты, которые нигде не звучат ({len(silent)}): {', '.join(silent)}")

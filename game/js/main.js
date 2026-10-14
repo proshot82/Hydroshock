@@ -38,9 +38,20 @@ async function actData(n) {
   return acts[n];
 }
 
+// Флаги, которые знает сборка к акту n: накопительно по актам 1..n (GDD §12) — флаг Акта I,
+// которого нет в словаре Акта II, при загрузке сейва Акта II не теряется.
 function flagsOf(n) {
-  const d = acts[n];
-  return d ? new Set(d.flags) : null;
+  if (!acts[n]) return null;
+  const s = new Set();
+  for (const [k, d] of Object.entries(acts)) if (Number(k) <= n) d.flags.forEach((f) => s.add(f));
+  return s;
+}
+
+// Конец акта → «Дальше»: следующий акт с тем же состоянием (его готовит game.js).
+async function nextAct(n, make) {
+  const data = await actData(n);
+  scene = game;
+  await game.start(data, make(data), { newAct: true });
 }
 
 async function startGame(opts = {}) {
@@ -74,7 +85,10 @@ async function boot() {
     onStart: (opts) => startGame(opts).catch(fail),
     onSettings: (s) => dialog.setFast(s.fasttext),
   });
-  game.init(ui, { onExit: toTitle });
+  game.init(ui, {
+    onExit: toTitle,
+    onNext: { has: (n) => (manifest.acts || [1]).includes(n), start: (n, make) => nextAct(n, make).catch(fail) },
+  });
   game.onSettings((k) => (k === "get" ? title.getSettings() : title.toggleSetting(k)));
   await Promise.all(FONTS.map((f) => document.fonts.load(f)));
   await assets.loadImages(TITLE_IMAGES, progress);

@@ -117,7 +117,7 @@ class MergeTest(unittest.TestCase):
                              f"ACT{n}_TEXTS_FINAL.md правили руками — правки вносятся в texts/rewrite/ACT{n}_TEXTS_EDITS.md")
 
     def test_final_passes_brief(self):
-        for n, slots in ((1, 156), (2, 167), (3, 134), (4, 77)):
+        for n, slots in ((1, 156), (2, 168), (3, 134), (4, 77)):
             brief = ROOT / "texts" / f"act{n}" / f"BRIEF_ACT{n}_TEXTS.md"
             texts, fmt = ct.parse_texts(ROOT / "texts" / f"act{n}" / f"ACT{n}_TEXTS_FINAL.md")
             errs, warns, stats = ct.check(ct.parse_brief(brief), texts, fmt, ct.detect_act(brief))
@@ -154,7 +154,7 @@ class MergeTest(unittest.TestCase):
         _, report = self.build_final(2)
         self.assertIn("OPEN.demo", report["rule"])
         self.assertIn("TALK.iz.duty", report["rule"])
-        self.assertEqual(sum(len(v) for v in report.values()), 167)
+        self.assertEqual(sum(len(v) for v in report.values()), 168)
 
     def test_default_must_be_a_side(self):
         with self.assertRaises(ValueError):
@@ -180,7 +180,7 @@ class ReadTest(unittest.TestCase):
         acts = self.data["acts"]
         self.assertEqual(self.data["built"], "05.10.2026")
         self.assertEqual([a["act"] for a in acts], ["II", "III"])
-        self.assertEqual([len(a["slots"]) for a in acts], [167, 134])
+        self.assertEqual([len(a["slots"]) for a in acts], [168, 134])
         self.assertEqual([a["status"] for a in acts], ["ждёт чтения автора", "ждёт чтения автора"])
         self.assertTrue(all(s["sec"] for a in acts for s in a["slots"]))
 

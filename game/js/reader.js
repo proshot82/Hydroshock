@@ -6,6 +6,7 @@
 
 import { ctx, W, H } from "./view.js";
 import { image, loadImage } from "./assets.js";
+import * as plans from "./plans.js";
 
 const MARKS = { "[оттиск]": "docs/stamp_kuh", "[печать отеля]": "docs/stamp_hotel", "[отпечатокъ пальца]": "docs/mark_thumb" };
 const DX = (W - 1400) / 2;
@@ -73,6 +74,7 @@ export function open(docId, data) {
     const d = data.docs[docId];
     if (!d) { resolve(); return; }
     loadImage(d.carrier).catch(() => {});
+    if (d.plan) loadImage(d.plan.img).catch(() => {});
     Object.values(MARKS).forEach((m) => loadImage(m).catch(() => {}));
     cur = { doc: docId, d, parts: null };
     doneCb = resolve;
@@ -96,12 +98,36 @@ export function close() {
   return true;
 }
 
+// План на подсвеченном стекле (DOC.map_*): плёнка с подписями по меткам, заголовок — первая строка.
+function drawPlan(bg) {
+  const d = cur.d;
+  ctx.drawImage(bg, DX, DY, 1400, 980);
+  const c = plans.render([d.plan]);
+  if (c) ctx.drawImage(c, DX, DY);
+  const title = (d.lines.find((l) => l.trim()) || "").trim();
+  ctx.font = `700 34px "${d.plan.font[0]}"`;
+  ctx.fillStyle = d.plan.ink;
+  ctx.textAlign = "left";
+  ctx.textBaseline = "top";
+  ctx.fillText(title, DX + 40, DY + 30);
+  hintClose();
+}
+
+function hintClose() {
+  ctx.font = '400 24px "PT Sans"';
+  ctx.fillStyle = "#a6a194";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "alphabetic";
+  ctx.fillText("Щелчок — закрыть", W / 2, H - 12);
+}
+
 export function draw() {
   if (!cur) return;
   ctx.fillStyle = "rgba(0, 0, 0, 0.72)";
   ctx.fillRect(0, 0, W, H);
   const bg = image(cur.d.carrier);
   if (!bg) return;
+  if (cur.d.plan) { drawPlan(bg); return; }
   if (!cur.parts) cur.parts = build(cur.d);   // шрифты уже загружены — вёрстку считаем один раз
   ctx.drawImage(bg, DX, DY, 1400, 980);
   const fld = cur.d.field || {};
@@ -128,9 +154,5 @@ export function draw() {
       y += r.h;
     }
   }
-  ctx.font = '400 24px "PT Sans"';
-  ctx.fillStyle = "#a6a194";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "alphabetic";
-  ctx.fillText("Щелчок — закрыть", W / 2, H - 12);
+  hintClose();
 }

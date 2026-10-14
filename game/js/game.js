@@ -9,6 +9,7 @@ import { image, loadImage } from "./assets.js";
 import * as audio from "./audio.js";
 import * as dialog from "./dialog.js";
 import * as reader from "./reader.js";
+import * as plans from "./plans.js";
 import { evaluate, first } from "./cond.js";
 import { State, save as saveState } from "./state.js";
 
@@ -29,6 +30,7 @@ let data = null;
 let st = null;
 let T = {};               // строки интерфейса
 let onExit = () => {};
+let onNext = null;        // следующий акт: (state) => Promise | null, если его нет в сборке
 let busy = false;
 let frame = null;         // кадр сцены/слота поверх вида: [[слои…], …]
 let verbMenu = null;      // {zk, x, y, items:[{verb, label}]}
@@ -54,15 +56,16 @@ const log = [];           // журнал для автотестов: слот�
 export function init(uiTexts, handlers) {
   T = uiTexts;
   onExit = handlers.onExit || onExit;
+  onNext = handlers.onNext || null;
   dialog.init(data ? data.speakers : {});
 }
 
-export async function start(actData, state) {
+export async function start(actData, state, opts = {}) {
   data = actData;
   dialog.init(data.speakers || {});
   busy = false; frame = null; verbMenu = null; choice = null; selected = null; pause = null;
   docsPanel = null; endCard = null; toast = null;
-  const fresh = !state;
+  const fresh = !state || !!opts.newAct;   // новый акт открывается своей сценой, как новая игра
   st = state || new State(data.act, data.start_flags);
   if (!st.view) st.view = Object.keys(data.views)[0];
   preloadAct();
@@ -77,14 +80,28 @@ export async function start(actData, state) {
   }
 }
 
+function layerImages(l) {
+  return l.plans ? plans.images(l) : [l.img];
+}
+
+function frameImages(f, names) {
+  const lays = Array.isArray(f) ? f : f.extra || [];
+  lays.forEach((l) => layerImages(l).forEach((n) => names.add(n)));
+}
+
 function preloadAct() {
   const names = new Set();
   for (const v of Object.values(data.views)) {
     names.add(v.bg);
-    v.layers.forEach((l) => names.add(l.img));
+    v.layers.forEach((l) => layerImages(l).forEach((n) => names.add(n)));
   }
   for (const steps of Object.values(data.scenes)) {
-    steps.forEach((s) => s.frames.forEach((f) => Array.isArray(f) && f.forEach((l) => names.add(l.img))));
+    steps.forEach((s) => s.frames.forEach((f) => frameImages(f, names)));
+  }
+  for (const z of Object.values(data.rules)) {
+    for (const rs of Object.values(z)) {
+      rs.forEach((r) => r.effects.forEach((e) => e.frame && e.frame.forEach((f) => frameImages(f, names))));
+    }
   }
   Object.values(data.items).forEach((i) => names.add(i.icon));
   // музыка и амбиент акта — заранее, чтобы тема после удара вошла сразу, а не после загрузки
@@ -97,7 +114,7 @@ function preloadAct() {
   audio.preload([...sounds]);
   // сначала то, что на экране, потом остальное
   const v = data.views[st.view];
-  [v.bg, ...v.layers.map((l) => l.img)].forEach((n) => loadImage(n).catch(() => {}));
+  [v.bg, ...v.layers.flatMap(layerImages)].forEach((n) => loadImage(n).catch(() => {}));
   names.forEach((n) => loadImage(n).catch(() => {}));
 }
 
@@ -120,8 +137,12 @@ function enterView(vid, sound = true, withMusic = true) {
   const prev = st.view;
   st.view = vid;
   verbMenu = null;
-  // экранные флаги `scr_*` живут, пока игрок на этом виде (шторка тележки, каскад)
-  if (prev !== vid) for (const f of [...st.flags]) if (f.startsWith("scr_")) st.flags.delete(f);
+  // экранные флаги `scr_*` живут, пока игрок на этом виде (шторка тележки) или на видах своей
+  // области (каскад: вестибюль, стойка, экспонат — раздел «Экранные флаги» логики акта)
+  if (prev !== vid) {
+    const scopes = data.screen_scopes || {};
+    for (const f of [...st.flags]) if (f.startsWith("scr_") && !(scopes[f] || []).includes(vid)) st.flags.delete(f);
+  }
   if (!withMusic) return;
   const m = viewMusic(vid);
   audio.music(m.music || null);
@@ -210,8 +231,7 @@ async function runScene(name) {
   const steps = data.scenes[name] || [];
   for (const step of steps) {
     const before = { flags: [...st.flags].sort().join(",") };
-    const frames = step.frames.filter((f) => Array.isArray(f));
-    frame = frames.length ? frames : null;
+    frame = step.frames.length ? step.frames : null;
     // «музыка:стоп» — обрыв музыки и амбиента, миг тишины, потом звуки шага (гидроудар в тишине)
     const mus = [...step.sound, ...step.effects].find((e) => e.music);
     if (mus && mus.music === "стоп") { audio.cut(); await sleep(CUT_PAUSE); }
@@ -421,8 +441,23 @@ function goBack() {
 }
 
 function showEnd() {
-  endCard = { act: data.act };
+  endCard = { act: data.act, next: !!(onNext && onNext.has(data.act + 1)) };
   audio.ambience(null);
+}
+
+// Следующий акт: флаги накопительно (GDD §12), к ним — стартовые флаги нового акта; показы слотов,
+// счётчики и прочитанные бумаги остаются; советы Предка — заново (темы у акта свои).
+function nextAct() {
+  const n = data.act + 1;
+  endCard = null;
+  onNext.start(n, (next) => {
+    st.act = n;
+    st.ended = false;
+    st.view = null;
+    next.start_flags.forEach((f) => st.flags.add(f));
+    st.hint = { level: {}, lock: false, n: st.hint.n };
+    return st;
+  });
 }
 
 // ------------------------------------------------------------ ввод
@@ -493,6 +528,7 @@ export function pointerDown(p, button = 0) {
   if (!data || !p) return false;
   if (endCard) {
     if (inRect(p, END_BTN)) { audio.sfx("ui_click"); onExit(); }
+    else if (endCard.next && inRect(p, NEXT_BTN)) { audio.sfx("ui_click"); nextAct(); }
     return true;
   }
   if (pause) {
@@ -587,17 +623,29 @@ function rr(x, y, w, h, r) {
 
 function drawLayers(layers) {
   for (const l of layers) {
+    if (l.plans) { plans.draw(ctx, l); continue; }
     const img = image(l.img);
     if (img) ctx.drawImage(img, l.x, l.y);
   }
 }
 
+// Вид в его нынешнем состоянии (фон и слои по условиям) и поверх — слои кадра («вид:Z04+ящик»).
+function drawView(vid, extra = []) {
+  const v = data.views[vid] || data.views[st.view];
+  const bg = image(v.bg);
+  if (!bg) return false;
+  ctx.drawImage(bg, 0, 0, W, H);
+  drawLayers(v.layers.filter((l) => evaluate(l.when, st)));
+  drawLayers(extra);
+  return true;
+}
+
 function drawWorld() {
   if (frame) {
     const cur = dialog.currentLine();
-    const idx = Math.min(cur ? cur.i : 0, frame.length - 1);
-    drawLayers(frame[idx]);
-    return;
+    const el = frame[Math.min(cur ? cur.i : 0, frame.length - 1)];
+    if (Array.isArray(el)) { drawLayers(el); return; }
+    if (el.view !== st.view || el.extra) { drawView(el.view, el.extra); return; }
   }
   const v = data.views[st.view];
   const bg = image(v.bg);
@@ -765,6 +813,7 @@ function drawDocs() {
 }
 
 const END_BTN = { x: 760, y: 700, w: 400, h: 72 };
+const NEXT_BTN = { x: 760, y: 600, w: 400, h: 72 };
 
 function drawEnd() {
   if (!endCard) return;
@@ -780,7 +829,9 @@ function drawEnd() {
   ctx.fillText((T.act_end || "%s").replace("%s", data.roman), W / 2, 450);
   ctx.fillStyle = C.dim;
   const nextT = T[`act_${endCard.act + 1}`];
-  if (nextT) ctx.fillText((T.act_next || "%s").replace("%s", nextT), W / 2, 510);
+  if (nextT && !endCard.next) ctx.fillText((T.act_next || "%s").replace("%s", nextT), W / 2, 510);
+  if (nextT && endCard.next) ctx.fillText(nextT, W / 2, 510);
+  if (endCard.next) button(NEXT_BTN, T.next_act || "Дальше", inRect(lastPointer, NEXT_BTN), { font: '700 34px "PT Sans"' });
   button(END_BTN, T.to_title, inRect(lastPointer, END_BTN), { font: '700 34px "PT Sans"' });
 }
 
@@ -823,7 +874,8 @@ export function debug() {
     items: invSlots().map((s) => ({ id: s.id, at: [s.x + s.w / 2, s.y + s.h / 2] })),
     menuItems: verbMenu ? menuRects(verbMenu.items, verbMenu.x, verbMenu.y).map((r) => ({ verb: r.verb, at: [r.x + r.w / 2, r.y + r.h / 2] }))
       : choice ? choiceRects().map((r) => ({ id: r.id, at: [r.x + r.w / 2, r.y + r.h / 2] })) : null,
-    hud: { hint: center(HUD.hint), docs: center(HUD.docs), back: center(HUD.back), end: center(END_BTN) },
+    hud: { hint: center(HUD.hint), docs: center(HUD.docs), back: center(HUD.back), end: center(END_BTN),
+      next: endCard && endCard.next ? center(NEXT_BTN) : null },
     log: log.slice(),
     n: { ...st.n }, hint: { ...st.hint },
   };

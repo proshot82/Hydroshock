@@ -9,6 +9,7 @@ export function evaluate(tree, st) {
   if (tree.or) return tree.or.some((e) => evaluate(e, st));
   if (tree.shown !== undefined) return (st.n[tree.shown] || 0) > 0;
   if (tree.pos !== undefined) return st.pos === tree.pos;
+  if (tree.view !== undefined) return st.view === tree.view;
   if (tree.cmp !== undefined) {
     let v;
     if (tree.cmp.startsWith("n:")) v = st.n[tree.cmp.slice(2)] || 0;

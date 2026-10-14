@@ -238,6 +238,7 @@
 | `W4.hatch.look` | `room:W4`, люк под стеклом | — | — |
 | `W4.stairs.look` | `room:W4`, дверь «Служебное помещение» ∧ ¬`stairs_open` | — | — |
 | `W4.stairs.locked` | `room:W4`, открыть дверь ∧ ¬`has_stairs_key` | — (D30) | — |
+| `W4.stairs.no_plan` | `room:W4`, открыть дверь ∧ `has_stairs_key` ∧ ¬`topology_known` (добавлено при сборке 14.10.2026, на решение автора) | — | — |
 | `Z09.board.look` | `zoom:Z09` ∧ ¬`knows_plate_under_paint` | B11_inspect_board → `DOC.paint_act` | `knows_plate_under_paint`, `knows_paint_fresh`, `paint_act_read`, `chalk_sample_seen` |
 | `Z09.chalk.look` | `zoom:Z09` ∧ `chalk_sample_seen`, меловое «НАШЕ» на раме | — | — |
 | `Z09.paint.rub` | `zoom:Z09` ∧ `knows_plate_under_paint` ∧ ¬`name_revealed`, тереть пальцами | — (D20) | — |

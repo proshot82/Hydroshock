@@ -327,7 +327,7 @@ class Act2FinalTest(unittest.TestCase):
         texts, fmt = ct.parse_texts(ROOT / "texts" / "act2" / "ACT2_TEXTS_FINAL.md")
         errs, _, stats = ct.check(brief, texts, fmt, act=2)
         self.assertEqual(errs, [], messages(errs))
-        self.assertEqual(stats["slots"], 167)  # ТЗ 1.8 (09.10.2026): показ насоса, ширма, бирка, ключ за обязанность
+        self.assertEqual(stats["slots"], 168)  # ТЗ 1.8 (09.10.2026): показ насоса, ширма, бирка, ключ за обязанность; +W4.stairs.no_plan (сборка 14.10.2026)
 
 
 BRIEF3 = ROOT / "texts" / "act3" / "BRIEF_ACT3_TEXTS.md"

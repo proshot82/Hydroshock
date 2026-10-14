@@ -51,7 +51,7 @@ def table(sections, name, idx=0):
 # ---------------------------------------------------------------- условия
 
 TOKEN = re.compile(r"\s*(¬|!|∧|&|∨|\||\(|\)|shown\([^)]*\)|n\([^)]*\)\s*(?:>=|<=|=|>|<)\s*\d+|"
-                   r"pos\s*=\s*[a-z_]+|[a-z_]+\.n\s*(?:>=|<=|=|>|<)\s*\d+|act\s*(?:>=|<=|=)\s*\d+|[A-Za-z_][A-Za-z0-9_]*)")
+                   r"pos\s*=\s*[a-z_]+|вид\s*=\s*[A-Za-z0-9]+|[a-z_]+\.n\s*(?:>=|<=|=|>|<)\s*\d+|act\s*(?:>=|<=|=)\s*\d+|[A-Za-z_][A-Za-z0-9_]*)")
 
 
 def parse_cond(text):
@@ -98,6 +98,9 @@ def parse_cond(text):
         m = re.fullmatch(r"pos\s*=\s*([a-z_]+)", t)
         if m:
             return {"pos": m.group(1)}
+        m = re.fullmatch(r"вид\s*=\s*([A-Za-z0-9]+)", t)
+        if m:
+            return {"view": m.group(1)}
         m = re.fullmatch(r"([a-z_]+)\.n\s*(>=|<=|=|>|<)\s*(\d+)", t)
         if m:
             return {"cmp": m.group(1), "op": m.group(2), "v": int(m.group(3))}
@@ -175,6 +178,8 @@ def evaluate(tree, st):
         return st["n"].get(tree["shown"], 0) > 0
     if "pos" in tree:
         return st["pos"] == tree["pos"]
+    if "view" in tree:
+        return st.get("view") == tree["view"]
     if "cmp" in tree:
         k = tree["cmp"]
         if k.startswith("n:"):
@@ -195,9 +200,14 @@ def is_screen(flag):
     return flag.startswith("scr_")
 
 
-def drop_screen(flags):
+def drop_screen(flags, view=None, scopes=None):
+    """Снять экранные флаги при переходе на вид `view`. У флага может быть область — виды, на которых
+    он живёт (раздел «Экранные флаги» логики акта: каскад работает, пока игрок на W2 и его зумах);
+    флаг без области снимается при любой смене вида (шторка тележки Акта I)."""
+    scopes = scopes or {}
     for f in [f for f in flags if is_screen(f)]:
-        flags.discard(f)
+        if view is None or view not in scopes.get(f, ()):
+            flags.discard(f)
 
 
 # ---------------------------------------------------------------- эффекты
