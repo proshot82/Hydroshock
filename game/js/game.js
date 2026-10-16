@@ -199,7 +199,7 @@ async function playSlot(slot, opts = {}) {
   log.push(slot);
   const t = data.texts[slot];
   if (!t) return;
-  await dialog.say(t.lines, st, { dry: opts.dry || dryPortrait });
+  await dialog.say(t.lines, st, { dry: opts.dry || dryPortrait, onLine: opts.onLine });
 }
 
 function applyNow(effects) {
@@ -208,7 +208,7 @@ function applyNow(effects) {
     else if (e.remove) st.flags.delete(e.remove);
     else if (e.pos) st.pos = e.pos;
     else if (e.inc) st.c[e.inc] = (st.c[e.inc] || 0) + 1;
-    else if (e.sfx) audio.sfx(e.sfx);
+    else if (e.sfx && !e.line) audio.sfx(e.sfx);   // «@N» — звук на реплике N (runScene)
     else if (e.loop) audio.loop(e.loop);
     else if (e.stop) audio.stopLoop(e.stop);
     else if (e.amb) audio.ambience(e.amb);
@@ -253,17 +253,23 @@ async function runScene(name) {
     const before = { flags: [...st.flags].sort().join(",") };
     frame = step.frames.length ? step.frames : null;
     // «музыка:стоп» — обрыв музыки и амбиента, миг тишины, потом звуки шага (гидроудар в тишине)
-    const mus = [...step.sound, ...step.effects].find((e) => e.music);
-    if (mus && mus.music === "стоп") { audio.cut(); await sleep(CUT_PAUSE); }
-    else if (mus) audio.music(mus.music);
+    // «музыка:стоп, музыка:тема» — обрыв, миг тишины, потом новая тема с начала (появление Кухтулху)
+    const muses = [...step.sound, ...step.effects].filter((e) => e.music);
+    const mus = muses[0];
+    if (mus && mus.music === "стоп") {
+      audio.cut(); await sleep(CUT_PAUSE);
+      if (muses[1]) audio.music(muses[1].music);
+    } else if (mus) audio.music(mus.music);
     else if (step.frames.some((f) => !Array.isArray(f) && f.view)) restoreViewSound();
     applyNow(step.sound);
     applyNow(step.effects);
+    const lineSfx = [...step.sound, ...step.effects].filter((e) => e.sfx && e.line);
+    const onLine = lineSfx.length ? (i) => lineSfx.filter((e) => e.line === i + 1).forEach((e) => audio.sfx(e.sfx)) : undefined;
     if (step.effects.some((e) => e.portrait)) {
-      await playSlot(step.slot, { dry: true });
+      await playSlot(step.slot, { dry: true, onLine });
       dryPortrait = false;
     } else {
-      await playSlot(step.slot);
+      await playSlot(step.slot, { onLine });
     }
     await applyLater(step.effects.filter((e) => !e.portrait));
     changed(before);
@@ -469,7 +475,7 @@ function showEnd() {
     nextAct();
     return;
   }
-  endCard = { act: data.act };
+  endCard = { act: data.act, last: data.act >= 4 };   // после эпилога — «Конец» и «На титул»
   audio.ambience(null);
 }
 
@@ -928,7 +934,7 @@ function drawEnd() {
   ctx.textBaseline = "alphabetic";
   ctx.font = '400 36px "PT Sans"';
   ctx.fillStyle = C.text;
-  ctx.fillText(T.build_end || "", W / 2, 470);
+  ctx.fillText((endCard.last ? T.the_end : T.build_end) || "", W / 2, 470);
   button(END_BTN, T.to_title, inRect(lastPointer, END_BTN), { font: '700 34px "PT Sans"' });
 }
 

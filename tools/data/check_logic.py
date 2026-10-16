@@ -159,8 +159,8 @@ class Sim:
             Sim._counters(tree["not"], acc)
 
     # ------------------------------------------------------------ состояние
-    def start(self):
-        st = {"flags": set(self.d["start_flags"]), "pos": "room" if self.d["act"] == 1 else None,
+    def start(self, extra=()):
+        st = {"flags": set(self.d["start_flags"]) | set(extra), "pos": "room" if self.d["act"] == 1 else None,
               "n": {}, "c": {}, "view": None, "menu": None, "end": False, "act": self.d["act"]}
         if "open" in self.d["scenes"]:
             self.run_scene(st, "open")
@@ -336,11 +336,25 @@ def check_data(data, verbose=False, seed=0, walks=3000):
     """Проверка собранных данных акта (её же зовут негативные тесты на испорченных данных)."""
     act = seed
     sim = Sim(data)
-    st0 = sim.start()
-    seen = {sim.key(st0): 0}
-    states = [st0]
-    edges = [[]]
-    q = deque([0])
+    # флаги, которые приходят только из прошлого акта: в глоссарии графа есть, ни одно действие их не
+    # ставит, в гарантированный старт они не входят (Акт IV: оплата уехала одна в Акте III — DS20).
+    # Перебор начинается и с них: каждый такой вариант начала акта тоже должен доходить до конца
+    from itertools import combinations
+    set_by = {f for g in data["graph"].values() for f in g["adds"]}
+    carry = sorted(set(data["flags"]) - set(data["start_flags"]) - set_by)
+    starts = [()] + ([c for k in range(1, len(carry) + 1) for c in combinations(carry, k)] if len(carry) <= 3
+                     else [(f,) for f in carry])
+    states, edges, seen = [], [], {}
+    q = deque()
+    for extra in starts:
+        st0 = sim.start(extra)
+        k0 = sim.key(st0)
+        if k0 in seen:
+            continue
+        seen[k0] = len(states)
+        q.append(len(states))
+        states.append(st0)
+        edges.append([])
     while q:
         i = q.popleft()
         for label, st2 in sim.moves(states[i]):
@@ -361,7 +375,7 @@ def check_data(data, verbose=False, seed=0, walks=3000):
     import random
     rnd = random.Random(act)
     for _ in range(walks):
-        st = sim.start()
+        st = sim.start(rnd.choice(starts))
         for _ in range(300):
             mv = sim.moves(st)
             if not mv:
@@ -427,6 +441,10 @@ def check_data(data, verbose=False, seed=0, walks=3000):
             for r in c:
                 if r.get("action") == a:
                     adds |= {e["add"] for e in r["effects"] if "add" in e}
+                    for e in r["effects"]:
+                        if "scene" in e:
+                            for stp in data["scenes"].get(e["scene"], []):
+                                adds |= {x["add"] for x in stp["effects"] if "add" in x}
         if a not in sim.fired:
             errors.append(f"действие графа {a} ни разу не срабатывает")
             continue

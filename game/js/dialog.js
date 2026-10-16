@@ -20,6 +20,7 @@ const PORTRAIT_SPEAKERS = new Set(["lap", "iz", "kuh", "anc"]);
 
 let speakers = {};       // id → плашка
 let queue = [];
+let onLine = null;       // (i) => …: реплика i появилась (звуки «@N» в сценах)
 let cur = null;          // {s, e, t, portrait}
 let shown = 0;
 let t = 0;
@@ -57,6 +58,7 @@ export function say(lines, st, opts = {}) {
     queue = lines.map((l, i) => ({ ...l, i, portrait: portraitName(l, st, opts.dry) }));
     queue.forEach((l) => l.portrait && loadImage(l.portrait).catch(() => {}));
     doneCb = resolve;
+    onLine = opts.onLine || null;
     next();
   });
 }
@@ -64,6 +66,7 @@ export function say(lines, st, opts = {}) {
 function next() {
   cur = queue.shift() || null;
   shown = 0; t = 0; blipAcc = 0;
+  if (cur && onLine) onLine(cur.i);   // звук кадра монтажа — с его репликой
   if (!cur) {
     const cb = doneCb;
     doneCb = null;
