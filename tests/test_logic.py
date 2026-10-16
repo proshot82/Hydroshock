@@ -104,5 +104,54 @@ class Act2LogicTest(unittest.TestCase):
         self.assertFalse(L.evaluate(t, st))
 
 
+class Act3LogicTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.data = G.build(3)
+
+    def run_check(self, data):
+        errors, _ = CL.check_data(data, seed=3, walks=200)
+        return errors
+
+    def test_clean(self):
+        errors, stats = CL.check_data(copy.deepcopy(self.data), seed=3, walks=300)
+        self.assertEqual(errors, [])
+        self.assertGreater(stats["состояний"], 1000)
+        self.assertIn("Z04.pump.use", self.data["borrowed"])     # витрина «если не сделано в Акте II»
+
+    def test_board_thrown_needs_return(self):
+        # доску «НАШЕ» выбросили в кучу, а достать её нельзя — трапа нет, тележка в кабину не въезжает
+        d = copy.deepcopy(self.data)
+        del d["rules"]["W4.design_board"]["достать_доску"]
+        errors = self.run_check(d)
+        self.assertTrue(any("тупиков" in e for e in errors), errors)
+
+    def test_earlier_act_flag_in_condition(self):
+        # условие может читать флаг Акта II (кольцо на пломбе), ставить его — нет
+        lay = [l for l in self.data["views"]["Z05"]["layers"] if l["name"] == "st_z05_ring"]
+        self.assertEqual(lay[0]["when"], {"f": "seal_is_mark"})
+
+
+class Act4LogicTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.data = G.build(4)
+
+    def test_clean(self):
+        errors, stats = CL.check_data(copy.deepcopy(self.data), seed=4, walks=300)
+        self.assertEqual(errors, [])
+
+    def test_sent_alone_start_checked(self):
+        # оплата уехала одна в Акте III (флаг приходит из прошлого акта): приёмка «принято ранее»
+        # должна быть в переборе — иначе её реплики «нигде не звучат»
+        errors, _ = CL.check_data(copy.deepcopy(self.data), seed=4, walks=50)
+        self.assertFalse(any("SEQ.goods.prior" in e for e in errors), errors)
+
+    def test_line_sound(self):
+        import logic as L
+        self.assertEqual(L.parse_effects("sfx_fin_cascade@2, звук:sfx_knock@3, sfx_stamp"),
+                         [{"sfx": "sfx_fin_cascade", "line": 2}, {"sfx": "sfx_knock", "line": 3}, {"sfx": "sfx_stamp"}])
+
+
 if __name__ == "__main__":
     unittest.main()
