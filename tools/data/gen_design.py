@@ -31,6 +31,12 @@ SPEAKERS = {"lap", "iz", "kuh", "anc", "pa", "paiz", "ans", "guest", "guestf", "
 FONT_CSS = {DP.SANS: ("PT Sans", 400), DP.SANSB: ("PT Sans", 700), DP.OLD: ("Old Standard TT", 400),
             DP.OLDB: ("Old Standard TT", 700), DP.MONO: ("PT Mono", 400), DP.HAND: ("Caveat", 400)}
 ROMAN = {1: "I", 2: "II", 3: "III", 4: "IV"}
+PLANS = ROOT / "docs" / "assets" / "plans_markers.json"
+# плёнки P05: шрифт и чернила подписей — как у пробы приёмки (tools/assets/plans_preview.py, спека §7.2)
+PLAN_STYLE = {"plan_hotel": (("PT Sans", 400), "#1c3478"), "plan_1908": (("Old Standard TT", 400), "#6e401e"),
+              "plan_soviet": (("PT Mono", 400), "#1e6e3c")}
+HATCH = (700, 860)          # где на подсвеченном стекле люк (координаты плёнки 1400×980)
+LIGHTBOX = (260, 50)        # стекло 1400×980 на экране 1920×1080 — по центру, как в читалке
 
 
 class DesignError(Exception):
@@ -65,6 +71,36 @@ def gfx_exists(name):
     return (GFX / f"{name}.png").is_file()
 
 
+def plan_films(mode):
+    """Три плёнки P05 в одном из положений (спека §3, «Плёнки P05 на стекле Z10»): рамки — как легли,
+    люк — нарисованный источник на настоящий люк и доворот по номеру 317 (одна вертикаль); купол,
+    подписи, фасад — кривые стопки по ложной опоре. Сдвиг tx, ty и поворот rot (градусы, против
+    часовой, как в plans_preview.py) — вокруг точки cx, cy плёнки."""
+    data = json.loads(PLANS.read_text(encoding="utf-8"))
+    anchor = {"подписи": ("hall", "hall"), "фасад": ("room317", "room317"), "купол": ("dome", "room317")}
+    hotel = data["plan_hotel"]["markers"]
+    films = []
+    for name in ("plan_hotel", "plan_1908", "plan_soviet"):
+        p = data[name]
+        sx, sy = p["source"]
+        tx = ty = rot = 0.0
+        if mode == "люк":
+            tx, ty, rot = HATCH[0] - sx, HATCH[1] - sy, p["angle_deg"]
+        elif mode in anchor:
+            own = anchor[mode][0] if anchor[mode][0] in p["markers"] else anchor[mode][1]
+            ref = hotel[anchor[mode][0]]
+            m = p["markers"][own]
+            tx, ty = ref["x"] - m["x"], ref["y"] - m["y"]
+        elif mode != "рамки":
+            raise ValueError(f"положение плёнок «{mode}» не из рамки, люк, купол, подписи, фасад")
+        font, ink = PLAN_STYLE[name]
+        films.append({"img": f"docs/{name}", "cx": sx, "cy": sy, "tx": round(tx, 1), "ty": round(ty, 1),
+                      "rot": rot, "font": font, "ink": ink,
+                      "labels": [{"x": m["x"], "y": m["y"], "t": m["label"], "side": m.get("side", "r")}
+                                 for m in p["markers"].values() if m["label"]]})
+    return films
+
+
 def build(act):
     errors = []
 
@@ -77,6 +113,23 @@ def build(act):
     texts, terrs = CT.parse_texts(ROOT / "texts" / f"act{act}" / f"ACT{act}_TEXTS_FINAL.md")
     for e in terrs:
         err("тексты", e)
+    # реплики прошлых актов (осмотр вантуза и меню, отказы «не тот предмет»): слот можно назвать
+    # в логике следующего акта — он войдёт в данные акта как заимствованный; свои слоты главнее
+    earlier = {}
+    for k in range(1, act):
+        t, _ = CT.parse_texts(ROOT / "texts" / f"act{k}" / f"ACT{k}_TEXTS_FINAL.md")
+        earlier.update(t)
+    own = set(texts)
+    borrowed = set()
+
+    def known(slot):
+        if slot in texts:
+            return True
+        if slot in earlier:
+            texts[slot] = earlier[slot]
+            borrowed.add(slot)
+            return True
+        return False
     cutouts = json.loads((GFX / "cutouts" / "cutouts.json").read_text(encoding="utf-8"))
     fields = json.loads((ROOT / "design" / "docs" / "fields.json").read_text(encoding="utf-8"))
     ui = ui_keys()
@@ -94,7 +147,7 @@ def build(act):
             if f not in gflags and not L.is_screen(f):
                 err(where, f"флаг «{f}» не из графа")
         for s in L.cond_slots(tree):
-            if s not in texts:
+            if not known(s):
                 err(where, f"слот «{s}» в условии не найден в текстах")
         return tree
 
@@ -106,13 +159,33 @@ def build(act):
             if v[1:] not in groups:
                 err(where, f"цепочки «{v[1:]}» нет")
             return v
-        if v not in texts:
+        if not known(v):
             err(where, f"слота «{v}» нет в текстах акта")
         return v
 
     def layer_img(name, where):
         """«st_x» / «ov_x» → слой с координатами; «rooms/room_w1» → фон."""
         name = name.strip()
+        if name.startswith("планы:"):
+            mode, _, onto = name[6:].partition("@")
+            try:
+                films = plan_films(mode.strip())
+            except ValueError as e:
+                err(where, str(e))
+                films = []
+            lay = {"plans": films, "x": 0, "y": 0}
+            if onto:
+                try:
+                    pts = [[int(v) for v in p.split(",")] for p in onto.split(";")]
+                    assert len(pts) == 3 and all(len(p) == 2 for p in pts)
+                except (ValueError, AssertionError):
+                    err(where, f"«{name}»: после @ — три точки x,y;x,y;x,y (углы плёнки: верх-лево, верх-право, низ-лево)")
+                    pts = None
+                lay["onto"] = pts
+            else:
+                lay["box"] = "docs/paper_lightbox"
+                lay["x"], lay["y"] = LIGHTBOX
+            return lay
         if "/" in name:
             if not gfx_exists(name):
                 err(where, f"картинки {name}.png нет")
@@ -130,9 +203,13 @@ def build(act):
     def frame(spec, where):
         """«фон+слой+слой;фон2+…» → [[слои кадра 1], …]; «вид:W1» → {"view": "W1"}."""
         out = []
-        for part in [p.strip() for p in spec.split(";") if p.strip()]:
+        for part in [p.strip() for p in re.split(r";(?![\d])", spec) if p.strip()]:
             if part.startswith("вид:"):
-                out.append({"view": part[4:].strip()})
+                names = [n.strip() for n in part[4:].split("+")]
+                fr = {"view": names[0]}
+                if names[1:]:
+                    fr["extra"] = [layer_img(n, where) for n in names[1:]]
+                out.append(fr)
                 continue
             names = [n.strip() for n in part.split("+")]
             out.append([layer_img(names[0], where)] + [layer_img(n, where) for n in names[1:]])
@@ -154,7 +231,7 @@ def build(act):
                     err(where, f"звука {nm}.ogg нет")
             if "frame" in e:
                 e["frame"] = frame(e["frame"], where)
-            if "doc" in e and e["doc"] not in texts:
+            if "doc" in e and not known(e["doc"]):
                 err(where, f"документа {e['doc']} нет в текстах")
             if "act" in e:
                 e["act"] = int(e["act"])
@@ -188,6 +265,32 @@ def build(act):
         lay["when"] = cond(r["Когда"], w)
         lay["name"] = r["Слой"]
         views[r["Вид"]]["layers"].append(lay)
+
+    # ---- надписи движка на чистых полях арта (табличка экспоната, бирка, табло; спека §3)
+    LABEL_FONT = {"sans": ("PT Sans", 400), "sansb": ("PT Sans", 700), "old": ("Old Standard TT", 400),
+                  "oldb": ("Old Standard TT", 700), "mono": ("PT Mono", 400), "hand": ("Caveat", 400)}
+    for vid in views:
+        views[vid]["labels"] = []
+    for r in L.table(S, "Надписи"):
+        w = f"{lname}:{r['_line']}"
+        if r["Вид"] not in views:
+            err(w, f"вида {r['Вид']} нет")
+            continue
+        try:
+            x, y, ww, hh = (int(v) for v in r["Где"].split(","))
+        except ValueError:
+            err(w, f"«{r['Где']}» не x,y,w,h")
+            continue
+        font = LABEL_FONT.get(r["Шрифт"].strip())
+        if not font:
+            err(w, f"шрифт «{r['Шрифт']}» не из {sorted(LABEL_FONT)}")
+            continue
+        color = r["Цвет"].strip()
+        if not re.fullmatch(r"#[0-9a-fA-F]{6}", color):
+            err(w, f"цвет «{color}» не #rrggbb")
+        views[r["Вид"]]["labels"].append({
+            "box": [x, y, ww, hh], "lines": [t.strip() for t in r["Текст"].split(" / ")], "font": font,
+            "color": color, "angle": float(L.dash(r.get("Угол", "")) or 0), "when": cond(r["Когда"], w)})
 
     # ---- зоны
     zone_ids = set()
@@ -321,9 +424,26 @@ def build(act):
     for r in L.table(S, "Документы"):
         w = f"{lname}:{r['_line']}"
         d = r["Документ"]
-        if d not in texts or not texts[d].get("doc"):
+        if not known(d) or not texts[d].get("doc"):
             err(w, f"документа {d} (блок text) нет в текстах")
         carrier = r["Носитель"]
+        if "+" in carrier:
+            # план на подсвеченном стекле (DOC.map_*, спека §7.2): подписи — по меткам плёнки
+            carrier, plan = [c.strip() for c in carrier.split("+", 1)]
+            for c in (carrier, plan):
+                if not gfx_exists(c):
+                    err(w, f"носителя {c}.png нет")
+            film = next((f for f in plan_films("рамки") if f["img"] == plan), None)
+            if film is None:
+                err(w, f"плёнки {plan} нет в {PLANS.name}")
+                continue
+            lines = texts.get(d, {}).get("doc") or []
+            for lab in film["labels"]:
+                if lab["t"] not in [l.strip() for l in lines]:
+                    err(w, f"подписи «{lab['t']}» с плёнки нет в тексте {d}")
+            docs[d] = {"carrier": carrier, "plan": film, "lines": lines, "font": film["font"],
+                       "first": film["font"], "field": {}, "caption": None}
+            continue
         if not gfx_exists(carrier):
             err(w, f"носителя {carrier}.png нет")
         cname = carrier.split("/")[-1]
@@ -358,12 +478,25 @@ def build(act):
 
     other = {r["Слот"]: r["Где звучит"] for r in L.table(S, "Прочее")}
 
+    # области экранных флагов: на каких видах флаг живёт (без области — только на своём виде)
+    scopes = {}
+    for r in L.table(S, "Экранные флаги"):
+        w = f"{lname}:{r['_line']}"
+        f = r["Флаг"]
+        if not L.is_screen(f):
+            err(w, f"«{f}» — не экранный флаг (scr_*)")
+        vs = [v.strip() for v in r["Виды"].split(",") if v.strip()]
+        for v in vs:
+            if v not in views:
+                err(w, f"вида {v} нет")
+        scopes[f] = vs
+
     # служебные советы Предка: «Подожди» и первое нажатие есть только в Акте I — в других актах
     # движок берёт их оттуда (SLOT_FLAGS, Акты II–IV: «та же реплика»)
     hint_slots = {"intro": "HINT.intro", "cooldown": "HINT.cooldown", "done": "HINT.done"}
     if act != 1:
         t1, _ = CT.parse_texts(ROOT / "texts" / "act1" / "ACT1_TEXTS_FINAL.md")
-        for k in ("HINT.intro", "HINT.cooldown"):
+        for k in ("HINT.intro", "HINT.cooldown", "UI.inventory"):   # подпись «При себе» — тоже из Акта I
             if k not in out_texts:
                 out_texts[k] = {"lines": [{"s": l["speaker"], "e": l["emotion"], "t": l["text"]} for l in t1[k]["lines"]]}
     for k, v in hint_slots.items():
@@ -377,6 +510,7 @@ def build(act):
         "flags": sorted(gflags), "views": views, "rules": rules, "chains": groups, "scenes": scenes,
         "menus": menus, "hints": hints, "hint_slots": hint_slots, "items": items, "docs": docs,
         "texts": out_texts, "other": other, "speakers": speaker_names(),
+        "screen_scopes": scopes, "borrowed": sorted(borrowed),
     }
     if errors:
         raise DesignError(errors)

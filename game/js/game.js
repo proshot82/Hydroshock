@@ -9,6 +9,7 @@ import { image, loadImage } from "./assets.js";
 import * as audio from "./audio.js";
 import * as dialog from "./dialog.js";
 import * as reader from "./reader.js";
+import * as plans from "./plans.js";
 import { evaluate, first } from "./cond.js";
 import { State, save as saveState } from "./state.js";
 
@@ -29,6 +30,7 @@ let data = null;
 let st = null;
 let T = {};               // строки интерфейса
 let onExit = () => {};
+let onNext = null;        // следующий акт: (state) => Promise | null, если его нет в сборке
 let busy = false;
 let frame = null;         // кадр сцены/слота поверх вида: [[слои…], …]
 let verbMenu = null;      // {zk, x, y, items:[{verb, label}]}
@@ -54,15 +56,16 @@ const log = [];           // журнал для автотестов: слот�
 export function init(uiTexts, handlers) {
   T = uiTexts;
   onExit = handlers.onExit || onExit;
+  onNext = handlers.onNext || null;
   dialog.init(data ? data.speakers : {});
 }
 
-export async function start(actData, state) {
+export async function start(actData, state, opts = {}) {
   data = actData;
   dialog.init(data.speakers || {});
   busy = false; frame = null; verbMenu = null; choice = null; selected = null; pause = null;
   docsPanel = null; endCard = null; toast = null;
-  const fresh = !state;
+  const fresh = !state || !!opts.newAct;   // новый акт открывается своей сценой, как новая игра
   st = state || new State(data.act, data.start_flags);
   if (!st.view) st.view = Object.keys(data.views)[0];
   preloadAct();
@@ -77,16 +80,48 @@ export async function start(actData, state) {
   }
 }
 
-function preloadAct() {
+function layerImages(l) {
+  return l.plans ? plans.images(l) : [l.img];
+}
+
+function frameImages(f, names) {
+  const lays = Array.isArray(f) ? f : f.extra || [];
+  lays.forEach((l) => layerImages(l).forEach((n) => names.add(n)));
+}
+
+function viewImages(vid, names) {
+  const v = data.views[vid];
+  if (!v) return;
+  names.add(v.bg);
+  v.layers.forEach((l) => layerImages(l).forEach((n) => names.add(n)));
+}
+
+function effectImages(effects, names, depth) {
+  for (const e of effects) {
+    if (e.frame) e.frame.forEach((f) => frameImages(f, names));
+    if (e.view && depth > 0) viewImages(e.view, names);
+    if (e.scene) (data.scenes[e.scene] || []).forEach((stp) => {
+      stp.frames.forEach((f) => frameImages(f, names));
+      [...stp.effects].forEach((x) => x.view && viewImages(x.view, names));
+    });
+  }
+}
+
+// Картинки «по соседству»: сам вид, куда из него можно перейти (зоны, «назад»), кадры его реплик и
+// сцен. Всю игру разом не грузим — распакованные кадры занимают гигабайты (см. assets.js, KEEP).
+function warm(vid) {
   const names = new Set();
-  for (const v of Object.values(data.views)) {
-    names.add(v.bg);
-    v.layers.forEach((l) => names.add(l.img));
+  viewImages(vid, names);
+  const v = data.views[vid];
+  if (v && v.parent) viewImages(v.parent, names);
+  for (const z of (v ? v.zones : [])) {
+    for (const rs of Object.values(data.rules[`${vid}.${z.id}`] || {})) rs.forEach((r) => effectImages(r.effects, names, 1));
   }
-  for (const steps of Object.values(data.scenes)) {
-    steps.forEach((s) => s.frames.forEach((f) => Array.isArray(f) && f.forEach((l) => names.add(l.img))));
-  }
-  Object.values(data.items).forEach((i) => names.add(i.icon));
+  names.forEach((n) => loadImage(n).catch(() => {}));
+}
+
+function preloadAct() {
+  Object.values(data.items).forEach((i) => loadImage(i.icon).catch(() => {}));
   // музыка и амбиент акта — заранее, чтобы тема после удара вошла сразу, а не после загрузки
   const sounds = new Set();
   for (const v of Object.values(data.views)) [v.music, v.amb].forEach((n) => n && sounds.add(n));
@@ -95,10 +130,11 @@ function preloadAct() {
     if (e.amb) sounds.add(e.amb);
   }));
   audio.preload([...sounds]);
-  // сначала то, что на экране, потом остальное
-  const v = data.views[st.view];
-  [v.bg, ...v.layers.map((l) => l.img)].forEach((n) => loadImage(n).catch(() => {}));
+  // вступление и место, где оно кончается
+  const names = new Set();
+  (data.scenes.open || []).forEach((stp) => stp.frames.forEach((f) => frameImages(f, names)));
   names.forEach((n) => loadImage(n).catch(() => {}));
+  warm(st.view);
 }
 
 // ------------------------------------------------------------ вид и звук
@@ -119,9 +155,14 @@ function enterView(vid, sound = true, withMusic = true) {
   if (!data.views[vid]) return;
   const prev = st.view;
   st.view = vid;
+  warm(vid);
   verbMenu = null;
-  // экранные флаги `scr_*` живут, пока игрок на этом виде (шторка тележки, каскад)
-  if (prev !== vid) for (const f of [...st.flags]) if (f.startsWith("scr_")) st.flags.delete(f);
+  // экранные флаги `scr_*` живут, пока игрок на этом виде (шторка тележки) или на видах своей
+  // области (каскад: вестибюль, стойка, экспонат — раздел «Экранные флаги» логики акта)
+  if (prev !== vid) {
+    const scopes = data.screen_scopes || {};
+    for (const f of [...st.flags]) if (f.startsWith("scr_") && !(scopes[f] || []).includes(vid)) st.flags.delete(f);
+  }
   if (!withMusic) return;
   const m = viewMusic(vid);
   audio.music(m.music || null);
@@ -210,8 +251,7 @@ async function runScene(name) {
   const steps = data.scenes[name] || [];
   for (const step of steps) {
     const before = { flags: [...st.flags].sort().join(",") };
-    const frames = step.frames.filter((f) => Array.isArray(f));
-    frame = frames.length ? frames : null;
+    frame = step.frames.length ? step.frames : null;
     // «музыка:стоп» — обрыв музыки и амбиента, миг тишины, потом звуки шага (гидроудар в тишине)
     const mus = [...step.sound, ...step.effects].find((e) => e.music);
     if (mus && mus.music === "стоп") { audio.cut(); await sleep(CUT_PAUSE); }
@@ -420,9 +460,31 @@ function goBack() {
   if (v.parent) { enterView(v.parent); saveState(st); }
 }
 
+// Конец акта. Для игрока актов нет — одна цельная игра (решение автора 14.10.2026): следующий акт
+// начинается сразу своей сценой, без заставки и кнопок; пока он грузится — чёрный экран. Карточка
+// с кнопкой «На титул» — только когда следующего акта нет в этой сборке превью.
 function showEnd() {
+  if (onNext && onNext.has(data.act + 1)) {
+    endCard = { transit: true };
+    nextAct();
+    return;
+  }
   endCard = { act: data.act };
   audio.ambience(null);
+}
+
+// Следующий акт: флаги накопительно (GDD §12), к ним — стартовые флаги нового акта; показы слотов,
+// счётчики и прочитанные бумаги остаются; советы Предка — заново (темы у акта свои).
+function nextAct() {
+  const n = data.act + 1;
+  onNext.start(n, (next) => {
+    st.act = n;
+    st.ended = false;
+    st.view = null;
+    next.start_flags.forEach((f) => st.flags.add(f));
+    st.hint = { level: {}, lock: false, n: st.hint.n };
+    return st;
+  });
 }
 
 // ------------------------------------------------------------ ввод
@@ -492,7 +554,7 @@ export function pointerMove(p) {
 export function pointerDown(p, button = 0) {
   if (!data || !p) return false;
   if (endCard) {
-    if (inRect(p, END_BTN)) { audio.sfx("ui_click"); onExit(); }
+    if (!endCard.transit && inRect(p, END_BTN)) { audio.sfx("ui_click"); onExit(); }
     return true;
   }
   if (pause) {
@@ -585,22 +647,71 @@ function rr(x, y, w, h, r) {
   ctx.roundRect(x, y, w, h, r);
 }
 
+// Картинка для отрисовки; ещё не загружена (или выброшена из памяти) — запросить и пока пропустить.
+function pic(name) {
+  const img = image(name);
+  if (!img) loadImage(name).catch(() => {});
+  return img;
+}
+
 function drawLayers(layers) {
   for (const l of layers) {
-    const img = image(l.img);
+    if (l.plans) { plans.images(l).forEach(pic); plans.draw(ctx, l); continue; }
+    const img = pic(l.img);
     if (img) ctx.drawImage(img, l.x, l.y);
   }
+}
+
+// Надписи движка на чистых полях арта: самый крупный кегль, при котором строки влезают в поле.
+const labelSize = new Map();
+function drawLabels(labels) {
+  for (const lb of labels || []) {
+    if (!evaluate(lb.when, st)) continue;
+    const [x, y, w, h] = lb.box;
+    const key = JSON.stringify([lb.lines, lb.font, w, h]);
+    let size = labelSize.get(key);
+    if (!size) {
+      size = Math.floor(h / (lb.lines.length * 1.15));
+      for (; size > 6; size--) {
+        ctx.font = `${lb.font[1]} ${size}px "${lb.font[0]}"`;
+        if (lb.lines.every((t) => ctx.measureText(t).width <= w)) break;
+      }
+      labelSize.set(key, size);
+    }
+    ctx.save();
+    ctx.translate(x + w / 2, y + h / 2);
+    if (lb.angle) ctx.rotate((lb.angle * Math.PI) / 180);
+    ctx.font = `${lb.font[1]} ${size}px "${lb.font[0]}"`;
+    ctx.fillStyle = lb.color;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    const lh = size * 1.15;
+    lb.lines.forEach((t, i) => ctx.fillText(t, 0, (i - (lb.lines.length - 1) / 2) * lh));
+    ctx.restore();
+  }
+}
+
+// Вид в его нынешнем состоянии (фон и слои по условиям) и поверх — слои кадра («вид:Z04+ящик»).
+function drawView(vid, extra = []) {
+  const v = data.views[vid] || data.views[st.view];
+  const bg = pic(v.bg);
+  if (!bg) return false;
+  ctx.drawImage(bg, 0, 0, W, H);
+  drawLayers(v.layers.filter((l) => evaluate(l.when, st)));
+  drawLayers(extra);
+  drawLabels(v.labels);   // поверх слоёв кадра: табло светится, а надпись на нём видна
+  return true;
 }
 
 function drawWorld() {
   if (frame) {
     const cur = dialog.currentLine();
-    const idx = Math.min(cur ? cur.i : 0, frame.length - 1);
-    drawLayers(frame[idx]);
-    return;
+    const el = frame[Math.min(cur ? cur.i : 0, frame.length - 1)];
+    if (Array.isArray(el)) { drawLayers(el); return; }
+    if (el.view !== st.view || el.extra) { drawView(el.view, el.extra); return; }
   }
   const v = data.views[st.view];
-  const bg = image(v.bg);
+  const bg = pic(v.bg);
   if (!bg) {
     ctx.fillStyle = "#000";
     ctx.fillRect(0, 0, W, H);
@@ -612,6 +723,7 @@ function drawWorld() {
   }
   ctx.drawImage(bg, 0, 0, W, H);
   drawLayers(v.layers.filter((l) => evaluate(l.when, st)));
+  drawLabels(v.labels);
   if (showZones) {
     ctx.lineWidth = 4;
     for (const z of visibleZones()) {
@@ -665,7 +777,7 @@ function drawHud() {
     ctx.lineWidth = selected === s.id ? 4 : 2;
     ctx.strokeStyle = selected === s.id ? C.ok : C.brass;
     ctx.stroke();
-    const ic = image(s.icon);
+    const ic = pic(s.icon);
     if (ic) ctx.drawImage(ic, s.x + 6, s.y + 6, s.w - 12, s.h - 12);
   }
   if (quiet) return;
@@ -673,6 +785,47 @@ function drawHud() {
   button(HUD.docs, T.docs_btn, hoverHud === "docs");
   button(HUD.menu, T.menu_btn, hoverHud === "menu");
   if (data.views[st.view].parent) button(HUD.back, T.back.toUpperCase(), hoverHud === "back", { font: '700 30px "PT Sans"' });
+}
+
+// Переходы видны всегда (разбор автора 16.10.2026: «неочевидно, как выйти и вернуться назад»):
+// у каждой зоны-перехода — табличка со стрелкой и названием места.
+function drawExits() {
+  if (frame || endCard || busy || dialog.active() || reader.active()) return;
+  ctx.font = '700 24px "PT Sans"';
+  const invRight = INV.x + invSlots().length * INV.gap;
+  for (const z of visibleZones()) {
+    if ((z.cursor !== "move" && !z.props.includes("выход")) || (hover && hover.zone === z)) continue;
+    const box = z.layer ? [z.layer.x, z.layer.y, z.layer.w || 100, z.layer.h || 100] : z.rects[0];
+    const tw = ctx.measureText(z.name).width;
+    const w = tw + 58;
+    const h = 42;
+    const x = Math.max(8, Math.min(W - w - 8, box[0] + box[2] / 2 - w / 2));
+    // у края экрана (проход сбоку) метка — в верхней части зоны: по центру её закрывают
+    // люди перед проходом (Изольда перед служебным коридором вестибюля)
+    const edge = box[0] <= 10 || box[0] + box[2] >= W - 10;
+    const cy = edge ? box[1] + box[3] * 0.2 : box[1] + box[3] / 2;
+    let y = Math.max(76, Math.min(H - h - 8, cy - h / 2));
+    // не на ряд «При себе» (иконки 76–156 слева)
+    if (y < INV.y + INV.size + 12 && x < invRight + 8) y = INV.y + INV.size + 12;
+    rr(x, y, w, h, 21);
+    ctx.fillStyle = "rgba(13, 15, 23, 0.78)";
+    ctx.fill();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = C.brass;
+    ctx.stroke();
+    // стрелка-шеврон
+    ctx.beginPath();
+    ctx.moveTo(x + 16, y + 12);
+    ctx.lineTo(x + 28, y + 21);
+    ctx.lineTo(x + 16, y + 30);
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = C.brassHi;
+    ctx.stroke();
+    ctx.fillStyle = C.text;
+    ctx.textAlign = "left";
+    ctx.textBaseline = "middle";
+    ctx.fillText(z.name, x + 40, y + h / 2 + 1);
+  }
 }
 
 function drawHover() {
@@ -764,23 +917,18 @@ function drawDocs() {
   rs.forEach((r) => button(r, r.label, inRect(lastPointer, r), { align: "left", font: '400 28px "PT Sans"' }));
 }
 
-const END_BTN = { x: 760, y: 700, w: 400, h: 72 };
+const END_BTN = { x: 760, y: 600, w: 400, h: 72 };
 
 function drawEnd() {
   if (!endCard) return;
   ctx.fillStyle = "#0b0c10";
   ctx.fillRect(0, 0, W, H);
+  if (endCard.transit) return;   // переход к следующей части игры: чёрный экран, пока она грузится
   ctx.textAlign = "center";
   ctx.textBaseline = "alphabetic";
-  ctx.font = '700 60px "PT Sans"';
-  ctx.fillStyle = C.brassHi;
-  ctx.fillText(T[`act_${endCard.act}`] || "", W / 2, 360);
   ctx.font = '400 36px "PT Sans"';
   ctx.fillStyle = C.text;
-  ctx.fillText((T.act_end || "%s").replace("%s", data.roman), W / 2, 450);
-  ctx.fillStyle = C.dim;
-  const nextT = T[`act_${endCard.act + 1}`];
-  if (nextT) ctx.fillText((T.act_next || "%s").replace("%s", nextT), W / 2, 510);
+  ctx.fillText(T.build_end || "", W / 2, 470);
   button(END_BTN, T.to_title, inRect(lastPointer, END_BTN), { font: '700 34px "PT Sans"' });
 }
 
@@ -799,6 +947,7 @@ export function draw() {
   if (!data) return;
   if (endCard) { drawEnd(); return; }
   drawWorld();
+  drawExits();
   drawHud();
   drawHover();
   drawVerbMenu();
@@ -815,7 +964,7 @@ export function draw() {
 export function debug() {
   if (!data) return null;
   return {
-    act: data.act, view: st.view, busy, ended: !!endCard, frame: !!frame, pos: st.pos,
+    act: data.act, view: st.view, busy: busy || !!(endCard && endCard.transit), ended: !!(endCard && !endCard.transit), frame: !!frame, pos: st.pos,
     flags: [...st.flags].sort(), dialog: dialog.active() ? dialog.currentLine() : null,
     reader: reader.currentDoc(), choice: choice ? choice.items.map((i) => ({ id: i.id, label: i.label })) : null,
     verbs: verbMenu ? verbMenu.items.map((i) => i.verb) : null, selected,

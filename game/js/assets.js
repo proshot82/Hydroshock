@@ -4,7 +4,13 @@
 // не ждала сети.
 
 let manifest = null;
-const images = new Map();   // имя → { img, promise }
+const images = new Map();   // имя → { img, promise, used }
+// Сколько картинок держать в памяти: распакованный кадр 1920×1080 — около 8 МБ, а за игру их
+// сотни. Сверх предела выбрасываются те, к которым дольше всего не обращались (их перезагрузят
+// из кэша браузера, если понадобятся снова). Без предела память браузера растёт до гигабайтов,
+// и через несколько минут игра начинает тормозить.
+const KEEP = 48;
+const pinned = new Set(["ui/bg_title", "ui/logo_title"]);
 
 export async function loadManifest() {
   const r = await fetch("data/manifest.json", { cache: "no-cache" });
@@ -20,7 +26,19 @@ export function getManifest() {
 // Имя в игре — путь ассета без расширения: "ui/bg_title", "rooms/room_w1".
 export function image(name) {
   const e = images.get(name);
-  return e && e.img.complete && e.img.naturalWidth ? e.img : null;
+  if (!e) return null;
+  e.used = performance.now();
+  return e.img.complete && e.img.naturalWidth ? e.img : null;
+}
+
+function evict() {
+  if (images.size <= KEEP) return;
+  const old = [...images.entries()].filter(([n, e]) => !pinned.has(n) && e.img.complete)
+    .sort((a, b) => a[1].used - b[1].used);
+  for (const [n, e] of old.slice(0, images.size - KEEP)) {
+    e.img.src = "";            // отпустить распакованную картинку
+    images.delete(n);
+  }
 }
 
 export function loadImage(name) {
@@ -31,12 +49,13 @@ export function loadImage(name) {
   const img = new Image();
   img.decoding = "async";
   const promise = new Promise((resolve, reject) => {
-    img.onload = () => (img.decode ? img.decode().catch(() => {}) : Promise.resolve()).then(() => resolve(img));
+    img.onload = () => resolve(img);
     img.onerror = () => reject(new Error(`не загрузилась картинка: ${name}`));
   });
   img.src = "assets/gfx/" + file;
-  e = { img, promise };
+  e = { img, promise, used: performance.now() };
   images.set(name, e);
+  evict();
   return promise;
 }
 

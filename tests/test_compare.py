@@ -117,7 +117,7 @@ class MergeTest(unittest.TestCase):
                              f"ACT{n}_TEXTS_FINAL.md правили руками — правки вносятся в texts/rewrite/ACT{n}_TEXTS_EDITS.md")
 
     def test_final_passes_brief(self):
-        for n, slots in ((1, 156), (2, 167), (3, 134), (4, 77)):
+        for n, slots in ((1, 158), (2, 170), (3, 134), (4, 77)):
             brief = ROOT / "texts" / f"act{n}" / f"BRIEF_ACT{n}_TEXTS.md"
             texts, fmt = ct.parse_texts(ROOT / "texts" / f"act{n}" / f"ACT{n}_TEXTS_FINAL.md")
             errs, warns, stats = ct.check(ct.parse_brief(brief), texts, fmt, ct.detect_act(brief))
@@ -146,15 +146,19 @@ class MergeTest(unittest.TestCase):
         self.assertIn("SEQ.peek.2_lift", report["edit"])
         # 14.10.2026 — яйцо всмятку рядом с колпаком (Z03.egg.look, новый слот по решению автора)
         self.assertIn("Z03.egg.look", report["edit"])
-        self.assertEqual(len(report["edit"]), 42)
+        # 16.10.2026 — разбор автора: новые слоты Z02.phone.nonumber (звонок до путёвки) и Z03.under.not_all
+        self.assertIn("Z02.phone.nonumber", report["edit"])
+        self.assertIn("Z03.under.not_all", report["edit"])
+        self.assertEqual(len(report["edit"]), 44)
         # Z01.plunger.pull (новый слот, раньше — «по правилам ТЗ») теперь из правки автора
         self.assertEqual(sorted(report["rule"]), [])
         self.assertIn("Z01.plunger.pull", report["edit"])
-        self.assertEqual(sum(len(v) for v in report.values()), 156)
+        self.assertEqual(sum(len(v) for v in report.values()), 158)
         _, report = self.build_final(2)
-        self.assertIn("OPEN.demo", report["rule"])
+        # OPEN.demo был «по правилам ТЗ»; 16.10.2026 — правка «каскад» на «фонтан» по разбору автора
+        self.assertIn("OPEN.demo", report["edit"])
         self.assertIn("TALK.iz.duty", report["rule"])
-        self.assertEqual(sum(len(v) for v in report.values()), 167)
+        self.assertEqual(sum(len(v) for v in report.values()), 170)
 
     def test_default_must_be_a_side(self):
         with self.assertRaises(ValueError):
@@ -180,7 +184,7 @@ class ReadTest(unittest.TestCase):
         acts = self.data["acts"]
         self.assertEqual(self.data["built"], "05.10.2026")
         self.assertEqual([a["act"] for a in acts], ["II", "III"])
-        self.assertEqual([len(a["slots"]) for a in acts], [167, 134])
+        self.assertEqual([len(a["slots"]) for a in acts], [170, 134])
         self.assertEqual([a["status"] for a in acts], ["ждёт чтения автора", "ждёт чтения автора"])
         self.assertTrue(all(s["sec"] for a in acts for s in a["slots"]))
 

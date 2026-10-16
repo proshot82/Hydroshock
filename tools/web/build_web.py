@@ -101,8 +101,15 @@ def act_data(acts):
         out[act] = d
 
         def lay(lst):
+            if isinstance(lst, dict):          # кадр «вид:Z04+слой» — вид и слои поверх
+                lst = lst.get("extra", [])
             for l in lst:
-                gfx.add(l["img"])
+                if "plans" in l:               # плёнки P05: стекло и три плана
+                    gfx.update(f["img"] for f in l["plans"])
+                    if l.get("box"):
+                        gfx.add(l["box"])
+                else:
+                    gfx.add(l["img"])
 
         for v in d["views"].values():
             gfx.add(v["bg"])
@@ -139,12 +146,13 @@ def act_data(acts):
                 effs(stp["sound"])
                 effs(stp["effects"])
                 for f in stp["frames"]:
-                    if isinstance(f, list):
-                        lay(f)
+                    lay(f)
         for it in d["items"].values():
             gfx.add(it["icon"])
         for doc in d["docs"].values():
             gfx.add(doc["carrier"])
+            if doc.get("plan"):
+                gfx.add(doc["plan"]["img"])
         gfx.update({"docs/stamp_kuh", "docs/stamp_hotel", "docs/mark_thumb"})
         for t in d["texts"].values():
             for l in t["lines"]:

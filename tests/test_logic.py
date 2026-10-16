@@ -65,5 +65,44 @@ class Act1LogicTest(unittest.TestCase):
             L.parse_effects("+флаг_по_русски")
 
 
+class Act2LogicTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.data = G.build(2)
+
+    def run_check(self, data):
+        errors, _ = CL.check_data(data, seed=2, walks=300)
+        return errors
+
+    def test_clean(self):
+        errors, stats = CL.check_data(copy.deepcopy(self.data), seed=2)
+        self.assertEqual(errors, [])
+        self.assertGreater(stats["состояний"], 1000)
+        self.assertIn("INV.plunger.look", self.data["borrowed"])     # осмотр вантуза — из Акта I
+
+    def test_cascade_needs_scope(self):
+        # без области экранный флаг гаснет при любой смене вида: каскад включили на стойке (Z04),
+        # а к витрине (Z05) он уже не горит — витрину не открыть (B08)
+        d = copy.deepcopy(self.data)
+        d["screen_scopes"] = {}
+        errors = self.run_check(d)
+        self.assertTrue(any("B08_open_vitrine ни разу не срабатывает" in e for e in errors), errors)
+
+    def test_missing_duty_makes_dead_end(self):
+        d = copy.deepcopy(self.data)
+        d["menus"]["talk"] = [it for it in d["menus"]["talk"] if it["id"] != "duty"]   # ключа не получить
+        errors = self.run_check(d)
+        self.assertTrue(any("тупиков" in e for e in errors), errors)
+        self.assertTrue(any("B14_present_model" in e for e in errors), errors)
+
+    def test_view_condition(self):
+        import logic as L
+        t = L.parse_cond("(вид=W4 ∨ вид=Z10) ∧ ¬shown(FB.films.1)")
+        st = {"flags": set(), "pos": None, "n": {}, "c": {}, "view": "Z10"}
+        self.assertTrue(L.evaluate(t, st))
+        st["view"] = "W2"
+        self.assertFalse(L.evaluate(t, st))
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -26,7 +26,8 @@ export class State {
 
   toJSON() {
     return {
-      version: SAVE_VERSION, act: this.act, flags: [...this.flags].sort(), pos: this.pos,
+      // экранные флаги `scr_*` (шторка, каскад) — состояние экрана, в сейв не идут (GDD §12, Р7)
+      version: SAVE_VERSION, act: this.act, flags: [...this.flags].filter((f) => !f.startsWith("scr_")).sort(), pos: this.pos,
       n: this.n, c: this.c, view: this.view, docs: this.docs, hint: this.hint, ended: this.ended,
     };
   }
