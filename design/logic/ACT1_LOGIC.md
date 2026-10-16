@@ -13,6 +13,7 @@
 - **Эффекты** через запятую: `+флаг`, `-флаг`; `pos=…`; `probe+`, `call+`; `вид:ВИД`; `док:DOC.x`; `сцена:ИМЯ`; `меню:ИМЯ`; `цепочка:ИМЯ` (после реплик слота); `звук:ИМЯ`; `музыка:ИМЯ` (на время слота); `кадр:слой+слой…` (картинка на время слота); `акт:N`; `портрет:сухой` (Лапидус без пены — только `OPEN.1_voucher`).
 - **Экранный флаг** `scr_…` — состояние экрана, а не сюжета (отодвинутая шторка тележки): ставится и снимается эффектами, как флаг графа, но движок снимает все экранные флаги, когда игрок уходит с вида (решение автора 13.10.2026, «да на все» по Р7). В графе их нет.
 - **Музыка в сценах:** `музыка:ИМЯ` в шаге сцены — тема с этого шага до конца сцены или до шага «как вид»; `музыка:стоп` — обрыв музыки и амбиента, миг тишины (0,7 с), потом звуки шага (гидроудар в тишине — решение автора 13.10.2026).
+- **Свойства** зоны: `плоское` — для отказов предметов; `выход` — табличка перехода видна всегда (у зон с курсором `move` — тоже; разбор автора 16.10.2026).
 - **Где** у зоны: `x,y,w,h` (несколько через `;`) или `слой ИМЯ` — по непрозрачным пикселям слоя. Зоны-слои лежат поверх прямоугольных; среди равных первой ловит меньшая.
 
 ## Виды
@@ -60,7 +61,7 @@
 
 | Вид | Зона | Название | Где | Курсор | Когда | Свойства |
 |---|---|---|---|---|---|---|
-| W1 | door | Дверь номера | 10,40,220,840 | act |  | плоское |
+| W1 | door | Дверь номера | 10,40,220,840 | act |  | плоское, выход |
 | W1 | hooks | Крючки | 290,190,90,90 | look |  |  |
 | W1 | bed | Кровать | 320,420,690,260 | look |  |  |
 | W1 | window | Окно | 640,50,380,350 | look |  | плоское |
@@ -120,7 +121,8 @@
 | W1.trolley_f | клик |  | — | — | вид:Z03 |
 | W1.cistern | осмотр |  | W1.cistern.look | — |  |
 | W1.cistern | облиться | foam_active ∧ ¬foam_class_closed | PROBE.cistern | A02f_probe_cistern | +foam_class_closed, +foam_swollen, +knows_soap_grip, звук:sfx_foam_swell, цепочка:probe_rule |
-| W1.cistern | облиться | foam_class_closed | @probe_repeat | — |  |
+| W1.cistern | облиться | ¬shown(PROBE.cistern) | PROBE.cistern | A02f_probe_cistern | +foam_swollen, звук:sfx_foam_swell |
+| W1.cistern | облиться |  | @probe_repeat | — |  |
 | C1.lift | клик | ¬shown(SEQ.peek.2_lift) | SEQ.peek.2_lift | — | кадр:frames/fr_a1_lift_panel, вид:L1 |
 | C1.lift | клик |  | — | — | вид:L1 |
 | C1.room | клик |  | — | — | вид:W1 |
@@ -142,6 +144,7 @@
 | Z02.voucher | осмотр | reception_called | Z02.voucher.look.soaked | — | док:DOC.voucher |
 | Z02.voucher | взять |  | Z02.voucher.take | — |  |
 | Z02.phone | осмотр |  | Z02.phone.look | — |  |
+| Z02.phone | позвонить | ¬shown(Z02.voucher.look) | Z02.phone.nonumber | — |  |
 | Z02.phone | позвонить | ¬reception_called | Z02.phone.call | A03_call_reception | +reception_called, +knows_paper_soaks, звук:sfx_phone_pickup, музыка:mus_hold |
 | Z02.phone | позвонить | reception_called | Z02.phone.call.repeat | — | call+, звук:sfx_phone_pickup, музыка:mus_hold |
 | Z02.minibar | осмотр |  | Z02.minibar.look | — |  |
@@ -149,19 +152,22 @@
 | Z02.mineral | взять | ¬shown(Z02.bottle.take) | Z02.bottle.take | — |  |
 | Z02.mineral | взять | shown(Z02.bottle.take) | Z02.bottle.take.repeat | — |  |
 | Z02.mineral | облиться | foam_active ∧ ¬foam_class_closed | PROBE.mineral | A02_probe_mineral | +foam_class_closed, +foam_swollen, +knows_soap_grip, звук:sfx_foam_swell, цепочка:probe_rule |
-| Z02.mineral | облиться | foam_class_closed | @probe_repeat | — |  |
+| Z02.mineral | облиться | ¬shown(PROBE.mineral) | PROBE.mineral | A02_probe_mineral | +foam_swollen, звук:sfx_foam_swell |
+| Z02.mineral | облиться |  | @probe_repeat | — |  |
 | Z02.mineral | предмет:plunger |  | Z02.plunger_bottle | — |  |
 | Z02.kombucha | осмотр |  | Z02.kombucha.look | — |  |
 | Z02.kombucha | взять | ¬shown(Z02.bottle.take) | Z02.bottle.take | — |  |
 | Z02.kombucha | взять | shown(Z02.bottle.take) | Z02.bottle.take.repeat | — |  |
 | Z02.kombucha | облиться | foam_active ∧ ¬foam_class_closed | PROBE.kombucha | A02b_probe_kombucha | +foam_class_closed, +foam_swollen, +knows_soap_grip, звук:sfx_foam_swell, цепочка:probe_rule |
-| Z02.kombucha | облиться | foam_class_closed | @probe_repeat | — |  |
+| Z02.kombucha | облиться | ¬shown(PROBE.kombucha) | PROBE.kombucha | A02b_probe_kombucha | +foam_swollen, звук:sfx_foam_swell |
+| Z02.kombucha | облиться |  | @probe_repeat | — |  |
 | Z02.kombucha | предмет:plunger |  | Z02.plunger_bottle | — |  |
 | Z02.lemonade | осмотр |  | Z02.lemonade.look | — |  |
 | Z02.lemonade | взять | ¬shown(Z02.bottle.take) | Z02.bottle.take | — |  |
 | Z02.lemonade | взять | shown(Z02.bottle.take) | Z02.bottle.take.repeat | — |  |
 | Z02.lemonade | облиться | foam_active ∧ ¬foam_class_closed | PROBE.lemonade | A02c_probe_lemonade | +foam_class_closed, +foam_swollen, +knows_soap_grip, звук:sfx_foam_swell, цепочка:probe_rule |
-| Z02.lemonade | облиться | foam_class_closed | @probe_repeat | — |  |
+| Z02.lemonade | облиться | ¬shown(PROBE.lemonade) | PROBE.lemonade | A02c_probe_lemonade | +foam_swollen, звук:sfx_foam_swell |
+| Z02.lemonade | облиться |  | @probe_repeat | — |  |
 | Z02.lemonade | предмет:plunger |  | Z02.plunger_bottle | — |  |
 | Z02.menu | осмотр |  | Z02.menu.look | — |  |
 | Z02.menu | взять |  | Z02.menu.take | A11_take_menu_card | +has_menu_card, +knows_assortment, док:DOC.menu |
@@ -173,7 +179,7 @@
 | Z03.stars | осмотр | knows_stars_fold ∧ ¬stars_folded | Z03.stars.look.again | — |  |
 | Z03.stars | осмотр | stars_folded | Z03.stars.look.folded | — |  |
 | Z03.stars | отломать | ¬knows_stars_fold | Z03.stars.pull | — |  |
-| Z03.stars | сложить | knows_stars_fold ∧ ¬stars_folded | Z03.stars.fold | A06_fold_stars | +stars_folded, звук:sfx_stars_fold |
+| Z03.stars | сложить | knows_stars_fold ∧ ¬stars_folded ∧ shown(Z03.trolley.push) | Z03.stars.fold | A06_fold_stars | +stars_folded, звук:sfx_stars_fold |
 | Z03.skirt | осмотр | ¬knows_trolley_chamber | Z03.skirt.look | — |  |
 | Z03.skirt | осмотр | knows_trolley_chamber | Z03.skirt.look.after | — |  |
 | Z03.skirt | снять_юбку | ¬knows_trolley_chamber | Z03.skirt.use | A04_try_skirt | +knows_trolley_chamber, +plate_revealed, +scr_skirt_open |
@@ -184,20 +190,25 @@
 | Z03.skirt | под_тележку | ¬need_cover | Z03.under.no_peek | — |  |
 | Z03.skirt | под_тележку | ¬foam_class_closed | Z03.under.no_wash | — |  |
 | Z03.skirt | под_тележку | ¬knows_foam_flow | Z03.under.no_flow | — |  |
+| Z03.skirt | под_тележку | ¬shown(PROBE.mineral) ∨ ¬shown(PROBE.kombucha) ∨ ¬shown(PROBE.lemonade) ∨ ¬shown(PROBE.coffee) ∨ ¬shown(PROBE.juice) ∨ ¬shown(PROBE.cistern) | Z03.under.not_all | — |  |
 | Z03.skirt | под_тележку | ¬reception_called | Z03.under.no_call | — |  |
+| Z03.skirt | под_тележку | ¬stars_folded ∧ ¬shown(Z03.trolley.push) | Z03.trolley.push | — | звук:sfx_trolley_creak, звук:sfx_trolley_jam |
 | Z03.skirt | под_тележку | ¬stars_folded | Z03.under.stars | — |  |
-| Z03.skirt | под_тележку | stars_folded ∧ need_cover ∧ reception_called ∧ knows_bath_day ∧ foam_class_closed ∧ knows_foam_flow | — | A08_drive_out | сцена:drive |
+| Z03.skirt | под_тележку | stars_folded ∧ need_cover ∧ reception_called ∧ knows_bath_day ∧ foam_class_closed ∧ knows_foam_flow ∧ shown(PROBE.mineral) ∧ shown(PROBE.kombucha) ∧ shown(PROBE.lemonade) ∧ shown(PROBE.coffee) ∧ shown(PROBE.juice) ∧ shown(PROBE.cistern) | — | A08_drive_out | сцена:drive |
 | Z03.pot | осмотр |  | Z03.pot.look | A13_inspect_breakfast | +knows_hot_warning |
 | Z03.pot | взять |  | Z03.porcelain.take | — |  |
 | Z03.pot | облиться | foam_active ∧ ¬foam_class_closed | PROBE.coffee | A02e_probe_coffee | +foam_class_closed, +foam_swollen, +knows_soap_grip, +knows_hot_warning, звук:sfx_foam_swell, цепочка:probe_rule |
-| Z03.pot | облиться | foam_class_closed | @probe_repeat | — |  |
+| Z03.pot | облиться | ¬shown(PROBE.coffee) | PROBE.coffee | A02e_probe_coffee | +foam_swollen, +knows_hot_warning, звук:sfx_foam_swell |
+| Z03.pot | облиться |  | @probe_repeat | — |  |
 | Z03.cup | осмотр |  | Z03.cup.look | — |  |
 | Z03.cup | взять |  | Z03.porcelain.take | — |  |
 | Z03.cup | облиться | foam_active ∧ ¬foam_class_closed | PROBE.coffee | A02e_probe_coffee | +foam_class_closed, +foam_swollen, +knows_soap_grip, +knows_hot_warning, звук:sfx_foam_swell, цепочка:probe_rule |
-| Z03.cup | облиться | foam_class_closed | @probe_repeat | — |  |
+| Z03.cup | облиться | ¬shown(PROBE.coffee) | PROBE.coffee | A02e_probe_coffee | +foam_swollen, +knows_hot_warning, звук:sfx_foam_swell |
+| Z03.cup | облиться |  | @probe_repeat | — |  |
 | Z03.juice | осмотр |  | Z03.juice.look | — |  |
 | Z03.juice | облиться | foam_active ∧ ¬foam_class_closed | PROBE.juice | A02d_probe_juice | +foam_class_closed, +foam_swollen, +knows_soap_grip, звук:sfx_foam_swell, цепочка:probe_rule |
-| Z03.juice | облиться | foam_class_closed | @probe_repeat | — |  |
+| Z03.juice | облиться | ¬shown(PROBE.juice) | PROBE.juice | A02d_probe_juice | +foam_swollen, звук:sfx_foam_swell |
+| Z03.juice | облиться |  | @probe_repeat | — |  |
 | Z03.egg | осмотр |  | Z03.egg.look | — |  |
 | Z03.cloche | осмотр |  | Z03.cloche.look | — |  |
 | Z03.cloche | прикрыться |  | Z03.cloche.use | — |  |
@@ -277,11 +288,11 @@
 | Тема | Открыта, когда |
 |---|---|
 | plunger | plunger_on_panel |
-| foam | foam_active ∧ ¬foam_class_closed |
+| foam | foam_active ∧ (¬shown(PROBE.mineral) ∨ ¬shown(PROBE.kombucha) ∨ ¬shown(PROBE.lemonade) ∨ ¬shown(PROBE.coffee) ∨ ¬shown(PROBE.juice) ∨ ¬shown(PROBE.cistern)) |
 | call | ¬reception_called |
 | stars | ¬stars_folded |
 | peek | ¬need_cover |
-| drive | stars_folded ∧ need_cover ∧ reception_called ∧ knows_bath_day ∧ foam_class_closed ∧ knows_foam_flow ∧ ¬trolley_at_crowd |
+| drive | stars_folded ∧ need_cover ∧ reception_called ∧ knows_bath_day ∧ foam_class_closed ∧ knows_foam_flow ∧ shown(PROBE.mineral) ∧ shown(PROBE.kombucha) ∧ shown(PROBE.lemonade) ∧ shown(PROBE.coffee) ∧ shown(PROBE.juice) ∧ shown(PROBE.cistern) ∧ ¬trolley_at_crowd |
 | crowd | trolley_at_crowd ∧ ¬trolley_service_side |
 | skirt | ¬knows_trolley_chamber ∧ ¬trolley_at_crowd |
 

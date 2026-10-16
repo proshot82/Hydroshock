@@ -87,22 +87,23 @@ class Sim:
         flags = set(data["goal_flags"]) | set(data.get("screen_scopes", {}))
         for g in data["graph"].values():
             flags |= set(g["requires"])
-        entries = []   # (условия, слот, эффекты, меню-источник)
+        # списки правил одного действия (зона+глагол, цепочка, пункт меню): правило, которое само ничего
+        # не меняет, но стоит раньше значимого, перекрывает его своим условием (звонок без номера
+        # перекрывает звонок, пока путёвка не прочитана), — поэтому значимость считается по списку
+        groups = []   # [(общие условия, [(условие, слот, эффекты)], меню-источник)]
         for vid, v in data["views"].items():
             for z in v["zones"]:
                 for verb, rs in data["rules"].get(f"{vid}.{z['id']}", {}).items():
                     extra = []
                     if verb.startswith("предмет:") and verb[8:] in data["items"]:
                         extra = [data["items"][verb[8:]]["when"]]
-                    for r in rs:
-                        entries.append(([z["when"], r["when"]] + extra, r["slot"], r["effects"], None))
+                    groups.append(([z["when"]] + extra, [(r["when"], r["slot"], r["effects"]) for r in rs], None))
         for g in data["chains"].values():
-            for r in g:
-                entries.append(([r["when"]], r["slot"], r["effects"], None))
+            groups.append(([], [(r["when"], r["slot"], r["effects"]) for r in g], None))
         for name, m in data["menus"].items():
             for it in m:
-                for r in it["rules"]:
-                    entries.append(([r["when"]], r["slot"], r["effects"], name))
+                groups.append(([], [(r["when"], r["slot"], r["effects"]) for r in it["rules"]], name))
+        entries = [(common + [w], slot, eff, ctx) for common, rs, ctx in groups for (w, slot, eff) in rs]
         counters = set()
         for conds, _, _, _ in entries:
             for t in conds:
@@ -133,10 +134,10 @@ class Sim:
         changed = True
         while changed:
             changed = False
-            for conds, slot, effects, ctx in entries:
-                if not sig(slot, effects, ctx):
+            for common, rs, ctx in groups:
+                if not any(sig(slot, eff, ctx) for (_, slot, eff) in rs):
                     continue
-                for t in conds:
+                for t in common + [w for (w, _, _) in rs]:
                     nf = L.cond_flags(t) - flags
                     ns = L.cond_slots(t) - slots
                     if nf or ns:

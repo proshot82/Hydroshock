@@ -29,6 +29,7 @@ export function resize() {
 // Начало кадра: чистим поля и переходим в координаты мира.
 export function begin() {
   resize();
+  ctx.save();   // область отсечения ниже — только на этот кадр (end() её снимает), иначе отсечения копятся
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.fillStyle = "#000";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -43,6 +44,7 @@ export function begin() {
 }
 
 export function end() {
+  ctx.restore();
   ctx.setTransform(1, 0, 0, 1, 0, 0);
 }
 

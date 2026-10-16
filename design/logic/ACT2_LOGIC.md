@@ -81,6 +81,22 @@
 | W1 | st_w1_trolley_folded | pos=room |
 | W1 | st_w1_juice_empty | pos=room ∧ shown(PROBE.juice) |
 
+## Надписи
+
+Текст движка на чистых полях арта (спека §3: табличка постамента, бирка, табло — «поле под текст движка»; разбор автора 16.10.2026: «нет ни подписи на постаменте, ни цифр», «табло стиралок пустые»). `Где` — x,y,w,h; ` / ` — новая строка; кегль подбирается по полю; `Угол` — градусы по часовой.
+
+| Вид | Где | Текст | Шрифт | Цвет | Угол | Когда |
+|---|---|---|---|---|---|---|
+| Z05 | 668,488,200,50 | Контрольный счётчикъ водолечебницы «Каскадъ», 1908 / Экспонат. Не трогать | old | #2d241a |  |  |
+| Z05 | 724,152,92,44 | ЭКСПОНАТ № 1 / Коллекция наследия | sansb | #2a2a2a |  | ¬meter_reading_seen |
+| Z06 | 372,60,390,80 | 0:47 / НЕТ ПОДАЧИ ВОДЫ | mono | #7cf29a |  |  |
+| Z06 | 1158,60,390,80 | 0:47 / НЕТ ПОДАЧИ ВОДЫ | mono | #7cf29a |  |  |
+| W3 | 82,157,150,46 | 0:47 | mono | #7cf29a | 24 |  |
+| W3 | 365,276,82,32 | 0:47 | mono | #7cf29a | 26 |  |
+| W3 | 510,338,54,24 | 0:47 | mono | #7cf29a | 30 |  |
+| W3 | 604,373,34,18 | 0:47 | mono | #7cf29a | 30 |  |
+| Z09 | 716,330,252,400 | Старший / по воде — / тов. К. | oldb | #2a2118 |  | name_revealed |
+
 ## Зоны
 
 | Вид | Зона | Название | Где | Курсор | Когда | Свойства |
@@ -88,19 +104,20 @@
 | W2 | iz | Изольда Тихоновна | слой st_w2_iz | act |  |  |
 | W2 | trolley | Тележка | слой st_w2_trolley | act | pos=service |  |
 | W2 | counter | Стойка | 560,560,1360,520 | zoom |  | плоское |
-| W2 | cascade | Каскад | 1090,280,240,190 | look |  |  |
+| W2 | cascade | Фонтан | 1090,280,240,190 | look |  |  |
 | W2 | exhibit | Экспонат под витриной | 1320,330,180,170 | look |  |  |
 | W2 | guests | Гости | 380,140,460,360 | look |  |  |
-| W2 | laundry | Дверь в прачечную | 0,40,130,420 | move |  |  |
-| W2 | hall | Коридор в зал прекраснодушия | 240,80,140,180 | move |  |  |
+| W2 | corridor | Служебный коридор | 0,40,130,420 | move |  |  |
 | Z04 | top | Стойка | 200,0,1300,180 | look |  | плоское |
-| Z04 | pump | Кнопка каскада | 1570,860,290,170 | act |  |  |
+| Z04 | pump | Кнопка фонтана | 1570,860,290,170 | act |  |  |
 | Z04 | folder | Папка | слой st_z04_folder | act | ¬counter_notice_read | плоское |
 | Z04 | notice | Уведомление | 770,671,419,298 | look | counter_notice_read | плоское |
 | Z04 | map | Карта отеля в подставке | слой st_z04_map | act | ¬has_hotel_map |  |
 | Z04 | regulation | Регламент пуска | 420,400,400,210 | act |  | плоское |
-| Z04 | drawer | Верхний ящик | 0,80,440,450 | act |  |  |
-| Z04 | lowdrawer | Нижний ящик | 0,560,440,520 | act |  |  |
+| Z04 | forms | Бланки заявок | слой st_z04_forms3 | look | ¬requests_stapled | плоское |
+| Z04 | forms1 | Бланк заявки | слой st_z04_forms1 | look | requests_stapled | плоское |
+| Z04 | drawer | Верхний ящик | 0,100,160,400 | act |  |  |
+| Z04 | lowdrawer | Нижний ящик | 0,600,230,460 | act |  |  |
 | Z05 | vitrine | Витрина | 460,0,660,430 | act |  | плоское |
 | Z05 | tag | Бирка «Экспонат № 1» | 690,120,180,140 | act | vitrine_open ∧ ¬meter_reading_seen | плоское |
 | Z05 | seal | Пломба | 650,260,120,110 | act | vitrine_open |  |
@@ -144,7 +161,7 @@
 | Z12 | instr | Инструкция 1908 года | 1510,90,300,530 | look |  | плоское |
 | Z12 | up | Лестница наверх | 0,180,560,780 | move |  |  |
 | W1 | shower | Душевая | 1640,90,130,590 | look |  |  |
-| W1 | trolley | Тележка | слой st_w1_trolley_folded | act | pos=room |  |
+| W1 | trolley | В тележке — за стойку | слой st_w1_trolley_folded | act | pos=room | выход |
 
 ## Действия
 
@@ -159,8 +176,8 @@
 | W2.exhibit | осмотр |  | W2.exhibit.look | — | док:DOC.exhibit |
 | W2.exhibit | подойти |  | SEQ.exhibit.nocover | — |  |
 | W2.guests | осмотр |  | W2.guests | — |  |
-| W2.laundry | клик |  | — | — | вид:W3, цепочка:w3_enter |
-| W2.hall | клик |  | — | — | вид:W4, цепочка:w4_enter |
+| W2.corridor | в_прачечную |  | — | — | вид:W3, цепочка:w3_enter |
+| W2.corridor | в_зал |  | — | — | вид:W4, цепочка:w4_enter |
 | Z04.top | осмотр |  | Z04.look | — |  |
 | Z04.pump | осмотр |  | Z04.pump.look | — |  |
 | Z04.pump | нажать_кнопку | ¬cascade_on | Z04.pump.use | B01_pump_cascade | +cascade_on, +scr_cascade, звук:sfx_pump_dry |
@@ -172,6 +189,8 @@
 | Z04.map | взять |  | Z04.map.take | B04_take_hotel_map | +has_hotel_map, звук:ui_pickup, док:DOC.map_hotel |
 | Z04.regulation | осмотр |  | Z04.regulation.look | B22_read_regulation | +regulation_cut_seen, док:DOC.regulation |
 | Z04.regulation | снять_регламент |  | Z04.regulation.take | — |  |
+| Z04.forms | осмотр |  | Z04.forms.look | — |  |
+| Z04.forms1 | осмотр |  | Z04.forms.look.stapled | — |  |
 | Z04.drawer | осмотр |  | Z04.drawer.look | — |  |
 | Z04.drawer | нажать_ящик | knows_push_latch | Z04.drawer.open | — | звук:sfx_drawer_click |
 | Z04.drawer | взять_кефир | kefir_in_drawer_seen | Z04.kefir.take | — |  |
@@ -205,7 +224,7 @@
 | Z06.panels | осмотр |  | Z06.drums.look | — |  |
 | Z06.drums | осмотр | ¬drums_same_time | Z06.drums.look | B02_inspect_drums | +drums_same_time, +clothes_locked_seen |
 | Z06.drums | осмотр |  | Z06.drums.look | — |  |
-| Z06.drums | запустить |  | Z06.drum.restart | — | звук:sfx_drum_beep, кадр:zooms/zoom_z06+st_z06_blink |
+| Z06.drums | запустить |  | Z06.drum.restart | — | звук:sfx_drum_beep, кадр:вид:Z06+st_z06_blink |
 | Z06.hatch | осмотр | ¬drums_same_time | Z06.drums.look | B02_inspect_drums | +drums_same_time, +clothes_locked_seen |
 | Z06.hatch | осмотр |  | Z06.drums.look | — |  |
 | Z06.hatch | открыть_люк | ¬shown(Z06.hatch.open) | Z06.hatch.open | — | +clothes_locked_seen |

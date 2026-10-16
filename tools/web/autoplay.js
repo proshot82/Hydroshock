@@ -177,16 +177,25 @@ function check(ok, msg) {
   check(has(s, "foam_class_closed") && has(s, "foam_swollen"), "облиться минералкой — пена раздулась (A02)");
   check(s.log.slice(-2).join(",") === "PROBE.mineral,PROBE.rule.known", "после первой пробы — PROBE.rule.known");
   s = await verb("kombucha", "облиться");
-  check(lastSlot(s) === "PROBE.repeat.1", "повторная проба — PROBE.repeat.1");
+  check(lastSlot(s) === "PROBE.kombucha", "комбуча — своя реплика (PROBE.kombucha)");
+  s = await verb("mineral", "облиться");
+  check(lastSlot(s) === "PROBE.repeat.1", "та же минералка ещё раз — PROBE.repeat.1");
+  s = await verb("phone", "позвонить");
+  check(lastSlot(s) === "Z02.phone.nonumber" && !has(s, "reception_called"), "звонить, не прочитав путёвку, — некуда: номера нет (Z02.phone.nonumber)");
+  s = await look("voucher");
+  check(s.log.includes("DOC.voucher"), "путёвка прочитана — номер стойки в ней");
   s = await verb("phone", "позвонить");
   check(has(s, "reception_called"), "звонок на стойку (A03)");
+  s = await verb("lemonade", "облиться");
+  check(lastSlot(s) === "PROBE.lemonade", "лимонад — своя реплика (каждая жидкость в первый раз — своя)");
   await snap("z02_after");
   s = await back();
   // P02: тележка
   s = await go("trolley");
   check(s.view === "Z03", "тележка → зум Z03");
   s = await verb("skirt", "под_тележку");
-  check(lastSlot(s) === "Z03.under.no_peek", "под тележку до разведки — Z03.under.no_peek");
+  check(lastSlot(s) === "Z03.under.no_peek", "в тележку до разведки — Z03.under.no_peek");
+  check(!(await hasVerb("stars", "сложить")), "«сложить звёзды» скрыто, пока тележку не пробовали выкатить");
   s = await verb("handle", "толкнуть");
   check(lastSlot(s) === "Z03.trolley.push", "толкнуть со звёздами — застревает (Z03.trolley.push)");
   check(!(await hasVerb("stars", "сложить")), "«сложить звёзды» скрыто, пока звёзды не осмотрены");
@@ -194,6 +203,10 @@ function check(ok, msg) {
   check(has(s, "knows_stars_fold") && lastSlot(s) === "Z03.stars.look", "осмотр звёзд — «МИНУС четыре звезды» (A05)");
   s = await verb("stars", "сложить");
   check(has(s, "stars_folded"), "звёзды сложены (A06)");
+  s = await verb("juice", "облиться");
+  check(lastSlot(s) === "PROBE.juice", "сок на голову — PROBE.juice");
+  s = await verb("cup", "облиться");
+  check(lastSlot(s) === "PROBE.coffee", "кофе на голову — PROBE.coffee");
   s = await look("egg");
   check(lastSlot(s) === "Z03.egg.look", "яйцо всмятку рядом с колпаком — своя зона (Z03.egg.look)");
   check(!s.zones.some((z) => z.id === "plate"), "табличку под юбкой не видно, пока шторка задвинута");
@@ -226,6 +239,13 @@ function check(ok, msg) {
   check(has(s, "need_cover") && s.log.includes("SEQ.peek.5_back") && s.view === "W1", "кнопка «Вестибюль» → вестибюль из кабины, назад в номер (A07)");
   s = await verb("door", "выйти");
   check(lastSlot(s) === "W1.door.again", "выйти голым ещё раз — W1.door.again");
+  // в тележку — только когда голову облили всем, что есть в номере: остался бачок
+  s = await go("trolley_f");
+  s = await verb("skirt", "под_тележку");
+  check(lastSlot(s) === "Z03.under.not_all", "в тележку, не облившись из бачка, — Z03.under.not_all");
+  s = await back();
+  s = await verb("cistern", "облиться");
+  check(lastSlot(s) === "PROBE.cistern", "вода из бачка — PROBE.cistern");
   // проезд
   s = await go("trolley_f");
   s = await verb("skirt", "под_тележку");
@@ -331,6 +351,8 @@ function check(ok, msg) {
   s = await go("counter");
   s = await verb("pump", "нажать_кнопку");
   check(lastSlot(s) === "Z04.pump.use.repeat" && has(s, "scr_cascade"), "кнопка ещё раз — Z04.pump.use.repeat");
+  s = await look("forms");
+  check(lastSlot(s) === "Z04.forms.look", "бланки заявок можно осмотреть (Z04.forms.look)");
   s = await verb("map", "взять");
   check(has(s, "has_hotel_map") && s.log.includes("DOC.map_hotel") && s.items.some((i) => i.id === "map"), "карта отеля из подставки (B04) — при себе");
   s = await back();
@@ -344,7 +366,7 @@ function check(ok, msg) {
   await snap("a2_z05");
   s = await go("back");
   // прачечная: каскад гаснет
-  s = await go("laundry");
+  s = await verb("corridor", "в_прачечную");
   check(s.view === "W3" && lastSlot(s) === "W3.enter" && !has(s, "scr_cascade"), "прачечная: W3.enter, каскад погас");
   s = await verb("tanks", "облиться");
   check(lastSlot(s) === "Z06.tank.probe", "ковш из бака на голову — пена (Z06.tank.probe)");
@@ -408,7 +430,7 @@ function check(ok, msg) {
   s = await choose("exit");
   await snap("a2_key");
   // ключ есть, планы не совмещены — вниз не идёт
-  s = await go("hall");
+  s = await verb("corridor", "в_зал");
   s = await useItem("key", "stairs");
   check(lastSlot(s) === "W4.stairs.no_plan" && !has(s, "stairs_open"), "ключ без совмещённых планов — вслепую не спускается");
   s = await go("table");

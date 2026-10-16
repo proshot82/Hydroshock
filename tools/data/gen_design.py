@@ -266,6 +266,32 @@ def build(act):
         lay["name"] = r["Слой"]
         views[r["Вид"]]["layers"].append(lay)
 
+    # ---- надписи движка на чистых полях арта (табличка экспоната, бирка, табло; спека §3)
+    LABEL_FONT = {"sans": ("PT Sans", 400), "sansb": ("PT Sans", 700), "old": ("Old Standard TT", 400),
+                  "oldb": ("Old Standard TT", 700), "mono": ("PT Mono", 400), "hand": ("Caveat", 400)}
+    for vid in views:
+        views[vid]["labels"] = []
+    for r in L.table(S, "Надписи"):
+        w = f"{lname}:{r['_line']}"
+        if r["Вид"] not in views:
+            err(w, f"вида {r['Вид']} нет")
+            continue
+        try:
+            x, y, ww, hh = (int(v) for v in r["Где"].split(","))
+        except ValueError:
+            err(w, f"«{r['Где']}» не x,y,w,h")
+            continue
+        font = LABEL_FONT.get(r["Шрифт"].strip())
+        if not font:
+            err(w, f"шрифт «{r['Шрифт']}» не из {sorted(LABEL_FONT)}")
+            continue
+        color = r["Цвет"].strip()
+        if not re.fullmatch(r"#[0-9a-fA-F]{6}", color):
+            err(w, f"цвет «{color}» не #rrggbb")
+        views[r["Вид"]]["labels"].append({
+            "box": [x, y, ww, hh], "lines": [t.strip() for t in r["Текст"].split(" / ")], "font": font,
+            "color": color, "angle": float(L.dash(r.get("Угол", "")) or 0), "when": cond(r["Когда"], w)})
+
     # ---- зоны
     zone_ids = set()
     for r in L.table(S, "Зоны"):

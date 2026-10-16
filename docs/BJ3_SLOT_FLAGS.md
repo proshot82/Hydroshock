@@ -61,7 +61,8 @@
 | `Z02.voucher.look.soaked` | `zoom:Z02` ∧ `reception_called` | — → `DOC.voucher`, титр `DOC.voucher.soaked` | — |
 | `Z02.voucher.take` | `zoom:Z02` | — | — |
 | `Z02.phone.look` | `zoom:Z02` | — | — |
-| `Z02.phone.call` | `zoom:Z02` ∧ `voucher_read` ∧ ¬`reception_called` | A03_call_reception | `reception_called`, `knows_paper_soaks` |
+| `Z02.phone.nonumber` | `zoom:Z02`, позвонить ∧ ¬`shown(Z02.voucher.look)` (решение автора 16.10.2026) | — | — |
+| `Z02.phone.call` | `zoom:Z02` ∧ `voucher_read` ∧ `shown(Z02.voucher.look)` ∧ ¬`reception_called` | A03_call_reception | `reception_called`, `knows_paper_soaks` |
 | `Z02.phone.call.repeat` | `zoom:Z02` ∧ `reception_called` | — | `call.n` + 1 |
 | `Z02.minibar.look` | `zoom:Z02` | — | — |
 | `Z02.mineral.look` | `zoom:Z02` | — | — |
@@ -72,17 +73,17 @@
 | `Z02.plunger_bottle` | `zoom:Z02` ∧ `plunger_taken` ∧ `combo(вантуз, бутылка)` | — (D7) | — |
 | `Z02.menu.look` | `zoom:Z02` ∧ ¬`has_menu_card` | — | — |
 | `Z02.menu.take` | `zoom:Z02` ∧ ¬`has_menu_card` | A11_take_menu_card → `DOC.menu` | `has_menu_card`, `knows_assortment` |
-| `PROBE.mineral` | `zoom:Z02` ∧ `foam_active` ∧ ¬`foam_class_closed` | A02_probe_mineral | `foam_class_closed`, `foam_swollen`, `knows_soap_grip` |
-| `PROBE.kombucha` | `zoom:Z02` ∧ `foam_active` ∧ ¬`foam_class_closed` | A02b_probe_kombucha | то же |
-| `PROBE.lemonade` | `zoom:Z02` ∧ `foam_active` ∧ ¬`foam_class_closed` | A02c_probe_lemonade | то же |
-| `PROBE.juice` | `zoom:Z03` ∧ `breakfast_on_trolley` ∧ ¬`foam_class_closed` | A02d_probe_juice | то же |
-| `PROBE.coffee` | `zoom:Z03` ∧ `breakfast_on_trolley` ∧ ¬`foam_class_closed` | A02e_probe_coffee | то же + `knows_hot_warning` |
-| `PROBE.cistern` | `room:W1`, бачок ∧ ¬`foam_class_closed` | A02f_probe_cistern | то же |
+| `PROBE.mineral` | `zoom:Z02` ∧ `foam_active` ∧ ¬`shown(PROBE.mineral)` (каждая жидкость — своя реплика в первый раз; решение автора 16.10.2026) | A02_probe_mineral | `foam_class_closed`, `foam_swollen`, `knows_soap_grip` |
+| `PROBE.kombucha` | `zoom:Z02` ∧ `foam_active` ∧ ¬`shown(PROBE.kombucha)` (каждая жидкость — своя реплика в первый раз; решение автора 16.10.2026) | A02b_probe_kombucha | то же |
+| `PROBE.lemonade` | `zoom:Z02` ∧ `foam_active` ∧ ¬`shown(PROBE.lemonade)` (каждая жидкость — своя реплика в первый раз; решение автора 16.10.2026) | A02c_probe_lemonade | то же |
+| `PROBE.juice` | `zoom:Z03` ∧ `breakfast_on_trolley` ∧ ¬`shown(PROBE.juice)` (каждая жидкость — своя реплика в первый раз; решение автора 16.10.2026) | A02d_probe_juice | то же |
+| `PROBE.coffee` | `zoom:Z03` ∧ `breakfast_on_trolley` ∧ ¬`shown(PROBE.coffee)` (каждая жидкость — своя реплика в первый раз; решение автора 16.10.2026) | A02e_probe_coffee | то же + `knows_hot_warning` |
+| `PROBE.cistern` | `room:W1`, бачок ∧ ¬`shown(PROBE.cistern)` (каждая жидкость — своя реплика в первый раз; решение автора 16.10.2026) | A02f_probe_cistern | то же |
 | `PROBE.rule.known` | сразу после первой пробы ∧ `knows_foam_flow` | — | — |
 | `PROBE.rule.unknown` | сразу после первой пробы ∧ ¬`knows_foam_flow` | — | — |
-| `PROBE.repeat.1` | любая проба ∧ `foam_class_closed` ∧ `probe.n` = 0 | — (D3) | `probe.n` + 1 |
-| `PROBE.repeat.2` | любая проба ∧ `foam_class_closed` ∧ `probe.n` = 1 | — | `probe.n` + 1 |
-| `PROBE.repeat.3` | любая проба ∧ `foam_class_closed` ∧ `probe.n` ≥ 2 | — | `probe.n` + 1 |
+| `PROBE.repeat.1` | повторная проба той же жидкости ∧ `probe.n` = 0 | — (D3) | `probe.n` + 1 |
+| `PROBE.repeat.2` | повторная проба той же жидкости ∧ `probe.n` = 1 | — | `probe.n` + 1 |
+| `PROBE.repeat.3` | повторная проба той же жидкости ∧ `probe.n` ≥ 2 | — | `probe.n` + 1 |
 | `Z03.trolley.look` | `zoom:Z03` ∧ ¬`stars_folded` | — | — |
 | `Z03.trolley.look.work` | `zoom:Z03` ∧ `stars_folded` | — | — |
 | `Z03.trolley.push` | `room:W1`, толкнуть к двери ∧ ¬`stars_folded` | — (D17) | — |
@@ -91,7 +92,7 @@
 | `Z03.stars.look.again` | `zoom:Z03` ∧ `knows_stars_fold` ∧ ¬`stars_folded` | — | — |
 | `Z03.stars.look.folded` | `zoom:Z03` ∧ `stars_folded` | — | — |
 | `Z03.stars.pull` | `zoom:Z03` ∧ ¬`knows_stars_fold`, отломать | — (D18) | — |
-| `Z03.stars.fold` | `zoom:Z03` ∧ `knows_stars_fold` ∧ ¬`stars_folded` | A06_fold_stars | `stars_folded`, `plate_revealed` |
+| `Z03.stars.fold` | `zoom:Z03` ∧ `knows_stars_fold` ∧ ¬`stars_folded` ∧ `shown(Z03.trolley.push)` (сначала попытка выкатить тележку; решение автора 16.10.2026) | A06_fold_stars | `stars_folded`, `plate_revealed` |
 | `Z03.plate.look` | `zoom:Z03` ∧ шторка отодвинута (экранное состояние, снимается при уходе с зума; разбор автора 13.10.2026) | — → `DOC.plate` | — |
 | `Z03.skirt.look` | `zoom:Z03` ∧ ¬`knows_trolley_chamber` | — | — |
 | `Z03.skirt.use` | `zoom:Z03` ∧ ¬`knows_trolley_chamber` | A04_try_skirt | `knows_trolley_chamber` |
@@ -108,6 +109,7 @@
 | `Z03.porcelain.take` | `zoom:Z03`, взять кофейник или чашку | — (D5) | — |
 | `Z03.under.no_peek` | залезть под тележку ∧ ¬`need_cover` | — (D21) | — |
 | `Z03.under.no_wash` | залезть под тележку ∧ `need_cover` ∧ ¬`foam_class_closed` | — (D21) | — |
+| `Z03.under.not_all` | залезть в тележку ∧ `foam_class_closed` ∧ не все шесть проб (минералка, комбуча, лимонад, кофе, сок, бачок: `shown(PROBE.*)`) (решение автора 16.10.2026) | — | — |
 | `Z03.under.no_flow` | залезть под тележку ∧ `foam_class_closed` ∧ ¬`knows_foam_flow` | — | — |
 | `Z03.under.no_call` | залезть под тележку ∧ `knows_foam_flow` ∧ ¬`reception_called` | — (D21) | — |
 | `Z03.under.stars` | залезть под тележку ∧ остальные условия A08 ∧ ¬`stars_folded` (проверки идут в этом порядке: no_peek, no_wash, no_flow, no_call, stars) | — (D17) | — |
@@ -204,6 +206,8 @@
 | `OPEN.pa.board` | старт акта, кадр 5: громкая связь хвалится доской почёта (сетап Акта IV) | — | — |
 | `OPEN.anc` | один раз после `OPEN.pa.board` (по желанию реализации) | — | — |
 | `Z04.look` | `zoom:Z04` | — | — |
+| `Z04.forms.look` | `zoom:Z04` ∧ ¬`requests_stapled` (решение автора 16.10.2026) | — | — |
+| `Z04.forms.look.stapled` | `zoom:Z04` ∧ `requests_stapled` (решение автора 16.10.2026) | — | — |
 | `Z04.pump.look` | `zoom:Z04` | — | — |
 | `Z04.pump.use` | `zoom:Z04` ∧ `trolley_service_side` ∧ `cascade_demo_seen` ∧ ¬`cascade_on` | B01_pump_cascade | `cascade_on` (ширма: зал смотрит на камни) |
 | `Z04.pump.use.repeat` | `zoom:Z04` ∧ `cascade_on` | — (D1) | — |

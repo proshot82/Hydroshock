@@ -56,7 +56,7 @@ def before_rules(items):
 class BriefTest(unittest.TestCase):
     def test_brief_parsed(self):
         b = ct.parse_brief(BRIEF)
-        self.assertEqual(len(b), 156)   # ТЗ 1.4 (09.10.2026): добавлен Z01.plunger.pull; 14.10.2026 — Z03.egg.look
+        self.assertEqual(len(b), 158)   # ТЗ 1.4 (09.10.2026): добавлен Z01.plunger.pull; 14.10.2026 — Z03.egg.look; 16.10.2026 — Z02.phone.nonumber, Z03.under.not_all
         self.assertEqual(len(ct.parse_brief(FROZEN[1])), 154)
         self.assertEqual(b["Z03.stars.look"]["min"], 2)
         self.assertEqual(b["Z03.stars.look"]["max"], 2)
@@ -327,7 +327,7 @@ class Act2FinalTest(unittest.TestCase):
         texts, fmt = ct.parse_texts(ROOT / "texts" / "act2" / "ACT2_TEXTS_FINAL.md")
         errs, _, stats = ct.check(brief, texts, fmt, act=2)
         self.assertEqual(errs, [], messages(errs))
-        self.assertEqual(stats["slots"], 168)  # ТЗ 1.8 (09.10.2026): показ насоса, ширма, бирка, ключ за обязанность; +W4.stairs.no_plan (сборка 14.10.2026)
+        self.assertEqual(stats["slots"], 170)  # ТЗ 1.8 (09.10.2026): показ насоса, ширма, бирка, ключ за обязанность; +W4.stairs.no_plan (сборка 14.10.2026); +Z04.forms.look, Z04.forms.look.stapled (16.10.2026)
 
 
 BRIEF3 = ROOT / "texts" / "act3" / "BRIEF_ACT3_TEXTS.md"
