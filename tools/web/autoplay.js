@@ -67,7 +67,12 @@ function check(ok, msg) {
     throw new Error("игра не освободилась");
   }
   async function zone(id) {
-    const s = await g();
+    let s = await g();
+    // после загрузки сейва маска слоя-зоны появляется, когда догрузится картинка
+    for (let i = 0; i < 30 && s.zones.some((v) => v.id === id && !v.at); i++) {
+      await page.waitForTimeout(100);
+      s = await g();
+    }
     const z = s.zones.find((v) => v.id === id);
     if (!z) throw new Error(`на виде ${s.view} нет зоны ${id}; есть: ${s.zones.map((v) => v.id).join(", ")}`);
     if (!z.at) throw new Error(`зону ${s.view}.${id} целиком перекрыли другие — по ней не щёлкнуть`);

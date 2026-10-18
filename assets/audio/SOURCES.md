@@ -1,6 +1,6 @@
 # Источники звука BJ3
 
-Состояние на 14.10.2026: все 68 файлов спеки (ASSET_SPEC §9) и 9 файлов BJ2. Прежние версии заменённых мелодий — `work/orig_audio/*__до_12.10_*.ogg`. Журнал всех запросов к ElevenLabs (промпты, модели, длины) — `work/elevenlabs/log.jsonl`.
+Состояние на 18.10.2026: все 69 файлов спеки (ASSET_SPEC §9) и 9 файлов BJ2. Прежние версии заменённых мелодий — `work/orig_audio/*__до_12.10_*.ogg`. Журнал всех запросов к ElevenLabs (промпты, модели, длины) — `work/elevenlabs/log.jsonl`.
 
 | Файл | Источник | Лицензия |
 |---|---|---|
@@ -10,6 +10,7 @@
 | `bgm_resort.ogg`, `bgm_hotel_tense.ogg` | ElevenLabs Music API, `music_v2_5`, пакет З6 `work/audio/candidates/s6_resort_1013/` (README): тема — первые 59 с плана `plans/p3_sanatorium.json` (`raw/p3_sanatorium.mp3`), петля 42,8 с; вариация — круг 2, без образца, тем же составом в до миноре (`plans/v2_t3_creep_free.json`, `raw/v2_t3_creep_free_b.mp3`), петля 66,3 с; −18 LUFS; выбраны автором отметками на странице 14.10.2026, шов темы проверен автором. Первая вариация («по образцу», почти как тема) — `work/orig_audio/bgm_hotel_tense__почти_как_тема_до_14.10.ogg` | как выше |
 | `bgm_deep.ogg`, `sting_water.ogg` | ElevenLabs Music API, `music_v1`, пакет З1 `work/audio/candidates/s1_music_1012/` (исходники `raw/bgm_deep_a.mp3`, `sting_water_2.mp3`); петля `make_loop.py --min 60 --xfade 2`; приняты автором 12.10.2026 (сравнение с v2.5 — оставить прежние) | как выше |
 | `sfx_*.ogg` (кроме `sfx_pa_chime`, `sfx_drum_beep`), `amb_*.ogg` | ElevenLabs Sound Effects API (`eleven_text_to_sound_v2`), пакеты З2–З4: `work/audio/candidates/s2_act1_1012/`, `s3_act23_1012/`, `s4_act4_1012/` (README — выбор автора; исходники `raw/`; финальные OGG — `build.py --final`). Сборные: `sfx_shock_thud` — удар ElevenLabs + синтез (инфранизкий «бум», гул здания, зал); `sfx_stars_fold` — один щелчок ElevenLabs ×4; `sfx_phone_pickup` — щелчок ElevenLabs + гудок 425 Гц; `sfx_knock` — один удар ×3; `sfx_lobby_hush` — из `amb_lobby`; `sfx_fin_cascade` — фонтан + писк резиновой уточки. Выбраны и приняты автором 12.10.2026 | условия ElevenLabs Sound Effects, платный тариф (Creator): использование в играх разрешено в составе другого материала; нельзя выкладывать «отдельными аудиофайлами или сэмплами» — репозиторий публичный, автор решил оставить так (12.10.2026) |
+| `sfx_folder_slap.ogg` | ElevenLabs Sound Effects API, пакет З7 `work/audio/candidates/s7_slap_1016/` (README; исходник `raw/sfx_folder_slap_3.mp3`), доводка `tools/audio/finish.py`; выбран автором отметкой 18.10.2026 («хлоп 3») | как у пакетов З2–З4 |
 | `sfx_pa_chime.ogg`, `sfx_drum_beep.ogg`, `blip_iz.ogg`, `blip_pa.ogg`, `blip_guest.ogg`, `blip_kuh.ogg` | синтез `tools/audio/synth.py` (позывной — «ми–до–соль»; писк табло — вариант a; блипы — `blip_iz_b`, `blip_pa_a`, `blip_guest_a`, `blip_kuh_a`); приняты автором 12.10.2026 | собственность серии |
 
 Сэмплер `tools/music/sampler.py` (VSCO 2 Community Edition, CC0) в игре больше не используется: прежняя `mus_hold` заменена версией ElevenLabs (отметка автора 12.10.2026) и лежит в `work/orig_audio/`. Вибрафон University of Iowa MIS был заявлен, но ни в одной партитуре не использован.

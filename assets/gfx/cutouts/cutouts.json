@@ -526,10 +526,10 @@
  },
  "st_z04_drawer_kefir": {
   "base": "zoom_z04.png",
-  "x": 0,
-  "y": 253,
-  "w": 389,
-  "h": 456
+  "x": 36,
+  "y": 277,
+  "w": 278,
+  "h": 382
  },
  "st_z04_folder": {
   "base": "zoom_z04.png",
@@ -568,17 +568,17 @@
  },
  "st_z04_lowdrawer_empty": {
   "base": "zoom_z04.png",
-  "x": 31,
-  "y": 551,
-  "w": 466,
-  "h": 529
+  "x": 103,
+  "y": 593,
+  "w": 404,
+  "h": 481
  },
  "st_z04_lowdrawer_mug": {
   "base": "zoom_z04.png",
-  "x": 111,
-  "y": 551,
-  "w": 458,
-  "h": 529
+  "x": 53,
+  "y": 565,
+  "w": 326,
+  "h": 430
  },
  "st_z04_map": {
   "base": "zoom_z04.png",

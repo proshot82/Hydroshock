@@ -132,8 +132,8 @@
 | Z04 | complaints | Стопка жалоб | слой st_z04_complaints | act |  | плоское |
 | Z04 | kefir | Кефир и накладная | слой st_z04_kefir | act | kefir_ready ∧ ¬payment_loaded |  |
 | Z04 | bill | Счёт с печатью | слой st_z04_bill_stamped | look | bill_stamped ∧ ¬payment_loaded | плоское |
-| Z04 | drawer | Верхний ящик | 0,100,160,400 | act |  |  |
-| Z04 | lowdrawer | Нижний ящик | 0,600,230,460 | act |  |  |
+| Z04 | drawer | Верхний ящик | 40,280,330,280 | act |  |  |
+| Z04 | lowdrawer | Нижний ящик | 40,570,330,340 | act |  |  |
 | Z05 | vitrine | Витрина | 460,0,660,430 | act |  | плоское |
 | Z05 | tag | Бирка «Экспонат № 1» | 690,120,180,140 | act | vitrine_open ∧ ¬meter_reading_seen | плоское |
 | Z05 | seal | Пломба | 650,260,120,110 | act | vitrine_open |  |

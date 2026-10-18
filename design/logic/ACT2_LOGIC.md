@@ -116,8 +116,8 @@
 | Z04 | regulation | Регламент пуска | 420,400,400,210 | act |  | плоское |
 | Z04 | forms | Бланки заявок | слой st_z04_forms3 | look | ¬requests_stapled | плоское |
 | Z04 | forms1 | Бланк заявки | слой st_z04_forms1 | look | requests_stapled | плоское |
-| Z04 | drawer | Верхний ящик | 0,100,160,400 | act |  |  |
-| Z04 | lowdrawer | Нижний ящик | 0,600,230,460 | act |  |  |
+| Z04 | drawer | Верхний ящик | 40,280,330,280 | act |  |  |
+| Z04 | lowdrawer | Нижний ящик | 40,570,330,340 | act |  |  |
 | Z05 | vitrine | Витрина | 460,0,660,430 | act |  | плоское |
 | Z05 | tag | Бирка «Экспонат № 1» | 690,120,180,140 | act | vitrine_open ∧ ¬meter_reading_seen | плоское |
 | Z05 | seal | Пломба | 650,260,120,110 | act | vitrine_open |  |
@@ -183,7 +183,7 @@
 | Z04.pump | нажать_кнопку | ¬cascade_on | Z04.pump.use | B01_pump_cascade | +cascade_on, +scr_cascade, звук:sfx_pump_dry |
 | Z04.pump | нажать_кнопку | cascade_on | Z04.pump.use.repeat | — | +scr_cascade, звук:sfx_pump_dry |
 | Z04.folder | осмотр |  | Z04.folder.look | — |  |
-| Z04.folder | поднять |  | Z04.folder.take | — |  |
+| Z04.folder | поднять |  | Z04.folder.take | — | звук:sfx_folder_slap |
 | Z04.notice | осмотр |  | — | — | док:DOC.notice_counter |
 | Z04.map | осмотр |  | Z04.map.look | — |  |
 | Z04.map | взять |  | Z04.map.take | B04_take_hotel_map | +has_hotel_map, звук:ui_pickup, док:DOC.map_hotel |

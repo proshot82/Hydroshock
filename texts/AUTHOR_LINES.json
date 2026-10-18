@@ -147,6 +147,34 @@
    "speaker": "lap",
    "kind": "verbatim",
    "text": "Ключ вроде подходит. Но мне мама всегда запрещала ходить голым неизвестно куда."
+  },
+  {
+   "act": "I",
+   "slot": "Z02.phone.nonumber",
+   "speaker": "lap",
+   "kind": "verbatim",
+   "text": "Я не знаю, куда звонить. Разве что 01 — у них точно есть струя."
+  },
+  {
+   "act": "I",
+   "slot": "Z03.under.not_all",
+   "speaker": "lap",
+   "kind": "verbatim",
+   "text": "Задача инженера — глубокий теханализ. Тут ещё есть, чем облиться."
+  },
+  {
+   "act": "II",
+   "slot": "TALK.req.open",
+   "speaker": "lap",
+   "kind": "verbatim",
+   "text": "Услуги разные, а труба одна. Полная…"
+  },
+  {
+   "act": "II",
+   "slot": "Z04.forms.look",
+   "speaker": "lap",
+   "kind": "verbatim",
+   "text": "Три бланка заявок… Учкудууук… три заявки… и зачем только брал я с собой мои новые плаавки…"
   }
  ]
 }
