@@ -134,6 +134,11 @@ def build(act):
     fields = json.loads((ROOT / "design" / "docs" / "fields.json").read_text(encoding="utf-8"))
     ui = ui_keys()
     gflags = set(graph["flags_glossary"])
+    # флаги прошлых актов движок переносит накопительно (GDD §12): условие может читать и их
+    # (кольцо следа на пломбе, прочитанный журнал Акта II); ставить и снимать — только свои
+    cflags = set(gflags)
+    for k in range(1, act):
+        cflags |= set(json.loads((ROOT / "acts" / f"act{k}" / f"ACT{k}_graph.json").read_text(encoding="utf-8"))["flags_glossary"])
     actions = {a["id"]: a for a in graph["actions"]}
     lname = lpath.name
 
@@ -144,7 +149,7 @@ def build(act):
             err(where, str(e))
             return None
         for f in L.cond_flags(tree):
-            if f not in gflags and not L.is_screen(f):
+            if f not in cflags and not L.is_screen(f):
                 err(where, f"флаг «{f}» не из графа")
         for s in L.cond_slots(tree):
             if not known(s):
@@ -373,7 +378,7 @@ def build(act):
     for r in L.table(S, "Меню"):
         w = f"{lname}:{r['_line']}"
         lab = r["Подпись"]
-        if lab in texts:
+        if known(lab):   # подпись — строка choice слота, в том числе заимствованного
             choice = [l["text"] for l in texts[lab]["lines"] if l["speaker"] == "choice"]
             if not choice:
                 err(w, f"у слота {lab} нет строки choice для подписи")

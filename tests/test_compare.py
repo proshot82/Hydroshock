@@ -149,7 +149,8 @@ class MergeTest(unittest.TestCase):
         # 16.10.2026 — разбор автора: новые слоты Z02.phone.nonumber (звонок до путёвки) и Z03.under.not_all
         self.assertIn("Z02.phone.nonumber", report["edit"])
         self.assertIn("Z03.under.not_all", report["edit"])
-        self.assertEqual(len(report["edit"]), 44)
+        # 18.10.2026 — раунд 5: «в тележке» (Z03.under.no_flow/no_call, CHOICE.wait, TALK.iz.guest, HINT.drive.3, HINT.crowd.3), сноска DOC.menu
+        self.assertEqual(len(report["edit"]), 51)
         # Z01.plunger.pull (новый слот, раньше — «по правилам ТЗ») теперь из правки автора
         self.assertEqual(sorted(report["rule"]), [])
         self.assertIn("Z01.plunger.pull", report["edit"])

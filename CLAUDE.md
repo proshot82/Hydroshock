@@ -2,7 +2,7 @@
 Язык: всё по-русски. Автор — Lao, не программист; технические шаги ему — пошагово.
 Действующие документы (иерархия при конфликте):
   docs/DESIGN_BIBLE.md, docs/02_WRITING_BIBLE.md, docs/BJ3_WORLD_CANON_V2.md
-  → docs/BJ3_PUZZLE_CHAIN_PROMPT_V2.md → docs/BJ3_SKELETON_S3.md (утверждён 14.08.2026, md5 600a74d61d3aa00c8a9cad80711f2858).
+  → docs/BJ3_PUZZLE_CHAIN_PROMPT_V2.md → docs/BJ3_SKELETON_S3.md (утверждён 14.08.2026; правка автора 18.10.2026 — мокрый круг в сцене из лифта снят; md5 d0bc70fdff76654896bf3ebe8cdd75b0).
 Конфликт — доложить автору, не решать молча.
 docs/history/ (PUZZLE_FREE, промпт v1, handoff ChatGPT, Фаза_0.docx, v0.8, v1.1.2) — не источник.
 Текущая точка — BJ3_HANDOFF.md и PROJECT_STATUS_HYDROUDAR.md. Фаза 2 закрыта: четыре акта заморожены (сдачи acts/act*/ACT*_SUBMISSION.md побеждают скелет письменным решением автора).

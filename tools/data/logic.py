@@ -233,9 +233,16 @@ def parse_effects(text):
             k, v = part.split(":", 1)
             if k not in EFFECT_KEYS:
                 raise ValueError(f"эффект «{part}»: неизвестный вид «{k}»")
-            out.append({EFFECT_KEYS[k]: v.strip()})
-        elif re.fullmatch(r"(sfx|ui|sting)_[a-z_0-9]+", part):
-            out.append({"sfx": part})   # в колонке «Звук» сцен можно без «звук:»
+            v = v.strip()
+            m = re.fullmatch(r"([a-z_0-9]+)@(\d+)", v)
+            if EFFECT_KEYS[k] == "sfx" and m:   # «звук:имя@3» — на третьей реплике слота
+                out.append({"sfx": m.group(1), "line": int(m.group(2))})
+            else:
+                out.append({EFFECT_KEYS[k]: v})
+        elif re.fullmatch(r"(sfx|ui|sting)_[a-z_0-9]+(@\d+)?", part):
+            # в колонке «Звук» сцен можно без «звук:»; «@N» — звук на N-й реплике слота (кадр монтажа)
+            nm, _, ln = part.partition("@")
+            out.append({"sfx": nm, "line": int(ln)} if ln else {"sfx": nm})
         else:
             raise ValueError(f"эффект «{part}» не разобран")
     return out
