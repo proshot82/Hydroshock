@@ -113,10 +113,10 @@
  },
  "st_w2_lowdrawer_open": {
   "base": "room_w2.png",
-  "x": 311,
-  "y": 721,
-  "w": 318,
-  "h": 288
+  "x": 290,
+  "y": 689,
+  "w": 361,
+  "h": 391
  },
  "st_w2_map": {
   "base": "room_w2.png",
@@ -558,6 +558,13 @@
   "y": 0,
   "w": 266,
   "h": 116
+ },
+ "st_z04_iz_slap": {
+  "base": "zoom_z04.png",
+  "x": 0,
+  "y": 260,
+  "w": 1196,
+  "h": 722
  },
  "st_z04_kefir": {
   "base": "zoom_z04.png",

@@ -183,7 +183,7 @@
 | Z04.pump | нажать_кнопку | ¬cascade_on | Z04.pump.use | B01_pump_cascade | +cascade_on, +scr_cascade, звук:sfx_pump_dry |
 | Z04.pump | нажать_кнопку | cascade_on | Z04.pump.use.repeat | — | +scr_cascade, звук:sfx_pump_dry |
 | Z04.folder | осмотр |  | Z04.folder.look | — |  |
-| Z04.folder | поднять |  | Z04.folder.take | — | звук:sfx_folder_slap |
+| Z04.folder | поднять |  | Z04.folder.take | — | звук:sfx_folder_slap, кадр:вид:Z04+st_z04_iz_slap |
 | Z04.notice | осмотр |  | — | — | док:DOC.notice_counter |
 | Z04.map | осмотр |  | Z04.map.look | — |  |
 | Z04.map | взять |  | Z04.map.take | B04_take_hotel_map | +has_hotel_map, звук:ui_pickup, док:DOC.map_hotel |
