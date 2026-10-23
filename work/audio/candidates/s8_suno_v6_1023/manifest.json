@@ -1,0 +1,548 @@
+[
+ {
+  "name": "amb_below",
+  "kind": "amb",
+  "style": "a vast half-flooded underground sea cave, slow water drips echoing, gentle lapping water, the deep muffled breathing of large old pipes, cavernous reverb, no voices, no music, ambient room tone soundscape only, no music, no melody, no instruments, no beat, no vocals, no speech",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir, speech, talking",
+  "sec": 60
+ },
+ {
+  "name": "amb_hall",
+  "kind": "amb",
+  "style": "a large empty echoing hotel hall with marble floor, cavernous reverb, distant low hum of an elevator shaft, very quiet, no voices, no music, ambient room tone soundscape only, no music, no melody, no instruments, no beat, no vocals, no speech",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir, speech, talking",
+  "sec": 60
+ },
+ {
+  "name": "amb_laundry",
+  "kind": "amb",
+  "style": "a stopped industrial hotel laundry room, washing machines silent, fluorescent lamps humming, rare electrical relay clicks, distant pipes, no water, no voices, no music, ambient room tone soundscape only, no music, no melody, no instruments, no beat, no vocals, no speech",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir, speech, talking",
+  "sec": 60
+ },
+ {
+  "name": "amb_lobby",
+  "kind": "amb",
+  "style": "busy hotel lobby ambience in a large reverberant marble hall, murmur of a crowd, unintelligible grumbling walla with no clear words, occasional heels on marble, distant cups clinking, no music, ambient room tone soundscape only, no music, no melody, no instruments, no beat, no vocals, no speech",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir, speech, talking",
+  "sec": 60
+ },
+ {
+  "name": "amb_room",
+  "kind": "amb",
+  "style": "quiet small hotel room with bathroom, room tone, low steady ventilation hum, very rare single water drip from a dry tap, calm, no music, no voices, ambient room tone soundscape only, no music, no melody, no instruments, no beat, no vocals, no speech",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir, speech, talking",
+  "sec": 60
+ },
+ {
+  "name": "bgm_below",
+  "kind": "music",
+  "style": "instrumental, sly slinky slow habanera in a deep sea grotto, playful villainess charm with a wink, bass clarinet and contrabassoon melody, pizzicato double bass, harp, marimba, glass harmonica shimmer, soft brushed shaker, bubbles and water drips, mysterious, humorous, cozy not scary, adventure game, no organ, no march, no choir, no church, no vocals, no fanfare",
+  "neg": "vocals, singing, humming, choir, spoken word, lyrics, organ, march, church, fanfare",
+  "sec": 120
+ },
+ {
+  "name": "bgm_deep",
+  "kind": "music",
+  "style": "instrumental, ominous slow underwater suspense, something huge approaching from the deep, very low contrabassoon and bass clarinet drones, slow distant timpani heartbeat, dark harp harmonics, eerie glass harmonica shimmer, dripping water, distant creaking pipes, sparse and tense, mysterious adventure game, no vocals, no choir, no organ, no church, no march",
+  "neg": "vocals, singing, humming, choir, spoken word, lyrics, organ, church, march",
+  "sec": 100
+ },
+ {
+  "name": "bgm_epilogue",
+  "kind": "music",
+  "style": "instrumental, quirky cheerful big band swing finale in the spirit of 1930s cartoon jazz, playful trumpets with plunger mutes and wah-wah, sousaphone oompah bass, clarinet squeals, woodblock and slapstick hits, stride piano, bouncy and silly but warm, no vocals, no choir, cozy and humorous, classic point-and-click adventure game happy ending",
+  "neg": "vocals, singing, humming, choir, spoken word, lyrics",
+  "sec": 120
+ },
+ {
+  "name": "bgm_hotel",
+  "kind": "music",
+  "style": "instrumental, cozy lounge swing, quirky point-and-click adventure soundtrack, upright piano, clarinet and flute melody, soft tuba, brushed snare, washboard, warm and friendly, medium tempo, no vocals",
+  "neg": "vocals, singing, humming, choir, spoken word, lyrics",
+  "sec": 120
+ },
+ {
+  "name": "bgm_hotel_tense",
+  "kind": "music",
+  "style": "instrumental, quirky point-and-click adventure game soundtrack, 1960s soviet black-sea sanatorium estrada band: accordion, mandolin, clarinet, upright bass, warm vintage small live band recording, clearly in C minor, minor-key harmony throughout, 90 BPM, slow creeping comedic suspense, walking pizzicato bass, accordion swells, muted trumpet wah-wah, ticking clock, worried but funny, no vocals",
+  "neg": "vocals, singing, humming, choir, spoken word, lyrics, electronic beats, heavy drums, horror, major key, carefree",
+  "sec": 100
+ },
+ {
+  "name": "bgm_resort",
+  "kind": "music",
+  "style": "instrumental, quirky point-and-click adventure game soundtrack, clear hummable main melody, warm vintage small live band recording, 84 BPM, 1960s soviet black-sea sanatorium estrada, lazy seaside swing-waltz, accordion and mandolin play the melody, vibraphone, soft clarinet, brushed snare, upright bass, sleepy sun-drenched holiday, major key, no vocals",
+  "neg": "vocals, singing, humming, choir, spoken word, lyrics, electronic beats, heavy drums, horror",
+  "sec": 90
+ },
+ {
+  "name": "bgm_service",
+  "kind": "music",
+  "style": "instrumental, lazy cozy blues, back corridors of an old hotel, bassoon and clarinet, pizzicato bass, soft dripping percussion, brushes, playful and calm, no vocals",
+  "neg": "vocals, singing, humming, choir, spoken word, lyrics",
+  "sec": 120
+ },
+ {
+  "name": "bgm_title",
+  "kind": "music",
+  "style": "instrumental, playful spooky mystery, humorous and mysterious adventure game title theme, quirky creepy-cute jazz, brisk swing tempo around 140 bpm, full small band: clarinet lead, bassoon, tuba, muted trumpet, pizzicato strings, celesta and vibraphone, honky-tonk piano, upright bass, brushed drums, woodblock, sneaky minor key with warm major turns, cozy not scary, The Neverhood vibe, no vocals",
+  "neg": "vocals, singing, humming, choir, spoken word, lyrics",
+  "sec": 90
+ },
+ {
+  "name": "blip_anc",
+  "kind": "short",
+  "style": "a single very short deep low text blip tone, tiny, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "blip_guest",
+  "kind": "short",
+  "style": "a single very short soft neutral mid-pitched text blip tone, tiny, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "blip_iz",
+  "kind": "short",
+  "style": "a single very short dry high-pitched typewriter-like text blip, tiny soft tone tick, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "blip_kuh",
+  "kind": "short",
+  "style": "a single very short low wet droplet blip, like one water drop, tiny, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "blip_lap",
+  "kind": "short",
+  "style": "a single very short warm mid-low text blip tone, tiny, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "blip_pa",
+  "kind": "short",
+  "style": "a single very short crackly radio click blip, old loudspeaker tone, tiny, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "mus_hold",
+  "kind": "music",
+  "style": "instrumental, upbeat cheerful hotel bossa nova telephone hold music, 132 bpm, flute melody, piano, pizzicato upright bass, claves, shaker, light, bright and a little cheesy, no vocals",
+  "neg": "vocals, singing, humming, choir, spoken word, lyrics",
+  "sec": 45
+ },
+ {
+  "name": "sfx_board_lay",
+  "kind": "sfx",
+  "style": "a wooden board laid down onto a metal threshold, then trolley wheels roll up over the wood, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_bottle_catch",
+  "kind": "sfx",
+  "style": "a glass bottle slips and knocks against the edge of a wooden counter and is caught in a hand, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_building_exhale",
+  "kind": "sfx",
+  "style": "a long deep wet exhale of a huge old building as water rushes back into all its pipes, gurgling and hissing air, a rising rumble of water filling the pipes, then settling into a steady even flow, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_crowd_part",
+  "kind": "sfx",
+  "style": "a crowd of about forty people in a crowded hotel lobby hurriedly stepping aside to let a waiter pass, shuffling slippers and shoes on marble, rustling bathrobes and clothes, surprised murmur and gasps without clear words, porcelain cups rattling on a tray, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_descent",
+  "kind": "sfx",
+  "style": "darkness inside an old elevator descending deep underground, low rumbling hum, then a metal gate clangs open below, water dripping in a wet cave, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_door_clicks",
+  "kind": "sfx",
+  "style": "a heavy door lock clicks open, a short pause, then another door lock clicks open further away down a stone corridor, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_drawer_click",
+  "kind": "sfx",
+  "style": "a low wooden desk drawer clicks and slides open on old runners, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_drum_beep",
+  "kind": "sfx",
+  "style": "three short electronic beeps from the display of an old industrial washing machine, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_drums_turn",
+  "kind": "sfx",
+  "style": "industrial washing machine drums start turning, motors spin up, water sloshing in, settling into a steady wash cycle, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_fin_cascade",
+  "kind": "sfx",
+  "style": "a decorative lobby fountain suddenly bursts upward in a powerful jet that hits the ceiling, heavy splashing water falling back, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_fin_shower",
+  "kind": "sfx",
+  "style": "a long dry shower head coughs, sputters and spits air and droplets, then releases a strong steady spray of water, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_fin_spring",
+  "kind": "sfx",
+  "style": "a natural mineral spring bursting up under a thick glass floor, muffled bubbling and rushing water heard through glass, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_foam_swell",
+  "kind": "sfx",
+  "style": "liquid poured with a short gurgle, then soap foam rapidly swelling with a soft fizzing hiss, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_folder_slap",
+  "kind": "sfx",
+  "style": "a single sharp flat-palm slap of a hand on a thick cardboard folder lying on a marble reception counter, crisp loud smack, short, dry, no voice, no music, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_grille_shut",
+  "kind": "sfx",
+  "style": "a metal elevator gate pulled shut from inside, a rattle and a latch click, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_key_door",
+  "kind": "sfx",
+  "style": "an old key turns in a heavy lock with a mechanical clunk, then a heavy service door creaks open, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_knock",
+  "kind": "sfx",
+  "style": "three firm knuckle knocks on a heavy wooden office door, then a long silence, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_latch_click",
+  "kind": "sfx",
+  "style": "a small push latch on a glass museum display cabinet door clicks open, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_lift_down",
+  "kind": "sfx",
+  "style": "an old service elevator: metal gate clangs shut, the cabin hums and descends down the shaft, the hum fades into silence, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_lift_up",
+  "kind": "sfx",
+  "style": "an old service elevator hum rising from below in the shaft, the cabin arrives with a thud and a metal gate clangs open, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_lobby_hush",
+  "kind": "sfx",
+  "style": "a noisy crowded hotel lobby murmur that suddenly drops into complete silence as everyone stops talking, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_pa_chime",
+  "kind": "sfx",
+  "style": "an old public address system chime in a hotel lobby: a microphone click, then three soft descending bell tones, mi, do, sol, small old loudspeaker, hall reverb, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_pa_drown",
+  "kind": "sfx",
+  "style": "an old public address loudspeaker humming tone drowning in bubbling water, the speaker gurgles, sputters and goes silent, no words, no voice, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_paint_scrape",
+  "kind": "sfx",
+  "style": "a stiff laminate board scraping along a freshly painted wall, sticky paint scraping and smearing, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_pen_roll",
+  "kind": "sfx",
+  "style": "a pen slips out of a hand and rolls across a wooden desk, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_pen_scratch",
+  "kind": "sfx",
+  "style": "an old steel dip pen scratching quickly across paper, writing one line in a ledger, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_phone_pickup",
+  "kind": "sfx",
+  "style": "old hotel desk telephone handset lifted off the cradle, plastic click, then a short line connection tone, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_phone_ring",
+  "kind": "sfx",
+  "style": "an old hotel reception desk telephone rings twice with a mechanical bell, then the handset is picked up with a click, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_plunger_pop",
+  "kind": "sfx",
+  "style": "a rubber plunger suction cup pulled off a smooth glass panel, short wet pop, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_plunger_press",
+  "kind": "sfx",
+  "style": "a rubber plunger pressed firmly onto a smooth wet surface, a short wet squelch and suction, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_pump_dry",
+  "kind": "sfx",
+  "style": "an electric water pump in a hotel lobby fountain humming and whirring dry with no water, steady motor drone, slight rattle, no splashing, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_seal_tear",
+  "kind": "sfx",
+  "style": "a wire lead seal ripped off a valve with a sharp tug, thin metal wire snaps, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_shock_thud",
+  "kind": "sfx",
+  "style": "a massive water hammer blast deep inside a huge old stone hotel, a violent deep explosive boom, the whole building shudders, windows, glass and metal pipes rattle and shake, a long reverberant rumble rolling through the structure, then ringing pipes slowly fade, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_shower_run",
+  "kind": "sfx",
+  "style": "a hotel shower running steadily, water spraying from a shower head onto a person and splashing on tiles in a small tiled shower cabin, no voices, no music, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_shower_sigh",
+  "kind": "sfx",
+  "style": "a dry shower head coughs out a short sigh of air, faint hiss of air through empty pipes, no water, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_soap_smear",
+  "kind": "sfx",
+  "style": "a wet soapy finger smearing across a paper page, short wet squeak, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_stamp",
+  "kind": "sfx",
+  "style": "a dry rubber office stamp thumped onto paper on a desk, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_stars_fold",
+  "kind": "sfx",
+  "style": "four separate sharp metallic clicks of small brass hinges snapping into place one by one, evenly spaced about a quarter second apart, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_suction_glass",
+  "kind": "sfx",
+  "style": "a rubber suction cup on a large glass mirror, a squeak, then a heavy mirror lifted off the wall, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_switch",
+  "kind": "sfx",
+  "style": "the clack of an old heavy electrical knife switch, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_tag_fold",
+  "kind": "sfx",
+  "style": "a small paper label being peeled off, sticky tape unsticking, paper rustle, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_token_drop",
+  "kind": "sfx",
+  "style": "a small metal flap clicks open and a heavy brass token drops into a palm, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_trolley_creak",
+  "kind": "sfx",
+  "style": "an old room service trolley with brass wheels rolling a short distance on marble tile floor, squeaky wheel creak, cups rattling, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_trolley_jam",
+  "kind": "sfx",
+  "style": "a room service trolley bumps hard into a metal spiral staircase and gets stuck, metallic clang, cups rattle, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_valve_turn",
+  "kind": "sfx",
+  "style": "a large old iron valve wheel turned by hand, stiff grinding and creaking at first, then it gives and turns freely and smoothly, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_wet_stamp",
+  "kind": "sfx",
+  "style": "a wet rubbery stamp slapped onto paper on a desk, a short wet slap, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_wet_steps",
+  "kind": "sfx",
+  "style": "slow wet slapping footsteps of several huge octopus tentacles on a wet tiled floor in a flooded cave, squelching suction, approaching, no voices, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sfx_wheel_bump",
+  "kind": "sfx",
+  "style": "small brass trolley wheels bump twice against a brass threshold and stop, cups rattle, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "sting_relic",
+  "kind": "sting",
+  "style": "instrumental, short magical discovery chime, found an old treasure, harp glissando, small bells and celesta, warm and mysterious, ends cleanly, no vocals",
+  "neg": "vocals, singing, humming, choir, spoken word, lyrics",
+  "sec": 10
+ },
+ {
+  "name": "sting_solved",
+  "kind": "sting",
+  "style": "instrumental, short cheerful success jingle, classic humorous adventure game puzzle solved, muted trumpet and clarinet flourish, pizzicato, ends on a bright warm major chord, cozy, no vocals",
+  "neg": "vocals, singing, humming, choir, spoken word, lyrics",
+  "sec": 10
+ },
+ {
+  "name": "sting_water",
+  "kind": "sting",
+  "style": "instrumental, short triumphant orchestral swell, water rushing back into old pipes, rising strings and harp glissando, warm brass chord blooming, clarinet flourish, joyful release, ends on major chord, no vocals",
+  "neg": "vocals, singing, humming, choir, spoken word, lyrics",
+  "sec": 10
+ },
+ {
+  "name": "ui_click",
+  "kind": "short",
+  "style": "a single tiny soft interface click, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "ui_error",
+  "kind": "short",
+  "style": "a short soft interface error buzz, two low beeps, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "ui_paper",
+  "kind": "short",
+  "style": "a short rustle of a sheet of paper being picked up, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "ui_pickup",
+  "kind": "short",
+  "style": "a short soft pick-up pop sound of an item being taken, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "ui_transition",
+  "kind": "short",
+  "style": "a short soft whoosh transition sound, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "ui_zoom_in",
+  "kind": "short",
+  "style": "a very short soft rising whoosh, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ },
+ {
+  "name": "ui_zoom_out",
+  "kind": "short",
+  "style": "a very short soft falling whoosh, isolated sound effect only, realistic foley field recording, no music, no melody, no instruments, no beat, no rhythm, no vocals",
+  "neg": "music, melody, song, instruments, drums, beat, bass, synth, vocals, singing, choir",
+  "sec": 10
+ }
+]

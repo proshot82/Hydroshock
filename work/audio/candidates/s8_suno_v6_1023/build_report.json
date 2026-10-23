@@ -1,0 +1,938 @@
+{
+ "amb_lobby_a": {
+  "ok": true,
+  "note": "петля 5.0–35.0 с исходника",
+  "raw_sec": 59.6,
+  "sec": 30.0
+ },
+ "amb_lobby_b": {
+  "ok": true,
+  "note": "петля 5.0–35.0 с исходника",
+  "raw_sec": 59.6,
+  "sec": 30.0
+ },
+ "amb_room_a": {
+  "ok": true,
+  "note": "петля 5.0–35.0 с исходника",
+  "raw_sec": 59.6,
+  "sec": 30.0
+ },
+ "amb_room_b": {
+  "ok": true,
+  "note": "петля 5.0–35.0 с исходника",
+  "raw_sec": 59.7,
+  "sec": 30.0
+ },
+ "bgm_epilogue_a": {
+  "ok": true,
+  "note": "bgm_epilogue_a.ogg: петля 0.88–110.27 с (109.4 с, 248 долей), сходство 1.174, громкость -18.0 LUFS, пик ≤ -1.5 dBFS",
+  "raw_sec": 119.9,
+  "sec": 109.39
+ },
+ "bgm_epilogue_b": {
+  "ok": true,
+  "note": "bgm_epilogue_b.ogg: петля 0.65–112.83 с (112.2 с, 200 долей), сходство 1.158, громкость -18.0 LUFS, пик ≤ -1.5 dBFS",
+  "raw_sec": 119.5,
+  "sec": 112.18
+ },
+ "amb_below_a": {
+  "ok": true,
+  "note": "петля 5.0–35.0 с исходника",
+  "raw_sec": 69.1,
+  "sec": 30.0
+ },
+ "amb_below_b": {
+  "ok": true,
+  "note": "петля 5.0–35.0 с исходника",
+  "raw_sec": 58.8,
+  "sec": 30.0
+ },
+ "amb_hall_a": {
+  "ok": true,
+  "note": "петля 5.0–35.0 с исходника",
+  "raw_sec": 59.6,
+  "sec": 30.0
+ },
+ "amb_hall_b": {
+  "ok": true,
+  "note": "петля 5.0–35.0 с исходника",
+  "raw_sec": 59.6,
+  "sec": 30.0
+ },
+ "amb_laundry_a": {
+  "ok": true,
+  "note": "петля 5.0–35.0 с исходника",
+  "raw_sec": 59.6,
+  "sec": 30.0
+ },
+ "amb_laundry_b": {
+  "ok": true,
+  "note": "петля 5.0–35.0 с исходника",
+  "raw_sec": 60.0,
+  "sec": 30.0
+ },
+ "bgm_below_a": {
+  "ok": true,
+  "note": "bgm_below_a.ogg: петля 3.23–102.79 с (99.6 с, 176 долей), сходство 1.175, громкость -18.0 LUFS, пик ≤ -1.5 dBFS",
+  "raw_sec": 119.8,
+  "sec": 99.57
+ },
+ "bgm_below_b": {
+  "ok": true,
+  "note": "bgm_below_b.ogg: петля 2.02–103.61 с (101.6 с, 176 долей), сходство 1.175, громкость -18.0 LUFS, пик ≤ -1.5 dBFS",
+  "raw_sec": 118.7,
+  "sec": 101.59
+ },
+ "bgm_deep_a": {
+  "ok": true,
+  "note": "bgm_deep_a.ogg: петля 3.44–80.55 с (77.1 с, 144 долей), сходство 1.119, громкость -18.0 LUFS, пик ≤ -1.5 dBFS",
+  "raw_sec": 99.6,
+  "sec": 77.11
+ },
+ "bgm_deep_b": {
+  "ok": true,
+  "note": "bgm_deep_b.ogg: петля 5.92–87.19 с (81.3 с, 216 долей), сходство 1.120, громкость -18.0 LUFS, пик ≤ -1.5 dBFS",
+  "raw_sec": 99.6,
+  "sec": 81.27
+ },
+ "bgm_hotel_a": {
+  "ok": true,
+  "note": "bgm_hotel_a.ogg: петля 0.88–113.80 с (112.9 с, 264 долей), сходство 1.189, громкость -18.0 LUFS, пик ≤ -1.5 dBFS",
+  "raw_sec": 120.0,
+  "sec": 112.92
+ },
+ "bgm_hotel_b": {
+  "ok": true,
+  "note": "bgm_hotel_b.ogg: петля 0.93–109.90 с (109.0 с, 312 долей), сходство 1.187, громкость -18.0 LUFS, пик ≤ -1.5 dBFS",
+  "raw_sec": 120.0,
+  "sec": 108.97
+ },
+ "bgm_hotel_tense_a": {
+  "ok": true,
+  "note": "bgm_hotel_tense_a.ogg: петля 1.46–83.66 с (82.2 с, 140 долей), сходство 1.144, громкость -18.0 LUFS, пик ≤ -1.5 dBFS",
+  "raw_sec": 99.9,
+  "sec": 82.2
+ },
+ "bgm_hotel_tense_b": {
+  "ok": true,
+  "note": "bgm_hotel_tense_b.ogg: петля 1.49–89.35 с (87.9 с, 152 долей), сходство 1.130, громкость -18.0 LUFS, пик ≤ -1.5 dBFS",
+  "raw_sec": 99.2,
+  "sec": 87.86
+ },
+ "bgm_resort_a": {
+  "ok": true,
+  "note": "bgm_resort_a.ogg: петля 0.81–86.01 с (85.2 с, 228 долей), сходство 1.129, громкость -18.0 LUFS, пик ≤ -1.5 dBFS",
+  "raw_sec": 90.6,
+  "sec": 85.19
+ },
+ "bgm_resort_b": {
+  "ok": true,
+  "note": "bgm_resort_b.ogg: петля 4.11–81.46 с (77.3 с, 216 долей), сходство 1.123, громкость -18.0 LUFS, пик ≤ -1.5 dBFS",
+  "raw_sec": 88.9,
+  "sec": 77.35
+ },
+ "bgm_service_a": {
+  "ok": true,
+  "note": "bgm_service_a.ogg: петля 5.64–108.88 с (103.2 с, 112 долей), сходство 1.186, громкость -18.0 LUFS, пик ≤ -1.5 dBFS",
+  "raw_sec": 120.0,
+  "sec": 103.24
+ },
+ "bgm_service_b": {
+  "ok": true,
+  "note": "bgm_service_b.ogg: петля 2.07–105.44 с (103.4 с, 116 долей), сходство 1.179, громкость -18.0 LUFS, пик ≤ -1.5 dBFS",
+  "raw_sec": 119.8,
+  "sec": 103.38
+ },
+ "bgm_title_a": {
+  "ok": true,
+  "note": "bgm_title_a.ogg: петля 2.16–87.05 с (84.9 с, 200 долей), сходство 1.134, громкость -18.0 LUFS, пик ≤ -1.5 dBFS",
+  "raw_sec": 91.2,
+  "sec": 84.89
+ },
+ "bgm_title_b": {
+  "ok": true,
+  "note": "bgm_title_b.ogg: петля 1.42–82.15 с (80.7 с, 192 долей), сходство 1.126, громкость -18.0 LUFS, пик ≤ -1.5 dBFS",
+  "raw_sec": 90.0,
+  "sec": 80.74
+ },
+ "blip_anc_a": {
+  "ok": true,
+  "note": "щелчок на 0.14 с исходника, 0.075 с",
+  "raw_sec": 8.5,
+  "sec": 0.07
+ },
+ "blip_anc_b": {
+  "ok": true,
+  "note": "щелчок на 0.49 с исходника, 0.075 с",
+  "raw_sec": 7.2,
+  "sec": 0.07
+ },
+ "blip_guest_a": {
+  "ok": true,
+  "note": "щелчок на 0.80 с исходника, 0.045 с",
+  "raw_sec": 3.6,
+  "sec": 0.04
+ },
+ "blip_guest_b": {
+  "ok": true,
+  "note": "щелчок на 7.46 с исходника, 0.045 с",
+  "raw_sec": 8.8,
+  "sec": 0.04
+ },
+ "blip_iz_a": {
+  "ok": true,
+  "note": "щелчок на 2.14 с исходника, 0.045 с",
+  "raw_sec": 8.0,
+  "sec": 0.04
+ },
+ "blip_iz_b": {
+  "ok": true,
+  "note": "щелчок на 1.87 с исходника, 0.045 с",
+  "raw_sec": 3.0,
+  "sec": 0.04
+ },
+ "blip_kuh_a": {
+  "ok": true,
+  "note": "щелчок на 2.94 с исходника, 0.070 с",
+  "raw_sec": 8.7,
+  "sec": 0.07
+ },
+ "blip_kuh_b": {
+  "ok": true,
+  "note": "щелчок на 5.62 с исходника, 0.070 с",
+  "raw_sec": 8.8,
+  "sec": 0.07
+ },
+ "blip_lap_a": {
+  "ok": true,
+  "note": "щелчок на 1.21 с исходника, 0.045 с",
+  "raw_sec": 7.5,
+  "sec": 0.04
+ },
+ "blip_lap_b": {
+  "ok": true,
+  "note": "щелчок на 5.22 с исходника, 0.045 с",
+  "raw_sec": 8.8,
+  "sec": 0.04
+ },
+ "blip_pa_a": {
+  "ok": true,
+  "note": "щелчок на 6.77 с исходника, 0.050 с",
+  "raw_sec": 8.8,
+  "sec": 0.05
+ },
+ "blip_pa_b": {
+  "ok": true,
+  "note": "щелчок на 1.18 с исходника, 0.050 с",
+  "raw_sec": 8.8,
+  "sec": 0.05
+ },
+ "mus_hold_a": {
+  "ok": true,
+  "note": "mus_hold_a.ogg: петля 1.14–40.84 с (39.7 с, 88 долей), сходство 1.051, громкость -18.0 LUFS, пик ≤ -1.5 dBFS",
+  "raw_sec": 46.4,
+  "sec": 39.71
+ },
+ "mus_hold_b": {
+  "ok": true,
+  "note": "mus_hold_b.ogg: петля 0.88–42.40 с (41.5 с, 92 долей), сходство 1.049, громкость -18.0 LUFS, пик ≤ -1.5 dBFS",
+  "raw_sec": 47.2,
+  "sec": 41.52
+ },
+ "sfx_board_lay_a": {
+  "ok": true,
+  "note": "с 0.46 с исходника, 1.48 с",
+  "raw_sec": 10.0,
+  "sec": 1.48
+ },
+ "sfx_board_lay_b": {
+  "ok": true,
+  "note": "с 0.13 с исходника, 1.48 с",
+  "raw_sec": 10.8,
+  "sec": 1.48
+ },
+ "sfx_bottle_catch_a": {
+  "ok": true,
+  "note": "с 0.75 с исходника, 0.80 с",
+  "raw_sec": 10.0,
+  "sec": 0.8
+ },
+ "sfx_bottle_catch_b": {
+  "ok": true,
+  "note": "с 0.07 с исходника, 0.80 с",
+  "raw_sec": 10.0,
+  "sec": 0.8
+ },
+ "sfx_building_exhale_a": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 8.00 с",
+  "raw_sec": 10.4,
+  "sec": 8.0
+ },
+ "sfx_building_exhale_b": {
+  "ok": true,
+  "note": "с 0.45 с исходника, 8.00 с",
+  "raw_sec": 10.0,
+  "sec": 8.0
+ },
+ "sfx_crowd_part_a": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 2.48 с",
+  "raw_sec": 10.0,
+  "sec": 2.48
+ },
+ "sfx_crowd_part_b": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 2.48 с",
+  "raw_sec": 9.8,
+  "sec": 2.48
+ },
+ "sfx_descent_a": {
+  "ok": true,
+  "note": "с 0.83 с исходника, 5.00 с",
+  "raw_sec": 10.0,
+  "sec": 5.0
+ },
+ "sfx_descent_b": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 5.00 с",
+  "raw_sec": 10.0,
+  "sec": 5.0
+ },
+ "sfx_door_clicks_a": {
+  "ok": true,
+  "note": "с 0.02 с исходника, 1.60 с",
+  "raw_sec": 9.2,
+  "sec": 1.6
+ },
+ "sfx_door_clicks_b": {
+  "ok": true,
+  "note": "с 0.02 с исходника, 1.60 с",
+  "raw_sec": 9.6,
+  "sec": 1.6
+ },
+ "sfx_drawer_click_a": {
+  "ok": true,
+  "note": "с 0.24 с исходника, 0.60 с",
+  "raw_sec": 10.0,
+  "sec": 0.6
+ },
+ "sfx_drawer_click_b": {
+  "ok": true,
+  "note": "с 0.21 с исходника, 0.60 с",
+  "raw_sec": 10.0,
+  "sec": 0.6
+ },
+ "sfx_drum_beep_a": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 1.46 с",
+  "raw_sec": 8.0,
+  "sec": 1.46
+ },
+ "sfx_drum_beep_b": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 1.46 с",
+  "raw_sec": 7.6,
+  "sec": 1.46
+ },
+ "sfx_drums_turn_a": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 3.00 с",
+  "raw_sec": 10.0,
+  "sec": 3.0
+ },
+ "sfx_drums_turn_b": {
+  "ok": true,
+  "note": "с 0.22 с исходника, 3.00 с",
+  "raw_sec": 9.9,
+  "sec": 3.0
+ },
+ "sfx_fin_cascade_a": {
+  "ok": true,
+  "note": "с 0.61 с исходника, 3.00 с",
+  "raw_sec": 9.5,
+  "sec": 3.0
+ },
+ "sfx_fin_cascade_b": {
+  "ok": true,
+  "note": "с 1.20 с исходника, 3.00 с",
+  "raw_sec": 9.6,
+  "sec": 3.0
+ },
+ "sfx_fin_shower_a": {
+  "ok": true,
+  "note": "с 0.08 с исходника, 3.91 с",
+  "raw_sec": 9.6,
+  "sec": 3.91
+ },
+ "sfx_fin_shower_b": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 3.91 с",
+  "raw_sec": 10.4,
+  "sec": 3.91
+ },
+ "sfx_fin_spring_a": {
+  "ok": true,
+  "note": "с 0.18 с исходника, 3.00 с",
+  "raw_sec": 10.5,
+  "sec": 3.0
+ },
+ "sfx_fin_spring_b": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 3.00 с",
+  "raw_sec": 10.0,
+  "sec": 3.0
+ },
+ "sfx_foam_swell_a": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 1.48 с",
+  "raw_sec": 10.0,
+  "sec": 1.48
+ },
+ "sfx_foam_swell_b": {
+  "ok": true,
+  "note": "с 0.20 с исходника, 1.48 с",
+  "raw_sec": 9.2,
+  "sec": 1.48
+ },
+ "sfx_folder_slap_a": {
+  "ok": true,
+  "note": "с 0.06 с исходника, 0.80 с",
+  "raw_sec": 9.2,
+  "sec": 0.8
+ },
+ "sfx_folder_slap_b": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 0.80 с",
+  "raw_sec": 8.8,
+  "sec": 0.8
+ },
+ "sfx_grille_shut_a": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 0.80 с",
+  "raw_sec": 9.5,
+  "sec": 0.8
+ },
+ "sfx_grille_shut_b": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 0.80 с",
+  "raw_sec": 9.6,
+  "sec": 0.8
+ },
+ "sfx_key_door_a": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 1.48 с",
+  "raw_sec": 9.9,
+  "sec": 1.48
+ },
+ "sfx_key_door_b": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 1.48 с",
+  "raw_sec": 9.7,
+  "sec": 1.48
+ },
+ "sfx_knock_a": {
+  "ok": true,
+  "note": "с 0.18 с исходника, 2.00 с",
+  "raw_sec": 8.6,
+  "sec": 2.0
+ },
+ "sfx_knock_b": {
+  "ok": true,
+  "note": "с 0.06 с исходника, 2.00 с",
+  "raw_sec": 9.6,
+  "sec": 2.0
+ },
+ "sfx_latch_click_a": {
+  "ok": true,
+  "note": "с 0.23 с исходника, 0.40 с",
+  "raw_sec": 10.4,
+  "sec": 0.4
+ },
+ "sfx_latch_click_b": {
+  "ok": true,
+  "note": "с 0.27 с исходника, 0.40 с",
+  "raw_sec": 9.8,
+  "sec": 0.4
+ },
+ "sfx_lift_down_a": {
+  "ok": true,
+  "note": "с 0.32 с исходника, 4.00 с",
+  "raw_sec": 10.0,
+  "sec": 4.0
+ },
+ "sfx_lift_down_b": {
+  "ok": true,
+  "note": "с 0.05 с исходника, 4.00 с",
+  "raw_sec": 10.0,
+  "sec": 4.0
+ },
+ "sfx_lift_up_a": {
+  "ok": true,
+  "note": "с 0.19 с исходника, 4.00 с",
+  "raw_sec": 9.4,
+  "sec": 4.0
+ },
+ "sfx_lift_up_b": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 4.00 с",
+  "raw_sec": 9.9,
+  "sec": 4.0
+ },
+ "sfx_lobby_hush_a": {
+  "ok": true,
+  "note": "с 0.01 с исходника, 3.00 с",
+  "raw_sec": 10.0,
+  "sec": 3.0
+ },
+ "sfx_lobby_hush_b": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 3.00 с",
+  "raw_sec": 10.0,
+  "sec": 3.0
+ },
+ "sfx_pa_chime_a": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 2.68 с",
+  "raw_sec": 9.5,
+  "sec": 2.68
+ },
+ "sfx_pa_chime_b": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 2.68 с",
+  "raw_sec": 10.0,
+  "sec": 2.68
+ },
+ "sfx_pa_drown_a": {
+  "ok": true,
+  "note": "с 0.15 с исходника, 3.00 с",
+  "raw_sec": 10.1,
+  "sec": 3.0
+ },
+ "sfx_pa_drown_b": {
+  "ok": true,
+  "note": "с 0.12 с исходника, 3.00 с",
+  "raw_sec": 10.0,
+  "sec": 3.0
+ },
+ "sfx_paint_scrape_a": {
+  "ok": true,
+  "note": "с 0.02 с исходника, 2.00 с",
+  "raw_sec": 10.0,
+  "sec": 2.0
+ },
+ "sfx_paint_scrape_b": {
+  "ok": true,
+  "note": "с 0.12 с исходника, 2.00 с",
+  "raw_sec": 10.0,
+  "sec": 2.0
+ },
+ "sfx_pen_roll_a": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 0.75 с",
+  "raw_sec": 10.0,
+  "sec": 0.75
+ },
+ "sfx_pen_roll_b": {
+  "ok": true,
+  "note": "с 0.46 с исходника, 0.75 с",
+  "raw_sec": 10.8,
+  "sec": 0.75
+ },
+ "sfx_pen_scratch_a": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 1.48 с",
+  "raw_sec": 10.0,
+  "sec": 1.48
+ },
+ "sfx_pen_scratch_b": {
+  "ok": true,
+  "note": "с 0.21 с исходника, 1.48 с",
+  "raw_sec": 10.0,
+  "sec": 1.48
+ },
+ "sfx_phone_pickup_a": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 0.75 с",
+  "raw_sec": 9.9,
+  "sec": 0.75
+ },
+ "sfx_phone_pickup_b": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 0.75 с",
+  "raw_sec": 10.0,
+  "sec": 0.75
+ },
+ "sfx_phone_ring_a": {
+  "ok": true,
+  "note": "с 0.06 с исходника, 2.00 с",
+  "raw_sec": 10.0,
+  "sec": 2.0
+ },
+ "sfx_phone_ring_b": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 2.00 с",
+  "raw_sec": 10.0,
+  "sec": 2.0
+ },
+ "sfx_plunger_pop_a": {
+  "ok": true,
+  "note": "с 0.05 с исходника, 0.50 с",
+  "raw_sec": 9.6,
+  "sec": 0.5
+ },
+ "sfx_plunger_pop_b": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 0.50 с",
+  "raw_sec": 9.2,
+  "sec": 0.5
+ },
+ "sfx_plunger_press_a": {
+  "ok": true,
+  "note": "с 0.19 с исходника, 0.60 с",
+  "raw_sec": 8.8,
+  "sec": 0.6
+ },
+ "sfx_plunger_press_b": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 0.60 с",
+  "raw_sec": 9.1,
+  "sec": 0.6
+ },
+ "sfx_pump_dry_a": {
+  "ok": true,
+  "note": "с 0.12 с исходника, 3.00 с",
+  "raw_sec": 10.8,
+  "sec": 3.0
+ },
+ "sfx_pump_dry_b": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 3.00 с",
+  "raw_sec": 11.0,
+  "sec": 3.0
+ },
+ "sfx_seal_tear_a": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 0.50 с",
+  "raw_sec": 9.6,
+  "sec": 0.5
+ },
+ "sfx_seal_tear_b": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 0.50 с",
+  "raw_sec": 9.6,
+  "sec": 0.5
+ },
+ "sfx_shock_thud_a": {
+  "ok": true,
+  "note": "с 0.36 с исходника, 6.50 с",
+  "raw_sec": 10.0,
+  "sec": 6.5
+ },
+ "sfx_shock_thud_b": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 6.50 с",
+  "raw_sec": 9.9,
+  "sec": 6.5
+ },
+ "sfx_shower_run_a": {
+  "ok": true,
+  "note": "петля 2.0–12.0 с исходника",
+  "raw_sec": 11.0,
+  "sec": 8.98
+ },
+ "sfx_shower_run_b": {
+  "ok": true,
+  "note": "петля 2.0–12.0 с исходника",
+  "raw_sec": 9.6,
+  "sec": 7.54
+ },
+ "sfx_shower_sigh_a": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 1.00 с",
+  "raw_sec": 9.5,
+  "sec": 1.0
+ },
+ "sfx_shower_sigh_b": {
+  "ok": true,
+  "note": "с 0.29 с исходника, 1.00 с",
+  "raw_sec": 9.3,
+  "sec": 1.0
+ },
+ "sfx_soap_smear_a": {
+  "ok": true,
+  "note": "с 0.07 с исходника, 0.60 с",
+  "raw_sec": 9.8,
+  "sec": 0.6
+ },
+ "sfx_soap_smear_b": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 0.60 с",
+  "raw_sec": 8.8,
+  "sec": 0.6
+ },
+ "sfx_stamp_a": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 0.40 с",
+  "raw_sec": 9.6,
+  "sec": 0.4
+ },
+ "sfx_stamp_b": {
+  "ok": true,
+  "note": "с 0.75 с исходника, 0.40 с",
+  "raw_sec": 9.5,
+  "sec": 0.4
+ },
+ "sfx_stars_fold_a": {
+  "ok": true,
+  "note": "с 0.03 с исходника, 1.12 с",
+  "raw_sec": 9.6,
+  "sec": 1.12
+ },
+ "sfx_stars_fold_b": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 1.12 с",
+  "raw_sec": 9.4,
+  "sec": 1.12
+ },
+ "sfx_suction_glass_a": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 1.20 с",
+  "raw_sec": 10.0,
+  "sec": 1.2
+ },
+ "sfx_suction_glass_b": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 1.20 с",
+  "raw_sec": 10.0,
+  "sec": 1.2
+ },
+ "sfx_switch_a": {
+  "ok": true,
+  "note": "с 0.34 с исходника, 0.40 с",
+  "raw_sec": 9.7,
+  "sec": 0.4
+ },
+ "sfx_switch_b": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 0.40 с",
+  "raw_sec": 9.9,
+  "sec": 0.4
+ },
+ "sfx_tag_fold_a": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 0.80 с",
+  "raw_sec": 9.6,
+  "sec": 0.8
+ },
+ "sfx_tag_fold_b": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 0.80 с",
+  "raw_sec": 10.8,
+  "sec": 0.8
+ },
+ "sfx_token_drop_a": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 0.60 с",
+  "raw_sec": 9.5,
+  "sec": 0.6
+ },
+ "sfx_token_drop_b": {
+  "ok": true,
+  "note": "с 0.88 с исходника, 0.60 с",
+  "raw_sec": 10.0,
+  "sec": 0.6
+ },
+ "sfx_trolley_creak_a": {
+  "ok": true,
+  "note": "с 0.30 с исходника, 1.48 с",
+  "raw_sec": 9.6,
+  "sec": 1.48
+ },
+ "sfx_trolley_creak_b": {
+  "ok": true,
+  "note": "с 0.14 с исходника, 1.48 с",
+  "raw_sec": 9.4,
+  "sec": 1.48
+ },
+ "sfx_trolley_jam_a": {
+  "ok": true,
+  "note": "с 0.45 с исходника, 1.20 с",
+  "raw_sec": 9.2,
+  "sec": 1.2
+ },
+ "sfx_trolley_jam_b": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 1.20 с",
+  "raw_sec": 9.6,
+  "sec": 1.2
+ },
+ "sfx_valve_turn_a": {
+  "ok": true,
+  "note": "с 0.25 с исходника, 3.93 с",
+  "raw_sec": 10.0,
+  "sec": 3.93
+ },
+ "sfx_valve_turn_b": {
+  "ok": true,
+  "note": "с 0.20 с исходника, 3.93 с",
+  "raw_sec": 10.0,
+  "sec": 3.93
+ },
+ "sfx_wet_stamp_a": {
+  "ok": true,
+  "note": "с 0.01 с исходника, 0.40 с",
+  "raw_sec": 9.4,
+  "sec": 0.4
+ },
+ "sfx_wet_stamp_b": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 0.40 с",
+  "raw_sec": 9.2,
+  "sec": 0.4
+ },
+ "sfx_wet_steps_a": {
+  "ok": true,
+  "note": "с 0.14 с исходника, 2.60 с",
+  "raw_sec": 11.1,
+  "sec": 2.6
+ },
+ "sfx_wet_steps_b": {
+  "ok": true,
+  "note": "с 0.27 с исходника, 2.60 с",
+  "raw_sec": 10.0,
+  "sec": 2.6
+ },
+ "sfx_wheel_bump_a": {
+  "ok": true,
+  "note": "с 0.43 с исходника, 1.00 с",
+  "raw_sec": 8.7,
+  "sec": 1.0
+ },
+ "sfx_wheel_bump_b": {
+  "ok": true,
+  "note": "с 0.00 с исходника, 1.00 с",
+  "raw_sec": 8.4,
+  "sec": 1.0
+ },
+ "sting_relic_a": {
+  "ok": true,
+  "note": "/home/user/Hydroshock/work/audio/candidates/s8_suno_v6_1023/final/sting_relic_a.ogg: 3.50 с, -18.0 LUFS, пик -6.2 dBFS",
+  "raw_sec": 9.0,
+  "sec": 3.5
+ },
+ "sting_relic_b": {
+  "ok": true,
+  "note": "/home/user/Hydroshock/work/audio/candidates/s8_suno_v6_1023/final/sting_relic_b.ogg: 3.50 с, -18.0 LUFS, пик -5.2 dBFS",
+  "raw_sec": 8.8,
+  "sec": 3.5
+ },
+ "sting_solved_a": {
+  "ok": true,
+  "note": "/home/user/Hydroshock/work/audio/candidates/s8_suno_v6_1023/final/sting_solved_a.ogg: 3.50 с, -18.0 LUFS, пик -6.7 dBFS",
+  "raw_sec": 8.7,
+  "sec": 3.5
+ },
+ "sting_solved_b": {
+  "ok": true,
+  "note": "/home/user/Hydroshock/work/audio/candidates/s8_suno_v6_1023/final/sting_solved_b.ogg: 3.50 с, -18.0 LUFS, пик -6.3 dBFS",
+  "raw_sec": 9.1,
+  "sec": 3.5
+ },
+ "sting_water_a": {
+  "ok": true,
+  "note": "/home/user/Hydroshock/work/audio/candidates/s8_suno_v6_1023/final/sting_water_a.ogg: 6.81 с, -18.0 LUFS, пик -5.5 dBFS",
+  "raw_sec": 9.2,
+  "sec": 6.81
+ },
+ "sting_water_b": {
+  "ok": true,
+  "note": "/home/user/Hydroshock/work/audio/candidates/s8_suno_v6_1023/final/sting_water_b.ogg: 6.81 с, -18.0 LUFS, пик -6.7 dBFS",
+  "raw_sec": 8.8,
+  "sec": 6.81
+ },
+ "ui_click_a": {
+  "ok": true,
+  "note": "щелчок на 6.16 с исходника, 0.045 с",
+  "raw_sec": 9.4,
+  "sec": 0.04
+ },
+ "ui_click_b": {
+  "ok": true,
+  "note": "щелчок на 4.59 с исходника, 0.045 с",
+  "raw_sec": 9.2,
+  "sec": 0.04
+ },
+ "ui_error_a": {
+  "ok": true,
+  "note": "щелчок на 0.08 с исходника, 0.340 с",
+  "raw_sec": 8.8,
+  "sec": 0.34
+ },
+ "ui_error_b": {
+  "ok": true,
+  "note": "щелчок на 3.50 с исходника, 0.340 с",
+  "raw_sec": 8.6,
+  "sec": 0.34
+ },
+ "ui_paper_a": {
+  "ok": true,
+  "note": "щелчок на 0.09 с исходника, 0.280 с",
+  "raw_sec": 9.2,
+  "sec": 0.28
+ },
+ "ui_paper_b": {
+  "ok": true,
+  "note": "щелчок на 8.63 с исходника, 0.280 с",
+  "raw_sec": 9.6,
+  "sec": 0.28
+ },
+ "ui_pickup_a": {
+  "ok": true,
+  "note": "щелчок на 2.31 с исходника, 0.130 с",
+  "raw_sec": 9.2,
+  "sec": 0.13
+ },
+ "ui_pickup_b": {
+  "ok": true,
+  "note": "щелчок на 4.37 с исходника, 0.130 с",
+  "raw_sec": 8.8,
+  "sec": 0.13
+ },
+ "ui_transition_a": {
+  "ok": true,
+  "note": "щелчок на 0.02 с исходника, 0.350 с",
+  "raw_sec": 6.0,
+  "sec": 0.35
+ },
+ "ui_transition_b": {
+  "ok": true,
+  "note": "щелчок на 0.02 с исходника, 0.350 с",
+  "raw_sec": 8.8,
+  "sec": 0.35
+ },
+ "ui_zoom_in_a": {
+  "ok": true,
+  "note": "щелчок на 0.02 с исходника, 0.180 с",
+  "raw_sec": 8.2,
+  "sec": 0.18
+ },
+ "ui_zoom_in_b": {
+  "ok": true,
+  "note": "щелчок на 0.02 с исходника, 0.180 с",
+  "raw_sec": 3.6,
+  "sec": 0.18
+ },
+ "ui_zoom_out_a": {
+  "ok": true,
+  "note": "щелчок на 0.02 с исходника, 0.180 с",
+  "raw_sec": 3.6,
+  "sec": 0.18
+ },
+ "ui_zoom_out_b": {
+  "ok": true,
+  "note": "щелчок на 0.02 с исходника, 0.180 с",
+  "raw_sec": 5.6,
+  "sec": 0.18
+ }
+}
