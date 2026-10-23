@@ -99,7 +99,31 @@ def section(it):
 <div class="state" data-state="{n}"></div></section>''')
 
 
-parts, toc = [], []
+PICKS = json.loads((HERE / "picks_1023.json").read_text(encoding="utf-8"))["picks"]
+TITLES = {"bgm_title": "титул", "bgm_hotel": "отель", "bgm_below": "пещера Кухтулху", "bgm_deep": "чудовище из глубины",
+          "bgm_resort": "курорт, до гидроудара", "bgm_hotel_tense": "отель после гидроудара", "bgm_epilogue": "финал и эпилог",
+          "sfx_shower_run": "душ в начале игры"}
+SEAMS = [n for n in TITLES if PICKS.get(n) in ("a", "b")]
+
+
+def seam(n):
+    v = PICKS[n]
+    sec = report[f"{n}_{v}"]["sec"]
+    k = 5 if n.startswith("sfx_") else 12
+    sid = f"seam_{n}"
+    return (f'''<section data-slot="{sid}"><h2>Шов петли: {html.escape(TITLES[n])}</h2>
+<div class="moment"><p>Ваш выбор: Suno, версия {"1" if v == "a" else "2"}. В игре она крутится по кругу: петля {sec:.0f} с. Ниже {k} секунд её конца и {k} секунд начала подряд, склейка ровно посередине. Слышен ли шов?</p></div>
+<div class="opts"><div class="opt"><input type="radio" name="{sid}" id="{sid}-ok" value="ok"><label for="{sid}-ok">шов не слышен</label>{player("seam", n)}</div>
+<div class="opt"><input type="radio" name="{sid}" id="{sid}-redo" value="redo"><label for="{sid}-redo">шов слышен — перерезать</label></div></div>
+<label class="note" for="{sid}-note">Замечание (необязательно)</label>
+<textarea id="{sid}-note" data-note="{sid}" placeholder="например: на склейке пропадает бас"></textarea>
+<div class="state" data-state="{sid}"></div></section>''')
+
+
+parts, toc = [f'<div class="group" id="g-seams"><h1>Шаг 2 — швы петель (новое)</h1>'
+              f'<p class="note">Мелодии и душ, где вы выбрали Suno, в игре звучат по кругу. Проверьте склейку каждой.</p>'
+              + "\n".join(seam(n) for n in SEAMS) + "</div>"], [f'<a href="#g-seams">Швы петель ({len(SEAMS)})</a>']
+parts.append('<div class="group"><h1>Шаг 1 — выбор (ваши отметки)</h1></div>')
 for kind, title, about in GROUPS:
     its = [i for i in items if i["kind"] == kind]
     toc.append(f'<a href="#g-{kind}">{title} ({len(its)})</a>')
@@ -117,7 +141,7 @@ function current(slot) {
 }
 function count() {
   const done = SLOTS.filter(s => document.querySelector('input[name="' + s + '"]:checked')).length;
-  document.getElementById('count').textContent = 'Отмечено: ' + done + ' из ' + SLOTS.length;
+  document.getElementById('count').textContent = 'Отмечено: ' + done + ' из ' + SLOTS.length + ' (вместе со швами)';
 }
 document.addEventListener('play', e => {
   document.querySelectorAll('audio').forEach(a => { if (a !== e.target) a.pause(); });
@@ -152,7 +176,7 @@ async function start() {
   }, () => { banner.textContent = 'Связь с хранилищем отметок прервалась. Обновите страницу.'; });
 }
 start();
-</script>""" % json.dumps([i["name"] for i in items])
+</script>""" % json.dumps([f"seam_{n}" for n in SEAMS] + [i["name"] for i in items])
 
 page = f"""<title>Гидроудар: звук на Suno v6</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -164,7 +188,7 @@ page = f"""<title>Гидроудар: звук на Suno v6</title>
 <h1>Весь звук игры на Suno v6</h1>
 <p>Каждый из {len(items)} звуков игры заново сделан флагманской моделью Suno v6 (через AceDataCloud) по тому же английскому заданию, по которому делался принятый вариант. Suno на каждый запрос даёт две версии — обе здесь, рядом с принятым. Доводка и громкость — те же, что у принятых, чтобы сравнивать честно.</p>
 <p>У Suno нет отдельного режима звуковых эффектов: это музыкальная модель. Для эффектов, амбиентов и щелчков к заданию добавлено «только звук, без музыки», а короткий звук вырезан из трека не меньше 10 секунд. Синтез и звуки BJ2 промпта не имели — для них задание написано по описанию из спеки.</p>
-<p>Отметьте у каждого звука: оставить принятый, взять версию Suno или переделать. В игру ничего не уходит без вашего «да».</p>
+<p><b>Шаг 1 сделан</b> 23.10.2026: Suno выбран для 29 звуков — 7 мелодий из 9, стингер реликвии, 5 блипов из 6, все 7 звуков интерфейса и 9 эффектов из 48; амбиенты все остаются прежними. У звука ключа и двери лестницы (sfx_key_door) отметки нет — остаётся принятый. <b>Шаг 2:</b> проверьте швы петель ниже. После этого и вашего «да» выбранное уходит в игру.</p>
 <div id="banner" class="note">Загружаю отметки…</div>
 <p id="count" class="note">Отмечено: 0 из {len(items)}</p>
 <nav class="toc">{"".join(toc)}</nav>

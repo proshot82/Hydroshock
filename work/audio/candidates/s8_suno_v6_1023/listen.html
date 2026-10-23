@@ -64,11 +64,68 @@ nav.toc a{color:var(--deep)}
 <h1>Весь звук игры на Suno v6</h1>
 <p>Каждый из 78 звуков игры заново сделан флагманской моделью Suno v6 (через AceDataCloud) по тому же английскому заданию, по которому делался принятый вариант. Suno на каждый запрос даёт две версии — обе здесь, рядом с принятым. Доводка и громкость — те же, что у принятых, чтобы сравнивать честно.</p>
 <p>У Suno нет отдельного режима звуковых эффектов: это музыкальная модель. Для эффектов, амбиентов и щелчков к заданию добавлено «только звук, без музыки», а короткий звук вырезан из трека не меньше 10 секунд. Синтез и звуки BJ2 промпта не имели — для них задание написано по описанию из спеки.</p>
-<p>Отметьте у каждого звука: оставить принятый, взять версию Suno или переделать. В игру ничего не уходит без вашего «да».</p>
+<p><b>Шаг 1 сделан</b> 23.10.2026: Suno выбран для 29 звуков — 7 мелодий из 9, стингер реликвии, 5 блипов из 6, все 7 звуков интерфейса и 9 эффектов из 48; амбиенты все остаются прежними. У звука ключа и двери лестницы (sfx_key_door) отметки нет — остаётся принятый. <b>Шаг 2:</b> проверьте швы петель ниже. После этого и вашего «да» выбранное уходит в игру.</p>
 <div id="banner" class="note">Загружаю отметки…</div>
 <p id="count" class="note">Отмечено: 0 из 78</p>
-<nav class="toc"><a href="#g-music">Мелодии (9)</a><a href="#g-sting">Стингеры (3)</a><a href="#g-sfx">Эффекты (48)</a><a href="#g-amb">Амбиенты (5)</a><a href="#g-short">Блипы и интерфейс (13)</a></nav>
+<nav class="toc"><a href="#g-seams">Швы петель (8)</a><a href="#g-music">Мелодии (9)</a><a href="#g-sting">Стингеры (3)</a><a href="#g-sfx">Эффекты (48)</a><a href="#g-amb">Амбиенты (5)</a><a href="#g-short">Блипы и интерфейс (13)</a></nav>
 </header>
+<div class="group" id="g-seams"><h1>Шаг 2 — швы петель (новое)</h1><p class="note">Мелодии и душ, где вы выбрали Suno, в игре звучат по кругу. Проверьте склейку каждой.</p><section data-slot="seam_bgm_title"><h2>Шов петли: титул</h2>
+<div class="moment"><p>Ваш выбор: Suno, версия 2. В игре она крутится по кругу: петля 81 с. Ниже 12 секунд её конца и 12 секунд начала подряд, склейка ровно посередине. Слышен ли шов?</p></div>
+<div class="opts"><div class="opt"><input type="radio" name="seam_bgm_title" id="seam_bgm_title-ok" value="ok"><label for="seam_bgm_title-ok">шов не слышен</label><audio controls preload="none" src="listen/seam_bgm_title.mp3"></audio></div>
+<div class="opt"><input type="radio" name="seam_bgm_title" id="seam_bgm_title-redo" value="redo"><label for="seam_bgm_title-redo">шов слышен — перерезать</label></div></div>
+<label class="note" for="seam_bgm_title-note">Замечание (необязательно)</label>
+<textarea id="seam_bgm_title-note" data-note="seam_bgm_title" placeholder="например: на склейке пропадает бас"></textarea>
+<div class="state" data-state="seam_bgm_title"></div></section>
+<section data-slot="seam_bgm_hotel"><h2>Шов петли: отель</h2>
+<div class="moment"><p>Ваш выбор: Suno, версия 2. В игре она крутится по кругу: петля 109 с. Ниже 12 секунд её конца и 12 секунд начала подряд, склейка ровно посередине. Слышен ли шов?</p></div>
+<div class="opts"><div class="opt"><input type="radio" name="seam_bgm_hotel" id="seam_bgm_hotel-ok" value="ok"><label for="seam_bgm_hotel-ok">шов не слышен</label><audio controls preload="none" src="listen/seam_bgm_hotel.mp3"></audio></div>
+<div class="opt"><input type="radio" name="seam_bgm_hotel" id="seam_bgm_hotel-redo" value="redo"><label for="seam_bgm_hotel-redo">шов слышен — перерезать</label></div></div>
+<label class="note" for="seam_bgm_hotel-note">Замечание (необязательно)</label>
+<textarea id="seam_bgm_hotel-note" data-note="seam_bgm_hotel" placeholder="например: на склейке пропадает бас"></textarea>
+<div class="state" data-state="seam_bgm_hotel"></div></section>
+<section data-slot="seam_bgm_below"><h2>Шов петли: пещера Кухтулху</h2>
+<div class="moment"><p>Ваш выбор: Suno, версия 2. В игре она крутится по кругу: петля 102 с. Ниже 12 секунд её конца и 12 секунд начала подряд, склейка ровно посередине. Слышен ли шов?</p></div>
+<div class="opts"><div class="opt"><input type="radio" name="seam_bgm_below" id="seam_bgm_below-ok" value="ok"><label for="seam_bgm_below-ok">шов не слышен</label><audio controls preload="none" src="listen/seam_bgm_below.mp3"></audio></div>
+<div class="opt"><input type="radio" name="seam_bgm_below" id="seam_bgm_below-redo" value="redo"><label for="seam_bgm_below-redo">шов слышен — перерезать</label></div></div>
+<label class="note" for="seam_bgm_below-note">Замечание (необязательно)</label>
+<textarea id="seam_bgm_below-note" data-note="seam_bgm_below" placeholder="например: на склейке пропадает бас"></textarea>
+<div class="state" data-state="seam_bgm_below"></div></section>
+<section data-slot="seam_bgm_deep"><h2>Шов петли: чудовище из глубины</h2>
+<div class="moment"><p>Ваш выбор: Suno, версия 2. В игре она крутится по кругу: петля 81 с. Ниже 12 секунд её конца и 12 секунд начала подряд, склейка ровно посередине. Слышен ли шов?</p></div>
+<div class="opts"><div class="opt"><input type="radio" name="seam_bgm_deep" id="seam_bgm_deep-ok" value="ok"><label for="seam_bgm_deep-ok">шов не слышен</label><audio controls preload="none" src="listen/seam_bgm_deep.mp3"></audio></div>
+<div class="opt"><input type="radio" name="seam_bgm_deep" id="seam_bgm_deep-redo" value="redo"><label for="seam_bgm_deep-redo">шов слышен — перерезать</label></div></div>
+<label class="note" for="seam_bgm_deep-note">Замечание (необязательно)</label>
+<textarea id="seam_bgm_deep-note" data-note="seam_bgm_deep" placeholder="например: на склейке пропадает бас"></textarea>
+<div class="state" data-state="seam_bgm_deep"></div></section>
+<section data-slot="seam_bgm_resort"><h2>Шов петли: курорт, до гидроудара</h2>
+<div class="moment"><p>Ваш выбор: Suno, версия 2. В игре она крутится по кругу: петля 77 с. Ниже 12 секунд её конца и 12 секунд начала подряд, склейка ровно посередине. Слышен ли шов?</p></div>
+<div class="opts"><div class="opt"><input type="radio" name="seam_bgm_resort" id="seam_bgm_resort-ok" value="ok"><label for="seam_bgm_resort-ok">шов не слышен</label><audio controls preload="none" src="listen/seam_bgm_resort.mp3"></audio></div>
+<div class="opt"><input type="radio" name="seam_bgm_resort" id="seam_bgm_resort-redo" value="redo"><label for="seam_bgm_resort-redo">шов слышен — перерезать</label></div></div>
+<label class="note" for="seam_bgm_resort-note">Замечание (необязательно)</label>
+<textarea id="seam_bgm_resort-note" data-note="seam_bgm_resort" placeholder="например: на склейке пропадает бас"></textarea>
+<div class="state" data-state="seam_bgm_resort"></div></section>
+<section data-slot="seam_bgm_hotel_tense"><h2>Шов петли: отель после гидроудара</h2>
+<div class="moment"><p>Ваш выбор: Suno, версия 2. В игре она крутится по кругу: петля 88 с. Ниже 12 секунд её конца и 12 секунд начала подряд, склейка ровно посередине. Слышен ли шов?</p></div>
+<div class="opts"><div class="opt"><input type="radio" name="seam_bgm_hotel_tense" id="seam_bgm_hotel_tense-ok" value="ok"><label for="seam_bgm_hotel_tense-ok">шов не слышен</label><audio controls preload="none" src="listen/seam_bgm_hotel_tense.mp3"></audio></div>
+<div class="opt"><input type="radio" name="seam_bgm_hotel_tense" id="seam_bgm_hotel_tense-redo" value="redo"><label for="seam_bgm_hotel_tense-redo">шов слышен — перерезать</label></div></div>
+<label class="note" for="seam_bgm_hotel_tense-note">Замечание (необязательно)</label>
+<textarea id="seam_bgm_hotel_tense-note" data-note="seam_bgm_hotel_tense" placeholder="например: на склейке пропадает бас"></textarea>
+<div class="state" data-state="seam_bgm_hotel_tense"></div></section>
+<section data-slot="seam_bgm_epilogue"><h2>Шов петли: финал и эпилог</h2>
+<div class="moment"><p>Ваш выбор: Suno, версия 2. В игре она крутится по кругу: петля 112 с. Ниже 12 секунд её конца и 12 секунд начала подряд, склейка ровно посередине. Слышен ли шов?</p></div>
+<div class="opts"><div class="opt"><input type="radio" name="seam_bgm_epilogue" id="seam_bgm_epilogue-ok" value="ok"><label for="seam_bgm_epilogue-ok">шов не слышен</label><audio controls preload="none" src="listen/seam_bgm_epilogue.mp3"></audio></div>
+<div class="opt"><input type="radio" name="seam_bgm_epilogue" id="seam_bgm_epilogue-redo" value="redo"><label for="seam_bgm_epilogue-redo">шов слышен — перерезать</label></div></div>
+<label class="note" for="seam_bgm_epilogue-note">Замечание (необязательно)</label>
+<textarea id="seam_bgm_epilogue-note" data-note="seam_bgm_epilogue" placeholder="например: на склейке пропадает бас"></textarea>
+<div class="state" data-state="seam_bgm_epilogue"></div></section>
+<section data-slot="seam_sfx_shower_run"><h2>Шов петли: душ в начале игры</h2>
+<div class="moment"><p>Ваш выбор: Suno, версия 1. В игре она крутится по кругу: петля 9 с. Ниже 5 секунд её конца и 5 секунд начала подряд, склейка ровно посередине. Слышен ли шов?</p></div>
+<div class="opts"><div class="opt"><input type="radio" name="seam_sfx_shower_run" id="seam_sfx_shower_run-ok" value="ok"><label for="seam_sfx_shower_run-ok">шов не слышен</label><audio controls preload="none" src="listen/seam_sfx_shower_run.mp3"></audio></div>
+<div class="opt"><input type="radio" name="seam_sfx_shower_run" id="seam_sfx_shower_run-redo" value="redo"><label for="seam_sfx_shower_run-redo">шов слышен — перерезать</label></div></div>
+<label class="note" for="seam_sfx_shower_run-note">Замечание (необязательно)</label>
+<textarea id="seam_sfx_shower_run-note" data-note="seam_sfx_shower_run" placeholder="например: на склейке пропадает бас"></textarea>
+<div class="state" data-state="seam_sfx_shower_run"></div></section></div>
+<div class="group"><h1>Шаг 1 — выбор (ваши отметки)</h1></div>
 <div class="group" id="g-music"><h1>Мелодии</h1><p class="note">Петля вырезана тем же инструментом, что у принятых; громкость −18 LUFS у всех.</p><section data-slot="bgm_below"><h2>bgm_below</h2>
 <div class="moment"><p>W5–W6: пещера Кухтулху (§13 п. 15–16) — лукавая медленная хабанера: бас-кларнет, контрафагот, пиццикато, арфа, маримба, стеклянная гармоника, пузырьки; без органа и марша (выбор автора 07.10.2026, v9)</p></div>
 <div class="opts"><div class="opt"><input type="radio" name="bgm_below" id="bgm_below-cur" value="cur"><label for="bgm_below-cur">принятый сейчас — оставить</label><audio controls preload="none" src="listen/bgm_below_cur.mp3"></audio></div><div class="opt"><input type="radio" name="bgm_below" id="bgm_below-a" value="a"><label for="bgm_below-a">Suno v6, версия 1</label><audio controls preload="none" src="listen/bgm_below_a.mp3"></audio></div><div class="opt"><input type="radio" name="bgm_below" id="bgm_below-b" value="b"><label for="bgm_below-b">Suno v6, версия 2</label><audio controls preload="none" src="listen/bgm_below_b.mp3"></audio></div><div class="opt"><input type="radio" name="bgm_below" id="bgm_below-redo" value="redo"><label for="bgm_below-redo">Suno — интересно, но переделать (напишите, что изменить)</label></div></div>
@@ -618,7 +675,7 @@ nav.toc a{color:var(--deep)}
 <footer>Генерация — tools/audio/suno.py (модель chirp-v6, журнал work/suno/log.jsonl), доводка — build.py пакета. Подробности — work/audio/candidates/s8_suno_v6_1023/README.md.</footer>
 </div>
 <script>
-const SLOTS = ["amb_below", "amb_hall", "amb_laundry", "amb_lobby", "amb_room", "bgm_below", "bgm_deep", "bgm_epilogue", "bgm_hotel", "bgm_hotel_tense", "bgm_resort", "bgm_service", "bgm_title", "blip_anc", "blip_guest", "blip_iz", "blip_kuh", "blip_lap", "blip_pa", "mus_hold", "sfx_board_lay", "sfx_bottle_catch", "sfx_building_exhale", "sfx_crowd_part", "sfx_descent", "sfx_door_clicks", "sfx_drawer_click", "sfx_drum_beep", "sfx_drums_turn", "sfx_fin_cascade", "sfx_fin_shower", "sfx_fin_spring", "sfx_foam_swell", "sfx_folder_slap", "sfx_grille_shut", "sfx_key_door", "sfx_knock", "sfx_latch_click", "sfx_lift_down", "sfx_lift_up", "sfx_lobby_hush", "sfx_pa_chime", "sfx_pa_drown", "sfx_paint_scrape", "sfx_pen_roll", "sfx_pen_scratch", "sfx_phone_pickup", "sfx_phone_ring", "sfx_plunger_pop", "sfx_plunger_press", "sfx_pump_dry", "sfx_seal_tear", "sfx_shock_thud", "sfx_shower_run", "sfx_shower_sigh", "sfx_soap_smear", "sfx_stamp", "sfx_stars_fold", "sfx_suction_glass", "sfx_switch", "sfx_tag_fold", "sfx_token_drop", "sfx_trolley_creak", "sfx_trolley_jam", "sfx_valve_turn", "sfx_wet_stamp", "sfx_wet_steps", "sfx_wheel_bump", "sting_relic", "sting_solved", "sting_water", "ui_click", "ui_error", "ui_paper", "ui_pickup", "ui_transition", "ui_zoom_in", "ui_zoom_out"];
+const SLOTS = ["seam_bgm_title", "seam_bgm_hotel", "seam_bgm_below", "seam_bgm_deep", "seam_bgm_resort", "seam_bgm_hotel_tense", "seam_bgm_epilogue", "seam_sfx_shower_run", "amb_below", "amb_hall", "amb_laundry", "amb_lobby", "amb_room", "bgm_below", "bgm_deep", "bgm_epilogue", "bgm_hotel", "bgm_hotel_tense", "bgm_resort", "bgm_service", "bgm_title", "blip_anc", "blip_guest", "blip_iz", "blip_kuh", "blip_lap", "blip_pa", "mus_hold", "sfx_board_lay", "sfx_bottle_catch", "sfx_building_exhale", "sfx_crowd_part", "sfx_descent", "sfx_door_clicks", "sfx_drawer_click", "sfx_drum_beep", "sfx_drums_turn", "sfx_fin_cascade", "sfx_fin_shower", "sfx_fin_spring", "sfx_foam_swell", "sfx_folder_slap", "sfx_grille_shut", "sfx_key_door", "sfx_knock", "sfx_latch_click", "sfx_lift_down", "sfx_lift_up", "sfx_lobby_hush", "sfx_pa_chime", "sfx_pa_drown", "sfx_paint_scrape", "sfx_pen_roll", "sfx_pen_scratch", "sfx_phone_pickup", "sfx_phone_ring", "sfx_plunger_pop", "sfx_plunger_press", "sfx_pump_dry", "sfx_seal_tear", "sfx_shock_thud", "sfx_shower_run", "sfx_shower_sigh", "sfx_soap_smear", "sfx_stamp", "sfx_stars_fold", "sfx_suction_glass", "sfx_switch", "sfx_tag_fold", "sfx_token_drop", "sfx_trolley_creak", "sfx_trolley_jam", "sfx_valve_turn", "sfx_wet_stamp", "sfx_wet_steps", "sfx_wheel_bump", "sting_relic", "sting_solved", "sting_water", "ui_click", "ui_error", "ui_paper", "ui_pickup", "ui_transition", "ui_zoom_in", "ui_zoom_out"];
 const banner = document.getElementById('banner');
 const queue = {};
 function say(slot, text, cls) { const el = document.querySelector('[data-state="' + slot + '"]'); el.textContent = text; el.className = 'state ' + (cls || ''); }
@@ -628,7 +685,7 @@ function current(slot) {
 }
 function count() {
   const done = SLOTS.filter(s => document.querySelector('input[name="' + s + '"]:checked')).length;
-  document.getElementById('count').textContent = 'Отмечено: ' + done + ' из ' + SLOTS.length;
+  document.getElementById('count').textContent = 'Отмечено: ' + done + ' из ' + SLOTS.length + ' (вместе со швами)';
 }
 document.addEventListener('play', e => {
   document.querySelectorAll('audio').forEach(a => { if (a !== e.target) a.pause(); });
