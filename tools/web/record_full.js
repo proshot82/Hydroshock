@@ -13,7 +13,11 @@ const fs = require("fs");
 const path = require("path");
 
 const URL = process.argv[2] || "http://127.0.0.1:8766/";
-const PLAN = JSON.parse(fs.readFileSync(process.argv[3] || "work/fullrun/plan.json", "utf8")).plan;
+const PLANFILE = JSON.parse(fs.readFileSync(process.argv[3] || "work/fullrun/plan.json", "utf8"));
+const PLAN = PLANFILE.plan;
+// Дополнение (PLANFILE.supplement): весь путь до метки {rec_start} — быстро и без записи, с метки —
+// запись в файл с её именем, на метке {rec_stop} — конец.
+const SUPP = !!PLANFILE.supplement;
 const OUT = process.argv[4] || "work/fullrun";
 const ONLY = process.argv[5] ? new Set(process.argv[5].split(",").map(Number)) : null;
 fs.mkdirSync(OUT, { recursive: true });
@@ -28,9 +32,10 @@ const report = { mismatches: [], shown: [], errors: [] };
   const browser = await chromium.launch({ args: ["--autoplay-policy=no-user-gesture-required"] });
   const ctx = await browser.newContext({ viewport: { width: 1920, height: 1080 } });
   const page = await ctx.newPage();
-  if (process.env.FAST) {   // проверка плана без записи пауз: все ожидания — не дольше 20 мс
+  let fast = !!process.env.FAST || SUPP;   // без пауз: все ожидания — не дольше 20 мс
+  {
     const wt = page.waitForTimeout.bind(page);
-    page.waitForTimeout = (t) => wt(Math.min(t, 20));
+    page.waitForTimeout = (t) => wt(fast ? Math.min(t, 20) : t);
   }
   let outFd = null;
   await page.exposeFunction("__recChunk", (b64) => { if (outFd !== null) fs.writeSync(outFd, Buffer.from(b64, "base64")); });
@@ -242,9 +247,11 @@ const report = { mismatches: [], shown: [], errors: [] };
     if (ONLY && !ONLY.has(act.act)) continue;
     console.log(`=== акт ${act.act}`);
     curAct = act.act;
-    startFile(`act${act.act}.webm`);
-    await page.evaluate(() => window.__recStart(30, 6000000));
-    recording = true;
+    if (!SUPP) {
+      startFile(`act${act.act}.webm`);
+      await page.evaluate(() => window.__recStart(30, 6000000));
+      recording = true;
+    }
     if (act.act === PLAN[0].act) {
       await page.waitForTimeout(1500);
       const tb = await page.evaluate(() => window.__bj3.buttons());
@@ -256,6 +263,24 @@ const report = { mismatches: [], shown: [], errors: [] };
       k += 1;
       const where = `акт ${act.act}, ход ${k}`;
       try {
+        if (mv.rec_start) {
+          fast = !!process.env.FAST;
+          await page.waitForTimeout(500);
+          startFile(mv.rec_start);
+          await page.evaluate(() => window.__recStart(30, 6000000));
+          recording = true;
+          await page.waitForTimeout(1500);
+          continue;
+        }
+        if (mv.rec_stop) {
+          await page.waitForTimeout(2000);
+          await stopFile();
+          recording = false;
+          fs.writeFileSync(path.join(OUT, "record_log.json"), JSON.stringify(report, null, 1));
+          console.log(`готово: расхождений ${report.mismatches.length}, ошибок ${report.errors.length}`);
+          await browser.close();
+          return;
+        }
         if (mv.branch) {
           const snap = await saveSnapshot();
           await caption(mv.caption || "Другой порядок действий: то, чего нет на основном пути");
@@ -313,7 +338,7 @@ const report = { mismatches: [], shown: [], errors: [] };
     // конец акта: дождаться следующего акта (или карточки «Конец»)
     await page.waitForTimeout(1500);
     if (act.act !== PLAN[PLAN.length - 1].act) {
-      await stopFile();
+      if (recording) await stopFile();
       recording = false;
       await page.waitForFunction((n) => { const s = window.__bj3.game(); return s && s.act === n; }, act.act + 1, { timeout: 120000 });
     } else {
