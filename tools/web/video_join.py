@@ -35,7 +35,7 @@ def main(argv=None):
     for n in acts:
         src, dst = d / f"act{n}.webm", d / f"act{n}.mp4"
         subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(src), "-vf", "fps=30", "-c:v", "libx264",
-                        "-preset", "medium", "-crf", a.crf, "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "160k",
+                        "-preset", "fast", "-crf", a.crf, "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "160k",
                         "-ar", "48000", "-movflags", "+faststart", str(dst)], check=True)
         parts.append((n, dst, dur(dst)))
         print(f"акт {n}: {dst.name}, {parts[-1][2] / 60:.1f} мин, {dst.stat().st_size / 1e6:.0f} МБ", flush=True)
