@@ -307,7 +307,12 @@ def plan_act(act, carry, shown_all, pre_covered=()):
         s0["flags"] -= set(e["remove"])
         s0["h"]["lock"] = False
         tgt = set(e["want"]) if e["want"] else (want - covered)
-        bs, bc = greedy(sim, s0, tgt, finish=False, cap=BRANCH_NODES, flat=True, allow_end=True)
+        bs, bc = greedy(sim, s0, tgt, finish=False, cap=BRANCH_NODES, flat=True, allow_end=e["at"] == "last")
+        # советы по темам, которые открывает правка (по пути и ещё в конце ответвления)
+        bs, bc = with_hints(sim, s0, bs, want, covered | (bc - tgt))
+        if bs and not bs[-1][1]["end"]:
+            hs, hc = hint_branch(sim, bs[-1][1], want - covered - bc, BRANCH_NODES)
+            bs, bc = bs + hs, bc | hc
         gain = bc & want - covered
         if not gain:
             print(f"  правка {e['caption']}: ничего нового", flush=True)
@@ -349,7 +354,7 @@ def plan_act(act, carry, shown_all, pre_covered=()):
         moves.append(m)
     miss = sorted(want - covered)
     nb = sum(len(v) for v in branches.values())
-    print(f"акт {act}: ходов {len(steps)}, ответвлений {nb} ({sum(len(b) for v in branches.values() for b in v)} ходов); "
+    print(f"акт {act}: ходов {len(steps)}, ответвлений {nb} ({sum(len(b["branch"]) for v in branches.values() for b in v)} ходов); "
           f"показано {len(covered & want)} из {len(want)}; не показано {len(miss)}: {', '.join(miss)}", flush=True)
     end = states[-1]
     return {"act": act, "moves": moves}, {"act": act, "missed": miss}, covered, \
