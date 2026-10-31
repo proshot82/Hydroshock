@@ -183,25 +183,40 @@ const report = { mismatches: [], shown: [], errors: [] };
       return o;
     });
   }
-  async function restoreSnapshot(snap) {
-    // «Меню» → «Сохранить и выйти» → на титуле вернуть снимок → «Продолжить»
-    await clickAt([1250 + 67, 12 + 26], "left", 500);   // HUD.menu
-    await page.waitForTimeout(700);
+  // Выйти на титул: из игры — «Меню» → «Сохранить и выйти»; после концовки — «На титул».
+  async function toTitle() {
     let s = await g();
-    await clickAt([960, 330 + 4 * 84 + 35], "left", 500);   // pauseRects: quit — пятый пункт
+    if (s && s.ended) await clickAt(s.hud.end, "left", 1500);
+    else {
+      await clickAt([1250 + 67, 12 + 26], "left", 500);   // HUD.menu
+      await page.waitForTimeout(700);
+      await clickAt([960, 330 + 4 * 84 + 35], "left", 500);   // pauseRects: quit — пятый пункт
+    }
     await page.waitForFunction(() => window.__bj3.scene() === "title");
-    await page.evaluate((snap) => {
+  }
+  // На титуле положить сохранение (снимок, при нужде со снятыми флагами) и «Продолжить».
+  async function continueFrom(snap, remove) {
+    await page.evaluate(([snap, remove]) => {
       for (const k of Object.keys(localStorage)) if (k.startsWith("bj3.save")) localStorage.removeItem(k);
-      for (const [k, v] of Object.entries(snap)) localStorage.setItem(k, v);
-    }, snap);
+      for (const [k, v] of Object.entries(snap)) {
+        if (remove && remove.length && v) {
+          const o = JSON.parse(v);
+          if (o && o.flags) o.flags = o.flags.filter((f) => !remove.includes(f));
+          localStorage.setItem(k, JSON.stringify(o));
+        } else localStorage.setItem(k, v);
+      }
+    }, [snap, remove || null]);
     await page.waitForTimeout(500);
     const tb = await page.evaluate(() => window.__bj3.buttons());
     const cont = tb.find((b) => b.id === "cont") || tb[1];
     await clickAt([cont.x + 200, cont.y + 36], "left", 600);
     await page.waitForFunction(() => window.__bj3.scene() === "game" && window.__bj3.game() && !window.__bj3.game().busy);
     await page.waitForTimeout(800);
-    s = await g();
-    return s;
+    return g();
+  }
+  async function restoreSnapshot(snap) {
+    await toTitle();
+    return continueFrom(snap, null);
   }
 
   function startFile(name) {
@@ -243,11 +258,36 @@ const report = { mismatches: [], shown: [], errors: [] };
       try {
         if (mv.branch) {
           const snap = await saveSnapshot();
-          await caption("Другой порядок действий: то, чего нет на основном пути");
-          await page.waitForTimeout(2500);
+          await caption(mv.caption || "Другой порядок действий: то, чего нет на основном пути");
+          await page.waitForTimeout(3000);
+          if (mv.edit) {
+            await toTitle();
+            await continueFrom(snap, mv.edit.remove);
+          }
           await caption(null);
           let j = 0;
-          for (const bm of mv.branch) { j += 1; await runMove(bm, `${where}, ответвление ${j}`); }
+          for (const bm of mv.branch) {
+            j += 1;
+            const lastCross = mv.cross && j === mv.branch.length;
+            if (lastCross) {
+              // ход кончает акт: следом — вступление следующего акта (у этого пути своё)
+              const before = (await g()).log.length;
+              await doMove(bm);
+              let s2 = await settle();
+              await page.waitForFunction((n) => { const x = window.__bj3.game(); return x && (x.act !== n || x.ended); }, act.act, { timeout: 120000 });
+              s2 = await g();
+              if (!s2.ended) {
+                const keep = curAct;
+                curAct = s2.act;
+                s2 = await settle();
+                curAct = keep;
+              }
+              report.shown.push(...s2.log.slice(before));
+              continue;
+            }
+            await runMove(bm, `${where}, ответвление ${j}`);
+          }
+          await page.waitForTimeout(1500);
           await caption("Назад к сохранению — дальше по основному пути");
           await restoreSnapshot(snap);
           await page.waitForTimeout(1500);

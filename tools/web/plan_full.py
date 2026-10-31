@@ -163,12 +163,14 @@ def search(sim, st0, goal, cap=MAX_NODES, flat=False, hints=False):
     return None
 
 
-def greedy(sim, st, want, finish, cap=MAX_NODES, flat=False):
-    """Ближайший новый слот, пока такие есть; finish — затем путь к концу акта. [(подпись, состояние)]."""
+def greedy(sim, st, want, finish, cap=MAX_NODES, flat=False, allow_end=False):
+    """Ближайший новый слот, пока такие есть; finish — затем путь к концу акта; allow_end — новый
+    слот может прозвучать и на ходе, кончающем акт (тогда путь на нём и кончается)."""
     steps, covered = [], set()
-    while True:
+    while not st["end"]:
         rest = want - covered
-        path = search(sim, st, lambda s2: not s2["end"] and any(x in rest for x in s2["log"]), cap=cap, flat=flat) if rest else None
+        path = search(sim, st, lambda s2: (allow_end or not s2["end"]) and any(x in rest for x in s2["log"]),
+                      cap=cap, flat=flat) if rest else None
         last = False
         if path is None:
             if not finish:
@@ -239,11 +241,34 @@ def wanted(data):
     return s
 
 
+# Ответвления со снятыми флагами прошлых актов (решение «как у игрока, который там поступил иначе»):
+# снимок сохранения, в нём флаги сняты, «Продолжить», ответвление, назад к снимку. at: 0 — сразу после
+# начала акта, "last" — перед последним ходом акта (концовки).
+EDITS = {
+    3: [
+        {"at": 0, "remove": ["meter_reading_seen"], "want": None,
+         "caption": "Если во втором акте не снять показания счётчика"},
+        {"at": 0, "remove": ["board_restored"], "want": None,
+         "caption": "Если во втором акте не восстановить табличку"},
+    ],
+    4: [
+        {"at": 0, "remove": ["relic_r1", "relic_r2", "relic_r3"], "want": None,
+         "caption": "Если реликвии не найдены раньше — их можно взять и сейчас"},
+        {"at": "last", "remove": ["relic_r1", "relic_r2", "relic_r3"], "want": ["EPI.0"],
+         "caption": "Концовка без реликвий"},
+        {"at": "last", "remove": ["relic_r2", "relic_r3"], "want": ["EPI.1"],
+         "caption": "Концовка с одной реликвией"},
+        {"at": "last", "remove": ["relic_r3"], "want": ["EPI.2"],
+         "caption": "Концовка с двумя реликвиями"},
+    ],
+}
+
+
 def as_moves(steps):
     return [{"move": label, "slots": list(st2["log"])} for label, st2 in steps]
 
 
-def plan_act(act, carry, shown_all):
+def plan_act(act, carry, shown_all, pre_covered=()):
     data = G.build(act)
     sim = Plan(data)
     st = {"flags": set(data["start_flags"]), "pos": "room" if act == 1 else None, "n": {}, "c": {},
@@ -263,8 +288,32 @@ def plan_act(act, carry, shown_all):
     st0 = dict(st, log=[])
     steps, covered = greedy(sim, st0, {x for x in want if not x.startswith("HINT.")}, finish=True)
     steps, covered = with_hints(sim, st0, steps, want, covered | set(start_slots))
+    covered |= set(pre_covered) & want
     states = [st0] + [s2 for _, s2 in steps]
     branches = {}
+
+    def add_branch(i, bs, **extra):
+        b = {"branch": as_moves(bs), **extra}
+        if bs and bs[-1][1]["end"]:
+            b["cross"] = True
+            cross.append((b, bs[-1][1]))
+        branches.setdefault(i, []).append(b)
+
+    cross = []   # ответвления, кончающие акт: вступление следующего акта у них своё
+    for e in EDITS.get(act, []):
+        i = 0 if e["at"] == 0 else len(steps) - 1
+        s0 = sim.copy(states[i])
+        s0["log"] = []
+        s0["flags"] -= set(e["remove"])
+        s0["h"]["lock"] = False
+        tgt = set(e["want"]) if e["want"] else (want - covered)
+        bs, bc = greedy(sim, s0, tgt, finish=False, cap=BRANCH_NODES, flat=True, allow_end=True)
+        gain = bc & want - covered
+        if not gain:
+            print(f"  правка {e['caption']}: ничего нового", flush=True)
+            continue
+        add_branch(i, bs, edit={"remove": e["remove"]}, caption=e["caption"])
+        covered |= bc
     # точки ответвления — перед шагами, двигающими прохождение (и начало): после такого шага
     # что-то может стать недостижимым; пробуем с самой поздней (ответвление короче)
     points = [0] + [i for i in range(1, len(states) - 1) if (states[i]["flags"] ^ states[i + 1]["flags"]) & sim.prog_flags]
@@ -279,7 +328,7 @@ def plan_act(act, carry, shown_all):
             s0 = states[i]
             cands = []
             if plain:
-                cands.append(greedy(sim, s0, plain, finish=False, cap=BRANCH_NODES, flat=True))
+                cands.append(greedy(sim, s0, plain, finish=False, cap=BRANCH_NODES, flat=True, allow_end=True))
             if len(plain) < len(miss):
                 cands.append(hint_branch(sim, s0, miss, BRANCH_NODES))
             for bs, bc in cands:
@@ -291,12 +340,12 @@ def plan_act(act, carry, shown_all):
         if best is None:
             break
         gain, i, bs, bc = best
-        branches.setdefault(i, []).append(as_moves(bs))
+        add_branch(i, bs)
         covered |= bc
     moves = [{"move": "начало акта", "slots": start_slots}]
     for i, m in enumerate(as_moves(steps)):
         for b in branches.get(i, []):
-            moves.append({"branch": b})
+            moves.append(b)
         moves.append(m)
     miss = sorted(want - covered)
     nb = sum(len(v) for v in branches.values())
@@ -304,7 +353,19 @@ def plan_act(act, carry, shown_all):
           f"показано {len(covered & want)} из {len(want)}; не показано {len(miss)}: {', '.join(miss)}", flush=True)
     end = states[-1]
     return {"act": act, "moves": moves}, {"act": act, "missed": miss}, covered, \
-        (set(end["flags"]), dict(end["n"]), dict(end["c"]), end["h"]["n"])
+        (set(end["flags"]), dict(end["n"]), dict(end["c"]), end["h"]["n"]), \
+        [(b, (set(e2["flags"]), dict(e2["n"]), dict(e2["c"]), e2["h"]["n"])) for b, e2 in cross]
+
+
+def open_slots(act, carry):
+    """Какие слоты прозвучат во вступлении акта при таком наследстве (для ответвлений через конец акта)."""
+    data = G.build(act)
+    sim = Plan(data)
+    st = {"flags": set(data["start_flags"]) | carry[0], "pos": None, "n": dict(carry[1]), "c": dict(carry[2]),
+          "view": None, "menu": None, "end": False, "act": act, "log": [], "h": {"n": carry[3], "lock": False, "level": {}}}
+    if "open" in data["scenes"]:
+        sim.run_scene(st, "open")
+    return list(st["log"])
 
 
 def main(argv=None):
@@ -315,8 +376,15 @@ def main(argv=None):
     plan, report = [], []
     carry = None
     shown_all = set()
+    pending = []   # ответвления прошлого акта через его конец: [(ответвление, наследство)]
     for act in map(int, a.acts.split(",")):
-        p, r, covered, carry = plan_act(act, carry, shown_all)
+        pre = set()
+        for b, ca in pending:
+            if act > 4:
+                continue
+            b["next_open"] = open_slots(act, ca)
+            pre |= set(b["next_open"])
+        p, r, covered, carry, pending = plan_act(act, carry, shown_all, pre)
         shown_all |= covered
         plan.append(p)
         report.append(r)
