@@ -46,7 +46,10 @@ NEW_RULES = ("английское слово", "латинская буква",
              # версии до этой даты их не содержат по определению
              "в документе нет «показан»", "в документе нет «40 712»", "в документе нет «за истекшій періодъ»",
              "в документе нет «табличку возстановить»", "нет «40 712» в реплике", "нет «за истекший период» в реплике",
-             "нет «сходятся» в реплике")
+             "нет «сходятся» в реплике",
+             # решения автора 02.11.2026: имя «Кухтулху» — только от неё самой в Акте IV,
+             # портрет-щупальце, пока герой в тележке; версии до этой даты их не знают
+             "раньше времени — имя «Кухтулху»", "портрет-щупальце", "Кухтулху не представляется")
 
 
 def before_rules(items):
@@ -363,13 +366,13 @@ class Act3Test(unittest.TestCase):
 
     def test_name_before_bill(self):
         msg = self.spoil("Вернулась. С почтой.", "Вернулась. С почтой от Кухтулху.")
-        self.assertIn("только после счёта", msg)
+        self.assertIn("только от неё самой в Акте IV", msg)
 
-    def test_name_allowed_after_bill(self):
-        errs, _, _ = run_check3(self.base.replace(
-            "Людей не впускают. Обоз — впускают.",
-            "Людей Кухтулху не впускает. Обоз — впускает.", 1))
-        self.assertEqual(before_rules(errs), [], messages(errs))
+    def test_name_banned_after_bill_too(self):
+        # решение автора 02.11.2026: и после счёта имя в Акте III не звучит
+        msg = self.spoil("Людей не впускают. Обоз — впускают.",
+                         "Людей Кухтулху не впускает. Обоз — впускает.")
+        self.assertIn("только от неё самой в Акте IV", msg)
 
     def test_isolde_first_person_before_confession(self):
         msg = self.spoil("iz | iz_formal | CHAR | Печать ставится на документы отеля.",
@@ -394,9 +397,10 @@ class Act3Test(unittest.TestCase):
         msg = self.spoil("М.П. плательщика ________", "Плательщик ________")
         self.assertIn("м.п. плательщика", msg)
 
-    def test_report_needs_name(self):
-        msg = self.spoil("Старшему по воде Кухтулху. Это Изольда", "Старшему по воде. Это Изольда")
-        self.assertIn("кухтулху", msg)
+    def test_report_without_name(self):
+        # решение автора 02.11.2026: Изольда докладывает по должности, без имени
+        msg = self.spoil("Старшему по воде Кухтулху. Это Изольда", "Это Изольда")
+        self.assertIn("старшему по воде", msg)
 
     def test_ride_needs_staff(self):
         msg = self.spoil("тот, по словам Изольды, обслуживающий персонал.",
@@ -553,6 +557,48 @@ class Act4Test(unittest.TestCase):
         errs3, _, _ = run_check3(text3)
         self.assertIn("«щупальца»", messages(errs3))
 
+
+
+class KuhIntroTest(unittest.TestCase):
+    """Решения автора 02.11.2026 — на действующем итоге Акта IV: пока герой в тележке, у неё
+    портрет-щупальце и нет имени; имя она называет сама в SEQ.come_out."""
+
+    FINAL4 = ROOT / "texts" / "act4" / "ACT4_TEXTS_FINAL.md"
+
+    def run4(self, text):
+        with tempfile.TemporaryDirectory() as d:
+            p = Path(d) / "тексты акта 4.md"
+            p.write_text(text, encoding="utf-8")
+            texts, fmt = ct.parse_texts(p)
+            return ct.check(ct.parse_brief(BRIEF4), texts, fmt, act=4)
+
+    def spoil(self, old, new):
+        base = self.FINAL4.read_text(encoding="utf-8")
+        self.assertIn(old, base)
+        errs, _, _ = self.run4(base.replace(old, new, 1))
+        return messages(errs)
+
+    def test_final_clean(self):
+        errs, warns, _ = self.run4(self.FINAL4.read_text(encoding="utf-8"))
+        self.assertEqual(errs, [], messages(errs))
+
+    def test_tentacle_while_in_trolley(self):
+        msg = self.spoil("kuh | kuh_tentacle | PLOT,CHAR | Долг профилактория",
+                         "kuh | kuh_formal | PLOT,CHAR | Долг профилактория")
+        self.assertIn("портрет-щупальце", msg)
+
+    def test_no_tentacle_after_coming_out(self):
+        msg = self.spoil("kuh | kuh_formal | CHAR,CLUE | Голый здесь норма",
+                         "kuh | kuh_tentacle | CHAR,CLUE | Голый здесь норма")
+        self.assertIn("портрет-щупальце", msg)
+
+    def test_no_name_while_in_trolley(self):
+        msg = self.spoil("Доклад есть. Докладчика нет. Жду.", "Доклад есть. Докладчика нет. Кухтулху ждёт.")
+        self.assertIn("раньше времени — имя «Кухтулху»", msg)
+
+    def test_she_introduces_herself(self):
+        msg = self.spoil("Кухтулху. Старший по воде водолечебницы «Каскадъ».", "Старший по воде водолечебницы «Каскадъ».")
+        self.assertIn("Кухтулху не представляется", msg)
 
 class Act4FinalTest(unittest.TestCase):
     def test_final_passes_brief(self):

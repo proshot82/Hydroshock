@@ -104,7 +104,7 @@
 | ID спикера | Плашка | Портрет | Допустимые эмоции |
 |---|---|---|---|
 | `lap` | ЛАПИДУС | мыльная голова; после пуска — чистый | `lap_soap_neutral`, `lap_soap_tired`, `lap_soap_worried`, `lap_soap_ashamed`, `lap_soap_angry`, `lap_soap_smug`, `lap_soap_inspired`, `lap_soap_panic`, `lap_soap_triumphant`; новая в Акте IV: `lap_clean` — только в `SEQ.finale` и эпилогах, в эпилогах — только она |
-| `kuh` | КУХТУЛХУ | да, новый | `kuh_formal` (глаза в бумаги), `kuh_displeased`, `kuh_dismissive`, `kuh_ancient` (дореформенный регистр в самой реплике), `kuh_nostalgic`, `kuh_satisfied`, `kuh_looks` (смотрит прямо на игрока; впервые — в `SEQ.come_out`, раньше нельзя) |
+| `kuh` | КУХТУЛХУ | да, новый | `kuh_tentacle` (щупальце в нарукавнике — пока герой в тележке, её не видно; плашка до её реплики с именем — «СТАРШИЙ ПО ВОДЕ»; решение автора 02.11.2026), `kuh_formal` (глаза в бумаги), `kuh_displeased`, `kuh_dismissive`, `kuh_ancient` (дореформенный регистр в самой реплике), `kuh_nostalgic`, `kuh_satisfied`, `kuh_looks` (смотрит прямо на игрока; впервые — в `SEQ.come_out`, раньше нельзя) |
 | `anc` | ПРЕДОК | да, своя рамка | `anc_calm`, `anc_stern`, `anc_proud`, `anc_smug` |
 | `pa` | ГРОМКАЯ СВЯЗЬ | нет | `none` |
 | `cap` | — (титр без плашки) | нет | `none` |

@@ -19,6 +19,7 @@ fs.mkdirSync(OUT, { recursive: true });
 
 const fails = [];
 let shot = 0;
+const kuhLines = [];   // реплики Кухтулху: плашка и портрет (решение автора 02.11.2026)
 function check(ok, msg) {
   console.log(`${ok ? "OK  " : "FAIL"} ${msg}`);
   if (!ok) fails.push(msg);
@@ -60,6 +61,7 @@ function check(ok, msg) {
     for (let i = 0; i < limit; i++) {
       const s = await g();
       if (s.ended) return s;
+      if (s.dialog && s.dialog.s === "kuh") kuhLines.push({ t: s.dialog.t, plate: s.dialog.plate, portrait: s.dialog.portrait });
       if (s.dialog || s.reader) { await clickAt([960, 900]); continue; }
       if (!s.busy) { if (!s.choice && !s.menuItems) await zonesReachable(); return s; }
       await page.waitForTimeout(40);
@@ -658,6 +660,14 @@ function check(ok, msg) {
   s = await verb("skirt", "вылезти");
   check(has(s, "lap_out") && s.view === "W5" && lastSlot(s) === "SEQ.come_out", "вылез и встал перед тележкой: стол приёма в полный рост (E02)");
   await snap("a4_w5");
+  // решение автора 02.11.2026: пока герой в тележке — щупальце и «СТАРШИЙ ПО ВОДЕ»; имя — от неё самой
+  const iIntro = kuhLines.findIndex((l) => /Кухтулху/.test(l.t));
+  check(iIntro > 0, "Кухтулху представляется сама при выходе из тележки (SEQ.come_out)");
+  check(kuhLines.slice(0, iIntro).every((l) => l.plate === "СТАРШИЙ ПО ВОДЕ"), "до знакомства плашка — «СТАРШИЙ ПО ВОДЕ»");
+  check(kuhLines.slice(iIntro).every((l) => l.plate === "КУХТУЛХУ"), "с её реплики с именем плашка — «КУХТУЛХУ»");
+  const iLook = kuhLines.findIndex((l) => l.portrait === "portraits/port_kuh_looks");
+  check(iLook > 0 && kuhLines.slice(0, iLook).every((l) => l.portrait === "portraits/port_kuh_tentacle"),
+    "пока герой в тележке — на портрете щупальце; целиком — с первого взгляда (kuh_looks)");
   s = await go("door");
   check(lastSlot(s) === "W5.door.early" && !has(s, "in_office"), "контора заперта до доклада (W5.door.early)");
   s = await look("sign");

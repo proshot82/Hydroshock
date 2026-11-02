@@ -16,6 +16,7 @@ export class State {
     this.c = {};          // счётчики probe, call
     this.view = null;
     this.docs = [];       // прочитанные документы по порядку
+    this.met = [];        // кто уже представился (плашка с именем, а не с должностью)
     this.hint = { level: {}, lock: false, n: 0 };
     this.ended = false;   // акт закончен (заставка конца)
   }
@@ -28,7 +29,7 @@ export class State {
     return {
       // экранные флаги `scr_*` (шторка, каскад) — состояние экрана, в сейв не идут (GDD §12, Р7)
       version: SAVE_VERSION, act: this.act, flags: [...this.flags].filter((f) => !f.startsWith("scr_")).sort(), pos: this.pos,
-      n: this.n, c: this.c, view: this.view, docs: this.docs, hint: this.hint, ended: this.ended,
+      n: this.n, c: this.c, view: this.view, docs: this.docs, met: this.met, hint: this.hint, ended: this.ended,
     };
   }
 
@@ -42,6 +43,7 @@ export class State {
     s.c = typeof o.c === "object" && o.c ? { ...o.c } : {};
     s.view = typeof o.view === "string" ? o.view : null;
     s.docs = Array.isArray(o.docs) ? o.docs.filter((d) => typeof d === "string") : [];
+    s.met = Array.isArray(o.met) ? o.met.filter((d) => typeof d === "string") : [];
     s.hint = o.hint && typeof o.hint === "object"
       ? { level: { ...(o.hint.level || {}) }, lock: !!o.hint.lock, n: o.hint.n | 0 }
       : { level: {}, lock: false, n: 0 };

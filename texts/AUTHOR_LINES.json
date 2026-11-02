@@ -175,6 +175,48 @@
    "speaker": "lap",
    "kind": "verbatim",
    "text": "Три бланка заявок… Учкудууук… три заявки… и зачем только брал я с собой мои новые плаавки…"
+  },
+  {
+   "act": "I",
+   "slot": "OPEN.3_shock",
+   "speaker": "cap",
+   "kind": "part",
+   "text": "Где-то в подгнивших недрах отеля что-то громыхает."
+  },
+  {
+   "act": "I",
+   "slot": "PROBE.cistern",
+   "speaker": "lap",
+   "kind": "verbatim",
+   "text": "Почему мне кажется, что кто-то мной управляет и заставляет окунать голову в бачок? Где деньги, Лебовски? Ой, то есть Лапидус."
+  },
+  {
+   "act": "I",
+   "slot": "Z03.cloche.use",
+   "speaker": "lap",
+   "kind": "verbatim",
+   "text": "Этот колпак слишком мал для Лапидуса!"
+  },
+  {
+   "act": "I",
+   "slot": "HINT.plunger.1",
+   "speaker": "anc",
+   "kind": "part",
+   "text": "Вражеская стрела скрыла его окончание."
+  },
+  {
+   "act": "I",
+   "slot": "HINT.plunger.2",
+   "speaker": "anc",
+   "kind": "verbatim",
+   "text": "Пусти ветер под вантуз, потомок."
+  },
+  {
+   "act": "III",
+   "slot": "HINT.payer.1",
+   "speaker": "anc",
+   "kind": "part",
+   "text": "Читай между строк."
   }
  ]
 }

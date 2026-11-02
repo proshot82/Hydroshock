@@ -36,7 +36,10 @@ EMOTIONS = {
     "anc": {"anc_calm", "anc_stern", "anc_proud", "anc_smug"},
     # Кухтулху — только Акт IV (ТЗ Акта IV §5); в Актах I–III ТЗ не даёт ей ни одного слота
     "kuh": {"kuh_formal", "kuh_displeased", "kuh_dismissive", "kuh_ancient",
-            "kuh_nostalgic", "kuh_satisfied", "kuh_looks"},
+            "kuh_nostalgic", "kuh_satisfied", "kuh_looks",
+            # решение автора 02.11.2026: пока герой в тележке и видит только щупальца,
+            # на портрете тоже только щупальце в нарукавнике
+            "kuh_tentacle"},
 }
 # Акт III: срыв-признание Изольды и её первый взгляд на героя (ТЗ Акта III §5).
 # Акт IV: чистый портрет Лапидуса после пуска (ТЗ Акта IV §5).
@@ -87,7 +90,8 @@ BEFORE_ACT4 = [
     (r"ктулх", "раньше времени: «Ктулху»"),
     (r"щупальц", "раньше времени: «щупальца»"),
 ]
-# Имя «Кухтулху» и «задолженность» открываются в Акте III (счёт P12).
+# «Задолженность» открывается в Акте III (счёт P12). Имя «Кухтулху» — решение автора 02.11.2026:
+# не звучит, пока игрок её не увидел; представляется она сама в Акте IV (SEQ.come_out).
 BEFORE_BILL = [
     (r"кухтулх", "раньше времени: «Кухтулху»"),
     (r"задолженност", "раньше времени: «задолженность»"),
@@ -124,14 +128,6 @@ ACT2_READINGS_SLOT = "END.act2"
 
 # Акт III (ТЗ Акта III §7.3): имя — только после счёта; «я» у Изольды — только
 # после признания; «Я держала стремянку» — только её реплика в признании.
-ACT3_NAME_SLOTS = {"DOC.bill", "Z11.bill.read", "TALK.iz.confess", "SEQ.iz.payment",
-                   "DOC.invoice", "SEQ.load", "SEQ.report", "SEQ.ride", "SEQ.descent",
-                   "END.act3", "HINT.done",
-                   # после счёта (план правок 09.10.2026): табличка, накладная, частичная приёмка
-                   "Z11.bill.plate.todo", "Z11.bill.plate.done", "TALK.iz.invoice",
-                   "TALK.iz.invoice.noreading", "TALK.iz.invoice.noplate", "SEQ.send.alone",
-                   "Z11.ride.after.send", "DOC.partial_mark"}
-ACT3_NAME_PREFIXES = ("HINT.payer.", "HINT.load.", "HINT.down.", "HINT.plate.", "HINT.reading.", "HINT.invoice.")
 ACT3_IZ_I_SLOTS = {"TALK.iz.confess", "SEQ.iz.payment", "SEQ.load", "TALK.iz.carry"}
 ACT3_CONFESS_SLOT = "TALK.iz.confess"
 STEPLADDER = "Я держала стремянку."
@@ -526,6 +522,12 @@ def check(brief, texts, fmt_errors, act=1):
                     if em == "kuh_looks" and sid in ACT4_KUH_BLIND_SLOTS:
                         err(sid, "%s: kuh_looks раньше времени — на героя она смотрит только с %s"
                             % (where, ACT4_LOOK_SLOT))
+                    if (em == "kuh_tentacle") != (sid in ACT4_KUH_BLIND_SLOTS):
+                        err(sid, "портрет-щупальце kuh_tentacle — ровно пока герой в тележке "
+                            "(решение автора 02.11.2026): %s" % where)
+                if sid in ACT4_KUH_BLIND_SLOTS and re.search(r"кухтулх", low):
+                    err(sid, "раньше времени — имя «Кухтулху» до %s, где она представляется сама: %s"
+                        % (ACT4_LOOK_SLOT, where))
                 if sp == "lap":
                     epilogue = sid.startswith(ACT4_EPILOGUE_PREFIX)
                     if em == "lap_clean" and not (epilogue or sid in ACT4_CLEAN_SLOTS):
@@ -573,10 +575,9 @@ def check(brief, texts, fmt_errors, act=1):
                 if re.search(pat, low):
                     warn(sid, "второе имя предмета — %s: %s" % (name, txt.strip()[:80]))
             if act == 3:
-                if re.search(r"кухтулх", low) and not (
-                        sid in ACT3_NAME_SLOTS or sid.startswith(ACT3_NAME_PREFIXES)):
-                    err(sid, "раньше времени — имя «Кухтулху» звучит только после счёта: %s"
-                        % txt.strip()[:80])
+                if re.search(r"кухтулх", low):
+                    err(sid, "раньше времени — имя «Кухтулху» звучит только от неё самой в Акте IV "
+                        "(решение автора 02.11.2026): %s" % txt.strip()[:80])
                 if "я держала стремянку" in low and sid != ACT3_CONFESS_SLOT:
                     err(sid, "«Я держала стремянку» — только в %s: %s"
                         % (ACT3_CONFESS_SLOT, txt.strip()[:80]))
@@ -766,19 +767,19 @@ ACT3_LINE_RULES = [
     ("OPEN.pa", "pa", ["третий этап плановых улучшений"]),
     ("TALK.iz.kefir", "iz", ["личное имущество"]),
     ("TALK.iz.bill", "iz", ["обслуживающему персоналу"]),
-    ("SEQ.report", "paiz", ["кухтулху", "старшему по воде", "оплат", "40 712"]),   # показания (нить показаний, 09.10.2026)
+    ("SEQ.report", "paiz", ["старшему по воде", "оплат", "40 712"]),   # без имени (решение автора 02.11.2026)   # показания (нить показаний, 09.10.2026)
 ]
 ACT3_DOC_RULES = [
     # (слот, обязательные подстроки, точные строки)
     ("DOC.note", [], ["Платить МНѢ водой??? Да я васъ всѣхъ въ канализацію смою!"]),
-    ("DOC.bill", ["оплатой не является", "м.п. плательщика", "кухтулху", "[оттиск]",
+    ("DOC.bill", ["оплатой не является", "м.п. плательщика", "старшій по водѣ", "[оттиск]",
                   "за истекшій періодъ", "табличку возстановить"], []),   # решения автора 09.10.2026
     ("DOC.tray_stamp", ["оплатой не является", "[оттиск]"], []),
     ("DOC.stencil", ["лифт грузовой", "перевозка людей запрещена"], []),
     ("DOC.sticker", ["не трогать — элемент дизайна"], []),
     ("DOC.chalk", [], ["НАШЕ", "НЕ ТРОГАТЬ"]),
     ("DOC.water_stand", ["комплимент от заведения"], []),
-    ("DOC.invoice", ["кефир", "кухтулху", "[печать отеля]", "40 712"], []),
+    ("DOC.invoice", ["кефир", "старшему по воде", "[печать отеля]", "40 712"], []),
     ("DOC.partial_mark", ["грузъ принятъ", "докладчика — нѣтъ", "[оттиск]"], []),   # частичная приёмка (09.10.2026)
     ("DOC.complaint", ["м.п."], []),
 ]
@@ -858,6 +859,10 @@ def check_act4_fixed(texts, lines_of, require, err):
              if l["speaker"] == "kuh" and l["emotion"] == "kuh_looks"]
     require(ACT4_LOOK_SLOT, bool(looks),
             "нет первого взгляда Кухтулху: реплика kuh с эмоцией kuh_looks")
+    intro = [l for l in texts.get(ACT4_LOOK_SLOT, {}).get("lines", [])
+             if l["speaker"] == "kuh" and "кухтулх" in l["text"].lower()]
+    require(ACT4_LOOK_SLOT, bool(intro),
+            "Кухтулху не представляется: в её реплике нет имени (решение автора 02.11.2026)")
     for sid, subs, exact in ACT4_DOC_RULES:
         doc = [l for l in ((texts.get(sid) or {}).get("doc") or []) if l.strip()]
         joined = norm_old("\n".join(doc))

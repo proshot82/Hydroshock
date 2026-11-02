@@ -150,8 +150,10 @@ class MergeTest(unittest.TestCase):
         self.assertIn("Z02.phone.nonumber", report["edit"])
         self.assertIn("Z03.under.not_all", report["edit"])
         # 18.10.2026 — раунд 5: «в тележке» (Z03.under.no_flow/no_call, CHOICE.wait, TALK.iz.guest, HINT.drive.3, HINT.crowd.3), сноска DOC.menu
-        # 02.11.2026 — END.anc (последнее слово Предка, решение автора)
-        self.assertEqual(len(report["edit"]), 52)
+        # 02.11.2026 — замечания автора по прохождению: удар, вантуз на дозаторе, «опора» бутылок,
+        # бачок, колпак, советы Предка (OPEN.3_shock, Z01.dispenser.look, PROBE.*, Z03.cloche.use, HINT.plunger.1–2)
+        self.assertIn("PROBE.cistern", report["edit"])
+        self.assertEqual(len(report["edit"]), 62)  # +END.anc (последнее слово Предка, 02.11.2026)
         # Z01.plunger.pull (новый слот, раньше — «по правилам ТЗ») теперь из правки автора
         self.assertEqual(sorted(report["rule"]), [])
         self.assertIn("Z01.plunger.pull", report["edit"])

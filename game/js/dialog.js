@@ -19,6 +19,12 @@ const BLIP = {
 const PORTRAIT_SPEAKERS = new Set(["lap", "iz", "kuh", "anc"]);
 
 let speakers = {};       // id → плашка
+// Решение автора 02.11.2026: имя Кухтулху не звучит, пока она сама не представилась (Акт IV,
+// SEQ.come_out). До того плашка — должность; представилась — её реплика с именем, это
+// запоминается в партии (st.met) и переживает сохранение.
+// Плашка до знакомства — строка интерфейса plate_<id>_unnamed (texts/ui/UI_TEXTS.md).
+const UNNAMED = { kuh: /кухтулх/i };
+let unnamed = {};        // id → плашка до знакомства
 let queue = [];
 let onLine = null;       // (i) => …: реплика i появилась (звуки «@N» в сценах)
 let cur = null;          // {s, e, t, portrait}
@@ -29,8 +35,10 @@ let doneCb = null;
 let fast = false;
 let touchHint = false;
 
-export function init(speakerNames) {
+export function init(speakerNames, ui = {}) {
   speakers = speakerNames;
+  unnamed = {};
+  for (const id of Object.keys(UNNAMED)) unnamed[id] = ui[`plate_${id}_unnamed`] || null;
 }
 
 export function setFast(v) {
@@ -51,11 +59,20 @@ export function portraitName(line, st, dry) {
   return `portraits/port_${line.e}`;
 }
 
+// Плашка имени для реплики. Реплика, где говорящий называет своё имя, сама уже идёт под именем.
+function plateName(line, st) {
+  const name = UNNAMED[line.s];
+  if (!name || !unnamed[line.s]) return speakers[line.s] || null;
+  if (!Array.isArray(st.met)) st.met = [];
+  if (!st.met.includes(line.s) && name.test(line.t || "")) st.met.push(line.s);
+  return st.met.includes(line.s) ? speakers[line.s] || null : unnamed[line.s];
+}
+
 // Показать реплики; промис разрешается, когда игрок пролистал последнюю.
 export function say(lines, st, opts = {}) {
   return new Promise((resolve) => {
     if (!lines || !lines.length) { resolve(); return; }
-    queue = lines.map((l, i) => ({ ...l, i, portrait: portraitName(l, st, opts.dry) }));
+    queue = lines.map((l, i) => ({ ...l, i, portrait: portraitName(l, st, opts.dry), plate: plateName(l, st) }));
     queue.forEach((l) => l.portrait && loadImage(l.portrait).catch(() => {}));
     doneCb = resolve;
     onLine = opts.onLine || null;
@@ -160,7 +177,7 @@ export function draw() {
   ctx.strokeStyle = C.brass;
   ctx.stroke();
   // плашка имени
-  const name = isCap ? null : speakers[cur.s];
+  const name = isCap ? null : cur.plate;
   if (name) {
     ctx.font = '700 26px "PT Sans"';
     const w = ctx.measureText(name).width + 26;

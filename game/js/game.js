@@ -22,6 +22,7 @@ const HUD = {
   hint: { x: 1640, y: 12, w: 256, h: 52 },
   docs: { x: 1400, y: 12, w: 224, h: 52 },
   menu: { x: 1250, y: 12, w: 134, h: 52 },
+  zones: { x: 1056, y: 12, w: 178, h: 52 },
   back: { x: 830, y: 1004, w: 260, h: 64 },
 };
 const INV = { x: 24, y: 76, size: 80, gap: 92 };
@@ -57,12 +58,12 @@ export function init(uiTexts, handlers) {
   T = uiTexts;
   onExit = handlers.onExit || onExit;
   onNext = handlers.onNext || null;
-  dialog.init(data ? data.speakers : {});
+  dialog.init(data ? data.speakers : {}, T);
 }
 
 export async function start(actData, state, opts = {}) {
   data = actData;
-  dialog.init(data.speakers || {});
+  dialog.init(data.speakers || {}, T);
   busy = false; frame = null; verbMenu = null; choice = null; selected = null; pause = null;
   docsPanel = null; endCard = null; toast = null;
   const fresh = !state || !!opts.newAct;   // новый акт открывается своей сценой, как новая игра
@@ -476,6 +477,12 @@ function showEnd() {
     return;
   }
   endCard = { act: data.act, last: data.act >= 4 };   // после эпилога — «Конец» и «На титул»
+  if (endCard.last) {
+    // финальный кадр и счёт секретов, как в первой игре (решение автора 02.11.2026)
+    endCard.found = RELICS.filter((f) => st.flags.has(f)).length;
+    loadImage(END_ART).catch(() => {});
+    loadImage(END_LOGO).catch(() => {});
+  }
   audio.ambience(null);
 }
 
@@ -560,7 +567,7 @@ export function pointerMove(p) {
 export function pointerDown(p, button = 0) {
   if (!data || !p) return false;
   if (endCard) {
-    if (!endCard.transit && inRect(p, END_BTN)) { audio.sfx("ui_click"); onExit(); }
+    if (!endCard.transit && inRect(p, endButton())) { audio.sfx("ui_click"); onExit(); }
     return true;
   }
   if (pause) {
@@ -599,6 +606,7 @@ export function pointerDown(p, button = 0) {
   if (button === 0 && inRect(p, HUD.hint)) { audio.sfx("ui_click"); act(hint); return true; }
   if (button === 0 && inRect(p, HUD.docs)) { audio.sfx("ui_click"); docsPanel = { open: true }; return true; }
   if (button === 0 && inRect(p, HUD.menu)) { audio.sfx("ui_click"); pause = { open: true }; return true; }
+  if (button === 0 && inRect(p, HUD.zones)) { audio.sfx("ui_click"); showZones = !showZones; return true; }
   if (data.views[st.view].parent && inRect(p, HUD.back)) { goBack(); return true; }
   const slot = invSlots().find((s) => inRect(p, s));
   if (slot) { clickItem(slot, button); return true; }
@@ -790,6 +798,10 @@ function drawHud() {
   button(HUD.hint, T.hint_btn, hoverHud === "hint", { stroke: hoverHud === "hint" ? "#b8d4f0" : C.steel, color: "#d6e6f5" });
   button(HUD.docs, T.docs_btn, hoverHud === "docs");
   button(HUD.menu, T.menu_btn, hoverHud === "menu");
+  // Подсветка зон (пробел или кнопка). Замечание автора 02.11.2026: «вплоть до 4 акта не заметил
+  // указателей зон» — у подсветки нет своей кнопки, о пробеле игрок не знал. Включена — кнопка горит.
+  button(HUD.zones, T.zones_btn, hoverHud === "zones" || showZones,
+    showZones ? { stroke: C.brassHi, color: C.brassHi } : {});
   if (data.views[st.view].parent) button(HUD.back, T.back.toUpperCase(), hoverHud === "back", { font: '700 30px "PT Sans"' });
 }
 
@@ -924,12 +936,58 @@ function drawDocs() {
 }
 
 const END_BTN = { x: 760, y: 600, w: 400, h: 72 };
+// Финал игры: одна большая картинка (Лапидус, Изольда, Кухтулху, отель), поверх — «Конец»,
+// счёт секретов и кнопка (решение автора 02.11.2026). Секреты — три реликвии трёх эпох (GDD §11).
+const END_ART = "frames/fr_epi_end";
+const END_LOGO = "ui/logo_end";   // «КОНЕЦ» латунью, как «ГИДРОУДАР» на титуле (замечание автора 02.11.2026)
+const RELICS = ["relic_r1", "relic_r2", "relic_r3"];
+const END_BTN_LAST = { x: 1460, y: 980, w: 400, h: 72 };
+
+function endButton() {
+  return endCard && endCard.last ? END_BTN_LAST : END_BTN;
+}
+
+function drawFinale() {
+  const art = image(END_ART);
+  if (art) ctx.drawImage(art, 0, 0, W, H);
+  // «КОНЕЦ» — на небе под радугой: латунные буквы картинкой (как название на титуле);
+  // пока картинка грузится — строка интерфейса
+  const logo = image(END_LOGO);
+  if (logo) {
+    const lw = 700;   // между вантузом Лапидуса и причёской Кухтулху
+    const lh = Math.round(logo.height * lw / logo.width);
+    ctx.drawImage(logo, (W - lw) / 2, 40, lw, lh);
+  } else {
+    ctx.textAlign = "center";
+    ctx.textBaseline = "alphabetic";
+    ctx.font = '700 132px "PT Sans"';
+    ctx.fillStyle = C.brassHi;
+    ctx.fillText(T.the_end_big || T.the_end || "", W / 2, 190);
+  }
+  // счёт секретов — плашкой внизу слева
+  const all = endCard.found >= RELICS.length;
+  const line = all ? T.secrets_all : (T.secrets_found || "").replace("%d", endCard.found).replace("%d", RELICS.length);
+  ctx.font = '700 36px "PT Sans"';
+  const w = ctx.measureText(line).width + 64;
+  rr(60, 980, w, 72, 14);
+  ctx.fillStyle = "rgba(13, 15, 23, 0.82)";
+  ctx.fill();
+  ctx.lineWidth = 3;
+  ctx.strokeStyle = all ? C.brassHi : C.brass;
+  ctx.stroke();
+  ctx.fillStyle = all ? C.brassHi : C.text;
+  ctx.textAlign = "left";
+  ctx.textBaseline = "middle";
+  ctx.fillText(line, 92, 1017);
+  button(END_BTN_LAST, T.to_title, inRect(lastPointer, END_BTN_LAST), { font: '700 34px "PT Sans"' });
+}
 
 function drawEnd() {
   if (!endCard) return;
   ctx.fillStyle = "#0b0c10";
   ctx.fillRect(0, 0, W, H);
   if (endCard.transit) return;   // переход к следующей части игры: чёрный экран, пока она грузится
+  if (endCard.last) { drawFinale(); return; }
   ctx.textAlign = "center";
   ctx.textBaseline = "alphabetic";
   ctx.font = '400 36px "PT Sans"';
@@ -978,7 +1036,7 @@ export function debug() {
     items: invSlots().map((s) => ({ id: s.id, at: [s.x + s.w / 2, s.y + s.h / 2] })),
     menuItems: verbMenu ? menuRects(verbMenu.items, verbMenu.x, verbMenu.y).map((r) => ({ verb: r.verb, at: [r.x + r.w / 2, r.y + r.h / 2] }))
       : choice ? choiceRects().map((r) => ({ id: r.id, at: [r.x + r.w / 2, r.y + r.h / 2] })) : null,
-    hud: { hint: center(HUD.hint), docs: center(HUD.docs), back: center(HUD.back), end: center(END_BTN) },
+    hud: { hint: center(HUD.hint), docs: center(HUD.docs), back: center(HUD.back), end: center(endButton()) },
     log: log.slice(),
     n: { ...st.n }, hint: { ...st.hint },
   };
