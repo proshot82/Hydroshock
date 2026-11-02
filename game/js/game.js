@@ -954,9 +954,9 @@ function drawFinale() {
   // пока картинка грузится — строка интерфейса
   const logo = image(END_LOGO);
   if (logo) {
-    const lw = 820;
+    const lw = 700;   // между вантузом Лапидуса и причёской Кухтулху
     const lh = Math.round(logo.height * lw / logo.width);
-    ctx.drawImage(logo, (W - lw) / 2, 50, lw, lh);
+    ctx.drawImage(logo, (W - lw) / 2, 40, lw, lh);
   } else {
     ctx.textAlign = "center";
     ctx.textBaseline = "alphabetic";
