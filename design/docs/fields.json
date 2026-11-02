@@ -9,7 +9,7 @@
  "page_ledger": {"box": [90, 90, 1310, 780], "spine": 700},
  "paper_kuh": {"box": [110, 90, 1290, 860]},
  "paper_note": {"box": [430, 230, 1250, 790], "ink": [30, 30, 60]},
- "tag_seal": {"box": [440, 340, 1190, 610], "center": true},
+ "tag_seal": {"box": [450, 345, 1150, 600], "center": true},
  "tag_exhibit": {"box": [300, 240, 1150, 710], "center": true},
  "tray_porcelain": {"box": [150, 200, 1200, 860], "center": true, "ink": [60, 40, 30]},
  "plate_brass": {"box": [180, 270, 1220, 710], "center": true, "ink": [55, 35, 12]},
