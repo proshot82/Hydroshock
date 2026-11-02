@@ -432,6 +432,7 @@
 | `SEQ.shout.3` | I | как `SEQ.shout.2` |
 | `SEQ.shout.4` | I | как `SEQ.shout.2` |
 | `SEQ.shout.5` | I | `room_w2_under.png` + `st_w2u_parted.png` + `st_w2u_gate_open.png` + `ov_skirt.png`, затем `fr_a1_under_service.png` + `ov_skirt.png` |
+| `END.anc` | I | как `END.act1` (слово Предка перед итогом акта, решение автора 02.11.2026) |
 | `END.act1` | I | `fr_a1_under_service.png` + `ov_skirt.png` |
 | `OPEN.counter` | II | `room_w2.png` + `st_w2_iz.png` + `st_w2_trolley.png` + `st_w2_folder.png` + `st_w2_map.png` + `st_w2_forms3.png` |
 | `OPEN.demo` | II | `room_w2.png` + `st_w2_iz.png` + `st_w2_trolley.png` + `st_w2_folder.png` + `st_w2_map.png` + `st_w2_forms3.png` + `st_w2_cascade_on.png` + `st_w2_pump_lamp.png`, затем как `OPEN.counter` (защита выключила насос) |
@@ -480,6 +481,7 @@
 | `SEQ.office` | IV | `room_w6.png` + `st_w6_kuh.png` + `st_w6_seal.png` |
 | `PA.final` | IV | `zoom_z13.png` + `st_z13_seal_torn.png` + `st_z13_needle_up.png` + вещи на столе |
 | `SEQ.finale` | IV | `zoom_z01.png` + `st_z01_head_running.png`, затем `fr_a4_cascade_duck.png` (два титра), затем `zoom_z06.png` + `st_z06_spin.png`, затем `room_w4.png` + `st_w4_source_water.png` + текущие состояния W4; портрет `lap_clean` |
+| `END.anc` | IV | последний кадр `SEQ.finale`: `room_w4.png` + `st_w4_source_water.png` + текущие состояния W4 (слово Предка перед эпилогом, решение автора 02.11.2026) |
 | `SEQ.upstairs` | IV | `zoom_z12.png` + `st_z12_door_open.png` |
 | `EPI.0` | IV | `fr_epi_laundry.png`, затем `fr_epi_minibar.png` |
 | `EPI.1` | IV | `fr_epi_laundry.png`, затем `fr_epi_minibar.png`, затем `zoom_z13.png` + `st_z13_seal_torn.png` + `st_z13_needle_up.png` + найденная вещь (`st_z13_token.png`, `st_z13_postcard.png` или `st_z13_mug.png`) |

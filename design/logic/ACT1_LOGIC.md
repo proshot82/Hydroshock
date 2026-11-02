@@ -235,7 +235,6 @@
 | probe_repeat | probe.n=1 | PROBE.repeat.2 | — | probe+ |
 | probe_repeat | probe.n>=2 | PROBE.repeat.3 | — | probe+ |
 | talk_open |  | TALK.iz.open | A10_talk_isolde | +shock_report_known, меню:talk |
-| act_end |  | END.act1 | — | звук:sfx_pa_chime, акт:2 |
 
 ## Сцены
 
@@ -261,6 +260,8 @@
 | shout | SEQ.shout.3 | rooms/room_w2_under+st_w2u_parted+ov_skirt |  |  |
 | shout | SEQ.shout.4 | rooms/room_w2_under+st_w2u_parted+ov_skirt |  | +iz_rule3_seen |
 | shout | SEQ.shout.5 | rooms/room_w2_under+st_w2u_parted+st_w2u_gate_open+ov_skirt;frames/fr_a1_under_service+ov_skirt |  | +trolley_service_side, pos=service, вид:W2s, цепочка:talk_open |
+| act_end | END.anc |  |  |  |
+| act_end | END.act1 |  | sfx_pa_chime | акт:2 |
 
 ## Меню
 
@@ -279,11 +280,11 @@
 | talk | guest | TALK.iz.guest | shown(TALK.iz.guest) | TALK.iz.again | — | меню:talk |
 | talk | repair | TALK.iz.repair | ¬shown(TALK.iz.repair) | TALK.iz.repair | A10_talk_isolde | меню:talk |
 | talk | repair | TALK.iz.repair | shown(TALK.iz.repair) | TALK.iz.again | — | меню:talk |
-| talk | exit | TALK.iz.exit |  | TALK.iz.exit | A10_talk_isolde | +iz_rules_all_shown, +w3_open, +w4_open, цепочка:act_end |
+| talk | exit | TALK.iz.exit |  | TALK.iz.exit | A10_talk_isolde | +iz_rules_all_shown, +w3_open, +w4_open, сцена:act_end |
 
 ## Подсказки
 
-Порядок строк — приоритет тем (SLOT_FLAGS, Акт I: по кратчайшему пути A11 → N01 → A10; `skirt` — последней).
+Порядок строк — приоритет тем (SLOT_FLAGS, Акт I: по кратчайшему пути A11 → N01 → A10). Решение автора 02.11.2026: необязательная тема `skirt` стоит перед `drive` — совет «укрытие на колёсах у тебя уже есть» без неё звучал бы нелепо, а прежде, последней, она не звучала никогда (полный перебор `tools/data/check_reach.py`).
 
 | Тема | Открыта, когда |
 |---|---|
@@ -292,9 +293,9 @@
 | call | ¬reception_called |
 | stars | ¬stars_folded |
 | peek | ¬need_cover |
+| skirt | ¬knows_trolley_chamber ∧ ¬trolley_at_crowd |
 | drive | stars_folded ∧ need_cover ∧ reception_called ∧ knows_bath_day ∧ foam_class_closed ∧ knows_foam_flow ∧ shown(PROBE.mineral) ∧ shown(PROBE.kombucha) ∧ shown(PROBE.lemonade) ∧ shown(PROBE.coffee) ∧ shown(PROBE.juice) ∧ shown(PROBE.cistern) ∧ ¬trolley_at_crowd |
 | crowd | trolley_at_crowd ∧ ¬trolley_service_side |
-| skirt | ¬knows_trolley_chamber ∧ ¬trolley_at_crowd |
 
 ## Предметы
 
@@ -330,4 +331,4 @@
 | UI.inventory | подпись кнопки «При себе» |
 | HINT.intro | первое нажатие «Совет предка» |
 | HINT.cooldown | совет уже дан, после него не было действия |
-| HINT.done | открытых тем нет |
+| HINT.done | открытых тем нет — страховка: при нынешней логике не звучит (решение автора 02.11.2026), слово Предка в конце акта — `END.anc` |

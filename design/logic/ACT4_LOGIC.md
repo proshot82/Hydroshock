@@ -249,7 +249,8 @@
 | mark | Z13.plunger.mark | zooms/zoom_z13+st_z13_seal+st_z13_hand_plunger;zooms/zoom_z13+st_z13_seal+st_z13_hand_plunger;zooms/zoom_z13+st_z13_seal;zooms/zoom_z13+st_z13_seal+st_z13_tentacle;zooms/zoom_z13+st_z13_seal_torn;zooms/zoom_z13+st_z13_seal_torn | sfx_plunger_press@1, sfx_wet_stamp@4, sfx_seal_tear@5 | +marks_exchanged, док:DOC.ledger |
 | finale | Z13.valve.turn | zooms/zoom_z13+st_z13_seal_torn+st_z13_hand_wheel;zooms/zoom_z13+st_z13_seal_torn+st_z13_hand_wheel;zooms/zoom_z13+st_z13_seal_torn+st_z13_hand_wheel+st_z13_needle_up;вид:Z13 | sfx_valve_turn@2, sfx_building_exhale@3, sting_water@4 | +water_restored |
 | finale | PA.final | вид:Z13 | sfx_pa_chime, sfx_pa_drown@2 |  |
-| finale | SEQ.finale | zooms/zoom_z01+st_z01_head_running;frames/fr_a4_cascade_duck;frames/fr_a4_cascade_duck;zooms/zoom_z06+st_z06_spin;rooms/room_w4+st_w4_mirror_aside+st_w4_stairs_open+st_w4_design+st_w4_films+st_w4_tube_photo+st_w4_plate+st_w4_source_water | музыка:bgm_epilogue, sfx_fin_shower@1, sfx_fin_cascade@2, sfx_drums_turn@4, sfx_fin_spring@5 | цепочка:epilogue |
+| finale | SEQ.finale | zooms/zoom_z01+st_z01_head_running;frames/fr_a4_cascade_duck;frames/fr_a4_cascade_duck;zooms/zoom_z06+st_z06_spin;rooms/room_w4+st_w4_mirror_aside+st_w4_stairs_open+st_w4_design+st_w4_films+st_w4_tube_photo+st_w4_plate+st_w4_source_water | музыка:bgm_epilogue, sfx_fin_shower@1, sfx_fin_cascade@2, sfx_drums_turn@4, sfx_fin_spring@5 |  |
+| finale | END.anc | rooms/room_w4+st_w4_mirror_aside+st_w4_stairs_open+st_w4_design+st_w4_films+st_w4_tube_photo+st_w4_plate+st_w4_source_water |  | цепочка:epilogue |
 
 ## Меню
 
@@ -318,4 +319,4 @@
 | UI.inventory | подпись кнопки «При себе» (из Акта I) |
 | HINT.intro | первое нажатие «Совет предка» (из Акта I) |
 | HINT.cooldown | совет уже дан, после него не было действия (из Акта I) |
-| HINT.done | открытых тем нет |
+| HINT.done | открытых тем нет — страховка: при нынешней логике не звучит (решение автора 02.11.2026), слово Предка в конце игры — `END.anc` (сцена `finale`) |

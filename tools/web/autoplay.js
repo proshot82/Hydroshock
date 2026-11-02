@@ -297,6 +297,8 @@ function check(ok, msg) {
   if (s.act !== 2) { await page.waitForFunction(() => window.__bj3.game() && window.__bj3.game().act === 2, null, { timeout: 30000 }); s = await settle(); }
   check(!s.ended && s.log.indexOf("END.act1") >= 0 && s.log.indexOf("END.act1") < s.log.indexOf("OPEN.counter"),
     "конец Акта I (END.act1) — и сразу Акт II, без заставки и кнопок");
+  check(s.log.indexOf("END.anc") >= 0 && s.log.indexOf("TALK.iz.exit") < s.log.indexOf("END.anc") && s.log.indexOf("END.anc") < s.log.indexOf("END.act1"),
+    "слово Предка в конце Акта I: после Изольды, перед итогом (END.anc)");
   check(["trolley_service_side", "shock_report_known", "iz_rules_all_shown", "w3_open", "w4_open"].every((f) => has(s, f)), "цели Акта I выполнены");
 
   // ================================================================ Акт II
@@ -326,6 +328,9 @@ function check(ok, msg) {
   check(lastSlot(s) === "SEQ.exhibit.nocover", "пешком к экспонату — нет (SEQ.exhibit.nocover)");
   s = await verb("trolley", "к_экспонату");
   check(s.view === "Z05" && s.pos === "exhibit", "под тележкой к экспонату → Z05");
+  // необязательная тема говорит первой у своего предмета (решение автора 02.11.2026)
+  await clickAt(s.hud.hint); s = await settle();
+  check(lastSlot(s) === "HINT.vitrine.1", "совет у экспоната — о витрине (HINT.vitrine.1)");
   s = await verb("vitrine", "нажать_стекло");
   check(lastSlot(s) === "Z05.vitrine.push.seen" && !has(s, "vitrine_open"), "нажать без каскада — руку видят, дверца закрыта");
   s = await useItem("plunger", "vitrine");
@@ -446,6 +451,8 @@ function check(ok, msg) {
   s = await back();
   s = await verb("stairs", "открыть");
   check(has(s, "stairs_open") && s.view === "Z12" && s.log.slice(-2).join(",") === "SEQ.stairs.open,Z12.enter", "лестница открыта, внизу площадка (B15)");
+  await clickAt(s.hud.hint); s = await settle();
+  check(/^HINT\.door\./.test(lastSlot(s)), "совет внизу лестницы — о двери, а не «отопри и спускайся» (HINT.door)");
   s = await verb("notice", "сорвать");
   check(lastSlot(s) === "Z12.seal.tear", "пломбу не срывает (Z12.seal.tear)");
   s = await verb("door", "постучать");
@@ -705,6 +712,8 @@ function check(ok, msg) {
   check(has(s, "marks_exchanged") && s.log.slice(-2).join(",") === "Z13.plunger.mark,DOC.ledger", "вантуз в графу «Доложилъ» — встречный оттиск, пломба снята (E05)");
   s = await verb("valve", "повернуть_маховик");
   check(has(s, "water_restored") && ["Z13.valve.turn", "PA.final", "SEQ.finale", "EPI.3", "DOC.menu_new"].every((x) => s.log.includes(x)), "маховик: вода пошла, громкая связь тонет, финал, эпилог с тремя вещами (E06, EPI.3)");
+  check(s.log.lastIndexOf("SEQ.finale") < s.log.lastIndexOf("END.anc") && s.log.lastIndexOf("END.anc") < s.log.lastIndexOf("EPI.3"),
+    "слово Предка между финальным монтажом и эпилогом (END.anc)");
   check(["reported", "marks_exchanged", "water_restored"].every((f) => has(s, f)), "цели Акта IV выполнены");
   check(s.ended, "после эпилога — карточка «Конец»");
   await snap("a4_end");
