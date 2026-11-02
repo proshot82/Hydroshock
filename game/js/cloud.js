@@ -6,7 +6,8 @@
 // Ограничения облака: значение — до 4096 знаков, ключи — латиница, цифры, «_» и «-». Партия
 // режется на куски по CHUNK знаков. Пишем по очереди в две ячейки (a/b): сначала куски в
 // свободную, потом заголовок {t, slot, n} — оборванная запись оставляет целой прежнюю копию.
-// t — время сохранения (мс); при запуске побеждает более поздняя копия, облачная или местная.
+// t — номер сохранения (save.seq, state.js): при запуске побеждает копия с большим номером,
+// облачная или местная. Часы не участвуют — у разных устройств они не совпадают.
 
 import { telegram, tgAt } from "./platform.js";
 import * as store from "./store.js";
@@ -16,7 +17,7 @@ const META = "bj3_meta";
 const DELAY = 1500;       // мс: сохранения подряд (каждое действие) сливаются в одну запись
 
 let timer = null;
-let pending = null;       // {t, save}
+let pending = null;       // {t: номер, save}
 let writing = false;
 
 function cs() {
@@ -81,7 +82,7 @@ function schedule(now = false) {
   timer = setTimeout(flush, now ? 0 : DELAY);
 }
 
-// state.js: партия записана (save == null — стёрта новой игрой).
+// state.js: партия записана под номером t (save == null — стёрта новой игрой).
 export function push(t, save) {
   if (!cs()) return;
   pending = { t, save };
@@ -100,13 +101,13 @@ export async function sync(timeout = 4000) {
   if (!c) return "нет облака";
   const cloud = await Promise.race([readCloud(c), new Promise((r) => setTimeout(() => r("timeout"), timeout))]);
   if (cloud === "timeout") return "облако не ответило";
-  const localT = store.read("save.t") || 0;
+  const localT = Number(store.read("save.seq")) || 0;
   const local = store.read("save");
   if (cloud && cloud.t > localT) {
     if (local) store.write("save.bak", local);
     store.write("save", cloud.save);
     if (cloud.save == null) store.write("save.bak", null);
-    store.write("save.t", cloud.t);
+    store.write("save.seq", cloud.t);
     return "взято из облака";
   }
   if (localT && (!cloud || localT > cloud.t)) {
