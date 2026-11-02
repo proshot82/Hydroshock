@@ -90,6 +90,26 @@ def final_texts_chars():
     return src
 
 
+def ui_chars():
+    """(BJ3, 02.11.2026) Строки интерфейса texts/ui/UI_TEXTS.md (data/ui.json) — их рисует движок
+    шрифтом PT Sans: кнопки, подсказки, плашки. Раньше гейт их не читал — стрелка «→» в
+    подсказке про экран «Домой» прошла бы насквозь. Берутся только строки «ключ | текст»."""
+    src = {}
+    p = "texts/ui/UI_TEXTS.md"
+    if not os.path.exists(p):
+        return src
+    with open(p, encoding="utf-8") as fh:
+        for n, line in enumerate(fh, 1):
+            m = re.match(r"([a-zа-яё0-9_]+)\s*\|\s*(\S.*)$", line.strip())
+            if m:
+                for ch in m.group(2):
+                    src.setdefault(ch, f"{p}:{n}")
+    # стрелки страниц «Бумаг» и разделитель подсказок — прямо в коде движка (game.js, reader.js)
+    for ch in "‹›·":
+        src.setdefault(ch, "game/js (стрелки страниц, разделитель)")
+    return src
+
+
 def texts_chars():
     """Символы из design/texts.json с путём до строки — чтобы было что чинить."""
     src = {}
@@ -163,7 +183,7 @@ def main():
             print(f"FONT GATE BROKEN: детектор не видит канарейку в {f}")
             sys.exit(1)
     src = {ch: "REQUIRED (дореформенная орфография, типографика)" for ch in REQUIRED}
-    for d in (texts_chars(), scene_chars(), lua_chars()):
+    for d in (texts_chars(), scene_chars(), lua_chars(), ui_chars()):
         for ch, where in d.items():
             src.setdefault(ch, where)
     bad = {}

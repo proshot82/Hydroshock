@@ -249,6 +249,21 @@ def main(argv=None):
         if f.suffix in (".ttf", ".txt"):
             shutil.copyfile(f, fonts / f.name)
 
+    # Значки для экрана «Домой» (iPhone — apple-touch-icon 180, Android — манифест 192/512): PNG
+    # из того же icon_512; у iPhone прозрачное заливается само — подкладываем чёрный.
+    icon = ASSETS / "gfx" / "ui" / "icon_512.png"
+    if icon.is_file():
+        ui_out = out / "assets" / "gfx" / "ui"
+        ui_out.mkdir(parents=True, exist_ok=True)
+        im = Image.open(icon).convert("RGBA")
+        for n in (180, 192, 512):
+            ic = im.resize((n, n), Image.LANCZOS)
+            if n == 180:
+                bg = Image.new("RGBA", (n, n), (0, 0, 0, 255))
+                bg.alpha_composite(ic)
+                ic = bg.convert("RGB")
+            ic.save(ui_out / f"icon_{n}.png", optimize=True)
+
     data = out / "data"
     data.mkdir(parents=True, exist_ok=True)
     (data / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=1), encoding="utf-8")

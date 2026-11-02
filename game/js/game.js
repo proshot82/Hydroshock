@@ -4,7 +4,7 @@
 // Ввод BJ2: левая кнопка — действовать (меню действий у предмета), правая — осмотреть;
 // предмет из «При себе» — выбрать и щёлкнуть по цели. Советы Предка — GDD §10 (без таймера).
 
-import { ctx, W, H, setCursor } from "./view.js";
+import { ctx, W, H, setCursor, uiScale } from "./view.js";
 import { image, loadImage } from "./assets.js";
 import * as audio from "./audio.js";
 import * as dialog from "./dialog.js";
@@ -18,14 +18,40 @@ const C = {
   steel: "#8cb3db", ok: "#59cc66", btn: "#262833", btnHi: "#2f3240",
 };
 const CURSOR = { look: "act", act: "act", move: "move", zoom: "zoom" };
-const HUD = {
-  hint: { x: 1640, y: 12, w: 256, h: 52 },
-  docs: { x: 1400, y: 12, w: 224, h: 52 },
-  menu: { x: 1250, y: 12, w: 134, h: 52 },
-  zones: { x: 1056, y: 12, w: 178, h: 52 },
-  back: { x: 830, y: 1004, w: 260, h: 64 },
-};
-const INV = { x: 24, y: 76, size: 80, gap: 92 };
+// Кнопки и «При себе». На компьютере — прежние места; на маленьком экране (uiScale > 1, телефон)
+// всё растёт под палец: кнопки — от правого края, «Назад» — по центру снизу, «При себе» — слева.
+const HUD_W = { hint: 256, docs: 224, menu: 134, zones: 178 };   // справа налево
+const U = () => uiScale();
+const fnt = (weight, px, fam = "PT Sans") => `${weight} ${Math.round(px * U())}px "${fam}"`;
+let hudCache = null;
+function hud() {
+  const u = U();
+  if (hudCache && hudCache.u === u) return hudCache.r;
+  const r = {};
+  let right = 1896;
+  const h = Math.round(52 * u);
+  for (const k of ["hint", "docs", "menu", "zones"]) {
+    const w = Math.round(HUD_W[k] * u);
+    r[k] = { x: right - w, y: 12, w, h };
+    right -= w + Math.round(16 * u);
+  }
+  const bw = Math.round(260 * u);
+  const bh = Math.round(64 * u);
+  r.back = { x: Math.round((W - bw) / 2), y: H - 12 - bh, w: bw, h: bh };
+  hudCache = { u, r };
+  return r;
+}
+function inv() {
+  const u = U();
+  const lh = Math.round(48 * u);
+  return { x: 24, labelY: 16, labelH: lh, y: 16 + lh + 12, size: Math.round(80 * u), gap: Math.round(92 * u) };
+}
+let touchMode = false;    // последний ввод — палец: без наведения, подписи «Коснитесь»
+export function setTouch(v) {
+  touchMode = !!v;
+  reader.setTouch(touchMode);
+  if (touchMode) hover = null;
+}
 
 let data = null;
 let st = null;
@@ -56,6 +82,7 @@ const log = [];           // журнал для автотестов: слот�
 
 export function init(uiTexts, handlers) {
   T = uiTexts;
+  reader.setHints(T);
   onExit = handlers.onExit || onExit;
   onNext = handlers.onNext || null;
   dialog.init(data ? data.speakers : {}, T);
@@ -423,7 +450,7 @@ function heldItems() {
 }
 
 function invSlots() {
-  return heldItems().map((it, i) => ({ ...it, x: INV.x + i * INV.gap, y: INV.y, w: INV.size, h: INV.size }));
+  return heldItems().map((it, i) => ({ ...it, x: inv().x + i * inv().gap, y: inv().y, w: inv().size, h: inv().size }));
 }
 
 function clickItem(it, button) {
@@ -506,20 +533,26 @@ function inRect(p, r) {
   return p && p.x >= r.x && p.x < r.x + r.w && p.y >= r.y && p.y < r.y + r.h;
 }
 
-function menuRects(items, cx, cy, w = 520, h = 64) {
-  const total = items.length * (h + 10) - 10;
+function menuRects(items, cx, cy) {
+  const u = U();
+  const w = Math.round(520 * u);
+  const h = Math.round(64 * u);
+  const gap = Math.round(10 * u);
+  const total = items.length * (h + gap) - gap;
   const x = Math.max(20, Math.min(W - w - 20, cx));
-  const y = Math.max(80, Math.min(H - total - 20, cy));
-  return items.map((it, i) => ({ ...it, x, y: y + i * (h + 10), w, h }));
+  const y = Math.max(inv().y + 40 * u, Math.min(H - total - 20, cy));
+  return items.map((it, i) => ({ ...it, x, y: y + i * (h + gap), w, h }));
 }
 
 function choiceRects() {
-  const w = 1100;
-  const h = 76;
-  const total = choice.items.length * (h + 12) - 12;
+  const u = U();
+  const w = Math.min(W - 80, Math.round(1100 * u));
+  const h = Math.round(76 * u);
+  const gap = Math.round(12 * u);
+  const total = choice.items.length * (h + gap) - gap;
   const x = (W - w) / 2;
-  const y = Math.max(120, 700 - total);
-  return choice.items.map((it, i) => ({ ...it, x, y: y + i * (h + 12), w, h }));
+  const y = Math.max(Math.min(120, (H - total) / 2), Math.max(120, 700 - total));
+  return choice.items.map((it, i) => ({ ...it, x, y: y + i * (h + gap), w, h }));
 }
 
 function pauseRects() {
@@ -530,13 +563,55 @@ function pauseRects() {
     { id: "fasttext", label: T.fasttext, toggle: "fasttext" },
     { id: "quit", label: T.save_quit },
   ];
-  return items.map((it, i) => ({ ...it, x: 660, y: 330 + i * 84, w: 600, h: 70 }));
+  const P = pausePanel();
+  const u = U();
+  const w = Math.round(600 * u);
+  return items.map((it, i) => ({ ...it, x: (W - w) / 2, y: P.y + 110 * u + i * 84 * u, w, h: Math.round(70 * u) }));
 }
 
+// Панель паузы: на компьютере — 680×560 по центру; на телефоне растёт вместе с кнопками.
+function pausePanel() {
+  const u = U();
+  const w = Math.round(680 * u);
+  const h = Math.round((110 + 5 * 84 + 30) * u);
+  return { x: (W - w) / 2, y: Math.round((H - h) / 2), w, h };
+}
+
+// Панель «Бумаги»: прочитанное по порядку, постранично — за игру бумаг набирается больше, чем
+// помещается строк (на телефоне строки крупнее, их на листе меньше).
+function docsPanelRect() {
+  const u = U();
+  const w = Math.min(W - 40, Math.round(1080 * u));
+  return { x: (W - w) / 2, y: 60, w, h: H - 120 };
+}
+function docsPerPage() {
+  const u = U();
+  const P = docsPanelRect();
+  return Math.max(1, Math.floor((P.h - 120 * u - 110 * u) / (70 * u)));
+}
+function docsPages() {
+  return Math.max(1, Math.ceil(st.docs.length / docsPerPage()));
+}
 function docsRects() {
-  return st.docs.map((d, i) => ({
-    doc: d, label: docTitle(d), x: 460, y: 200 + i * 70, w: 1000, h: 60,
+  const u = U();
+  const P = docsPanelRect();
+  const per = docsPerPage();
+  const page = Math.min(docsPanel && docsPanel.page ? docsPanel.page : 0, docsPages() - 1);
+  const w = P.w - 80 * u;
+  return st.docs.slice(page * per, (page + 1) * per).map((d, i) => ({
+    doc: d, label: docTitle(d), x: P.x + 40 * u, y: P.y + 120 * u + i * 70 * u, w, h: Math.round(60 * u),
   }));
+}
+function docsArrows() {
+  if (docsPages() < 2) return [];
+  const u = U();
+  const P = docsPanelRect();
+  const s = Math.round(72 * u);
+  const y = P.y + P.h - s - 20 * u;
+  return [
+    { id: -1, label: "‹", x: P.x + 40 * u, y, w: s * 1.6, h: s },
+    { id: 1, label: "›", x: P.x + P.w - 40 * u - s * 1.6, y, w: s * 1.6, h: s },
+  ];
 }
 
 function docTitle(d) {
@@ -554,7 +629,7 @@ export function pointerMove(p) {
     return;
   }
   if (choice || verbMenu) { setCursor("act"); return; }
-  for (const [k, r] of Object.entries(HUD)) {
+  for (const [k, r] of Object.entries(hud())) {
     if (k === "back" && !data.views[st.view].parent) continue;
     if (inRect(p, r)) { hoverHud = k; setCursor("act"); return; }
   }
@@ -580,12 +655,22 @@ export function pointerDown(p, button = 0) {
     return true;
   }
   if (docsPanel) {
+    const arrow = docsArrows().find((r) => inRect(p, r));
+    if (arrow) {
+      audio.sfx("ui_click");
+      docsPanel.page = Math.max(0, Math.min(docsPages() - 1, (docsPanel.page || 0) + arrow.id));
+      return true;
+    }
     const b = docsRects().find((r) => inRect(p, r));
     docsPanel = null;
     if (b) act(async () => { audio.sfx("ui_paper"); await reader.open(b.doc, data); });
     return true;
   }
-  if (reader.active()) { reader.close(); return true; }
+  if (reader.active()) {
+    if (touchMode && button === 0) reader.tap(p);   // палец: два касания — крупнее (reader.js)
+    else reader.close();
+    return true;
+  }
   if (dialog.active()) { dialog.click(); return true; }
   if (busy) return true;
   if (choice) {
@@ -603,11 +688,11 @@ export function pointerDown(p, button = 0) {
     if (b && button === 0) act(() => runRule(b.rule));
     return true;
   }
-  if (button === 0 && inRect(p, HUD.hint)) { audio.sfx("ui_click"); act(hint); return true; }
-  if (button === 0 && inRect(p, HUD.docs)) { audio.sfx("ui_click"); docsPanel = { open: true }; return true; }
-  if (button === 0 && inRect(p, HUD.menu)) { audio.sfx("ui_click"); pause = { open: true }; return true; }
-  if (button === 0 && inRect(p, HUD.zones)) { audio.sfx("ui_click"); showZones = !showZones; return true; }
-  if (data.views[st.view].parent && inRect(p, HUD.back)) { goBack(); return true; }
+  if (button === 0 && inRect(p, hud().hint)) { audio.sfx("ui_click"); act(hint); return true; }
+  if (button === 0 && inRect(p, hud().docs)) { audio.sfx("ui_click"); docsPanel = { open: true }; return true; }
+  if (button === 0 && inRect(p, hud().menu)) { audio.sfx("ui_click"); pause = { open: true }; return true; }
+  if (button === 0 && inRect(p, hud().zones)) { audio.sfx("ui_click"); showZones = !showZones; return true; }
+  if (data.views[st.view].parent && inRect(p, hud().back)) { goBack(); return true; }
   const slot = invSlots().find((s) => inRect(p, s));
   if (slot) { clickItem(slot, button); return true; }
   const z = zoneAt(p);
@@ -729,7 +814,7 @@ function drawWorld() {
   if (!bg) {
     ctx.fillStyle = "#000";
     ctx.fillRect(0, 0, W, H);
-    ctx.font = '400 30px "PT Sans"';
+    ctx.font = fnt(400, 30);
     ctx.fillStyle = C.dim;
     ctx.textAlign = "center";
     ctx.fillText(T.loading || "Загрузка…", W / 2, H / 2);
@@ -760,11 +845,11 @@ function button(r, label, active, opts = {}) {
   ctx.lineWidth = active ? 3 : 2;
   ctx.strokeStyle = opts.stroke || (active ? C.brassHi : C.brass);
   ctx.stroke();
-  ctx.font = opts.font || '700 26px "PT Sans"';
+  ctx.font = opts.font || fnt(700, 26);
   ctx.fillStyle = opts.color || C.text;
   ctx.textAlign = opts.align || "center";
   ctx.textBaseline = "middle";
-  ctx.fillText(label, opts.align === "left" ? r.x + 24 : r.x + r.w / 2, r.y + r.h / 2 + 1);
+  ctx.fillText(label, opts.align === "left" ? r.x + 24 * U() : r.x + r.w / 2, r.y + r.h / 2 + 1);
 }
 
 function drawHud() {
@@ -772,9 +857,10 @@ function drawHud() {
   if (frame || endCard) return;
   // «При себе»
   const slots = invSlots();
-  ctx.font = '700 24px "PT Sans"';
+  ctx.font = fnt(700, 24);
   const label = (data.texts["UI.inventory"] && data.texts["UI.inventory"].lines[0] && data.texts["UI.inventory"].lines[0].t) || "ПРИ СЕБЕ";
-  rr(INV.x, 16, ctx.measureText(label).width + 28, 48, 8);
+  const iv = inv();
+  rr(iv.x, iv.labelY, ctx.measureText(label).width + 28 * U(), iv.labelH, 8);
   ctx.fillStyle = C.panel;
   ctx.fill();
   ctx.lineWidth = 2;
@@ -783,7 +869,7 @@ function drawHud() {
   ctx.fillStyle = C.brassHi;
   ctx.textAlign = "left";
   ctx.textBaseline = "middle";
-  ctx.fillText(label, INV.x + 14, 41);
+  ctx.fillText(label, iv.x + 14 * U(), iv.labelY + iv.labelH / 2 + 1);
   for (const s of slots) {
     rr(s.x, s.y, s.w, s.h, 8);
     ctx.fillStyle = C.panel;
@@ -792,40 +878,42 @@ function drawHud() {
     ctx.strokeStyle = selected === s.id ? C.ok : C.brass;
     ctx.stroke();
     const ic = pic(s.icon);
-    if (ic) ctx.drawImage(ic, s.x + 6, s.y + 6, s.w - 12, s.h - 12);
+    const m = 6 * U();
+    if (ic) ctx.drawImage(ic, s.x + m, s.y + m, s.w - 2 * m, s.h - 2 * m);
   }
   if (quiet) return;
-  button(HUD.hint, T.hint_btn, hoverHud === "hint", { stroke: hoverHud === "hint" ? "#b8d4f0" : C.steel, color: "#d6e6f5" });
-  button(HUD.docs, T.docs_btn, hoverHud === "docs");
-  button(HUD.menu, T.menu_btn, hoverHud === "menu");
+  button(hud().hint, T.hint_btn, hoverHud === "hint", { stroke: hoverHud === "hint" ? "#b8d4f0" : C.steel, color: "#d6e6f5" });
+  button(hud().docs, T.docs_btn, hoverHud === "docs");
+  button(hud().menu, T.menu_btn, hoverHud === "menu");
   // Подсветка зон (пробел или кнопка). Замечание автора 02.11.2026: «вплоть до 4 акта не заметил
   // указателей зон» — у подсветки нет своей кнопки, о пробеле игрок не знал. Включена — кнопка горит.
-  button(HUD.zones, T.zones_btn, hoverHud === "zones" || showZones,
+  button(hud().zones, T.zones_btn, hoverHud === "zones" || showZones,
     showZones ? { stroke: C.brassHi, color: C.brassHi } : {});
-  if (data.views[st.view].parent) button(HUD.back, T.back.toUpperCase(), hoverHud === "back", { font: '700 30px "PT Sans"' });
+  if (data.views[st.view].parent) button(hud().back, T.back.toUpperCase(), hoverHud === "back", { font: fnt(700, 30) });
 }
 
 // Переходы видны всегда (разбор автора 16.10.2026: «неочевидно, как выйти и вернуться назад»):
 // у каждой зоны-перехода — табличка со стрелкой и названием места.
 function drawExits() {
   if (frame || endCard || busy || dialog.active() || reader.active()) return;
-  ctx.font = '700 24px "PT Sans"';
-  const invRight = INV.x + invSlots().length * INV.gap;
+  ctx.font = fnt(700, 24);
+  const invRight = inv().x + invSlots().length * inv().gap;
   for (const z of visibleZones()) {
     if ((z.cursor !== "move" && !z.props.includes("выход")) || (hover && hover.zone === z)) continue;
     const box = z.layer ? [z.layer.x, z.layer.y, z.layer.w || 100, z.layer.h || 100] : z.rects[0];
     const tw = ctx.measureText(z.name).width;
-    const w = tw + 58;
-    const h = 42;
+    const u = U();
+    const w = tw + 58 * u;
+    const h = Math.round(42 * u);
     const x = Math.max(8, Math.min(W - w - 8, box[0] + box[2] / 2 - w / 2));
     // у края экрана (проход сбоку) метка — в верхней части зоны: по центру её закрывают
     // люди перед проходом (Изольда перед служебным коридором вестибюля)
     const edge = box[0] <= 10 || box[0] + box[2] >= W - 10;
     const cy = edge ? box[1] + box[3] * 0.2 : box[1] + box[3] / 2;
-    let y = Math.max(76, Math.min(H - h - 8, cy - h / 2));
+    let y = Math.max(inv().y, Math.min(H - h - 8, cy - h / 2));
     // не на ряд «При себе» (иконки 76–156 слева)
-    if (y < INV.y + INV.size + 12 && x < invRight + 8) y = INV.y + INV.size + 12;
-    rr(x, y, w, h, 21);
+    if (y < inv().y + inv().size + 12 && x < invRight + 8) y = inv().y + inv().size + 12;
+    rr(x, y, w, h, h / 2);
     ctx.fillStyle = "rgba(13, 15, 23, 0.78)";
     ctx.fill();
     ctx.lineWidth = 2;
@@ -833,23 +921,23 @@ function drawExits() {
     ctx.stroke();
     // стрелка-шеврон
     ctx.beginPath();
-    ctx.moveTo(x + 16, y + 12);
-    ctx.lineTo(x + 28, y + 21);
-    ctx.lineTo(x + 16, y + 30);
-    ctx.lineWidth = 4;
+    ctx.moveTo(x + 16 * u, y + 12 * u);
+    ctx.lineTo(x + 28 * u, y + 21 * u);
+    ctx.lineTo(x + 16 * u, y + 30 * u);
+    ctx.lineWidth = 4 * u;
     ctx.strokeStyle = C.brassHi;
     ctx.stroke();
     ctx.fillStyle = C.text;
     ctx.textAlign = "left";
     ctx.textBaseline = "middle";
-    ctx.fillText(z.name, x + 40, y + h / 2 + 1);
+    ctx.fillText(z.name, x + 40 * u, y + h / 2 + 1);
   }
 }
 
 function drawHover() {
-  if (!hover || busy || verbMenu || choice || dialog.active()) return;
+  if (!hover || touchMode || busy || verbMenu || choice || dialog.active()) return;
   const text = hover.zone.name;
-  ctx.font = '700 28px "PT Sans"';
+  ctx.font = fnt(700, 28);
   const w = ctx.measureText(text).width + 28;
   const x = Math.min(W - w - 10, hover.p.x + 28);
   const y = Math.min(H - 60, hover.p.y + 30);
@@ -869,7 +957,7 @@ function drawVerbMenu() {
   if (!verbMenu) return;
   const rects = menuRects(verbMenu.items, verbMenu.x, verbMenu.y);
   const p = lastPointer;
-  ctx.font = '700 26px "PT Sans"';
+  ctx.font = fnt(700, 26);
   const t = verbMenu.title;
   const r0 = rects[0];
   ctx.fillStyle = C.brassHi;
@@ -877,37 +965,38 @@ function drawVerbMenu() {
   ctx.textBaseline = "alphabetic";
   ctx.lineWidth = 6;
   ctx.strokeStyle = "rgba(0,0,0,0.85)";
-  ctx.strokeText(t, r0.x + 6, r0.y - 12);
-  ctx.fillText(t, r0.x + 6, r0.y - 12);
-  rects.forEach((r) => button(r, r.label, inRect(p, r), { align: "left", font: '400 30px "PT Sans"' }));
+  ctx.strokeText(t, r0.x + 6, r0.y - 12 * U());
+  ctx.fillText(t, r0.x + 6, r0.y - 12 * U());
+  rects.forEach((r) => button(r, r.label, inRect(p, r), { align: "left", font: fnt(400, 30) }));
 }
 
 function drawChoice() {
   if (!choice) return;
   ctx.fillStyle = "rgba(0, 0, 0, 0.45)";
   ctx.fillRect(0, 0, W, H);
-  choiceRects().forEach((r) => button(r, r.label, inRect(lastPointer, r), { align: "left", font: '400 32px "PT Sans"' }));
+  choiceRects().forEach((r) => button(r, r.label, inRect(lastPointer, r), { align: "left", font: fnt(400, 32) }));
 }
 
 function drawPause() {
   if (!pause) return;
   ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
   ctx.fillRect(0, 0, W, H);
-  rr(620, 220, 680, 560, 14);
+  const P = pausePanel();
+  rr(P.x, P.y, P.w, P.h, 14);
   ctx.fillStyle = C.panel;
   ctx.fill();
   ctx.lineWidth = 2;
   ctx.strokeStyle = C.brass;
   ctx.stroke();
-  ctx.font = '700 44px "PT Sans"';
+  ctx.font = fnt(700, 44);
   ctx.fillStyle = C.brassHi;
   ctx.textAlign = "center";
   ctx.textBaseline = "alphabetic";
-  ctx.fillText(T.pause, W / 2, 290);
+  ctx.fillText(T.pause, W / 2, P.y + 70 * U());
   const s = settingsHook("get") || {};
   for (const r of pauseRects()) {
     const lab = r.toggle ? `${r.label}: ${s[r.toggle] ? "да" : "нет"}` : r.label;
-    button(r, lab, inRect(lastPointer, r), { font: '400 32px "PT Sans"' });
+    button(r, lab, inRect(lastPointer, r), { font: fnt(400, 32) });
   }
 }
 
@@ -915,36 +1004,57 @@ function drawDocs() {
   if (!docsPanel) return;
   ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
   ctx.fillRect(0, 0, W, H);
-  rr(420, 100, 1080, 880, 14);
+  const P = docsPanelRect();
+  rr(P.x, P.y, P.w, P.h, 14);
   ctx.fillStyle = C.panel;
   ctx.fill();
   ctx.lineWidth = 2;
   ctx.strokeStyle = C.brass;
   ctx.stroke();
-  ctx.font = '700 40px "PT Sans"';
+  ctx.font = fnt(700, 40);
   ctx.fillStyle = C.brassHi;
   ctx.textAlign = "center";
   ctx.textBaseline = "alphabetic";
-  ctx.fillText(T.docs_title, W / 2, 165);
+  ctx.fillText(T.docs_title, W / 2, P.y + 70 * U());
   const rs = docsRects();
   if (!rs.length) {
-    ctx.font = '400 30px "PT Sans"';
+    ctx.font = fnt(400, 30);
     ctx.fillStyle = C.dim;
-    ctx.fillText(T.docs_empty, W / 2, 300);
+    ctx.fillText(T.docs_empty, W / 2, P.y + 200 * U());
   }
-  rs.forEach((r) => button(r, r.label, inRect(lastPointer, r), { align: "left", font: '400 28px "PT Sans"' }));
+  const arrows = docsArrows();
+  arrows.forEach((r) => button(r, r.label, inRect(lastPointer, r), { font: fnt(700, 52) }));
+  if (arrows.length) {
+    ctx.font = fnt(400, 28);
+    ctx.fillStyle = C.dim;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    const page = Math.min(docsPanel.page || 0, docsPages() - 1) + 1;
+    ctx.fillText((T.reader_page || "%d / %d").replace("%d", page).replace("%d", docsPages()), W / 2, arrows[0].y + arrows[0].h / 2);
+  }
+  rs.forEach((r) => button(r, r.label, inRect(lastPointer, r), { align: "left", font: fnt(400, 28) }));
 }
 
-const END_BTN = { x: 760, y: 600, w: 400, h: 72 };
+function endBtn() {
+  const u = U();
+  const w = Math.round(400 * u);
+  const h = Math.round(72 * u);
+  return { x: (W - w) / 2, y: 600, w, h };
+}
 // Финал игры: одна большая картинка (Лапидус, Изольда, Кухтулху, отель), поверх — «Конец»,
 // счёт секретов и кнопка (решение автора 02.11.2026). Секреты — три реликвии трёх эпох (GDD §11).
 const END_ART = "frames/fr_epi_end";
 const END_LOGO = "ui/logo_end";   // «КОНЕЦ» латунью, как «ГИДРОУДАР» на титуле (замечание автора 02.11.2026)
 const RELICS = ["relic_r1", "relic_r2", "relic_r3"];
-const END_BTN_LAST = { x: 1460, y: 980, w: 400, h: 72 };
+function endBtnLast() {
+  const u = U();
+  const w = Math.round(400 * u);
+  const h = Math.round(72 * u);
+  return { x: W - 60 - w, y: H - 28 - h, w, h };
+}
 
 function endButton() {
-  return endCard && endCard.last ? END_BTN_LAST : END_BTN;
+  return endCard && endCard.last ? endBtnLast() : endBtn();
 }
 
 function drawFinale() {
@@ -960,16 +1070,17 @@ function drawFinale() {
   } else {
     ctx.textAlign = "center";
     ctx.textBaseline = "alphabetic";
-    ctx.font = '700 132px "PT Sans"';
+    ctx.font = fnt(700, 132);
     ctx.fillStyle = C.brassHi;
     ctx.fillText(T.the_end_big || T.the_end || "", W / 2, 190);
   }
   // счёт секретов — плашкой внизу слева
   const all = endCard.found >= RELICS.length;
   const line = all ? T.secrets_all : (T.secrets_found || "").replace("%d", endCard.found).replace("%d", RELICS.length);
-  ctx.font = '700 36px "PT Sans"';
-  const w = ctx.measureText(line).width + 64;
-  rr(60, 980, w, 72, 14);
+  ctx.font = fnt(700, 36);
+  const eb = endBtnLast();
+  const w = ctx.measureText(line).width + 64 * U();
+  rr(60, eb.y, w, eb.h, 14);
   ctx.fillStyle = "rgba(13, 15, 23, 0.82)";
   ctx.fill();
   ctx.lineWidth = 3;
@@ -978,8 +1089,8 @@ function drawFinale() {
   ctx.fillStyle = all ? C.brassHi : C.text;
   ctx.textAlign = "left";
   ctx.textBaseline = "middle";
-  ctx.fillText(line, 92, 1017);
-  button(END_BTN_LAST, T.to_title, inRect(lastPointer, END_BTN_LAST), { font: '700 34px "PT Sans"' });
+  ctx.fillText(line, 60 + 32 * U(), eb.y + eb.h / 2 + 1);
+  button(eb, T.to_title, inRect(lastPointer, eb), { font: fnt(700, 34) });
 }
 
 function drawEnd() {
@@ -990,14 +1101,18 @@ function drawEnd() {
   if (endCard.last) { drawFinale(); return; }
   ctx.textAlign = "center";
   ctx.textBaseline = "alphabetic";
-  ctx.font = '400 36px "PT Sans"';
+  ctx.font = fnt(400, 36);
   ctx.fillStyle = C.text;
   ctx.fillText((endCard.last ? T.the_end : T.build_end) || "", W / 2, 470);
-  button(END_BTN, T.to_title, inRect(lastPointer, END_BTN), { font: '700 34px "PT Sans"' });
+  button(endBtn(), T.to_title, inRect(lastPointer, endBtn()), { font: fnt(700, 34) });
 }
 
+// Предмет в руке. Мышь — значок у курсора. У пальца курсора нет — плашка внизу: значок и
+// подсказка, что делать дальше.
 function drawSelected() {
-  if (!selected || !lastPointer) return;
+  if (!selected) return;
+  if (touchMode) { drawInHand(); return; }
+  if (!lastPointer) return;
   const it = data.items[selected];
   const ic = it && image(it.icon);
   if (ic) {
@@ -1005,6 +1120,53 @@ function drawSelected() {
     ctx.drawImage(ic, lastPointer.x + 14, lastPointer.y + 14, 72, 72);
     ctx.globalAlpha = 1;
   }
+}
+
+function drawInHand() {
+  if (busy || dialog.active() || reader.active() || verbMenu || choice || pause || docsPanel) return;
+  const it = data.items[selected];
+  const ic = it && image(it.icon);
+  const u = U();
+  const text = T.item_in_hand || "Коснитесь, к чему применить. Коснитесь предмета ещё раз — убрать.";
+  ctx.font = fnt(400, 28);
+  const s = Math.round(64 * u);
+  const w = ctx.measureText(text).width + s + 60 * u;
+  const h = s + 20 * u;
+  const x = (W - w) / 2;
+  const y = (data.views[st.view].parent ? hud().back.y : H - 12) - h - 14 * u;
+  rr(x, y, w, h, 12);
+  ctx.fillStyle = "rgba(13, 15, 23, 0.9)";
+  ctx.fill();
+  ctx.lineWidth = 3;
+  ctx.strokeStyle = C.ok;
+  ctx.stroke();
+  if (ic) ctx.drawImage(ic, x + 18 * u, y + 10 * u, s, s);
+  ctx.fillStyle = C.text;
+  ctx.textAlign = "left";
+  ctx.textBaseline = "middle";
+  ctx.fillText(text, x + s + 36 * u, y + h / 2 + 1);
+}
+
+// «Назад» Telegram, жест «назад» Android, кнопка «назад» браузера — как Esc (main.js, platform.js).
+// Есть ли куда возвращаться: закрыть открытое, убрать предмет из руки, выйти из крупного плана.
+export function canEscape() {
+  if (!data || !st || endCard) return false;
+  return !!(reader.active() || docsPanel || pause || verbMenu || (choice && choice.closable) || selected ||
+    (data.views[st.view] && data.views[st.view].parent));
+}
+export function escape() {
+  return key({ key: "Escape" });
+}
+
+// Пальцы для читалки бумаг: щипок и сдвиг увеличенного листа (main.js шлёт сырые касания).
+export function touchDown(e, n) {
+  if (reader.active()) reader.touchDown(e, n);
+}
+export function touchMove(e) {
+  if (reader.active()) reader.touchMove(e);
+}
+export function touchUp(e, n) {
+  if (reader.active()) reader.touchUp(e, n);
 }
 
 export function draw() {
@@ -1036,7 +1198,7 @@ export function debug() {
     items: invSlots().map((s) => ({ id: s.id, at: [s.x + s.w / 2, s.y + s.h / 2] })),
     menuItems: verbMenu ? menuRects(verbMenu.items, verbMenu.x, verbMenu.y).map((r) => ({ verb: r.verb, at: [r.x + r.w / 2, r.y + r.h / 2] }))
       : choice ? choiceRects().map((r) => ({ id: r.id, at: [r.x + r.w / 2, r.y + r.h / 2] })) : null,
-    hud: { hint: center(HUD.hint), docs: center(HUD.docs), back: center(HUD.back), end: center(endButton()) },
+    hud: { hint: center(hud().hint), docs: center(hud().docs), back: center(hud().back), end: center(endButton()) },
     log: log.slice(),
     n: { ...st.n }, hint: { ...st.hint },
   };
@@ -1044,6 +1206,17 @@ export function debug() {
 
 function center(r) {
   return [r.x + r.w / 2, r.y + r.h / 2];
+}
+
+// Точка занята интерфейсом (кнопки, «Назад», «При себе») — щелчок уйдёт ему, а не зоне под ним.
+// На телефоне интерфейс крупнее и закрывает края кадра больше, чем на компьютере.
+function uiAt(p) {
+  const h = hud();
+  for (const [k, r] of Object.entries(h)) {
+    if (k === "back" && !data.views[st.view].parent) continue;
+    if (inRect(p, r)) return true;
+  }
+  return invSlots().some((sl) => inRect(p, sl));
 }
 
 // Точка, где щелчок действительно попадает в зону (её не перекрывает зона поверх): от центра
@@ -1057,7 +1230,7 @@ function clickPoint(z) {
       for (let a = 0; a < 16; a++) {
         const p = { x: cx + Math.cos((a / 16) * 2 * Math.PI) * r, y: cy + Math.sin((a / 16) * 2 * Math.PI) * r };
         if (p.x < x || p.y < y || p.x >= x + w || p.y >= y + h) continue;
-        if (zoneAt(p) === z) return [Math.round(p.x), Math.round(p.y)];
+        if (zoneAt(p) === z && !uiAt(p)) return [Math.round(p.x), Math.round(p.y)];
         if (r === 0) break;
       }
     }

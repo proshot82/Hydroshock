@@ -4,6 +4,7 @@
 // Хранилище — браузер; две копии (основная и запасная), как atomic_write + .bak в BJ2.
 
 import * as store from "./store.js";
+import * as cloud from "./cloud.js";
 
 export const SAVE_VERSION = 1;
 
@@ -53,10 +54,17 @@ export class State {
 }
 
 // Записать партию: прежняя основная копия становится запасной.
+// Время записи (save.t) — чтобы при запуске в Telegram выбрать более позднюю копию: местную или
+// облачную (cloud.js).
 export function save(state) {
   const prev = store.read("save");
   if (prev) store.write("save.bak", prev);
-  return store.write("save", state.toJSON());
+  const json = state.toJSON();
+  const t = Date.now();
+  const ok = store.write("save", json);
+  store.write("save.t", t);
+  cloud.push(t, json);
+  return ok;
 }
 
 // Прочитать партию: основная, при порче — запасная. {state, restored} или null.
@@ -74,6 +82,9 @@ export function load(knownFlagsByAct) {
 }
 
 export function clear() {
+  const t = Date.now();
   store.write("save", null);
   store.write("save.bak", null);
+  store.write("save.t", t);
+  cloud.push(t, null);
 }

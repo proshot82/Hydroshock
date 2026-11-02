@@ -4,7 +4,7 @@
 // влезает; первая строка — своим шрифтом (заголовок), пустая строка — полуинтервал,
 // [оттиск] / [печать отеля] / [отпечатокъ пальца] — картинка оттиска справа.
 
-import { ctx, W, H } from "./view.js";
+import { ctx, W, H, uiScale, toWorld } from "./view.js";
 import { image, loadImage } from "./assets.js";
 import * as plans from "./plans.js";
 
@@ -14,6 +14,115 @@ const DY = 40;
 
 let cur = null;      // {doc, data, layout}
 let doneCb = null;
+let touchMode = false;
+let hints = {};      // подписи «закрыть» для мыши и пальца (data/ui.json)
+
+// Увеличение пальцем (на телефоне лист мелкий): два касания — крупнее в этой точке / обратно,
+// щипок — плавно, палец по увеличенному листу — сдвиг. Мышь: щелчок закрывает, как раньше.
+// Мир → экран листа: q' = q·k + o. Лист не уезжает: его края не заходят внутрь своего места.
+const ZMAX = 3;
+const ZDOUBLE = 1.6;
+const TAP2 = 300;    // мс: второе касание
+let zoom = { k: 1, ox: 0, oy: 0 };
+let pendingTap = null;   // {p, timer}
+const fingers = new Map();   // pointerId → точка мира
+let pinch = null;            // {d0, k0, ox0, oy0, c0}
+let pan = null;              // {p0, ox0, oy0}
+
+export function setHints(ui) {
+  hints = { click: ui.close_click, zoom: ui.close_touch_zoom, zoomed: ui.zoomed_touch };
+}
+export function setTouch(v) {
+  touchMode = !!v;
+}
+
+function clampZoom() {
+  const k = zoom.k;
+  const lo = (a, len) => a + len - (a + len) * k;
+  const hi = (a) => a - a * k;
+  zoom.ox = Math.max(lo(DX, 1400), Math.min(hi(DX), zoom.ox));
+  zoom.oy = Math.max(lo(DY, 980), Math.min(hi(DY), zoom.oy));
+}
+
+function zoomAt(f, px, py) {
+  const k = Math.max(1, Math.min(ZMAX, zoom.k * f));
+  const g = k / zoom.k;
+  zoom = { k, ox: (zoom.ox - px) * g + px, oy: (zoom.oy - py) * g + py };
+  if (zoom.k < 1.04) zoom = { k: 1, ox: 0, oy: 0 };
+  clampZoom();
+}
+
+function resetZoom() {
+  zoom = { k: 1, ox: 0, oy: 0 };
+  if (pendingTap) clearTimeout(pendingTap.timer);
+  pendingTap = null;
+  fingers.clear();
+  pinch = null;
+  pan = null;
+}
+
+// Касание пальцем (game.js): одно — ждём второе; два подряд — увеличить/вернуть; одно без
+// второго — закрыть (или вернуть масштаб, если лист увеличен).
+export function tap(p) {
+  if (!cur || !p) return;
+  if (pendingTap && Math.hypot(p.x - pendingTap.p.x, p.y - pendingTap.p.y) < 120) {
+    clearTimeout(pendingTap.timer);
+    pendingTap = null;
+    if (zoom.k > 1) zoom = { k: 1, ox: 0, oy: 0 };
+    else zoomAt(ZDOUBLE, p.x, p.y);
+    return;
+  }
+  if (pendingTap) clearTimeout(pendingTap.timer);
+  pendingTap = {
+    p,
+    timer: setTimeout(() => {
+      pendingTap = null;
+      if (zoom.k > 1) zoom = { k: 1, ox: 0, oy: 0 };
+      else close();
+    }, TAP2),
+  };
+}
+
+const worldOf = (e) => toWorld(e.clientX, e.clientY, true);
+
+export function touchDown(e, n) {
+  fingers.set(e.pointerId, worldOf(e));
+  if (n === 2) {
+    const [a, b] = [...fingers.values()];
+    pinch = { d0: Math.hypot(a.x - b.x, a.y - b.y) || 1, k0: zoom.k, ox0: zoom.ox, oy0: zoom.oy, c0: { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 } };
+    pan = null;
+    if (pendingTap) { clearTimeout(pendingTap.timer); pendingTap = null; }
+  } else if (n === 1 && zoom.k > 1) {
+    pan = { p0: worldOf(e), ox0: zoom.ox, oy0: zoom.oy };
+  }
+}
+
+export function touchMove(e) {
+  if (!fingers.has(e.pointerId)) return;
+  fingers.set(e.pointerId, worldOf(e));
+  if (pinch && fingers.size >= 2) {
+    const [a, b] = [...fingers.values()];
+    const d = Math.hypot(a.x - b.x, a.y - b.y);
+    const c = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+    zoom = { k: pinch.k0, ox: pinch.ox0 + (c.x - pinch.c0.x), oy: pinch.oy0 + (c.y - pinch.c0.y) };
+    zoomAt(d / pinch.d0, c.x, c.y);
+  } else if (pan) {
+    const p = worldOf(e);
+    zoom.ox = pan.ox0 + (p.x - pan.p0.x);
+    zoom.oy = pan.oy0 + (p.y - pan.p0.y);
+    clampZoom();
+  }
+}
+
+export function touchUp(e, n) {
+  fingers.delete(e.pointerId);
+  if (n < 2) pinch = null;
+  if (n === 0) pan = null;
+}
+
+export function zoomLevel() {
+  return zoom.k;
+}
 
 function font(f, size) {
   return `${f[1]} ${size}px "${f[0]}"`;
@@ -154,6 +263,7 @@ export function open(docId, data) {
     if (d.plan) loadImage(d.plan.img).catch(() => {});
     Object.values(MARKS).forEach((m) => loadImage(m).catch(() => {}));
     cur = { doc: docId, d, parts: null, spread: null };
+    resetZoom();
     doneCb = resolve;
   });
 }
@@ -169,6 +279,7 @@ export function currentDoc() {
 export function close() {
   if (!cur) return false;
   cur = null;
+  resetZoom();
   const cb = doneCb;
   doneCb = null;
   if (cb) cb();
@@ -191,11 +302,20 @@ function drawPlan(bg) {
 }
 
 function hintClose() {
-  ctx.font = '400 24px "PT Sans"';
+  ctx.restore();   // подпись — вне увеличения (draw() начал его)
+  const u = uiScale();
+  ctx.font = `400 ${Math.round(24 * u)}px "PT Sans"`;
   ctx.fillStyle = "#a6a194";
   ctx.textAlign = "center";
   ctx.textBaseline = "alphabetic";
-  ctx.fillText("Щелчок — закрыть", W / 2, H - 12);
+  const t = !touchMode ? hints.click || "Щелчок — закрыть"
+    : zoom.k > 1 ? hints.zoomed || "Коснитесь — уменьшить" : hints.zoom || "Коснитесь — закрыть · два касания — крупнее";
+  // подпись на подложке: при увеличении лист заходит под неё
+  const w = ctx.measureText(t).width + 30 * u;
+  ctx.fillStyle = "rgba(0, 0, 0, 0.72)";
+  ctx.fillRect((W - w) / 2, H - 40 * u, w, 40 * u);
+  ctx.fillStyle = "#a6a194";
+  ctx.fillText(t, W / 2, H - 12 * u);
 }
 
 export function draw() {
@@ -204,6 +324,8 @@ export function draw() {
   ctx.fillRect(0, 0, W, H);
   const bg = image(cur.d.carrier);
   if (!bg) return;
+  ctx.save();   // увеличение листа; снимает hintClose()
+  ctx.transform(zoom.k, 0, 0, zoom.k, zoom.ox, zoom.oy);
   if (cur.d.plan) { drawPlan(bg); return; }
   if (cur.d.field && cur.d.field.spine) {
     if (!cur.spread) cur.spread = buildSpread(cur.d);

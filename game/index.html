@@ -9,11 +9,17 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Гидроудар">
 <title>Латунный янычар: Гидроудар</title>
 <link rel="icon" href="assets/gfx/ui/icon_512.webp">
+<link rel="apple-touch-icon" href="assets/gfx/ui/icon_180.png">
+<link rel="manifest" href="manifest.webmanifest">
 <link rel="stylesheet" href="css/game.css">
 </head>
 <body>
@@ -24,7 +30,9 @@
     <div class="bar" aria-hidden="true"><div id="bar-fill"></div></div>
     <p id="status">Загрузка…</p>
     <button id="play" type="button" disabled>Играть</button>
-    <p class="note">Игра сохраняется сама — в этом браузере на этом устройстве.</p>
+    <p class="tip" id="tip-input"></p>
+    <p class="tip" id="tip-home"></p>
+    <p class="note" id="note-save">Игра сохраняется сама — в этом браузере на этом устройстве.</p>
   </div>
 </div>
 <script type="module" src="js/main.js"></script>
