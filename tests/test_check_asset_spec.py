@@ -37,7 +37,7 @@ class TestAssetSpec(unittest.TestCase):
     def test_live_spec_clean(self):
         code, out = run(SPEC)
         self.assertEqual(code, 0, out)
-        self.assertIn("кадров слотов 73", out)
+        self.assertIn("кадров слотов 75", out)  # +END.anc в Актах I и IV (решение автора 02.11.2026)
         self.assertIn("документов 41", out)
         self.assertIn("эмоций 29", out)   # 02.11.2026: + kuh_tentacle (решение автора)
 
