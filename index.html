@@ -1,0 +1,32 @@
+<!doctype html>
+<!--
+  Оболочка браузерной версии «Гидроудара» (движок Б — решение автора 13.10.2026).
+  Исходник: game/index.html. Сборка — python tools/web/build_web.py → dist/web/
+  (картинки в WebP, манифест, тексты интерфейса). Собранное руками не править.
+  Карточка #shell — загрузка и кнопка «Играть»: звук в браузере разрешён только
+  после нажатия игрока, поэтому игра (и музыка титула) начинается с этого нажатия.
+-->
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#000000">
+<title>Латунный янычар: Гидроудар</title>
+<link rel="icon" href="assets/gfx/ui/icon_512.webp">
+<link rel="stylesheet" href="css/game.css">
+</head>
+<body>
+<canvas id="game" aria-label="Игра «Латунный янычар: Гидроудар»"></canvas>
+<div id="shell">
+  <div class="card">
+    <img class="card-logo" src="assets/gfx/ui/logo_title.webp" alt="Латунный янычар: Гидроудар">
+    <div class="bar" aria-hidden="true"><div id="bar-fill"></div></div>
+    <p id="status">Загрузка…</p>
+    <button id="play" type="button" disabled>Играть</button>
+    <p class="note">Игра сохраняется сама — в этом браузере на этом устройстве.</p>
+  </div>
+</div>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

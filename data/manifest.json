@@ -1,0 +1,602 @@
+{
+ "build": "02.11.2026 20:21 UTC · 3061881",
+ "gfx": {
+  "cursors/cursor_act": "cursors/cursor_act.png",
+  "cursors/cursor_move": "cursors/cursor_move.png",
+  "cursors/cursor_normal": "cursors/cursor_normal.png",
+  "cursors/cursor_zoom": "cursors/cursor_zoom.png",
+  "cutouts/ov_skirt": "cutouts/ov_skirt.webp",
+  "cutouts/ov_skirt_dark": "cutouts/ov_skirt_dark.webp",
+  "cutouts/ov_skirt_open": "cutouts/ov_skirt_open.webp",
+  "cutouts/st_cu_z04_forms_stapled": "cutouts/st_cu_z04_forms_stapled.webp",
+  "cutouts/st_fr_a3_under_arrive_tentacles": "cutouts/st_fr_a3_under_arrive_tentacles.webp",
+  "cutouts/st_w1_cistern_open": "cutouts/st_w1_cistern_open.webp",
+  "cutouts/st_w1_juice_empty": "cutouts/st_w1_juice_empty.webp",
+  "cutouts/st_w1_menu": "cutouts/st_w1_menu.webp",
+  "cutouts/st_w1_plunger": "cutouts/st_w1_plunger.webp",
+  "cutouts/st_w1_trolley": "cutouts/st_w1_trolley.webp",
+  "cutouts/st_w1_trolley_folded": "cutouts/st_w1_trolley_folded.webp",
+  "cutouts/st_w2_cascade_on": "cutouts/st_w2_cascade_on.webp",
+  "cutouts/st_w2_complaints": "cutouts/st_w2_complaints.webp",
+  "cutouts/st_w2_folder": "cutouts/st_w2_folder.webp",
+  "cutouts/st_w2_forms1": "cutouts/st_w2_forms1.webp",
+  "cutouts/st_w2_forms3": "cutouts/st_w2_forms3.webp",
+  "cutouts/st_w2_iz": "cutouts/st_w2_iz.webp",
+  "cutouts/st_w2_iz_mic": "cutouts/st_w2_iz_mic.webp",
+  "cutouts/st_w2_kefir": "cutouts/st_w2_kefir.webp",
+  "cutouts/st_w2_lowdrawer_open": "cutouts/st_w2_lowdrawer_open.webp",
+  "cutouts/st_w2_map": "cutouts/st_w2_map.webp",
+  "cutouts/st_w2_pump_lamp": "cutouts/st_w2_pump_lamp.webp",
+  "cutouts/st_w2_trolley": "cutouts/st_w2_trolley.webp",
+  "cutouts/st_w2_tt_key": "cutouts/st_w2_tt_key.webp",
+  "cutouts/st_w2_tt_mug": "cutouts/st_w2_tt_mug.webp",
+  "cutouts/st_w2_tt_payment": "cutouts/st_w2_tt_payment.webp",
+  "cutouts/st_w2_vitrine_open": "cutouts/st_w2_vitrine_open.webp",
+  "cutouts/st_w2u_crowd": "cutouts/st_w2u_crowd.webp",
+  "cutouts/st_w2u_gate_open": "cutouts/st_w2u_gate_open.webp",
+  "cutouts/st_w2u_parted": "cutouts/st_w2u_parted.webp",
+  "cutouts/st_w3_cabinet_open": "cutouts/st_w3_cabinet_open.webp",
+  "cutouts/st_w4_board_floor": "cutouts/st_w4_board_floor.webp",
+  "cutouts/st_w4_cabin_empty": "cutouts/st_w4_cabin_empty.webp",
+  "cutouts/st_w4_cabin_full": "cutouts/st_w4_cabin_full.webp",
+  "cutouts/st_w4_design": "cutouts/st_w4_design.webp",
+  "cutouts/st_w4_design_board": "cutouts/st_w4_design_board.webp",
+  "cutouts/st_w4_films": "cutouts/st_w4_films.webp",
+  "cutouts/st_w4_mirror": "cutouts/st_w4_mirror.webp",
+  "cutouts/st_w4_mirror_aside": "cutouts/st_w4_mirror_aside.webp",
+  "cutouts/st_w4_plate": "cutouts/st_w4_plate.webp",
+  "cutouts/st_w4_ramp": "cutouts/st_w4_ramp.webp",
+  "cutouts/st_w4_source_water": "cutouts/st_w4_source_water.webp",
+  "cutouts/st_w4_stairs_open": "cutouts/st_w4_stairs_open.webp",
+  "cutouts/st_w4_trolley_hall": "cutouts/st_w4_trolley_hall.webp",
+  "cutouts/st_w4_trolley_stairs": "cutouts/st_w4_trolley_stairs.webp",
+  "cutouts/st_w4_tt_marked": "cutouts/st_w4_tt_marked.webp",
+  "cutouts/st_w4_tt_payment": "cutouts/st_w4_tt_payment.webp",
+  "cutouts/st_w4_tt_returned": "cutouts/st_w4_tt_returned.webp",
+  "cutouts/st_w4_tt_water": "cutouts/st_w4_tt_water.webp",
+  "cutouts/st_w4_tube_photo": "cutouts/st_w4_tube_photo.webp",
+  "cutouts/st_w4_water_bottle": "cutouts/st_w4_water_bottle.webp",
+  "cutouts/st_w5_door_office": "cutouts/st_w5_door_office.webp",
+  "cutouts/st_w5_goods": "cutouts/st_w5_goods.webp",
+  "cutouts/st_w5_kuh": "cutouts/st_w5_kuh.webp",
+  "cutouts/st_w5_mark": "cutouts/st_w5_mark.webp",
+  "cutouts/st_w5_trolley": "cutouts/st_w5_trolley.webp",
+  "cutouts/st_w5_water": "cutouts/st_w5_water.webp",
+  "cutouts/st_w5u_reach": "cutouts/st_w5u_reach.webp",
+  "cutouts/st_w5u_tentacles": "cutouts/st_w5u_tentacles.webp",
+  "cutouts/st_w6_kuh": "cutouts/st_w6_kuh.webp",
+  "cutouts/st_w6_kuh_aside": "cutouts/st_w6_kuh_aside.webp",
+  "cutouts/st_w6_needle_up": "cutouts/st_w6_needle_up.webp",
+  "cutouts/st_w6_seal": "cutouts/st_w6_seal.webp",
+  "cutouts/st_w6_water": "cutouts/st_w6_water.webp",
+  "cutouts/st_z01_head_running": "cutouts/st_z01_head_running.webp",
+  "cutouts/st_z01_plunger": "cutouts/st_z01_plunger.webp",
+  "cutouts/st_z02_kombucha_empty": "cutouts/st_z02_kombucha_empty.webp",
+  "cutouts/st_z02_lemonade_empty": "cutouts/st_z02_lemonade_empty.webp",
+  "cutouts/st_z02_menu": "cutouts/st_z02_menu.webp",
+  "cutouts/st_z02_mineral_empty": "cutouts/st_z02_mineral_empty.webp",
+  "cutouts/st_z02_voucher_soaked": "cutouts/st_z02_voucher_soaked.webp",
+  "cutouts/st_z03_juice_empty": "cutouts/st_z03_juice_empty.webp",
+  "cutouts/st_z03_skirt_open": "cutouts/st_z03_skirt_open.webp",
+  "cutouts/st_z03_skirt_open_folded": "cutouts/st_z03_skirt_open_folded.webp",
+  "cutouts/st_z03_stars_folded": "cutouts/st_z03_stars_folded.webp",
+  "cutouts/st_z04_bill_mp": "cutouts/st_z04_bill_mp.webp",
+  "cutouts/st_z04_bill_stamped": "cutouts/st_z04_bill_stamped.webp",
+  "cutouts/st_z04_complaints": "cutouts/st_z04_complaints.webp",
+  "cutouts/st_z04_drawer_kefir": "cutouts/st_z04_drawer_kefir.webp",
+  "cutouts/st_z04_folder": "cutouts/st_z04_folder.webp",
+  "cutouts/st_z04_forms1": "cutouts/st_z04_forms1.webp",
+  "cutouts/st_z04_forms3": "cutouts/st_z04_forms3.webp",
+  "cutouts/st_z04_iz_hand": "cutouts/st_z04_iz_hand.webp",
+  "cutouts/st_z04_iz_slap": "cutouts/st_z04_iz_slap.webp",
+  "cutouts/st_z04_kefir": "cutouts/st_z04_kefir.webp",
+  "cutouts/st_z04_lowdrawer_empty": "cutouts/st_z04_lowdrawer_empty.webp",
+  "cutouts/st_z04_lowdrawer_mug": "cutouts/st_z04_lowdrawer_mug.webp",
+  "cutouts/st_z04_map": "cutouts/st_z04_map.webp",
+  "cutouts/st_z04_pump_lamp": "cutouts/st_z04_pump_lamp.webp",
+  "cutouts/st_z05_open": "cutouts/st_z05_open.webp",
+  "cutouts/st_z05_palm": "cutouts/st_z05_palm.webp",
+  "cutouts/st_z05_ring": "cutouts/st_z05_ring.webp",
+  "cutouts/st_z05_tag": "cutouts/st_z05_tag.webp",
+  "cutouts/st_z05_tag_folded": "cutouts/st_z05_tag_folded.webp",
+  "cutouts/st_z06_blink": "cutouts/st_z06_blink.webp",
+  "cutouts/st_z06_spin": "cutouts/st_z06_spin.webp",
+  "cutouts/st_z08_inner_empty": "cutouts/st_z08_inner_empty.webp",
+  "cutouts/st_z08_inner_postcard": "cutouts/st_z08_inner_postcard.webp",
+  "cutouts/st_z09_flap_open": "cutouts/st_z09_flap_open.webp",
+  "cutouts/st_z09_plate": "cutouts/st_z09_plate.webp",
+  "cutouts/st_z09_stripes": "cutouts/st_z09_stripes.webp",
+  "cutouts/st_z10_bottle": "cutouts/st_z10_bottle.webp",
+  "cutouts/st_z10_photo": "cutouts/st_z10_photo.webp",
+  "cutouts/st_z10_tube_open": "cutouts/st_z10_tube_open.webp",
+  "cutouts/st_z11_board_floor": "cutouts/st_z11_board_floor.webp",
+  "cutouts/st_z11_cabin_empty": "cutouts/st_z11_cabin_empty.webp",
+  "cutouts/st_z11_cabin_full": "cutouts/st_z11_cabin_full.webp",
+  "cutouts/st_z11_finger_call": "cutouts/st_z11_finger_call.webp",
+  "cutouts/st_z11_finger_down": "cutouts/st_z11_finger_down.webp",
+  "cutouts/st_z11_hand_plunger": "cutouts/st_z11_hand_plunger.webp",
+  "cutouts/st_z11_lamp_off": "cutouts/st_z11_lamp_off.webp",
+  "cutouts/st_z11_mirror": "cutouts/st_z11_mirror.webp",
+  "cutouts/st_z11_mirror_aside": "cutouts/st_z11_mirror_aside.webp",
+  "cutouts/st_z11_ramp": "cutouts/st_z11_ramp.webp",
+  "cutouts/st_z11_trolley_marked": "cutouts/st_z11_trolley_marked.webp",
+  "cutouts/st_z11_trolley_returned": "cutouts/st_z11_trolley_returned.webp",
+  "cutouts/st_z11_trolley_stuck": "cutouts/st_z11_trolley_stuck.webp",
+  "cutouts/st_z11_trolley_water": "cutouts/st_z11_trolley_water.webp",
+  "cutouts/st_z12_door_open": "cutouts/st_z12_door_open.webp",
+  "cutouts/st_z13_hand_plunger": "cutouts/st_z13_hand_plunger.webp",
+  "cutouts/st_z13_hand_wheel": "cutouts/st_z13_hand_wheel.webp",
+  "cutouts/st_z13_mug": "cutouts/st_z13_mug.webp",
+  "cutouts/st_z13_needle_up": "cutouts/st_z13_needle_up.webp",
+  "cutouts/st_z13_postcard": "cutouts/st_z13_postcard.webp",
+  "cutouts/st_z13_seal": "cutouts/st_z13_seal.webp",
+  "cutouts/st_z13_seal_torn": "cutouts/st_z13_seal_torn.webp",
+  "cutouts/st_z13_spot_mug": "cutouts/st_z13_spot_mug.webp",
+  "cutouts/st_z13_spot_postcard": "cutouts/st_z13_spot_postcard.webp",
+  "cutouts/st_z13_spot_token": "cutouts/st_z13_spot_token.webp",
+  "cutouts/st_z13_tentacle": "cutouts/st_z13_tentacle.webp",
+  "cutouts/st_z13_token": "cutouts/st_z13_token.webp",
+  "docs/box_switch": "docs/box_switch.webp",
+  "docs/card_postcard": "docs/card_postcard.webp",
+  "docs/card_tent": "docs/card_tent.webp",
+  "docs/label_can": "docs/label_can.webp",
+  "docs/label_sticker": "docs/label_sticker.webp",
+  "docs/mark_plunger": "docs/mark_plunger.webp",
+  "docs/mark_soap": "docs/mark_soap.webp",
+  "docs/mark_thumb": "docs/mark_thumb.webp",
+  "docs/page_ledger": "docs/page_ledger.webp",
+  "docs/panel_pictograms": "docs/panel_pictograms.webp",
+  "docs/panel_post": "docs/panel_post.webp",
+  "docs/panel_steel": "docs/panel_steel.webp",
+  "docs/paper_1908": "docs/paper_1908.webp",
+  "docs/paper_hotel": "docs/paper_hotel.webp",
+  "docs/paper_kuh": "docs/paper_kuh.webp",
+  "docs/paper_laminated": "docs/paper_laminated.webp",
+  "docs/paper_lightbox": "docs/paper_lightbox.webp",
+  "docs/paper_note": "docs/paper_note.webp",
+  "docs/paper_office": "docs/paper_office.webp",
+  "docs/paper_regulation": "docs/paper_regulation.webp",
+  "docs/paper_soviet": "docs/paper_soviet.webp",
+  "docs/paper_union": "docs/paper_union.webp",
+  "docs/photo_family": "docs/photo_family.webp",
+  "docs/photo_thursday": "docs/photo_thursday.webp",
+  "docs/plan_1908": "docs/plan_1908.webp",
+  "docs/plan_hotel": "docs/plan_hotel.webp",
+  "docs/plan_soviet": "docs/plan_soviet.webp",
+  "docs/plaque_museum": "docs/plaque_museum.webp",
+  "docs/plate_brass": "docs/plate_brass.webp",
+  "docs/plate_enamel": "docs/plate_enamel.webp",
+  "docs/stamp_hotel": "docs/stamp_hotel.webp",
+  "docs/stamp_kuh": "docs/stamp_kuh.webp",
+  "docs/tag_exhibit": "docs/tag_exhibit.webp",
+  "docs/tag_seal": "docs/tag_seal.webp",
+  "docs/token_big": "docs/token_big.webp",
+  "docs/tray_porcelain": "docs/tray_porcelain.webp",
+  "frames/fr_a1_corridor": "frames/fr_a1_corridor.webp",
+  "frames/fr_a1_lift_close": "frames/fr_a1_lift_close.webp",
+  "frames/fr_a1_lift_panel": "frames/fr_a1_lift_panel.webp",
+  "frames/fr_a1_lobby_peek": "frames/fr_a1_lobby_peek.webp",
+  "frames/fr_a1_lobby_waiter": "frames/fr_a1_lobby_waiter.webp",
+  "frames/fr_a1_under_liftdoors": "frames/fr_a1_under_liftdoors.webp",
+  "frames/fr_a1_under_lobby": "frames/fr_a1_under_lobby.webp",
+  "frames/fr_a1_under_room": "frames/fr_a1_under_room.webp",
+  "frames/fr_a1_under_service": "frames/fr_a1_under_service.webp",
+  "frames/fr_a1_voucher": "frames/fr_a1_voucher.webp",
+  "frames/fr_a2_under_exhibit": "frames/fr_a2_under_exhibit.webp",
+  "frames/fr_a3_dark": "frames/fr_a3_dark.webp",
+  "frames/fr_a3_lobby_hush": "frames/fr_a3_lobby_hush.webp",
+  "frames/fr_a3_ride_under": "frames/fr_a3_ride_under.webp",
+  "frames/fr_a3_under_arrive": "frames/fr_a3_under_arrive.webp",
+  "frames/fr_a4_cascade_duck": "frames/fr_a4_cascade_duck.webp",
+  "frames/fr_epi_bath17": "frames/fr_epi_bath17.webp",
+  "frames/fr_epi_end": "frames/fr_epi_end.webp",
+  "frames/fr_epi_laundry": "frames/fr_epi_laundry.webp",
+  "frames/fr_epi_minibar": "frames/fr_epi_minibar.webp",
+  "icons/ic_bill": "icons/ic_bill.webp",
+  "icons/ic_key": "icons/ic_key.webp",
+  "icons/ic_map": "icons/ic_map.webp",
+  "icons/ic_menu": "icons/ic_menu.webp",
+  "icons/ic_menu_painted": "icons/ic_menu_painted.webp",
+  "icons/ic_mug": "icons/ic_mug.webp",
+  "icons/ic_plunger": "icons/ic_plunger.webp",
+  "icons/ic_postcard": "icons/ic_postcard.webp",
+  "icons/ic_token": "icons/ic_token.webp",
+  "portraits/port_anc_calm": "portraits/port_anc_calm.webp",
+  "portraits/port_anc_proud": "portraits/port_anc_proud.webp",
+  "portraits/port_anc_smug": "portraits/port_anc_smug.webp",
+  "portraits/port_anc_stern": "portraits/port_anc_stern.webp",
+  "portraits/port_iz_averted": "portraits/port_iz_averted.webp",
+  "portraits/port_iz_confess": "portraits/port_iz_confess.webp",
+  "portraits/port_iz_flustered": "portraits/port_iz_flustered.webp",
+  "portraits/port_iz_formal": "portraits/port_iz_formal.webp",
+  "portraits/port_iz_looks": "portraits/port_iz_looks.webp",
+  "portraits/port_iz_stern": "portraits/port_iz_stern.webp",
+  "portraits/port_iz_tired": "portraits/port_iz_tired.webp",
+  "portraits/port_kuh_ancient": "portraits/port_kuh_ancient.webp",
+  "portraits/port_kuh_dismissive": "portraits/port_kuh_dismissive.webp",
+  "portraits/port_kuh_displeased": "portraits/port_kuh_displeased.webp",
+  "portraits/port_kuh_formal": "portraits/port_kuh_formal.webp",
+  "portraits/port_kuh_looks": "portraits/port_kuh_looks.webp",
+  "portraits/port_kuh_nostalgic": "portraits/port_kuh_nostalgic.webp",
+  "portraits/port_kuh_satisfied": "portraits/port_kuh_satisfied.webp",
+  "portraits/port_kuh_tentacle": "portraits/port_kuh_tentacle.webp",
+  "portraits/port_lap_clean": "portraits/port_lap_clean.webp",
+  "portraits/port_lap_soap_angry": "portraits/port_lap_soap_angry.webp",
+  "portraits/port_lap_soap_angry_cap": "portraits/port_lap_soap_angry_cap.webp",
+  "portraits/port_lap_soap_angry_foam": "portraits/port_lap_soap_angry_foam.webp",
+  "portraits/port_lap_soap_ashamed": "portraits/port_lap_soap_ashamed.webp",
+  "portraits/port_lap_soap_ashamed_cap": "portraits/port_lap_soap_ashamed_cap.webp",
+  "portraits/port_lap_soap_ashamed_foam": "portraits/port_lap_soap_ashamed_foam.webp",
+  "portraits/port_lap_soap_inspired": "portraits/port_lap_soap_inspired.webp",
+  "portraits/port_lap_soap_inspired_cap": "portraits/port_lap_soap_inspired_cap.webp",
+  "portraits/port_lap_soap_inspired_foam": "portraits/port_lap_soap_inspired_foam.webp",
+  "portraits/port_lap_soap_neutral": "portraits/port_lap_soap_neutral.webp",
+  "portraits/port_lap_soap_neutral_cap": "portraits/port_lap_soap_neutral_cap.webp",
+  "portraits/port_lap_soap_neutral_foam": "portraits/port_lap_soap_neutral_foam.webp",
+  "portraits/port_lap_soap_panic": "portraits/port_lap_soap_panic.webp",
+  "portraits/port_lap_soap_panic_cap": "portraits/port_lap_soap_panic_cap.webp",
+  "portraits/port_lap_soap_panic_foam": "portraits/port_lap_soap_panic_foam.webp",
+  "portraits/port_lap_soap_smug": "portraits/port_lap_soap_smug.webp",
+  "portraits/port_lap_soap_smug_cap": "portraits/port_lap_soap_smug_cap.webp",
+  "portraits/port_lap_soap_smug_foam": "portraits/port_lap_soap_smug_foam.webp",
+  "portraits/port_lap_soap_tired": "portraits/port_lap_soap_tired.webp",
+  "portraits/port_lap_soap_tired_cap": "portraits/port_lap_soap_tired_cap.webp",
+  "portraits/port_lap_soap_tired_foam": "portraits/port_lap_soap_tired_foam.webp",
+  "portraits/port_lap_soap_triumphant": "portraits/port_lap_soap_triumphant.webp",
+  "portraits/port_lap_soap_triumphant_cap": "portraits/port_lap_soap_triumphant_cap.webp",
+  "portraits/port_lap_soap_triumphant_foam": "portraits/port_lap_soap_triumphant_foam.webp",
+  "portraits/port_lap_soap_worried": "portraits/port_lap_soap_worried.webp",
+  "portraits/port_lap_soap_worried_cap": "portraits/port_lap_soap_worried_cap.webp",
+  "portraits/port_lap_soap_worried_foam": "portraits/port_lap_soap_worried_foam.webp",
+  "rooms/room_w1": "rooms/room_w1.webp",
+  "rooms/room_w2": "rooms/room_w2.webp",
+  "rooms/room_w2_under": "rooms/room_w2_under.webp",
+  "rooms/room_w3": "rooms/room_w3.webp",
+  "rooms/room_w4": "rooms/room_w4.webp",
+  "rooms/room_w5": "rooms/room_w5.webp",
+  "rooms/room_w5_under": "rooms/room_w5_under.webp",
+  "rooms/room_w6": "rooms/room_w6.webp",
+  "ui/bg_title": "ui/bg_title.webp",
+  "ui/icon_512": "ui/icon_512.webp",
+  "ui/logo_end": "ui/logo_end.webp",
+  "ui/logo_title": "ui/logo_title.webp",
+  "zooms/cu_z04_folder": "zooms/cu_z04_folder.webp",
+  "zooms/cu_z04_forms": "zooms/cu_z04_forms.webp",
+  "zooms/cu_z04_kefir_hands": "zooms/cu_z04_kefir_hands.webp",
+  "zooms/cu_z04_key": "zooms/cu_z04_key.webp",
+  "zooms/zoom_z01": "zooms/zoom_z01.webp",
+  "zooms/zoom_z02": "zooms/zoom_z02.webp",
+  "zooms/zoom_z03": "zooms/zoom_z03.webp",
+  "zooms/zoom_z04": "zooms/zoom_z04.webp",
+  "zooms/zoom_z05": "zooms/zoom_z05.webp",
+  "zooms/zoom_z06": "zooms/zoom_z06.webp",
+  "zooms/zoom_z07": "zooms/zoom_z07.webp",
+  "zooms/zoom_z08": "zooms/zoom_z08.webp",
+  "zooms/zoom_z09": "zooms/zoom_z09.webp",
+  "zooms/zoom_z10": "zooms/zoom_z10.webp",
+  "zooms/zoom_z11": "zooms/zoom_z11.webp",
+  "zooms/zoom_z12": "zooms/zoom_z12.webp",
+  "zooms/zoom_z13": "zooms/zoom_z13.webp"
+ },
+ "audio": {
+  "amb_below": {
+   "ogg": "amb_below.ogg",
+   "mp3": "amb_below.mp3"
+  },
+  "amb_hall": {
+   "ogg": "amb_hall.ogg",
+   "mp3": "amb_hall.mp3"
+  },
+  "amb_laundry": {
+   "ogg": "amb_laundry.ogg",
+   "mp3": "amb_laundry.mp3"
+  },
+  "amb_lobby": {
+   "ogg": "amb_lobby.ogg",
+   "mp3": "amb_lobby.mp3"
+  },
+  "amb_room": {
+   "ogg": "amb_room.ogg",
+   "mp3": "amb_room.mp3"
+  },
+  "bgm_below": {
+   "ogg": "bgm_below.ogg",
+   "mp3": "bgm_below.mp3"
+  },
+  "bgm_deep": {
+   "ogg": "bgm_deep.ogg",
+   "mp3": "bgm_deep.mp3"
+  },
+  "bgm_epilogue": {
+   "ogg": "bgm_epilogue.ogg",
+   "mp3": "bgm_epilogue.mp3"
+  },
+  "bgm_hotel": {
+   "ogg": "bgm_hotel.ogg",
+   "mp3": "bgm_hotel.mp3"
+  },
+  "bgm_hotel_tense": {
+   "ogg": "bgm_hotel_tense.ogg",
+   "mp3": "bgm_hotel_tense.mp3"
+  },
+  "bgm_resort": {
+   "ogg": "bgm_resort.ogg",
+   "mp3": "bgm_resort.mp3"
+  },
+  "bgm_service": {
+   "ogg": "bgm_service.ogg",
+   "mp3": "bgm_service.mp3"
+  },
+  "bgm_title": {
+   "ogg": "bgm_title.ogg",
+   "mp3": "bgm_title.mp3"
+  },
+  "blip_anc": {
+   "ogg": "blip_anc.ogg",
+   "mp3": "blip_anc.mp3"
+  },
+  "blip_guest": {
+   "ogg": "blip_guest.ogg",
+   "mp3": "blip_guest.mp3"
+  },
+  "blip_iz": {
+   "ogg": "blip_iz.ogg",
+   "mp3": "blip_iz.mp3"
+  },
+  "blip_kuh": {
+   "ogg": "blip_kuh.ogg",
+   "mp3": "blip_kuh.mp3"
+  },
+  "blip_lap": {
+   "ogg": "blip_lap.ogg",
+   "mp3": "blip_lap.mp3"
+  },
+  "blip_pa": {
+   "ogg": "blip_pa.ogg",
+   "mp3": "blip_pa.mp3"
+  },
+  "mus_hold": {
+   "ogg": "mus_hold.ogg",
+   "mp3": "mus_hold.mp3"
+  },
+  "sfx_board_lay": {
+   "ogg": "sfx_board_lay.ogg",
+   "mp3": "sfx_board_lay.mp3"
+  },
+  "sfx_bottle_catch": {
+   "ogg": "sfx_bottle_catch.ogg",
+   "mp3": "sfx_bottle_catch.mp3"
+  },
+  "sfx_building_exhale": {
+   "ogg": "sfx_building_exhale.ogg",
+   "mp3": "sfx_building_exhale.mp3"
+  },
+  "sfx_crowd_part": {
+   "ogg": "sfx_crowd_part.ogg",
+   "mp3": "sfx_crowd_part.mp3"
+  },
+  "sfx_descent": {
+   "ogg": "sfx_descent.ogg",
+   "mp3": "sfx_descent.mp3"
+  },
+  "sfx_door_clicks": {
+   "ogg": "sfx_door_clicks.ogg",
+   "mp3": "sfx_door_clicks.mp3"
+  },
+  "sfx_drawer_click": {
+   "ogg": "sfx_drawer_click.ogg",
+   "mp3": "sfx_drawer_click.mp3"
+  },
+  "sfx_drum_beep": {
+   "ogg": "sfx_drum_beep.ogg",
+   "mp3": "sfx_drum_beep.mp3"
+  },
+  "sfx_drums_turn": {
+   "ogg": "sfx_drums_turn.ogg",
+   "mp3": "sfx_drums_turn.mp3"
+  },
+  "sfx_fin_cascade": {
+   "ogg": "sfx_fin_cascade.ogg",
+   "mp3": "sfx_fin_cascade.mp3"
+  },
+  "sfx_fin_shower": {
+   "ogg": "sfx_fin_shower.ogg",
+   "mp3": "sfx_fin_shower.mp3"
+  },
+  "sfx_fin_spring": {
+   "ogg": "sfx_fin_spring.ogg",
+   "mp3": "sfx_fin_spring.mp3"
+  },
+  "sfx_foam_swell": {
+   "ogg": "sfx_foam_swell.ogg",
+   "mp3": "sfx_foam_swell.mp3"
+  },
+  "sfx_folder_slap": {
+   "ogg": "sfx_folder_slap.ogg",
+   "mp3": "sfx_folder_slap.mp3"
+  },
+  "sfx_grille_shut": {
+   "ogg": "sfx_grille_shut.ogg",
+   "mp3": "sfx_grille_shut.mp3"
+  },
+  "sfx_key_door": {
+   "ogg": "sfx_key_door.ogg",
+   "mp3": "sfx_key_door.mp3"
+  },
+  "sfx_knock": {
+   "ogg": "sfx_knock.ogg",
+   "mp3": "sfx_knock.mp3"
+  },
+  "sfx_latch_click": {
+   "ogg": "sfx_latch_click.ogg",
+   "mp3": "sfx_latch_click.mp3"
+  },
+  "sfx_lift_down": {
+   "ogg": "sfx_lift_down.ogg",
+   "mp3": "sfx_lift_down.mp3"
+  },
+  "sfx_lift_up": {
+   "ogg": "sfx_lift_up.ogg",
+   "mp3": "sfx_lift_up.mp3"
+  },
+  "sfx_lobby_hush": {
+   "ogg": "sfx_lobby_hush.ogg",
+   "mp3": "sfx_lobby_hush.mp3"
+  },
+  "sfx_pa_chime": {
+   "ogg": "sfx_pa_chime.ogg",
+   "mp3": "sfx_pa_chime.mp3"
+  },
+  "sfx_pa_drown": {
+   "ogg": "sfx_pa_drown.ogg",
+   "mp3": "sfx_pa_drown.mp3"
+  },
+  "sfx_paint_scrape": {
+   "ogg": "sfx_paint_scrape.ogg",
+   "mp3": "sfx_paint_scrape.mp3"
+  },
+  "sfx_pen_roll": {
+   "ogg": "sfx_pen_roll.ogg",
+   "mp3": "sfx_pen_roll.mp3"
+  },
+  "sfx_pen_scratch": {
+   "ogg": "sfx_pen_scratch.ogg",
+   "mp3": "sfx_pen_scratch.mp3"
+  },
+  "sfx_phone_pickup": {
+   "ogg": "sfx_phone_pickup.ogg",
+   "mp3": "sfx_phone_pickup.mp3"
+  },
+  "sfx_phone_ring": {
+   "ogg": "sfx_phone_ring.ogg",
+   "mp3": "sfx_phone_ring.mp3"
+  },
+  "sfx_plunger_pop": {
+   "ogg": "sfx_plunger_pop.ogg",
+   "mp3": "sfx_plunger_pop.mp3"
+  },
+  "sfx_plunger_press": {
+   "ogg": "sfx_plunger_press.ogg",
+   "mp3": "sfx_plunger_press.mp3"
+  },
+  "sfx_pump_dry": {
+   "ogg": "sfx_pump_dry.ogg",
+   "mp3": "sfx_pump_dry.mp3"
+  },
+  "sfx_seal_tear": {
+   "ogg": "sfx_seal_tear.ogg",
+   "mp3": "sfx_seal_tear.mp3"
+  },
+  "sfx_shock_thud": {
+   "ogg": "sfx_shock_thud.ogg",
+   "mp3": "sfx_shock_thud.mp3"
+  },
+  "sfx_shower_run": {
+   "ogg": "sfx_shower_run.ogg",
+   "mp3": "sfx_shower_run.mp3"
+  },
+  "sfx_shower_sigh": {
+   "ogg": "sfx_shower_sigh.ogg",
+   "mp3": "sfx_shower_sigh.mp3"
+  },
+  "sfx_soap_smear": {
+   "ogg": "sfx_soap_smear.ogg",
+   "mp3": "sfx_soap_smear.mp3"
+  },
+  "sfx_stamp": {
+   "ogg": "sfx_stamp.ogg",
+   "mp3": "sfx_stamp.mp3"
+  },
+  "sfx_stars_fold": {
+   "ogg": "sfx_stars_fold.ogg",
+   "mp3": "sfx_stars_fold.mp3"
+  },
+  "sfx_suction_glass": {
+   "ogg": "sfx_suction_glass.ogg",
+   "mp3": "sfx_suction_glass.mp3"
+  },
+  "sfx_switch": {
+   "ogg": "sfx_switch.ogg",
+   "mp3": "sfx_switch.mp3"
+  },
+  "sfx_tag_fold": {
+   "ogg": "sfx_tag_fold.ogg",
+   "mp3": "sfx_tag_fold.mp3"
+  },
+  "sfx_token_drop": {
+   "ogg": "sfx_token_drop.ogg",
+   "mp3": "sfx_token_drop.mp3"
+  },
+  "sfx_trolley_creak": {
+   "ogg": "sfx_trolley_creak.ogg",
+   "mp3": "sfx_trolley_creak.mp3"
+  },
+  "sfx_trolley_jam": {
+   "ogg": "sfx_trolley_jam.ogg",
+   "mp3": "sfx_trolley_jam.mp3"
+  },
+  "sfx_valve_turn": {
+   "ogg": "sfx_valve_turn.ogg",
+   "mp3": "sfx_valve_turn.mp3"
+  },
+  "sfx_wet_stamp": {
+   "ogg": "sfx_wet_stamp.ogg",
+   "mp3": "sfx_wet_stamp.mp3"
+  },
+  "sfx_wet_steps": {
+   "ogg": "sfx_wet_steps.ogg",
+   "mp3": "sfx_wet_steps.mp3"
+  },
+  "sfx_wheel_bump": {
+   "ogg": "sfx_wheel_bump.ogg",
+   "mp3": "sfx_wheel_bump.mp3"
+  },
+  "sting_relic": {
+   "ogg": "sting_relic.ogg",
+   "mp3": "sting_relic.mp3"
+  },
+  "sting_solved": {
+   "ogg": "sting_solved.ogg",
+   "mp3": "sting_solved.mp3"
+  },
+  "sting_water": {
+   "ogg": "sting_water.ogg",
+   "mp3": "sting_water.mp3"
+  },
+  "ui_click": {
+   "ogg": "ui_click.ogg",
+   "mp3": "ui_click.mp3"
+  },
+  "ui_error": {
+   "ogg": "ui_error.ogg",
+   "mp3": "ui_error.mp3"
+  },
+  "ui_paper": {
+   "ogg": "ui_paper.ogg",
+   "mp3": "ui_paper.mp3"
+  },
+  "ui_pickup": {
+   "ogg": "ui_pickup.ogg",
+   "mp3": "ui_pickup.mp3"
+  },
+  "ui_transition": {
+   "ogg": "ui_transition.ogg",
+   "mp3": "ui_transition.mp3"
+  },
+  "ui_zoom_in": {
+   "ogg": "ui_zoom_in.ogg",
+   "mp3": "ui_zoom_in.mp3"
+  },
+  "ui_zoom_out": {
+   "ogg": "ui_zoom_out.ogg",
+   "mp3": "ui_zoom_out.mp3"
+  }
+ },
+ "candidates": [],
+ "acts": [
+  1,
+  2,
+  3,
+  4
+ ]
+}
