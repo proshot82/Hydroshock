@@ -481,6 +481,7 @@ function showEnd() {
     // финальный кадр и счёт секретов, как в первой игре (решение автора 02.11.2026)
     endCard.found = RELICS.filter((f) => st.flags.has(f)).length;
     loadImage(END_ART).catch(() => {});
+    loadImage(END_LOGO).catch(() => {});
   }
   audio.ambience(null);
 }
@@ -938,6 +939,7 @@ const END_BTN = { x: 760, y: 600, w: 400, h: 72 };
 // Финал игры: одна большая картинка (Лапидус, Изольда, Кухтулху, отель), поверх — «Конец»,
 // счёт секретов и кнопка (решение автора 02.11.2026). Секреты — три реликвии трёх эпох (GDD §11).
 const END_ART = "frames/fr_epi_end";
+const END_LOGO = "ui/logo_end";   // «КОНЕЦ» латунью, как «ГИДРОУДАР» на титуле (замечание автора 02.11.2026)
 const RELICS = ["relic_r1", "relic_r2", "relic_r3"];
 const END_BTN_LAST = { x: 1460, y: 980, w: 400, h: 72 };
 
@@ -948,16 +950,20 @@ function endButton() {
 function drawFinale() {
   const art = image(END_ART);
   if (art) ctx.drawImage(art, 0, 0, W, H);
-  // «Конец» — на небе под радугой
-  ctx.textAlign = "center";
-  ctx.textBaseline = "alphabetic";
-  ctx.font = '700 132px "PT Sans"';
-  ctx.lineJoin = "round";
-  ctx.lineWidth = 14;
-  ctx.strokeStyle = "rgba(13, 15, 23, 0.85)";
-  ctx.strokeText(T.the_end_big || T.the_end || "", W / 2, 190);
-  ctx.fillStyle = C.brassHi;
-  ctx.fillText(T.the_end_big || T.the_end || "", W / 2, 190);
+  // «КОНЕЦ» — на небе под радугой: латунные буквы картинкой (как название на титуле);
+  // пока картинка грузится — строка интерфейса
+  const logo = image(END_LOGO);
+  if (logo) {
+    const lw = 820;
+    const lh = Math.round(logo.height * lw / logo.width);
+    ctx.drawImage(logo, (W - lw) / 2, 50, lw, lh);
+  } else {
+    ctx.textAlign = "center";
+    ctx.textBaseline = "alphabetic";
+    ctx.font = '700 132px "PT Sans"';
+    ctx.fillStyle = C.brassHi;
+    ctx.fillText(T.the_end_big || T.the_end || "", W / 2, 190);
+  }
   // счёт секретов — плашкой внизу слева
   const all = endCard.found >= RELICS.length;
   const line = all ? T.secrets_all : (T.secrets_found || "").replace("%d", endCard.found).replace("%d", RELICS.length);

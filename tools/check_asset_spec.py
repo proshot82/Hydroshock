@@ -53,11 +53,12 @@ CLASSES = [
     ("media", re.compile(r"^(paper|page|plate|plaque|panel|label|card|tag|tray|box|token|photo|plan)_[a-z0-9_]+\.png$"),
      "1400×980"),
     ("mark", re.compile(r"^(stamp|mark)_[a-z0-9_]+\.png$"), None),
-    ("ui", re.compile(r"^(bg_title|logo_title|icon_512)\.png$"), None),
+    ("ui", re.compile(r"^(bg_title|logo_title|logo_end|icon_512)\.png$"), None),
     ("audio", re.compile(r"^(sfx|amb|bgm|mus|sting|blip|ui)_[a-z0-9_]+\.ogg$"), None),
     ("font", re.compile(r"^[A-Za-z0-9\-]+\.ttf$"), None),
 ]
-UI_SIZES = {"bg_title.png": "1920×1080", "logo_title.png": "840×376", "icon_512.png": "512×512"}
+UI_SIZES = {"bg_title.png": "1920×1080", "logo_title.png": "840×376", "logo_end.png": "900×224",
+            "icon_512.png": "512×512"}
 
 
 def classify(name):

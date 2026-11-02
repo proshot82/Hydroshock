@@ -36,7 +36,7 @@ back | Назад
 
 pause | Пауза
 resume | Вернуться в игру
-save_quit | Сохранить и выйти на титул
+save_quit | Сохранить и выйти в начало
 
 ## Игра
 
@@ -170,4 +170,4 @@ the_end | Конец
 the_end_big | КОНЕЦ
 secrets_found | Найдено секретов: %d из %d
 secrets_all | Все секреты открыты!
-to_title | На титул
+to_title | В начало
