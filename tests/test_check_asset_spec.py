@@ -39,7 +39,7 @@ class TestAssetSpec(unittest.TestCase):
         self.assertEqual(code, 0, out)
         self.assertIn("кадров слотов 73", out)
         self.assertIn("документов 41", out)
-        self.assertIn("эмоций 28", out)
+        self.assertIn("эмоций 29", out)   # 02.11.2026: + kuh_tentacle (решение автора)
 
     def test_duplicate_name(self):
         row = next(l for l in SPEC.splitlines() if l.startswith("| `ic_mug.png` |"))
