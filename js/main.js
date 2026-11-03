@@ -118,7 +118,8 @@ function shellTips() {
 function start() {
   platform.onPlay();
   audio.unlock();
-  audio.preload(["ui_click"]);
+  // щелчки интерфейса и «голоса» реплик — сразу: иначе первая реплика стрекочет пачкой, пока они грузятся
+  audio.preloadPrefixed(["ui_", "blip_"]);
   shell.classList.add("hidden");
   toTitle();
   view.canvas.focus();
