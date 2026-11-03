@@ -1,5 +1,7 @@
 <title>Латунный янычар: Гидроудар</title>
 <link rel="icon" href="assets/gfx/ui/icon_512.webp">
+<link rel="apple-touch-icon" href="assets/gfx/ui/icon_180.png">
+<link rel="manifest" href="manifest.webmanifest">
 <link rel="stylesheet" href="css/game.css">
 <canvas id="game" aria-label="Игра «Латунный янычар: Гидроудар»"></canvas>
 <div id="shell">
@@ -8,7 +10,9 @@
     <div class="bar" aria-hidden="true"><div id="bar-fill"></div></div>
     <p id="status">Загрузка…</p>
     <button id="play" type="button" disabled>Играть</button>
-    <p class="note">Игра сохраняется сама — в этом браузере на этом устройстве.</p>
+    <p class="tip" id="tip-input"></p>
+    <p class="tip" id="tip-home"></p>
+    <p class="note" id="note-save">Игра сохраняется сама — в этом браузере на этом устройстве.</p>
   </div>
 </div>
 <script type="module" src="js/main.js"></script>
