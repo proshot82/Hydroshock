@@ -9,6 +9,9 @@ import * as game from "./game.js";
 import * as dialog from "./dialog.js";
 import * as saves from "./state.js";
 import * as store from "./store.js";
+import * as platform from "./platform.js";
+import * as cloud from "./cloud.js";
+import * as touch from "./touch.js";
 
 const shell = document.getElementById("shell");
 const status = document.getElementById("status");
@@ -90,6 +93,11 @@ async function boot() {
     onNext: { has: (n) => (manifest.acts || [1]).includes(n), start: (n, make) => nextAct(n, make).catch(fail) },
   });
   game.onSettings((k) => (k === "get" ? title.getSettings() : title.toggleSetting(k)));
+  // Telegram: его SDK и облачная копия партии — до титула, чтобы «ПРОДОЛЖИТЬ» знал о ней
+  await platform.init();
+  const synced = await cloud.sync();
+  if (cloud.available()) console.log(`облако Telegram: ${synced}`);
+  shellTips();
   await Promise.all(FONTS.map((f) => document.fonts.load(f)));
   await assets.loadImages(TITLE_IMAGES, progress);
   if (!store.write("probe", 1)) status.textContent = ui.storage_off;
@@ -99,9 +107,19 @@ async function boot() {
   console.log("BJ3 READY");
 }
 
+// Карточка загрузки: как играть на этом устройстве, где хранится сохранение.
+function shellTips() {
+  const set = (id, t) => { const el = document.getElementById(id); if (el) el.textContent = t || ""; };
+  set("tip-input", platform.TOUCH ? ui.tip_touch : ui.tip_mouse);
+  set("tip-home", platform.homeScreenTip() ? ui.tip_home_ios : "");
+  set("note-save", cloud.available() ? ui.note_save_tg : ui.note_save);
+}
+
 function start() {
+  platform.onPlay();
   audio.unlock();
-  audio.preload(["ui_click"]);
+  // щелчки интерфейса и «голоса» реплик — сразу: иначе первая реплика стрекочет пачкой, пока они грузятся
+  audio.preloadPrefixed(["ui_", "blip_"]);
   shell.classList.add("hidden");
   toTitle();
   view.canvas.focus();
@@ -112,24 +130,106 @@ function start() {
 function frame(now) {
   const dt = Math.min(0.1, (now - last) / 1000);
   last = now;
+  touch.update(dt);
   if (scene && scene.update) scene.update(dt);
   view.begin();
   if (scene) scene.draw(now);
   view.end();
+  drawRing();
+  // «назад» Telegram и браузера — как Esc, пока в игре есть куда возвращаться
+  const inGame = scene === game;
+  platform.setInGame(inGame);
+  platform.setBack(inGame && game.canEscape(), () => { if (scene === game) game.escape(); });
   requestAnimationFrame(frame);
+}
+
+// Кольцо долгого касания (BJ2 р.25): растёт вокруг пальца, после срабатывания замкнуто.
+function drawRing() {
+  const r = touch.ring();
+  if (!r) return;
+  view.overlay((g, k, box) => {
+    const x = (r.x - box.left) * k;
+    const y = (r.y - box.top) * k;
+    const R = touch.RING_R * k;
+    g.lineWidth = 4 * k;
+    g.strokeStyle = "rgba(0, 0, 0, 0.45)";
+    g.beginPath();
+    g.arc(x, y, R, 0, Math.PI * 2);
+    g.stroke();
+    g.strokeStyle = "rgba(224, 187, 114, 0.95)";   // латунь интерфейса
+    g.beginPath();
+    g.arc(x, y, R, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * r.p);
+    g.stroke();
+  });
 }
 
 play.addEventListener("click", start);
 
 view.canvas.tabIndex = 0;
+
+// Ввод. Мышь — как прежде: щелчок на нажатии, правая кнопка — осмотр и «назад». Палец (и перо) —
+// через распознаватель жестов touch.js: касание — левый щелчок на отпускании, удержание — правый.
+// Сенсорный режим включается первым касанием и выключается движением мыши: на ноутбуке с
+// сенсорным экраном работают оба способа, подписи («Щелчок» / «Коснитесь») — по последнему.
+let touchMode = platform.TOUCH;
+function setTouchMode(v) {
+  touchMode = v;
+  view.setTouchDevice(platform.TOUCH || v);
+  game.setTouch(v);
+  dialog.setTouch(v);
+}
+setTouchMode(platform.TOUCH);
+
+function tap(x, y, button) {
+  if (!scene) return;
+  audio.unlock();
+  const p = view.toWorld(x, y);
+  if (button === 2) platform.haptic();
+  if (scene.pointerMove) scene.pointerMove(p);
+  scene.pointerDown(p, button);
+  // у пальца нет наведения: подсветка того, что было под ним, не должна застывать
+  if (scene.pointerMove) scene.pointerMove(null);
+}
+touch.init(tap);
+
+const fingers = new Set();
+const isTouch = (e) => e.pointerType === "touch" || e.pointerType === "pen";
+
 view.canvas.addEventListener("pointermove", (e) => {
+  if (isTouch(e)) {
+    if (fingers.size === 1) touch.moved(e.clientX, e.clientY);
+    if (scene && scene.touchMove) scene.touchMove(e);
+    return;
+  }
+  if (touchMode) setTouchMode(false);
   if (scene) scene.pointerMove(view.toWorld(e.clientX, e.clientY));
 });
 view.canvas.addEventListener("pointerdown", (e) => {
+  if (isTouch(e)) {
+    e.preventDefault();
+    if (!touchMode) setTouchMode(true);
+    fingers.add(e.pointerId);
+    try { view.canvas.setPointerCapture(e.pointerId); } catch (err) { /* без захвата */ }
+    // второй палец — щипок (увеличение бумаг), не касание
+    if (fingers.size === 1) touch.pressed(e.clientX, e.clientY);
+    else touch.cancel();
+    if (scene && scene.touchDown) scene.touchDown(e, fingers.size);
+    return;
+  }
   if (e.button !== 0 && e.button !== 2) return;
   audio.unlock();
   if (scene) scene.pointerDown(view.toWorld(e.clientX, e.clientY), e.button);
 });
+function fingerUp(e, cancelled) {
+  if (!isTouch(e)) return;
+  const was = fingers.size;
+  fingers.delete(e.pointerId);
+  if (scene && scene.touchUp) scene.touchUp(e, fingers.size);
+  if (was === 1 && !cancelled) touch.released(e.clientX, e.clientY);
+  else touch.cancel();
+}
+view.canvas.addEventListener("pointerup", (e) => fingerUp(e, false));
+view.canvas.addEventListener("pointercancel", (e) => fingerUp(e, true));
 view.canvas.addEventListener("contextmenu", (e) => e.preventDefault());
 window.addEventListener("keydown", (e) => {
   if (scene && scene.key(e)) e.preventDefault();
@@ -137,6 +237,11 @@ window.addEventListener("keydown", (e) => {
 
 // Для автотестов (Playwright): раскладка и состояние в координатах мира 1920×1080.
 window.__bj3 = {
+  toScreen: (x, y) => view.toScreen(x, y),
+  rotated: () => view.rotated(),
+  uiScale: () => view.uiScale(),
+  touchMode: () => touchMode,
+  platform: () => ({ touch: platform.TOUCH, ios: platform.IOS, standalone: platform.STANDALONE, telegram: !!platform.telegram(), cloud: cloud.available() }),
   buttons: () => title.getButtons(),
   settings: () => title.getSettings(),
   started: () => scene !== null,

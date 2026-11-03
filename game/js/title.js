@@ -5,10 +5,11 @@
 // римская «II» не в счёт) → x = 160. Плакаты справа (x 900–1880) не перекрыты.
 // Вид кнопок и панели настроек — как в BJ2 (src/ui.lua, menu_draw).
 
-import { ctx, W, H, setCursor } from "./view.js";
+import { ctx, W, H, setCursor, uiScale } from "./view.js";
 import { image } from "./assets.js";
 import * as audio from "./audio.js";
 import * as store from "./store.js";
+import * as platform from "./platform.js";
 
 export const LOGO = { x: 30, y: 30 };
 export const LOGO_CENTER_X = 30 + 330;
@@ -52,24 +53,19 @@ export function enter() {
   audio.music("bgm_title");
 }
 
+// Весь экран — platform.js: браузер, Telegram (его собственный весь экран) или iPhone, где
+// браузер этого не умеет — тогда кнопка объясняет, как открыть игру с экрана «Домой».
 function fsSupported() {
-  const d = document.documentElement;
-  return !!(d.requestFullscreen || d.webkitRequestFullscreen);
+  return platform.fsAvailable() || platform.homeScreenTip();
 }
 
 function isFullscreen() {
-  return !!(document.fullscreenElement || document.webkitFullscreenElement);
+  return platform.fsActive();
 }
 
 function toggleFullscreen() {
-  if (isFullscreen()) {
-    (document.exitFullscreen || document.webkitExitFullscreen).call(document);
-  } else {
-    const d = document.documentElement;
-    const req = d.requestFullscreen || d.webkitRequestFullscreen;
-    const p = req && req.call(d);
-    if (p && p.catch) p.catch(() => {});
-  }
+  if (platform.homeScreenTip()) { showToast(T.tip_home_ios || "", 9); return; }
+  platform.fsToggle();
 }
 
 function layoutTitle() {
@@ -212,18 +208,37 @@ function drawSettings() {
   });
 }
 
+// Плашка сообщения: длинное (подсказка про экран «Домой») переносится на несколько строк.
+function toastLines(text, maxW) {
+  const out = [];
+  for (const para of String(text).split("\n")) {
+    let line = "";
+    for (const w of para.split(" ")) {
+      const t = line ? line + " " + w : w;
+      if (ctx.measureText(t).width > maxW && line) { out.push(line); line = w; } else line = t;
+    }
+    out.push(line);
+  }
+  return out;
+}
+
 function drawToast(now) {
   if (!toast) return;
   const age = (now - toast.t0) / 1000;
-  if (age > 3.5) { toast = null; return; }
-  const a = age > 3 ? 1 - (age - 3) / 0.5 : 1;
+  const life = toast.life;
+  if (age > life) { toast = null; return; }
+  const a = age > life - 0.5 ? 1 - (age - (life - 0.5)) / 0.5 : 1;
+  const u = uiScale();
   ctx.globalAlpha = a;
-  ctx.font = '400 32px "PT Sans"';
-  const w = ctx.measureText(toast.text).width + 60;
+  ctx.font = `400 ${Math.round(32 * u)}px "PT Sans"`;
+  const lines = toastLines(toast.text, 1500);
+  const lh = 44 * u;
+  const w = Math.max(...lines.map((l) => ctx.measureText(l).width)) + 60 * u;
+  const h = lines.length * lh + 20 * u;
   const x = W / 2 - w / 2;
-  const y = H - 130;
-  roundRect(x, y, w, 64, 12);
-  ctx.fillStyle = C.panel;
+  const y = H - 66 * u - h;
+  roundRect(x, y, w, h, 12);
+  ctx.fillStyle = C.panelSolid;
   ctx.fill();
   ctx.lineWidth = 2;
   ctx.strokeStyle = C.brass;
@@ -231,12 +246,12 @@ function drawToast(now) {
   ctx.fillStyle = C.text;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText(toast.text, W / 2, y + 34);
+  lines.forEach((l, i) => ctx.fillText(l, W / 2, y + 10 * u + lh * (i + 0.5) + 2));
   ctx.globalAlpha = 1;
 }
 
-export function showToast(text) {
-  toast = { text, t0: performance.now() };
+export function showToast(text, life = 3.5) {
+  toast = { text, t0: performance.now(), life };
 }
 
 export function draw(now) {
@@ -254,9 +269,12 @@ export function draw(now) {
   drawToast(now);
 }
 
+// Попадание — с запасом SLOP вокруг рамки: на телефоне кнопка мелкая, палец — нет
+// (запас меньше половины промежутка между кнопками, соседние не перехватываются).
 function hit(p) {
   if (!p) return null;
-  return buttons.find((b) => p.x >= b.x && p.x < b.x + b.w && p.y >= b.y && p.y < b.y + b.h) || null;
+  const sl = mode === "title" ? 9 : 3;   // строки настроек стоят теснее (промежуток 8)
+  return buttons.find((b) => p.x >= b.x - sl && p.x < b.x + b.w + sl && p.y >= b.y - sl && p.y < b.y + b.h + sl) || null;
 }
 
 export function pointerMove(p) {
