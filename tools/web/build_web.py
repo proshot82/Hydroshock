@@ -36,6 +36,10 @@ ASSETS = ROOT / "assets"
 CACHE = ROOT / "work" / "web_cache"
 WEBP_Q = 90
 MP3_RATE = {"bgm": "160k", "mus": "160k", "amb": "128k", "sting": "160k"}   # остальное — 96k
+# Короткие звуки (щелчки, «голоса» реплик, звуки интерфейса, короткие эффекты) — ещё и WAV без
+# сжатия: на iPhone (Safari и Telegram) звуки по 0,04–0,07 с из OGG/MP3 молчали (замечание автора
+# 03.11.2026), длинные звучали. WAV расшифровывает любой браузер, без пустых служебных кадров MP3.
+WAV_MAX_S = 3.0
 PNG_AS_IS = {"cursors"}   # папки gfx, которые остаются PNG
 
 
@@ -69,6 +73,25 @@ def to_mp3(src, dst):
         tmp = cached.with_suffix(".tmp.mp3")
         subprocess.run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-i", str(src),
                         "-c:a", "libmp3lame", "-b:a", rate, str(tmp)], check=True)
+        tmp.replace(cached)
+    dst.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(cached, dst)
+
+
+def duration(src):
+    out = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(src)],
+                         capture_output=True, text=True, check=True).stdout.strip()
+    return float(out)
+
+
+def to_wav(src, dst):
+    key = sha(src, "wav16")
+    cached = CACHE / "audio" / f"{key}.wav"
+    if not cached.exists():
+        cached.parent.mkdir(parents=True, exist_ok=True)
+        tmp = cached.with_suffix(".tmp.wav")
+        subprocess.run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-i", str(src),
+                        "-c:a", "pcm_s16le", str(tmp)], check=True)
         tmp.replace(cached)
     dst.parent.mkdir(parents=True, exist_ok=True)
     shutil.copyfile(cached, dst)
@@ -241,6 +264,9 @@ def main(argv=None):
         shutil.copyfile(src, dst)
         to_mp3(src, dst.with_suffix(".mp3"))
         manifest["audio"][src.stem] = {"ogg": src.name, "mp3": src.stem + ".mp3"}
+        if duration(src) <= WAV_MAX_S:
+            to_wav(src, dst.with_suffix(".wav"))
+            manifest["audio"][src.stem]["wav"] = src.stem + ".wav"
         n_snd += 1
 
     fonts = out / "assets" / "fonts"

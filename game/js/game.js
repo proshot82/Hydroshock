@@ -157,6 +157,15 @@ function preloadAct() {
     if (e.music && e.music !== "стоп") sounds.add(e.music);
     if (e.amb) sounds.add(e.amb);
   }));
+  // эффекты акта (удар, душ, печати…) — тоже заранее: с мобильной сети удар приходил позже своей
+  // сцены (Telegram на iPhone, замечание автора 03.11.2026)
+  const walk = (o) => {
+    if (Array.isArray(o)) { o.forEach(walk); return; }
+    if (!o || typeof o !== "object") return;
+    for (const k of ["sfx", "loop"]) if (typeof o[k] === "string") sounds.add(o[k]);
+    Object.values(o).forEach(walk);
+  };
+  walk([data.scenes, data.rules, data.chains]);
   audio.preload([...sounds]);
   // вступление и место, где оно кончается
   const names = new Set();

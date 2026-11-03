@@ -14,6 +14,7 @@ let musicBus = null;
 let sfxBus = null;
 let useOgg = true;
 const buffers = new Map();  // имя → Promise<AudioBuffer>
+const failed = new Set();   // звуки, которые не загрузились или не расшифровались (для проверок)
 let current = null;         // { name, src, gain }
 let wanted = null;          // какая музыка должна звучать (даже если выключена)
 let settings = { music: true, sound: true };
@@ -40,11 +41,14 @@ export function unlock() {
   });
 }
 
+// Файл звука. Короткий звук — WAV, если сборка его положила (build_web.py, WAV_MAX_S): на iPhone
+// звуки по 0,04–0,07 с из OGG/MP3 молчали (замечание автора 03.11.2026). Остальное — OGG, где
+// браузер его играет, иначе MP3.
 function url(name) {
   const m = getManifest();
   const e = m && m.audio[name];
   if (!e) return null;
-  return "assets/audio/" + (useOgg ? e.ogg : e.mp3 || e.ogg);
+  return "assets/audio/" + (e.wav || (useOgg ? e.ogg : e.mp3 || e.ogg));
 }
 
 function buffer(name) {
@@ -57,6 +61,7 @@ function buffer(name) {
     .then((data) => new Promise((res, rej) => ac.decodeAudioData(data, res, rej)))
     .catch((err) => {
       console.warn(`звук ${name} не загрузился:`, err);
+      failed.add(name);
       buffers.delete(name);
       return null;
     });
@@ -66,6 +71,13 @@ function buffer(name) {
 
 export function preload(names) {
   names.forEach((n) => buffer(n));
+}
+
+// Все звуки сборки с этими началами имени (ui_, blip_): короткие, нужны сразу и часто.
+export function preloadPrefixed(prefixes) {
+  const m = getManifest();
+  if (!m) return;
+  preload(Object.keys(m.audio).filter((n) => prefixes.some((p) => n.startsWith(p))));
 }
 
 export function applySettings(s) {
@@ -200,5 +212,5 @@ export function isUnlocked() {
 // Для автотестов: состояние контекста, что звучит, какой формат выбран.
 export function status() {
   return { state: ac ? ac.state : "нет", music: current ? current.name : null, amb: amb ? amb.name : null,
-    loops: [...loops.keys()], format: useOgg ? "ogg" : "mp3" };
+    loops: [...loops.keys()], format: useOgg ? "ogg" : "mp3", failed: [...failed], ready: buffers.size };
 }

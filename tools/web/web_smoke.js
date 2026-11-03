@@ -148,6 +148,12 @@ async function phoneAndTelegram(browser, errors) {
   await page.waitForFunction(() => window.__bj3.scene() === "game", null, { timeout: 15000 });
   let s = await settleTouch(page, cdp);
   check(s.view === "W1", `пальцем: партия началась, вступление пролистано касаниями (вид ${s.view})`);
+  // звук (замечание автора 03.11.2026: на iPhone молчали щелчки и «голоса» реплик): короткие — из WAV,
+  // эффекты вступления (душ, удар) звучали, ни один звук не отказал
+  const snd = await page.evaluate(() => ({ au: window.__bj3.audio(), files: performance.getEntriesByType("resource").map((e) => e.name.split("/").pop()) }));
+  const shortWav = ["ui_click", "blip_lap", "blip_anc"].every((n) => snd.files.includes(`${n}.wav`));
+  check(shortWav && snd.au.failed.length === 0, `звук: щелчки и «голоса» — WAV, отказавших звуков нет${snd.au.failed.length ? " (" + snd.au.failed.join(", ") + ")" : ""}`);
+  check(["sfx_shower_run", "sfx_shock_thud"].every((n) => snd.files.some((f) => f.startsWith(n + "."))), "звук: душ и удар вступления загружены");
   // долгое касание по кровати — осмотр (правая кнопка мыши у пальца)
   const bed = s.zones.find((z) => z.id === "bed");
   const n0 = s.log.length;
