@@ -13,3 +13,5 @@ work/web_shots/
 work/higgsfield/candidates/act1_fix_1013/page/audio/
 # видеопрохождение: записи и план (tools/web/record_full.js) — большие, в репозиторий не идут
 work/fullrun/
+# классическое видеопрохождение (tools/web/plan_walk.py → record_full.js → video_join.py)
+work/walkthrough/

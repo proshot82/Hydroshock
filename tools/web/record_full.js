@@ -26,7 +26,9 @@ const CPS = 40;                         // скорость печати реп�
 const readTime = (n) => 900 + n * 28;   // мс на чтение строки после допечатки
 const docTime = (n) => 2500 + n * 22;   // мс на бумагу
 
-const report = { mismatches: [], shown: [], errors: [] };
+const report = { mismatches: [], shown: [], errors: [], chapters: [] };
+let curFile = null;   // главы плана (поле chapter у хода, plan_walk.py): секунда от начала файла
+let fileT0 = 0;
 
 (async () => {
   const browser = await chromium.launch({ args: ["--autoplay-policy=no-user-gesture-required"] });
@@ -165,6 +167,7 @@ const report = { mismatches: [], shown: [], errors: [] };
   }
 
   async function runMove(mv, where) {
+    if (mv.chapter && outFd !== null) report.chapters.push({ file: curFile, t: (Date.now() - fileT0) / 1000, title: mv.chapter });
     const before = (await g()).log.length;
     await doMove(mv);
     const s = await settle();
@@ -226,6 +229,8 @@ const report = { mismatches: [], shown: [], errors: [] };
 
   function startFile(name) {
     outFd = fs.openSync(path.join(OUT, name), "w");
+    curFile = name;
+    fileT0 = Date.now();
   }
   async function stopFile() {
     await page.evaluate(() => window.__recStop());
