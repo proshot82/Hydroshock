@@ -14,19 +14,35 @@
 @font-face { font-family: "PT Mono"; src: url("../assets/fonts/PTMono-Regular.ttf"); }
 @font-face { font-family: "Caveat"; src: url("../assets/fonts/Caveat.ttf"); }
 
-html, body { margin: 0; height: 100%; background: #000; overflow: hidden; }
-body { color: var(--text); font: 16px/1.45 "PT Sans", system-ui, sans-serif; }
+/* Безопасная зона (опыт BJ2 р.26). На телефоне углы и края занимают вырез, скругления и полоска
+   «домой» (env(safe-area-inset-*), при viewport-fit=cover); в Telegram на весь экран — ещё и его
+   кнопки «Закрыть» и «⋯» (переменные --tg-*, их ставит SDK Telegram). Холст игры — внутри
+   безопасной зоны, вокруг — чёрное. На компьютере всё нули. Берём большее из двух, а не сумму:
+   внутри Telegram на iPhone вырез сообщают оба. */
+:root {
+  --sa-t: max(env(safe-area-inset-top, 0px), calc(var(--tg-safe-area-inset-top, 0px) + var(--tg-content-safe-area-inset-top, 0px)));
+  --sa-b: max(env(safe-area-inset-bottom, 0px), calc(var(--tg-safe-area-inset-bottom, 0px) + var(--tg-content-safe-area-inset-bottom, 0px)));
+  --sa-l: max(env(safe-area-inset-left, 0px), calc(var(--tg-safe-area-inset-left, 0px) + var(--tg-content-safe-area-inset-left, 0px)));
+  --sa-r: max(env(safe-area-inset-right, 0px), calc(var(--tg-safe-area-inset-right, 0px) + var(--tg-content-safe-area-inset-right, 0px)));
+}
 
+html, body { margin: 0; height: 100%; background: #000; overflow: hidden; overscroll-behavior: none; }
+body { color: var(--text); font: 16px/1.45 "PT Sans", system-ui, sans-serif; -webkit-text-size-adjust: 100%; }
+
+/* Палец на холсте — только игре (BJ2 р.25): без прокрутки, масштаба двумя касаниями, выделения
+   и меню по долгому касанию (долгое касание в игре — «осмотреть / назад»). */
 #game {
-  position: fixed; inset: 0; width: 100%; height: 100%; display: block;
-  background: #000; outline: none;
+  position: fixed; top: var(--sa-t); left: var(--sa-l);
+  width: calc(100% - var(--sa-l) - var(--sa-r)); height: calc(100% - var(--sa-t) - var(--sa-b));
+  display: block; background: #000; outline: none;
   touch-action: none; user-select: none; -webkit-user-select: none;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent;
 }
 
 #shell {
   position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
-  padding: 16px; box-sizing: border-box;
+  padding: calc(16px + var(--sa-t)) calc(16px + var(--sa-r)) calc(16px + var(--sa-b)) calc(16px + var(--sa-l));
+  box-sizing: border-box; overflow-y: auto;
   background: radial-gradient(ellipse at center, #1b1d26 0%, #07080b 75%);
 }
 #shell.hidden { display: none; }
@@ -47,3 +63,16 @@ body { color: var(--text); font: 16px/1.45 "PT Sans", system-ui, sans-serif; }
 #play:hover:not(:disabled), #play:focus-visible { border-color: var(--brass-hi); background: #2b2d36; }
 #play:disabled { opacity: .45; cursor: default; }
 .note { color: var(--dim); font-size: 14px; margin: 14px 0 0; }
+.tip {
+  color: var(--text); font-size: 15px; text-align: left; margin: 14px 0 0;
+  border-left: 3px solid var(--brass); padding: 6px 10px; background: rgba(184, 148, 90, .08);
+}
+.tip:empty { display: none; }
+/* Низкий экран (телефон горизонтально): карточка компактнее, чтобы «Играть» был виден сразу. */
+@media (max-height: 480px) {
+  .card { padding: 14px 20px 12px; width: min(620px, 100%); }
+  .card-logo { width: 62%; margin-bottom: 8px; }
+  #status { margin: 6px 0 8px; }
+  #play { padding: 10px 0; font-size: 22px; }
+  .tip, .note { font-size: 13px; margin-top: 8px; }
+}

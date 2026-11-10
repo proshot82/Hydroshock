@@ -38,6 +38,208 @@ async function clickButton(page, id) {
   await page.waitForTimeout(150);
 }
 
+// ---------------------------------------------------------------- телефон и Telegram
+// Опыт BJ2 р.25–27: телефон горизонтально и вертикально (кадр «лёжа»), касания настоящими
+// событиями CDP, Telegram — с заглушкой его SDK (telegram.org подменяется): весь экран, свайпы,
+// фиксация горизонтали, отступы под кнопки Telegram, «Назад» Telegram, вопрос при закрытии,
+// облачная копия партии (второй «телефон» с пустым браузером продолжает партию первого).
+
+const IPHONE = { viewport: { width: 844, height: 390 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true,
+  userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1" };
+const IPHONE_V = { ...IPHONE, viewport: { width: 390, height: 844 } };
+const TG_HASH = "#tgWebAppData=query_id%3Dsmoke&tgWebAppVersion=8.0&tgWebAppPlatform=ios";
+
+// SDK Telegram в миниатюре: только то, что зовёт игра; вызовы — в window.__tg.log.
+const TG_STUB = `(() => {
+  const log = [];
+  const cbs = {};
+  const root = document.documentElement.style;
+  const W = {
+    isFullscreen: false, isOrientationLocked: false, platform: "ios", version: "8.0",
+    isVersionAtLeast: (v) => parseFloat(v) <= 8.0,
+    ready: () => log.push("ready"), expand: () => log.push("expand"),
+    setHeaderColor: (c) => log.push("header " + c), setBackgroundColor: (c) => log.push("bg " + c),
+    setBottomBarColor: (c) => log.push("bottombar " + c),
+    disableVerticalSwipes: () => log.push("noswipe"),
+    requestFullscreen: () => {
+      log.push("fullscreen");
+      W.isFullscreen = true;
+      // как iPhone в Telegram горизонтально: вырез слева, кнопки Telegram сверху, полоска «домой» снизу
+      root.setProperty("--tg-safe-area-inset-left", "47px");
+      root.setProperty("--tg-safe-area-inset-bottom", "21px");
+      root.setProperty("--tg-content-safe-area-inset-top", "46px");
+    },
+    exitFullscreen: () => { log.push("exitfullscreen"); W.isFullscreen = false; },
+    lockOrientation: () => { log.push("lock " + (innerWidth > innerHeight ? "landscape" : "portrait")); W.isOrientationLocked = true; },
+    enableClosingConfirmation: () => log.push("confirm on"), disableClosingConfirmation: () => log.push("confirm off"),
+    onEvent: () => {},
+    BackButton: { show: () => log.push("back show"), hide: () => log.push("back hide"), onClick: (f) => { cbs.back = f; } },
+    HapticFeedback: { impactOccurred: () => log.push("haptic") },
+    CloudStorage: {
+      setItem: (k, v, cb) => window.__cloudSet(k, v).then(() => cb && cb(null, true)),
+      getItem: (k, cb) => window.__cloudGet([k]).then((o) => cb(null, o[k] || "")),
+      getItems: (ks, cb) => window.__cloudGet(ks).then((o) => cb(null, o)),
+    },
+  };
+  window.Telegram = { WebApp: W };
+  window.__tg = { log, back: () => cbs.back && cbs.back() };
+})();`;
+
+async function tapAt(page, cdp, x, y, hold = 40) {
+  const c = await page.evaluate(([x, y]) => window.__bj3.toScreen(x, y), [x, y]);
+  await cdp.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x: c.x, y: c.y, id: 1 }] });
+  await page.waitForTimeout(hold);
+  await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+  await page.waitForTimeout(120);
+}
+
+async function tapButton(page, cdp, id) {
+  const b = (await page.evaluate(() => window.__bj3.buttons())).find((v) => v.id === id);
+  if (!b) throw new Error(`нет кнопки ${id}`);
+  await tapAt(page, cdp, b.x + b.w / 2, b.y + b.h / 2);
+}
+
+// пролистать реплики пальцем, пока игра не освободится
+async function settleTouch(page, cdp) {
+  for (let i = 0; i < 120; i++) {
+    const s = await page.evaluate(() => window.__bj3.game());
+    if (s && (s.dialog || s.reader)) { await tapAt(page, cdp, 960, 900); if (s.reader) await page.waitForTimeout(420); continue; }
+    if (s && !s.busy) return s;
+    await page.waitForTimeout(60);
+  }
+  throw new Error("игра не освободилась");
+}
+
+async function openPhone(browser, errors, opts, url, init) {
+  const ctx = await browser.newContext(opts);
+  if (init) await init(ctx);
+  const page = await ctx.newPage();
+  page.on("pageerror", (e) => errors.push(String(e)));
+  page.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
+  const ready = page.waitForEvent("console", { predicate: (m) => m.text() === "BJ3 READY", timeout: 30000 });
+  await page.goto(url);
+  await ready;
+  const cdp = await ctx.newCDPSession(page);
+  return { ctx, page, cdp };
+}
+
+async function phoneAndTelegram(browser, errors) {
+  // 1. iPhone в Safari, горизонтально: подсказки на карточке, касания, крупный интерфейс
+  const iosSafari = async (ctx) => ctx.addInitScript(() => {
+    // Safari на iPhone не умеет «весь экран» для страницы — как настоящий
+    delete Element.prototype.requestFullscreen;
+    delete Element.prototype.webkitRequestFullscreen;
+  });
+  let { ctx, page, cdp } = await openPhone(browser, errors, IPHONE, URL, iosSafari);
+  const tips = await page.evaluate(() => [document.getElementById("tip-input").textContent, document.getElementById("tip-home").textContent]);
+  check(/коснитесь/i.test(tips[0]) && /«Домой»/.test(tips[1]), "iPhone: на карточке — как играть пальцем и как открыть на весь экран");
+  await page.screenshot({ path: path.join(OUT, "10_iphone_shell.png") });
+  await page.tap("#play");
+  await page.waitForFunction(() => window.__bj3.scene() === "title");
+  await page.waitForTimeout(300);
+  const fsBtn = (await page.evaluate(() => window.__bj3.buttons())).find((b) => b.id === "fullscreen");
+  check(fsBtn && fsBtn.enabled, "iPhone: «ВО ВЕСЬ ЭКРАН» доступна (объясняет экран «Домой»)");
+  await tapButton(page, cdp, "fullscreen");
+  await page.waitForTimeout(300);
+  await page.screenshot({ path: path.join(OUT, "11_iphone_homescreen_tip.png") });
+  const pf = await page.evaluate(() => ({ ...window.__bj3.platform(), ui: window.__bj3.uiScale(), touch: window.__bj3.touchMode(), rot: window.__bj3.rotated() }));
+  check(pf.touch && pf.ios && !pf.rot && pf.ui > 1.2, `iPhone горизонтально: сенсорный режим, крупный интерфейс ×${pf.ui.toFixed(2)}, кадр не повёрнут`);
+  await tapButton(page, cdp, "start");
+  await page.waitForFunction(() => window.__bj3.scene() === "game", null, { timeout: 15000 });
+  let s = await settleTouch(page, cdp);
+  check(s.view === "W1", `пальцем: партия началась, вступление пролистано касаниями (вид ${s.view})`);
+  // звук (замечание автора 03.11.2026: на iPhone молчали щелчки и «голоса» реплик): короткие — из WAV,
+  // эффекты вступления (душ, удар) звучали, ни один звук не отказал
+  const snd = await page.evaluate(() => ({ au: window.__bj3.audio(), files: performance.getEntriesByType("resource").map((e) => e.name.split("/").pop()) }));
+  const shortWav = ["ui_click", "blip_lap", "blip_anc"].every((n) => snd.files.includes(`${n}.wav`));
+  check(shortWav && snd.au.failed.length === 0, `звук: щелчки и «голоса» — WAV, отказавших звуков нет${snd.au.failed.length ? " (" + snd.au.failed.join(", ") + ")" : ""}`);
+  check(["sfx_shower_run", "sfx_shock_thud"].every((n) => snd.files.some((f) => f.startsWith(n + "."))), "звук: душ и удар вступления загружены");
+  // долгое касание по кровати — осмотр (правая кнопка мыши у пальца)
+  const bed = s.zones.find((z) => z.id === "bed");
+  const n0 = s.log.length;
+  await tapAt(page, cdp, bed.at[0], bed.at[1], 650);
+  s = await page.evaluate(() => window.__bj3.game());
+  check(s.log.length > n0 && /^W1\.bed/.test(s.log[s.log.length - 1]), `удержание пальца на кровати — осмотр (${s.log[s.log.length - 1]})`);
+  s = await settleTouch(page, cdp);
+  // «назад» браузера (жест Android) — из крупного плана в комнату, а не со страницы
+  const desk = s.zones.find((z) => z.id === "desk");
+  await tapAt(page, cdp, desk.at[0], desk.at[1]);
+  s = await settleTouch(page, cdp);
+  const zoomView = s.view;
+  await page.waitForTimeout(100);
+  await page.goBack().catch(() => {});
+  await page.waitForTimeout(300);
+  s = await page.evaluate(() => window.__bj3.game());
+  check(zoomView !== "W1" && s.view === "W1" && page.url().startsWith(URL), `«назад» браузера: из ${zoomView} обратно в комнату, игра на месте`);
+  await page.screenshot({ path: path.join(OUT, "12_iphone_game.png") });
+  await ctx.close();
+
+  // 2. iPhone вертикально: кадр «лёжа», касание по повёрнутой «НАЧАТЬ» начинает партию
+  ({ ctx, page, cdp } = await openPhone(browser, errors, IPHONE_V, URL));
+  await page.tap("#play");
+  await page.waitForFunction(() => window.__bj3.scene() === "title");
+  await page.waitForTimeout(300);
+  check(await page.evaluate(() => window.__bj3.rotated()), "телефон вертикально: кадр «лёжа»");
+  await page.screenshot({ path: path.join(OUT, "13_iphone_portrait_title.png") });
+  await tapButton(page, cdp, "start");
+  await page.waitForFunction(() => window.__bj3.scene() === "game", null, { timeout: 15000 });
+  check(true, "касание по повёрнутой «НАЧАТЬ» начало партию");
+  await ctx.close();
+
+  // 3. Telegram: весь экран, отступы, «Назад», вопрос при закрытии, облако
+  const cloud = new Map();
+  const tgInit = async (ctx) => {
+    await ctx.route("https://telegram.org/**", (r) => r.fulfill({ contentType: "application/javascript", body: TG_STUB }));
+    await ctx.exposeFunction("__cloudSet", (k, v) => { cloud.set(k, v); });
+    await ctx.exposeFunction("__cloudGet", (ks) => Object.fromEntries(ks.map((k) => [k, cloud.get(k) || ""])));
+  };
+  ({ ctx, page, cdp } = await openPhone(browser, errors, IPHONE, URL + TG_HASH, tgInit));
+  await page.waitForTimeout(500);
+  let log = await page.evaluate(() => window.__tg.log.slice());
+  check(["ready", "expand", "noswipe", "fullscreen", "header #000000"].every((x) => log.includes(x)),
+    `Telegram: готов, развёрнут, весь экран, свайп не сворачивает, рамка чёрная (${log.join(", ")})`);
+  check(log.includes("lock landscape"), "Telegram: горизонталь зафиксирована");
+  const box = await page.evaluate(() => { const r = document.getElementById("game").getBoundingClientRect(); return [r.left, r.top, r.width, r.height]; });
+  check(box[0] === 47 && box[1] === 46 && box[3] === 390 - 46 - 21, `Telegram: холст обходит вырез и кнопки Telegram (${box.map(Math.round).join(", ")})`);
+  check(/облаке Telegram/.test(await page.textContent("#note-save")), "Telegram: на карточке — что сохранение и в облаке");
+  await page.tap("#play");
+  await page.waitForFunction(() => window.__bj3.scene() === "title");
+  await page.waitForTimeout(300);
+  await tapButton(page, cdp, "start");
+  await page.waitForFunction(() => window.__bj3.scene() === "game", null, { timeout: 15000 });
+  s = await settleTouch(page, cdp);
+  log = await page.evaluate(() => window.__tg.log.slice());
+  check(log.includes("confirm on"), "Telegram: в партии закрыть — с вопросом");
+  const desk2 = s.zones.find((z) => z.id === "desk");
+  await tapAt(page, cdp, desk2.at[0], desk2.at[1]);
+  s = await settleTouch(page, cdp);
+  await page.waitForTimeout(100);
+  log = await page.evaluate(() => window.__tg.log.slice());
+  check(log.includes("back show"), `Telegram: в крупном плане (${s.view}) — кнопка «Назад» Telegram`);
+  await page.evaluate(() => window.__tg.back());
+  await page.waitForTimeout(200);
+  s = await page.evaluate(() => window.__bj3.game());
+  log = await page.evaluate(() => window.__tg.log.slice());
+  check(s.view === "W1" && log.lastIndexOf("back hide") > log.lastIndexOf("back show"), "Telegram: «Назад» — в комнату, кнопка снова спрятана");
+  await page.screenshot({ path: path.join(OUT, "14_telegram_game.png") });
+  await page.waitForTimeout(2200);   // облако пишется через 1,5 с после последнего сохранения
+  check(cloud.has("bj3_meta") && JSON.parse(cloud.get("bj3_meta")).n > 0, `Telegram: партия в облаке (${cloud.get("bj3_meta")})`);
+  await ctx.close();
+
+  // второй телефон с пустым браузером — та же партия из облака
+  ({ ctx, page, cdp } = await openPhone(browser, errors, IPHONE, URL + TG_HASH, tgInit));
+  await page.tap("#play");
+  await page.waitForFunction(() => window.__bj3.scene() === "title");
+  await page.waitForTimeout(300);
+  const cont = (await page.evaluate(() => window.__bj3.buttons())).find((b) => b.id === "cont");
+  check(cont && cont.enabled, "Telegram, другое устройство: «ПРОДОЛЖИТЬ» — партия из облака");
+  await tapButton(page, cdp, "cont");
+  await page.waitForFunction(() => window.__bj3.scene() === "game", null, { timeout: 15000 });
+  s = await page.evaluate(() => window.__bj3.game());
+  check(s && s.view === "W1", `Telegram, другое устройство: партия продолжена (вид ${s && s.view})`);
+  await ctx.close();
+}
+
 (async () => {
   const browser = await chromium.launch({ args: ["--autoplay-policy=user-gesture-required"] });
   const ctx = await browser.newContext({ viewport: { width: 1280, height: 720 } });
@@ -142,6 +344,8 @@ async function clickButton(page, id) {
   const au2 = await page2.evaluate(() => window.__bj3.audio());
   check(au2.format === "mp3" && au2.music === "bgm_title", `без Vorbis: формат ${au2.format}, музыка ${au2.music}`);
   await ctx2.close();
+
+  await phoneAndTelegram(browser, errors);
 
   check(errors.length === 0, `ошибок страницы нет${errors.length ? ": " + errors.join(" | ") : ""}`);
   await browser.close();

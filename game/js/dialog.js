@@ -3,7 +3,7 @@
 // блип — раз в 3 знака. Титр (`cap`) — без портрета и плашки, по центру панели.
 // Портрет Лапидуса — файл по пене (спека §5.1): сухой / `_foam` / `_cap`; `lap_clean` — как есть.
 
-import { ctx } from "./view.js";
+import { ctx, W, H, uiScale } from "./view.js";
 import { image, loadImage } from "./assets.js";
 import * as audio from "./audio.js";
 
@@ -34,11 +34,13 @@ let blipAcc = 0;
 let doneCb = null;
 let fast = false;
 let touchHint = false;
+let hints = {};          // подписи «дальше» для мыши и пальца (data/ui.json)
 
 export function init(speakerNames, ui = {}) {
   speakers = speakerNames;
   unnamed = {};
   for (const id of Object.keys(UNNAMED)) unnamed[id] = ui[`plate_${id}_unnamed`] || null;
+  hints = { click: ui.next_click, touch: ui.next_touch };
 }
 
 export function setFast(v) {
@@ -146,28 +148,40 @@ function rr(x, y, w, h, r) {
   ctx.roundRect(x, y, w, h, r);
 }
 
+// Раскладка окна. На маленьком экране (uiScale > 1) окно, портрет и кегль растут; окно текста
+// растёт вверх, если реплика не помещается в четыре строки.
+let box = null;   // последняя раскладка: {top}
 export function draw() {
   if (!cur) return;
+  const u = uiScale();
   const chars = [...cur.t];
   const text = chars.slice(0, shown).join("");
   const full = shown >= chars.length;
+  const bottom = H - 24;
+  const pw = Math.round(268 * u);
+  const ph = Math.round(280 * u);
   const px = 24;
-  const py = 776;
   const port = cur.portrait ? image(cur.portrait) : null;
   const isCap = cur.s === "cap";
   const withPortrait = !!cur.portrait;
-  const tx = withPortrait ? px + 284 : px;
-  const tw = withPortrait ? 1580 : 1864;
-  const ty = py + 44;
-  const th = 236;
+  const tx = withPortrait ? px + pw + Math.round(16 * u) : px;
+  const tw = W - 32 - tx;
+  const fs = Math.round(34 * u);
+  const lh = Math.round(44 * u);
+  ctx.font = isCap ? `italic 400 ${fs}px "PT Sans"` : `400 ${fs}px "PT Sans"`;
+  const fullLines = wrap(cur.t, tw - 52 * u);   // переносим по полному тексту — слова не прыгают при печати
+  const th = Math.max(Math.round(236 * u), Math.round(64 * u + (fullLines.length - 1) * lh + 54 * u));
+  const ty = bottom - th;
+  box = { top: Math.min(ty - 18 * u, withPortrait ? bottom - ph : ty) };
   if (withPortrait) {
-    rr(px, py, 268, 280, 10);
+    const py = bottom - ph;
+    rr(px, py, pw, ph, 10);
     ctx.fillStyle = C.panel;
     ctx.fill();
-    if (port) ctx.drawImage(port, px + 6, py + 6, 256, 256);
+    if (port) ctx.drawImage(port, px + 6 * u, py + 6 * u, pw - 12 * u, pw - 12 * u);
     ctx.lineWidth = 4;
     ctx.strokeStyle = cur.s === "anc" ? C.steel : C.brass;
-    rr(px, py, 268, 280, 10);
+    rr(px, py, pw, ph, 10);
     ctx.stroke();
   }
   rr(tx, ty, tw, th, 10);
@@ -179,9 +193,9 @@ export function draw() {
   // плашка имени
   const name = isCap ? null : cur.plate;
   if (name) {
-    ctx.font = '700 26px "PT Sans"';
-    const w = ctx.measureText(name).width + 26;
-    rr(tx + 14, ty - 18, w, 34, 6);
+    ctx.font = `700 ${Math.round(26 * u)}px "PT Sans"`;
+    const w = ctx.measureText(name).width + 26 * u;
+    rr(tx + 14 * u, ty - 18 * u, w, 34 * u, 6);
     ctx.fillStyle = "rgba(13, 15, 23, 0.95)";
     ctx.fill();
     ctx.lineWidth = 3;
@@ -190,17 +204,14 @@ export function draw() {
     ctx.fillStyle = cur.s === "anc" ? C.steel : C.brass;
     ctx.textAlign = "left";
     ctx.textBaseline = "middle";
-    ctx.fillText(name, tx + 27, ty - 1);
+    ctx.fillText(name, tx + 27 * u, ty - 1 * u);
   }
   // текст
-  ctx.font = isCap ? 'italic 400 34px "PT Sans"' : '400 34px "PT Sans"';
+  ctx.font = isCap ? `italic 400 ${fs}px "PT Sans"` : `400 ${fs}px "PT Sans"`;
   ctx.fillStyle = isCap ? C.cap : C.text;
   ctx.textBaseline = "alphabetic";
-  const fullLines = wrap(cur.t, tw - 52);
-  // переносим по полному тексту, чтобы слова не прыгали при печати
   let left = text.length;
-  const lh = 44;
-  const y0 = ty + 30 + 34;
+  const y0 = ty + 64 * u;
   fullLines.forEach((ln, k) => {
     const part = ln.slice(0, Math.max(0, left));
     left -= ln.length + 1;
@@ -210,15 +221,16 @@ export function draw() {
       ctx.fillText(part, tx + tw / 2 - (ctx.measureText(ln).width - ctx.measureText(part).width) / 2, y0 + k * lh);
     } else {
       ctx.textAlign = "left";
-      ctx.fillText(part, tx + 26, y0 + k * lh);
+      ctx.fillText(part, tx + 26 * u, y0 + k * lh);
     }
   });
-  ctx.font = '400 24px "PT Sans"';
+  ctx.font = `400 ${Math.round(24 * u)}px "PT Sans"`;
   ctx.fillStyle = C.dim;
   ctx.textAlign = "right";
-  ctx.fillText(full ? (touchHint ? "Коснитесь — дальше" : "Щелчок — дальше") : "…", tx + tw - 26, ty + th - 18);
+  const nextHint = touchHint ? hints.touch || "Коснитесь — дальше" : hints.click || "Щелчок — дальше";
+  ctx.fillText(full ? nextHint : "…", tx + tw - 26 * u, ty + th - 18 * u);
 }
 
 export function contains(p) {
-  return !!cur && p && p.y >= 776;
+  return !!cur && !!p && !!box && p.y >= box.top;
 }

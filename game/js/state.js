@@ -4,6 +4,7 @@
 // Хранилище — браузер; две копии (основная и запасная), как atomic_write + .bak в BJ2.
 
 import * as store from "./store.js";
+import * as cloud from "./cloud.js";
 
 export const SAVE_VERSION = 1;
 
@@ -53,10 +54,22 @@ export class State {
 }
 
 // Записать партию: прежняя основная копия становится запасной.
+// Номер записи (save.seq) — счётчик сохранений, а не время: часы движок не читает (H22), а часы
+// разных устройств и не совпадают. По номеру при запуске в Telegram выбирается более поздняя копия:
+// местная или облачная (cloud.js).
+function nextSeq() {
+  const n = (Number(store.read("save.seq")) || 0) + 1;
+  store.write("save.seq", n);
+  return n;
+}
+
 export function save(state) {
   const prev = store.read("save");
   if (prev) store.write("save.bak", prev);
-  return store.write("save", state.toJSON());
+  const json = state.toJSON();
+  const ok = store.write("save", json);
+  cloud.push(nextSeq(), json);
+  return ok;
 }
 
 // Прочитать партию: основная, при порче — запасная. {state, restored} или null.
@@ -76,4 +89,5 @@ export function load(knownFlagsByAct) {
 export function clear() {
   store.write("save", null);
   store.write("save.bak", null);
+  cloud.push(nextSeq(), null);
 }

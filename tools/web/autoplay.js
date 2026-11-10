@@ -3,6 +3,10 @@
 // Координаты зон берутся из живой игры (window.__bj3.game()), ответы — из логики акта.
 //
 //   NODE_PATH=$(npm root -g) node tools/web/autoplay.js http://127.0.0.1:8766/ [ПАПКА_СКРИНОВ]
+//   DEVICE=phone            — iPhone горизонтально (844×390 @3), пальцем: касания и удержания CDP;
+//   DEVICE=phone-portrait   — тот же iPhone вертикально: кадр «лёжа», касания поворачиваются;
+//   DEVICE=android          — Android горизонтально (915×412 @2.6), пальцем.
+// Без DEVICE — компьютер 1600×900, мышь (как раньше).
 //
 // Сценарий: Акт I (кратчайший путь + негативы: ранние попытки, повторы, советы, сохранение и
 // «Продолжить»), без паузы — Акт II целиком — с ложными попытками, каскадом-ширмой, плёнками,
@@ -27,21 +31,37 @@ function check(ok, msg) {
 
 (async () => {
   const browser = await chromium.launch({ args: ["--autoplay-policy=no-user-gesture-required"] });
-  const ctx = await browser.newContext({ viewport: { width: 1600, height: 900 } });
+  const DEVICES = {
+    desktop: { viewport: { width: 1600, height: 900 } },
+    phone: { viewport: { width: 844, height: 390 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true },
+    "phone-portrait": { viewport: { width: 390, height: 844 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true },
+    android: { viewport: { width: 915, height: 412 }, deviceScaleFactor: 2.625, isMobile: true, hasTouch: true },
+  };
+  const DEVICE = process.env.DEVICE || "desktop";
+  if (!DEVICES[DEVICE]) throw new Error(`неизвестное DEVICE=${DEVICE}`);
+  const TOUCH = DEVICE !== "desktop";
+  console.log(`устройство: ${DEVICE}${TOUCH ? " (пальцем)" : ""}`);
+  const ctx = await browser.newContext(DEVICES[DEVICE]);
   const page = await ctx.newPage();
   const errors = [];
   page.on("pageerror", (e) => errors.push(String(e)));
   page.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
 
   const g = () => page.evaluate(() => window.__bj3.game());
-  const toClient = (x, y) => page.evaluate(([x, y]) => {
-    const r = document.getElementById("game").getBoundingClientRect();
-    const s = Math.min(r.width / 1920, r.height / 1080);
-    return { x: r.left + (r.width - 1920 * s) / 2 + x * s, y: r.top + (r.height - 1080 * s) / 2 + y * s };
-  }, [x, y]);
+  // точка мира → точка окна: через саму игру (кадр «лёжа» на вертикальном телефоне учтён)
+  const toClient = (x, y) => page.evaluate(([x, y]) => window.__bj3.toScreen(x, y), [x, y]);
+  let cdp = null;
+  async function finger(c, holdMs) {
+    if (!cdp) cdp = await ctx.newCDPSession(page);
+    const pt = [{ x: c.x, y: c.y, id: 1, radiusX: 8, radiusY: 8, force: 1 }];
+    await cdp.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: pt });
+    await page.waitForTimeout(holdMs);
+    await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+  }
   async function clickAt([x, y], button = "left") {
     const c = await toClient(x, y);
-    await page.mouse.click(c.x, c.y, { button });
+    if (TOUCH) await finger(c, button === "right" ? 650 : 40);   // палец: удержание = правая кнопка
+    else await page.mouse.click(c.x, c.y, { button });
     await page.waitForTimeout(60);
   }
   const reachChecked = new Set();
@@ -62,7 +82,12 @@ function check(ok, msg) {
       const s = await g();
       if (s.ended) return s;
       if (s.dialog && s.dialog.s === "kuh") kuhLines.push({ t: s.dialog.t, plate: s.dialog.plate, portrait: s.dialog.portrait });
-      if (s.dialog || s.reader) { await clickAt([960, 900]); continue; }
+      if (s.dialog || s.reader) {
+        await clickAt([960, 900]);
+        // палец по бумаге: читалка ждёт второе касание (два касания — увеличить), закрывается через 0,3 с
+        if (TOUCH && s.reader) await page.waitForTimeout(420);
+        continue;
+      }
       if (!s.busy) { if (!s.choice && !s.menuItems) await zonesReachable(); return s; }
       await page.waitForTimeout(40);
     }
@@ -131,7 +156,7 @@ function check(ok, msg) {
   // ---------------------------------------------------------------- старт
   await page.goto(URL);
   await page.waitForFunction(() => !document.getElementById("play").disabled, null, { timeout: 30000 });
-  await page.click("#play");
+  await (TOUCH ? page.tap("#play") : page.click("#play"));
   await page.waitForFunction(() => window.__bj3.scene() === "title" && window.__bj3.buttons().length === 4);
   const tb = await page.evaluate(() => window.__bj3.buttons());
   await clickAt([tb[0].x + 200, tb[0].y + 36]);
@@ -273,7 +298,7 @@ function check(ok, msg) {
   const before = (await g()).flags.join(",");
   await page.reload();
   await page.waitForFunction(() => !document.getElementById("play").disabled, null, { timeout: 30000 });
-  await page.click("#play");
+  await (TOUCH ? page.tap("#play") : page.click("#play"));
   await page.waitForFunction(() => window.__bj3.scene() === "title" && window.__bj3.buttons().length === 4);
   const tb2 = await page.evaluate(() => window.__bj3.buttons());
   check(tb2.find((b) => b.id === "cont").enabled, "после перезагрузки «ПРОДОЛЖИТЬ» доступна");
@@ -353,7 +378,7 @@ function check(ok, msg) {
   const before2 = (await g()).flags.filter((f) => !f.startsWith("scr_")).join(",");
   await page.reload();
   await page.waitForFunction(() => !document.getElementById("play").disabled, null, { timeout: 30000 });
-  await page.click("#play");
+  await (TOUCH ? page.tap("#play") : page.click("#play"));
   await page.waitForFunction(() => window.__bj3.scene() === "title" && window.__bj3.buttons().length === 4);
   const tb3 = await page.evaluate(() => window.__bj3.buttons());
   const cb3 = tb3.find((b) => b.id === "cont");
@@ -609,7 +634,7 @@ function check(ok, msg) {
   const before3 = (await g()).flags.filter((f) => !f.startsWith("scr_")).join(",");
   await page.reload();
   await page.waitForFunction(() => !document.getElementById("play").disabled, null, { timeout: 30000 });
-  await page.click("#play");
+  await (TOUCH ? page.tap("#play") : page.click("#play"));
   await page.waitForFunction(() => window.__bj3.scene() === "title" && window.__bj3.buttons().length === 4);
   const tb4 = await page.evaluate(() => window.__bj3.buttons());
   const cb4 = tb4.find((b) => b.id === "cont");
@@ -731,7 +756,7 @@ function check(ok, msg) {
   const fin = (await g()).flags.join(",");
   await page.reload();
   await page.waitForFunction(() => !document.getElementById("play").disabled, null, { timeout: 30000 });
-  await page.click("#play");
+  await (TOUCH ? page.tap("#play") : page.click("#play"));
   await page.waitForFunction(() => window.__bj3.scene() === "title" && window.__bj3.buttons().length === 4);
   const tb5 = await page.evaluate(() => window.__bj3.buttons());
   const cb5 = tb5.find((b) => b.id === "cont");
