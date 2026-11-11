@@ -19,9 +19,19 @@ let current = null;         // { name, src, gain }
 let wanted = null;          // какая музыка должна звучать (даже если выключена)
 let settings = { music: true, sound: true };
 
+// Разбудить контекст. На iPhone после звонка или Siri он не «suspended», а «interrupted» — будим
+// из любого состояния, кроме «идёт»; отказ браузера (нет жеста игрока) — не ошибка игры.
+function wake() {
+  if (!ac || ac.state === "running") return;
+  try {
+    const p = ac.resume();
+    if (p && p.catch) p.catch(() => {});
+  } catch (e) { /* следующий щелчок попробует снова */ }
+}
+
 export function unlock() {
   if (ac) {
-    if (ac.state === "suspended") ac.resume();
+    wake();
     return;
   }
   const Ctx = window.AudioContext || window.webkitAudioContext;
@@ -37,7 +47,10 @@ export function unlock() {
   // вкладка в фоне — тишина; вернулась — продолжаем
   document.addEventListener("visibilitychange", () => {
     if (!ac) return;
-    if (document.hidden) ac.suspend(); else ac.resume();
+    if (document.hidden) {
+      const p = ac.suspend();
+      if (p && p.catch) p.catch(() => {});
+    } else wake();
   });
 }
 
@@ -130,6 +143,7 @@ export function cut() {
   }
   current = null;
   amb = null;
+  wantedAmb = null;
   afterCut = true;
 }
 
@@ -142,9 +156,13 @@ function fadeOut(m) {
 }
 
 // Амбиент экрана (тихая петля под текстом, спека §9.2); null — тишина. Та же — не перезапускается.
+// wantedAmb — какой амбиент нужен сейчас: пока звук грузится, игрок может уйти на другой экран, и
+// догрузившийся прежний не должен зазвучать поверх нового (иначе два амбиента разом и навсегда).
 let amb = null;
+let wantedAmb = null;
 const AMB_VOL = 0.55;
 export async function ambience(name) {
+  wantedAmb = name || null;
   if (!ac) return;
   if (amb && amb.name === name) return;
   const old = amb;
@@ -152,7 +170,7 @@ export async function ambience(name) {
   if (old) fadeOut(old);
   if (!name) return;
   const buf = await buffer(name);
-  if (!buf || (amb && amb.name === name)) return;
+  if (!buf || wantedAmb !== name || (amb && amb.name === name)) return;
   const src = ac.createBufferSource();
   src.buffer = buf;
   src.loop = true;
