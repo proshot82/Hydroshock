@@ -1,0 +1,9 @@
+# Библиотеки Python для проверок и сборки «Гидроудара»:  pip install -r requirements-dev.txt
+# Чем пользуются: tools/check_all.py и всё, что он запускает (списком — python tools/check_all.py --list).
+# Для проверок в браузере нужны ещё Node 22+, ffmpeg и Playwright:
+#   npm install -g playwright && npx playwright install chromium
+pytest>=8          # tests/
+Pillow>=10         # шрифты, сборка картинок в WebP, предпросмотр документов
+numpy>=1.26        # звук, зоны
+soundfile>=0.12    # чтение OGG/WAV в проверке звука
+pyloudnorm>=0.1.1  # громкость по EBU R128 в проверке звука (тянет scipy)

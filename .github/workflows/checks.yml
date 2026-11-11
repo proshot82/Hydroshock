@@ -1,0 +1,87 @@
+# Автозапуск проверок «Гидроудара» на каждый PR и на каждое изменение main.
+# Что именно проверяется — одна команда tools/check_all.py; здесь её группы идут параллельно.
+# Локально то же самое:  python tools/check_all.py --full
+name: Проверки
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  PLAYWRIGHT_VERSION: "1.63.0"   # та же, на которой проверки отлажены
+
+jobs:
+  check:
+    name: ${{ matrix.title }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { group: static, title: "Документы, тексты, логика, звук, код", browser: false }
+          - { group: tests, title: "Тесты проверок", browser: false }
+          - { group: reach, title: "Достижимость советов и реплик", browser: false }
+          - { group: browser, title: "Браузер: дымовой тест, автопрохождение (компьютер, iPhone)", browser: true }
+          - { group: touch, title: "Браузер: автопрохождение (Android, телефон вертикально)", browser: true }
+          - { group: fullrun, title: "Браузер: полное автопрохождение, все реплики", browser: true }
+    steps:
+      # work/ — рабочие материалы на 3 ГБ, проверкам не нужны (кроме одного шрифта для теста)
+      - uses: actions/checkout@v7
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/work/
+            /work/orig_fonts/
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Библиотеки Python
+        run: pip install -r requirements-dev.txt
+
+      - name: ffmpeg и Playwright
+        if: matrix.browser
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+          npm install -g "playwright@${PLAYWRIGHT_VERSION}"
+          playwright install --with-deps chromium
+
+      # перекодированные картинки и звук: без кэша сборка идёт минут шесть
+      - name: Кэш сборки
+        if: matrix.browser
+        uses: actions/cache@v6
+        with:
+          path: work/web_cache
+          key: web-cache-${{ hashFiles('assets/gfx/**', 'assets/audio/**', 'tools/web/build_web.py') }}
+          restore-keys: web-cache-
+
+      - name: Проверки (${{ matrix.group }})
+        run: python tools/check_all.py --only ${{ matrix.group }}
+
+      - name: Журналы и снимки экрана при провале
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: check-${{ matrix.group }}
+          path: work/verify/check_all/
+          if-no-files-found: ignore
+          retention-days: 14
