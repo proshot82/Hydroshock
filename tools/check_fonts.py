@@ -22,12 +22,12 @@
 трёх, — мина замедленного действия. Дешевле держать общий знаменатель.
 
 Источники текста: design/texts.json и design/scene.json (р.24: имена зон,
-подписи щитка, бирки вентилей) целиком плюс строковые литералы Lua.
-src/autoplay.lua исключён сознательно — это тестовый стенд, его сообщения
-уходят в консоль (там «≠» законен), на экран не попадают.
+подписи щитка, бирки вентилей) целиком. Строковые литералы Lua, которые читал
+гейт BJ2, не читаются: Lua-исходников в BJ3 нет (движок Б на JS, 13.10.2026),
+строки интерфейса — texts/ui/UI_TEXTS.md.
 
 BJ3 (перенесено из BJ2 @1da9c11). Два отличия:
-  • design/*.json и Lua-исходники необязательны — пока design/texts.json нет,
+  • design/*.json необязательны — пока design/texts.json нет,
     гейт читает итоговые тексты texts/act*/ACT*_TEXTS_FINAL.md (ASSET_SPEC §8);
   • REQUIRED — символы, которые игра заведомо использует, даже если их ещё
     нет в данных: дореформенная орфография документов «Каскадъ» (ѣ — в S3:
@@ -43,7 +43,6 @@ import sys
 from PIL import ImageFont
 
 FONTS = sorted(glob.glob("assets/fonts/*.ttf"))
-LUA_SKIP = {"src/autoplay.lua"}          # только консоль, см. шапку
 ALLOW = set()                            # осознанно разрешённые исключения — нет
 # Дореформенные буквы и типографика: «ѣѢіІъЪ», «» „“ — – … №.
 REQUIRED = "\u0463\u0462\u0456\u0406\u044a\u042a\u00ab\u00bb\u201e\u201c\u2014\u2013\u2026\u2116"
@@ -158,20 +157,6 @@ def scene_chars():
     return src
 
 
-def lua_chars():
-    """Строковые литералы Lua. Комментарии не трогаем: они на экран не идут."""
-    src = {}
-    files = [p for p in sorted(glob.glob("src/*.lua")) + ["main.lua"]
-             if p not in LUA_SKIP and os.path.exists(p)]
-    lit = re.compile(r'"((?:[^"\\\n]|\\.)*)"|\'((?:[^\'\\\n]|\\.)*)\'')
-    for p in files:
-        for n, line in enumerate(open(p, encoding="utf-8"), 1):
-            for m in lit.finditer(line):
-                for ch in (m.group(1) or m.group(2) or ""):
-                    src.setdefault(ch, f"{p}:{n}")
-    return src
-
-
 def main():
     if not FONTS:
         print("НЕТ ШРИФТОВ в assets/fonts — проверять нечего")
@@ -183,7 +168,7 @@ def main():
             print(f"FONT GATE BROKEN: детектор не видит канарейку в {f}")
             sys.exit(1)
     src = {ch: "REQUIRED (дореформенная орфография, типографика)" for ch in REQUIRED}
-    for d in (texts_chars(), scene_chars(), lua_chars(), ui_chars()):
+    for d in (texts_chars(), scene_chars(), ui_chars()):
         for ch, where in d.items():
             src.setdefault(ch, where)
     bad = {}

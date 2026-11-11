@@ -52,7 +52,7 @@ export function setTouch(v) {
 }
 
 // Имя файла портрета для реплики; null — без портрета.
-export function portraitName(line, st, dry) {
+function portraitName(line, st, dry) {
   if (!PORTRAIT_SPEAKERS.has(line.s) || !line.e || line.e === "none") return null;
   if (line.s === "lap" && line.e.startsWith("lap_soap_")) {
     if (dry || !st.flags.has("foam_active")) return `portraits/port_${line.e}`;

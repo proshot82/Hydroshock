@@ -120,10 +120,6 @@ export function touchUp(e, n) {
   if (n === 0) pan = null;
 }
 
-export function zoomLevel() {
-  return zoom.k;
-}
-
 function font(f, size) {
   return `${f[1]} ${size}px "${f[0]}"`;
 }
