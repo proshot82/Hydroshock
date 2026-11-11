@@ -1207,7 +1207,8 @@ export function debug() {
     items: invSlots().map((s) => ({ id: s.id, at: [s.x + s.w / 2, s.y + s.h / 2] })),
     menuItems: verbMenu ? menuRects(verbMenu.items, verbMenu.x, verbMenu.y).map((r) => ({ verb: r.verb, at: [r.x + r.w / 2, r.y + r.h / 2] }))
       : choice ? choiceRects().map((r) => ({ id: r.id, at: [r.x + r.w / 2, r.y + r.h / 2] })) : null,
-    hud: { hint: center(hud().hint), docs: center(hud().docs), back: center(hud().back), end: center(endButton()) },
+    hud: { hint: center(hud().hint), docs: center(hud().docs), back: center(hud().back), menu: center(hud().menu), end: center(endButton()) },
+    pause: pause ? pauseRects().map((r) => ({ id: r.id, at: center(r) })) : null,
     log: log.slice(),
     n: { ...st.n }, hint: { ...st.hint },
   };

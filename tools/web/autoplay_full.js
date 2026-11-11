@@ -198,9 +198,11 @@ function finish() {
     let s = await g();
     if (s && s.ended) await clickAt(s.hud.end, "left", 1500);
     else {
-      await clickAt([1250 + 67, 12 + 26], "left", 500);   // HUD.menu
-      await page.waitForTimeout(700);
-      await clickAt([960, 330 + 4 * 84 + 35], "left", 500);   // pauseRects: quit — пятый пункт
+      // положение кнопок — из самой игры: раскладка меняется (телефоны, 02.11.2026), числа в тесте — нет
+      await clickAt(s.hud.menu, "left", 500);
+      await page.waitForFunction(() => { const x = window.__bj3.game(); return x && x.pause; });
+      s = await g();
+      await clickAt(s.pause.find((b) => b.id === "quit").at, "left", 500);
     }
     await page.waitForFunction(() => window.__bj3.scene() === "title");
   }
