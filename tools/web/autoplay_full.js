@@ -9,6 +9,7 @@
 //   python tools/web/plan_full.py
 //   NODE_PATH=$(npm root -g) node tools/web/autoplay_full.js http://127.0.0.1:8766/ [work/fullrun/plan.json] [ПАПКА] [АКТЫ]
 //
+// АКТЫ — сколько актов пройти с начала игры: «1», «1,2», «1,2,3» (игра всегда стартует с Акта I).
 // Пишет ПАПКА/fullrun_log.json: что показано, расхождения с планом, ошибки. Код выхода 0 —
 // FULL AUTOPLAY OK: расхождений и ошибок нет. PACE=1 — с паузами на чтение, как у игрока
 // (часы вместо минут); по умолчанию ожидания сжаты.
@@ -169,18 +170,26 @@ function finish() {
     throw new Error(`непонятный ход «${m}»`);
   }
 
+  function compare(where, move, want, got) {
+    report.shown.push(...got);
+    if ([...got].sort().join(",") !== [...want].sort().join(",")) {
+      report.mismatches.push({ where, move, want, got });
+      console.log(`РАСХОЖДЕНИЕ ${where} «${move}»: план ${want.join(",")} — игра ${got.join(",")}`);
+    }
+  }
+  // Место в журнале игры, с которого начнётся вступление следующего акта. Ход, кончающий акт,
+  // возвращается, когда следующий акт уже начался и первые его реплики в журнале: они принадлежат
+  // вступлению (ход «начало акта»), а не этому ходу.
+  let openFrom = 0;
   async function runMove(mv, where) {
     const before = (await g()).log.length;
     await doMove(mv);
     const s = await settle();
     await page.waitForTimeout(250);
-    const got = s.log.slice(before);
-    report.shown.push(...got);
     const want = mv.slots || [];
-    if ([...got].sort().join(",") !== [...want].sort().join(",")) {
-      report.mismatches.push({ where, move: mv.move, want, got });
-      console.log(`РАСХОЖДЕНИЕ ${where} «${mv.move}»: план ${want.join(",")} — игра ${got.join(",")}`);
-    }
+    const crossed = s.act !== curAct;
+    openFrom = crossed ? Math.min(before + want.length, s.log.length) : s.log.length;
+    compare(where, mv.move, want, crossed ? s.log.slice(before, openFrom) : s.log.slice(before));
   }
 
   async function saveSnapshot() {
@@ -288,11 +297,8 @@ function finish() {
           continue;
         }
         if (mv.move === "начало акта") {
-          const s0 = (await g()) || { log: [] };
-          const before = act.act === PLAN[0].act ? 0 : s0.log.length;
           const s = await settle();
-          const got = s.log.slice(before);
-          report.shown.push(...got);
+          compare(where, mv.move, mv.slots || [], s.log.slice(act.act === PLAN[0].act ? 0 : openFrom));
           continue;
         }
         await runMove(mv, where);
