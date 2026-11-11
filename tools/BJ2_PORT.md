@@ -10,8 +10,8 @@
 
 | Файл | Правки |
 |---|---|
-| `src/json.lua` | без изменений |
-| `src/touch.lua`, `tools/test_touch.lua` | без изменений; `luajit tools/test_touch.lua` — 24/24 PASS |
+| ~~`src/json.lua`~~ | удалён 11.11.2026: движок Б на JS, Lua в BJ3 не исполняется |
+| ~~`src/touch.lua`, `tools/test_touch.lua`~~ | удалены 11.11.2026: распознаватель касаний переписан на JS — `game/js/touch.js`, тест `tools/web/test_touch.mjs` |
 | `tools/check_fonts.py` | design/*.json необязательны; обязательный набор `REQUIRED` (ѣ, ъ, і, типографика) проверяется всегда |
 | `tools/gen_texts_dump.py` | без изменений; заработает с появлением `design/texts.json` |
 | `assets/fonts/` (PT Sans Regular/Bold; Neucha — выведена 06.10.2026 в `work/orig_fonts/`, рукопись — Caveat) | без изменений; лицензия OFL |

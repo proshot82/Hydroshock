@@ -205,10 +205,6 @@ export async function sfx(name, volume = 1) {
   src.start();
 }
 
-export function isUnlocked() {
-  return !!ac;
-}
-
 // Для автотестов: состояние контекста, что звучит, какой формат выбран.
 export function status() {
   return { state: ac ? ac.state : "нет", music: current ? current.name : null, amb: amb ? amb.name : null,

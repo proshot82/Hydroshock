@@ -11,8 +11,8 @@ import * as audio from "./audio.js";
 import * as store from "./store.js";
 import * as platform from "./platform.js";
 
-export const LOGO = { x: 30, y: 30 };
-export const LOGO_CENTER_X = 30 + 330;
+const LOGO = { x: 30, y: 30 };
+const LOGO_CENTER_X = 30 + 330;
 const BTN = { w: 400, h: 72, gap: 92, y: 450 };
 BTN.x = LOGO_CENTER_X - BTN.w / 2;
 

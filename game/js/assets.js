@@ -68,8 +68,3 @@ export async function loadImages(names, onProgress) {
     onProgress && onProgress(done, names.length);
   })));
 }
-
-export function audioUrl(name) {
-  const file = manifest && manifest.audio[name];
-  return file ? "assets/audio/" + file : null;
-}
