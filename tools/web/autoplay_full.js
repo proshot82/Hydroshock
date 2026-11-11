@@ -1,23 +1,27 @@
-// Видеопрохождение на 100 %: проигрывает план tools/web/plan_full.py через настоящий интерфейс
-// (мышь двигается и щёлкает, как у игрока) и пишет видео со звуком изнутри страницы (rec_page.js).
-// Реплики не проматываются: каждая допечатывается и стоит на экране время на чтение.
-// Ответвления плана (другой порядок действий — реплики, которых нет на основном пути): перед ним
-// снимок сохранения, после — «Сохранить и выйти», на титуле снимок возвращается, «Продолжить».
+// Полное автопрохождение: проигрывает план tools/web/plan_full.py через настоящий интерфейс (мышь
+// двигается и щёлкает, как у игрока) и после каждого хода сверяет, что игра показала ровно те
+// реплики и бумаги, которые предсказала модель логики. В отличие от autoplay.js (основной путь и
+// негативы) идёт по всем репликам, бумагам и советам Предка, с ответвлениями.
+// Ответвления плана (другой порядок действий — реплики, которых нет на основном пути; снятые флаги
+// прошлых актов; концовки): перед ним снимок сохранения, после — «Сохранить и выйти», на титуле
+// снимок возвращается, «Продолжить».
 //
-//   NODE_PATH=$(npm root -g) node tools/web/record_full.js http://127.0.0.1:8766/ work/fullrun/plan.json work/fullrun [АКТЫ]
+//   python tools/web/plan_full.py
+//   NODE_PATH=$(npm root -g) node tools/web/autoplay_full.js http://127.0.0.1:8766/ [work/fullrun/plan.json] [ПАПКА] [АКТЫ]
 //
-// Пишет ПАПКА/actN.webm (по файлу на акт) и ПАПКА/record_log.json: что показано, расхождения с планом.
+// Пишет ПАПКА/fullrun_log.json: что показано, расхождения с планом, ошибки. Код выхода 0 —
+// FULL AUTOPLAY OK: расхождений и ошибок нет. PACE=1 — с паузами на чтение, как у игрока
+// (часы вместо минут); по умолчанию ожидания сжаты.
+//
+// До 11.11.2026 этот сценарий заодно писал видео (record_full.js, rec_page.js, video_join.py);
+// запись снята по решению автора, сверка осталась.
 
 const { chromium } = require("playwright");
 const fs = require("fs");
 const path = require("path");
 
 const URL = process.argv[2] || "http://127.0.0.1:8766/";
-const PLANFILE = JSON.parse(fs.readFileSync(process.argv[3] || "work/fullrun/plan.json", "utf8"));
-const PLAN = PLANFILE.plan;
-// Дополнение (PLANFILE.supplement): весь путь до метки {rec_start} — быстро и без записи, с метки —
-// запись в файл с её именем, на метке {rec_stop} — конец.
-const SUPP = !!PLANFILE.supplement;
+const PLAN = JSON.parse(fs.readFileSync(process.argv[3] || "work/fullrun/plan.json", "utf8")).plan;
 const OUT = process.argv[4] || "work/fullrun";
 const ONLY = process.argv[5] ? new Set(process.argv[5].split(",").map(Number)) : null;
 fs.mkdirSync(OUT, { recursive: true });
@@ -27,19 +31,23 @@ const readTime = (n) => 900 + n * 28;   // мс на чтение строки �
 const docTime = (n) => 2500 + n * 22;   // мс на бумагу
 
 const report = { mismatches: [], shown: [], errors: [] };
+function finish() {
+  fs.writeFileSync(path.join(OUT, "fullrun_log.json"), JSON.stringify(report, null, 1));
+  const bad = report.mismatches.length + report.errors.length;
+  console.log(bad ? `\nFULL AUTOPLAY FAIL: расхождений ${report.mismatches.length}, ошибок ${report.errors.length}`
+    : `\nFULL AUTOPLAY OK: показано ${new Set(report.shown).size} разных слотов и бумаг, расхождений нет`);
+  return bad ? 1 : 0;
+}
 
 (async () => {
   const browser = await chromium.launch({ args: ["--autoplay-policy=no-user-gesture-required"] });
   const ctx = await browser.newContext({ viewport: { width: 1920, height: 1080 } });
   const page = await ctx.newPage();
-  let fast = !!process.env.FAST || SUPP;   // без пауз: все ожидания — не дольше 20 мс
+  const fast = !process.env.PACE;   // без пауз на чтение: все ожидания — не дольше 20 мс
   {
     const wt = page.waitForTimeout.bind(page);
     page.waitForTimeout = (t) => wt(fast ? Math.min(t, 20) : t);
   }
-  let outFd = null;
-  await page.exposeFunction("__recChunk", (b64) => { if (outFd !== null) fs.writeSync(outFd, Buffer.from(b64, "base64")); });
-  await page.addInitScript({ path: path.join(__dirname, "rec_page.js") });
   page.on("pageerror", (e) => report.errors.push(String(e)));
 
   const g = () => page.evaluate(() => window.__bj3.game());
@@ -62,9 +70,6 @@ const report = { mismatches: [], shown: [], errors: [] };
     await page.mouse.click(mouse.x, mouse.y, { button });
     await page.waitForTimeout(80);
   }
-  async function caption(t) {
-    await page.evaluate((t) => window.__recCaption && window.__recCaption(t), t);
-  }
 
   // реплики и бумаги — с паузой на чтение; дождаться, пока игра освободится
   let curAct = 0;
@@ -74,7 +79,7 @@ const report = { mismatches: [], shown: [], errors: [] };
       const s = await g();
       if (!s) { await page.waitForTimeout(100); continue; }
       if (s.ended) return s;
-      if (curAct && s.act !== curAct) return s;   // начался следующий акт — его запишет свой файл
+      if (curAct && s.act !== curAct) return s;   // начался следующий акт — его вступление сверит он сам
       if (s.reader) {
         const n = (docs[s.reader] || "").length;
         await page.waitForTimeout(docTime(n));
@@ -224,15 +229,6 @@ const report = { mismatches: [], shown: [], errors: [] };
     return continueFrom(snap, null);
   }
 
-  function startFile(name) {
-    outFd = fs.openSync(path.join(OUT, name), "w");
-  }
-  async function stopFile() {
-    await page.evaluate(() => window.__recStop());
-    fs.closeSync(outFd);
-    outFd = null;
-  }
-
   // ---------------------------------------------------------------- старт
   await page.goto(URL);
   await page.waitForFunction(() => !document.getElementById("play").disabled, null, { timeout: 60000 });
@@ -242,16 +238,10 @@ const report = { mismatches: [], shown: [], errors: [] };
   }
   await page.click("#play");
   await page.waitForFunction(() => window.__bj3.scene() === "title" && window.__bj3.buttons().length === 4);
-  let recording = false;
   for (const act of PLAN) {
     if (ONLY && !ONLY.has(act.act)) continue;
     console.log(`=== акт ${act.act}`);
     curAct = act.act;
-    if (!SUPP) {
-      startFile(`act${act.act}.webm`);
-      await page.evaluate(() => window.__recStart(30, 6000000));
-      recording = true;
-    }
     if (act.act === PLAN[0].act) {
       await page.waitForTimeout(1500);
       const tb = await page.evaluate(() => window.__bj3.buttons());
@@ -263,33 +253,13 @@ const report = { mismatches: [], shown: [], errors: [] };
       k += 1;
       const where = `акт ${act.act}, ход ${k}`;
       try {
-        if (mv.rec_start) {
-          fast = !!process.env.FAST;
-          await page.waitForTimeout(500);
-          startFile(mv.rec_start);
-          await page.evaluate(() => window.__recStart(30, 6000000));
-          recording = true;
-          await page.waitForTimeout(1500);
-          continue;
-        }
-        if (mv.rec_stop) {
-          await page.waitForTimeout(2000);
-          await stopFile();
-          recording = false;
-          fs.writeFileSync(path.join(OUT, "record_log.json"), JSON.stringify(report, null, 1));
-          console.log(`готово: расхождений ${report.mismatches.length}, ошибок ${report.errors.length}`);
-          await browser.close();
-          return;
-        }
         if (mv.branch) {
+          console.log(`  ${where}: ответвление — ${mv.caption || "другой порядок действий"}`);
           const snap = await saveSnapshot();
-          await caption(mv.caption || "Другой порядок действий: то, чего нет на основном пути");
-          await page.waitForTimeout(3000);
           if (mv.edit) {
             await toTitle();
             await continueFrom(snap, mv.edit.remove);
           }
-          await caption(null);
           let j = 0;
           for (const bm of mv.branch) {
             j += 1;
@@ -312,11 +282,7 @@ const report = { mismatches: [], shown: [], errors: [] };
             }
             await runMove(bm, `${where}, ответвление ${j}`);
           }
-          await page.waitForTimeout(1500);
-          await caption("Назад к сохранению — дальше по основному пути");
           await restoreSnapshot(snap);
-          await page.waitForTimeout(1500);
-          await caption(null);
           continue;
         }
         if (mv.move === "начало акта") {
@@ -338,19 +304,16 @@ const report = { mismatches: [], shown: [], errors: [] };
     // конец акта: дождаться следующего акта (или карточки «Конец»)
     await page.waitForTimeout(1500);
     if (act.act !== PLAN[PLAN.length - 1].act) {
-      if (recording) await stopFile();
-      recording = false;
       await page.waitForFunction((n) => { const s = window.__bj3.game(); return s && s.act === n; }, act.act + 1, { timeout: 120000 });
     } else {
       await page.waitForTimeout(6000);
     }
   }
-  if (recording) await stopFile();
-  fs.writeFileSync(path.join(OUT, "record_log.json"), JSON.stringify(report, null, 1));
-  console.log(`готово: расхождений ${report.mismatches.length}, ошибок ${report.errors.length}`);
   await browser.close();
+  process.exit(finish());
 })().catch((e) => {
-  fs.writeFileSync(path.join(OUT, "record_log.json"), JSON.stringify(report, null, 1));
+  if (!report.errors.length) report.errors.push(String(e && e.message || e));
   console.error(e);
+  finish();
   process.exit(1);
 });
