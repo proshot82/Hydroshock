@@ -28,8 +28,8 @@ class CheckAllTest(unittest.TestCase):
         """Каждая проверка зовёт файл, который есть в репозитории (удалили инструмент — узнаем здесь)."""
         for s in A.steps():
             for part in s.cmd or []:
-                if part.startswith("tools/") or part.startswith("texts/"):
-                    self.assertTrue((ROOT / part).is_file(), f"{s.name}: нет файла {part}")
+                if part.startswith(("tools/", "texts/", "game/")) or part.endswith(".mjs"):
+                    self.assertTrue((ROOT / part).exists(), f"{s.name}: нет {part}")
 
     def test_groups_cover_all_steps(self):
         names = [s.name for s in A.steps()]

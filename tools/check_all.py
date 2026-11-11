@@ -9,7 +9,7 @@
 
 Группы:
   static   документы, спека ассетов, шрифты, тексты и условия слотов, генерируемые документы, звук,
-           синтаксис кода, логика актов, тест-матрица H01–H26 — без браузера;
+           синтаксис и линтер кода, логика актов, тест-матрица H01–H26 — без браузера;
   tests    тесты самих проверок (pytest tests);
   reach    достижимость советов и реплик, строго (check_reach.py --strict);
   browser  сборка, дымовой тест, автопрохождение мышью на компьютере и пальцем на iPhone;
@@ -22,9 +22,9 @@ Node, Playwright) — сообщается отдельной строкой «�
 провалом проверки: урок 10.11.2026 — без pyloudnorm матрица показывала ложный провал H21.
 
 Код выхода: 0 — всё, что запускалось, прошло; 1 — есть провал или не хватило зависимости.
-Зависимости: pip install -r requirements-dev.txt, Node 22+ и ffmpeg (проверка звука, матрица,
-сборка); для групп с браузером — ещё `npm install -g playwright` (один раз —
-`npx playwright install chromium`).
+Зависимости: pip install -r requirements-dev.txt, Node 22+ с ESLint (`npm install -g eslint`) и
+ffmpeg (проверка звука, матрица, сборка); для групп с браузером — ещё
+`npm install -g playwright` (один раз — `npx playwright install chromium`).
 """
 import argparse
 import importlib.util
@@ -49,7 +49,8 @@ ACTS = (1, 2, 3, 4)
 FFMPEG = ("ffmpeg", "ffprobe")
 HOW = {"ffmpeg": "поставить ffmpeg (ffprobe идёт с ним) и добавить в PATH",
        "ffprobe": "поставить ffmpeg (ffprobe идёт с ним) и добавить в PATH",
-       "node": "поставить Node 22 или новее и добавить в PATH"}
+       "node": "поставить Node 22 или новее и добавить в PATH",
+       "eslint": "npm install -g eslint"}
 
 
 class Step:
@@ -120,6 +121,8 @@ def steps():
         Step("audio", "static", "Звук: файлы спеки, громкость, швы", [PY, "tools/audio/check_audio.py"],
              py=("numpy", "soundfile", "pyloudnorm"), tools=FFMPEG),
         Step("js_syntax", "static", "Синтаксис кода движка и тестов", run=run_js_syntax, tools=("node",)),
+        Step("lint", "static", "Линтер кода: неизвестные имена, неиспользуемое, недостижимое",
+             ["eslint", "game/js", "tools/web", "eslint.config.mjs"], tools=("node", "eslint")),
         Step("touch_unit", "static", "Распознаватель касаний (23 проверки)", ["node", "tools/web/test_touch.mjs"], tools=("node",)),
         Step("logic", "static", "Логика четырёх актов: полный перебор", [PY, "tools/data/check_logic.py", "1", "2", "3", "4"]),
         Step("matrix", "static", "Тест-матрица H01–H26", [PY, "tools/data/check_matrix.py"],
@@ -261,6 +264,8 @@ def run_step(step, web):
                 rc = step.run(log)
         else:
             cmd = [url if c == "{url}" else c for c in step.cmd]
+            # программа по имени — полным путём: в Windows eslint и npm — файлы .cmd, по имени не запускаются
+            cmd[0] = shutil.which(cmd[0]) or cmd[0]
             with open(path, "wb") as log:
                 rc = subprocess.run(cmd, stdout=log, stderr=subprocess.STDOUT, cwd=ROOT, env=child_env(step.env),
                                     timeout=step.timeout).returncode
