@@ -22,8 +22,9 @@ Node, Playwright) — сообщается отдельной строкой «�
 провалом проверки: урок 10.11.2026 — без pyloudnorm матрица показывала ложный провал H21.
 
 Код выхода: 0 — всё, что запускалось, прошло; 1 — есть провал или не хватило зависимости.
-Зависимости: pip install -r requirements-dev.txt; для групп с браузером — Node, ffmpeg и
-`npm install -g playwright` (один раз — `npx playwright install chromium`).
+Зависимости: pip install -r requirements-dev.txt, Node 22+ и ffmpeg (проверка звука, матрица,
+сборка); для групп с браузером — ещё `npm install -g playwright` (один раз —
+`npx playwright install chromium`).
 """
 import argparse
 import importlib.util
@@ -42,6 +43,13 @@ PY = sys.executable
 GROUPS = ("static", "tests", "reach", "browser", "touch", "fullrun")
 DEFAULT = ("static",)
 ACTS = (1, 2, 3, 4)
+# Звук читают и перекодируют программы ffmpeg и ffprobe (одна установка): проверка звука, матрица
+# (пункт H21 зовёт проверку звука) и сборка. Урок 11.11.2026: на GitHub без них проверка звука и
+# матрица упали с «No such file or directory: 'ffprobe'» — провалом это не было.
+FFMPEG = ("ffmpeg", "ffprobe")
+HOW = {"ffmpeg": "поставить ffmpeg (ffprobe идёт с ним) и добавить в PATH",
+       "ffprobe": "поставить ffmpeg (ffprobe идёт с ним) и добавить в PATH",
+       "node": "поставить Node 22 или новее и добавить в PATH"}
 
 
 class Step:
@@ -110,12 +118,12 @@ def steps():
     s += [
         Step("generated", "static", "Генерируемые документы совпадают с генераторами", run=run_generated, py=("PIL",)),
         Step("audio", "static", "Звук: файлы спеки, громкость, швы", [PY, "tools/audio/check_audio.py"],
-             py=("numpy", "soundfile", "pyloudnorm")),
+             py=("numpy", "soundfile", "pyloudnorm"), tools=FFMPEG),
         Step("js_syntax", "static", "Синтаксис кода движка и тестов", run=run_js_syntax, tools=("node",)),
         Step("touch_unit", "static", "Распознаватель касаний (23 проверки)", ["node", "tools/web/test_touch.mjs"], tools=("node",)),
         Step("logic", "static", "Логика четырёх актов: полный перебор", [PY, "tools/data/check_logic.py", "1", "2", "3", "4"]),
         Step("matrix", "static", "Тест-матрица H01–H26", [PY, "tools/data/check_matrix.py"],
-             py=("PIL", "numpy", "soundfile", "pyloudnorm")),
+             py=("PIL", "numpy", "soundfile", "pyloudnorm"), tools=FFMPEG),
         Step("pytest", "tests", "Тесты проверок (pytest)", [PY, "-m", "pytest", "-q", "tests"], py=("pytest", "PIL")),
         Step("reach", "reach", "Достижимость советов и реплик, строго", [PY, "tools/data/check_reach.py", "--strict"], timeout=3600),
         Step("smoke", "browser", "Дымовой тест в браузере",
@@ -159,10 +167,10 @@ def missing(step):
     for m in step.py:
         if importlib.util.find_spec(m) is None:
             out.append((f"библиотека Python «{m}»", "pip install -r requirements-dev.txt"))
-    need_tools = set(step.tools) | ({"node"} if step.node else set()) | ({"ffmpeg"} if step.web else set())
+    need_tools = set(step.tools) | ({"node"} if step.node else set()) | (set(FFMPEG) if step.web else set())
     for t in sorted(need_tools):
         if shutil.which(t) is None:
-            out.append((f"программа «{t}»", "поставить и добавить в PATH"))
+            out.append((f"программа «{t}»", HOW.get(t, "поставить и добавить в PATH")))
     if step.web and importlib.util.find_spec("PIL") is None:
         out.append(("библиотека Python «PIL»", "pip install -r requirements-dev.txt"))
     if step.node and shutil.which("node"):

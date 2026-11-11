@@ -61,6 +61,21 @@ class CheckAllTest(unittest.TestCase):
         self.assertIn("requirements-dev.txt", out)
         self.assertNotIn("не должна запускаться", out)
 
+    def test_missing_program_is_named(self):
+        """Урок 11.11.2026: на GitHub без ffprobe проверка звука упала, будто звук сломан."""
+        step = A.Step("selftest_tool", "static", "проверка с несуществующей программой",
+                      [A.PY, "-c", "print('не должна запускаться')"], tools=("bj3-no-such-program",))
+        ok, out = quiet(A.run_step, step, A.Web())
+        self.assertFalse(ok)
+        self.assertIn("НЕТ ЗАВИСИМОСТИ", out)
+        self.assertIn("bj3-no-such-program", out)
+        self.assertNotIn("не должна запускаться", out)
+
+    def test_audio_checks_declare_ffmpeg(self):
+        by = {s.name: s for s in A.steps()}
+        for name in ("audio", "matrix"):
+            self.assertTrue(set(A.FFMPEG) <= set(by[name].tools), name)
+
     def test_timeout_is_fail(self):
         step = A.Step("selftest_slow", "static", "проверка, которая зависла", [A.PY, "-c", "import time; time.sleep(30)"], timeout=1)
         ok, out = quiet(A.run_step, step, A.Web())
