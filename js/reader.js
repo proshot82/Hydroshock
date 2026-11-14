@@ -87,7 +87,8 @@ const worldOf = (e) => toWorld(e.clientX, e.clientY, true);
 
 export function touchDown(e, n) {
   fingers.set(e.pointerId, worldOf(e));
-  if (n === 2) {
+  // первый палец мог лечь до открытия бумаги (удержание — осмотр — бумага): читалка его не видела
+  if (n === 2 && fingers.size >= 2) {
     const [a, b] = [...fingers.values()];
     pinch = { d0: Math.hypot(a.x - b.x, a.y - b.y) || 1, k0: zoom.k, ox0: zoom.ox, oy0: zoom.oy, c0: { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 } };
     pan = null;
@@ -118,10 +119,6 @@ export function touchUp(e, n) {
   fingers.delete(e.pointerId);
   if (n < 2) pinch = null;
   if (n === 0) pan = null;
-}
-
-export function zoomLevel() {
-  return zoom.k;
 }
 
 function font(f, size) {

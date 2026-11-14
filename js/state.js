@@ -6,7 +6,7 @@
 import * as store from "./store.js";
 import * as cloud from "./cloud.js";
 
-export const SAVE_VERSION = 1;
+const SAVE_VERSION = 1;
 
 export class State {
   constructor(act, startFlags) {

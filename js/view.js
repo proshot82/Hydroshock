@@ -116,11 +116,6 @@ export function toScreen(x, y) {
   return { x: r.left + bx / dpr, y: r.top + by / dpr };
 }
 
-// Длина в мире → точки экрана (CSS px): сколько займёт на экране.
-export function worldToCss(len) {
-  return (len * scale) / dpr;
-}
-
 // Рисование поверх мира в точках окна (кольцо долгого касания): fn(ctx, k), k — CSS px → буфер.
 export function overlay(fn) {
   ctx.save();

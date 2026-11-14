@@ -66,7 +66,6 @@ let selected = null;      // выбранный предмет
 let hover = null;         // {zone, p}
 let hoverHud = null;
 let showZones = false;
-let toast = null;
 let pause = null;         // {items}
 let docsPanel = null;     // {items}
 let endCard = null;
@@ -92,7 +91,7 @@ export async function start(actData, state, opts = {}) {
   data = actData;
   dialog.init(data.speakers || {}, T);
   busy = false; frame = null; verbMenu = null; choice = null; selected = null; pause = null;
-  docsPanel = null; endCard = null; toast = null;
+  docsPanel = null; endCard = null;
   const fresh = !state || !!opts.newAct;   // новый акт открывается своей сценой, как новая игра
   st = state || new State(data.act, data.start_flags);
   if (!st.view) st.view = Object.keys(data.views)[0];
@@ -534,6 +533,12 @@ function nextAct() {
     st.hint = { level: {}, lock: false, n: st.hint.n };
     return st;
   });
+}
+
+// Следующая часть игры не загрузилась (сеть пропала на границе актов): main.js пробует снова сам,
+// а на чёрном экране перехода появляется строка — игрок видит, что игра ждёт сеть, а не зависла.
+export function transitStalled(v) {
+  if (endCard && endCard.transit) endCard.stalled = !!v;
 }
 
 // ------------------------------------------------------------ ввод
@@ -1067,11 +1072,11 @@ function endButton() {
 }
 
 function drawFinale() {
-  const art = image(END_ART);
+  const art = pic(END_ART);
   if (art) ctx.drawImage(art, 0, 0, W, H);
   // «КОНЕЦ» — на небе под радугой: латунные буквы картинкой (как название на титуле);
   // пока картинка грузится — строка интерфейса
-  const logo = image(END_LOGO);
+  const logo = pic(END_LOGO);
   if (logo) {
     const lw = 700;   // между вантузом Лапидуса и причёской Кухтулху
     const lh = Math.round(logo.height * lw / logo.width);
@@ -1106,13 +1111,22 @@ function drawEnd() {
   if (!endCard) return;
   ctx.fillStyle = "#0b0c10";
   ctx.fillRect(0, 0, W, H);
-  if (endCard.transit) return;   // переход к следующей части игры: чёрный экран, пока она грузится
+  if (endCard.transit) {   // переход к следующей части игры: чёрный экран, пока она грузится
+    if (endCard.stalled) {
+      ctx.textAlign = "center";
+      ctx.textBaseline = "alphabetic";
+      ctx.font = fnt(400, 32);
+      ctx.fillStyle = C.dim;
+      ctx.fillText(T.net_wait || "", W / 2, H / 2);
+    }
+    return;
+  }
   if (endCard.last) { drawFinale(); return; }
   ctx.textAlign = "center";
   ctx.textBaseline = "alphabetic";
   ctx.font = fnt(400, 36);
   ctx.fillStyle = C.text;
-  ctx.fillText((endCard.last ? T.the_end : T.build_end) || "", W / 2, 470);
+  ctx.fillText(T.build_end || "", W / 2, 470);
   button(endBtn(), T.to_title, inRect(lastPointer, endBtn()), { font: fnt(700, 34) });
 }
 
@@ -1200,6 +1214,7 @@ export function debug() {
   if (!data) return null;
   return {
     act: data.act, view: st.view, busy: busy || !!(endCard && endCard.transit), ended: !!(endCard && !endCard.transit), frame: !!frame, pos: st.pos,
+    stalled: !!(endCard && endCard.stalled),
     flags: [...st.flags].sort(), dialog: dialog.active() ? dialog.currentLine() : null,
     reader: reader.currentDoc(), choice: choice ? choice.items.map((i) => ({ id: i.id, label: i.label })) : null,
     verbs: verbMenu ? verbMenu.items.map((i) => i.verb) : null, selected,
@@ -1207,7 +1222,8 @@ export function debug() {
     items: invSlots().map((s) => ({ id: s.id, at: [s.x + s.w / 2, s.y + s.h / 2] })),
     menuItems: verbMenu ? menuRects(verbMenu.items, verbMenu.x, verbMenu.y).map((r) => ({ verb: r.verb, at: [r.x + r.w / 2, r.y + r.h / 2] }))
       : choice ? choiceRects().map((r) => ({ id: r.id, at: [r.x + r.w / 2, r.y + r.h / 2] })) : null,
-    hud: { hint: center(hud().hint), docs: center(hud().docs), back: center(hud().back), end: center(endButton()) },
+    hud: { hint: center(hud().hint), docs: center(hud().docs), back: center(hud().back), menu: center(hud().menu), end: center(endButton()) },
+    pause: pause ? pauseRects().map((r) => ({ id: r.id, at: center(r) })) : null,
     log: log.slice(),
     n: { ...st.n }, hint: { ...st.hint },
   };
@@ -1245,22 +1261,4 @@ function clickPoint(z) {
     }
   }
   return null;
-}
-
-// точка внутри зоны-слоя: ближайший к центру непрозрачный пиксель
-function layerPoint(lay) {
-  const m = mask(lay);
-  if (!m) return [lay.x + 10, lay.y + 10];
-  const cx = Math.floor(m.w / 2);
-  const cy = Math.floor(m.h / 2);
-  for (let r = 0; r < Math.max(m.w, m.h); r += 4) {
-    for (let dy = -r; dy <= r; dy += 4) {
-      for (let dx = -r; dx <= r; dx += 4) {
-        const x = cx + dx;
-        const y = cy + dy;
-        if (x >= 0 && y >= 0 && x < m.w && y < m.h && m.a[y * m.w + x]) return [lay.x + x, lay.y + y];
-      }
-    }
-  }
-  return [lay.x, lay.y];
 }

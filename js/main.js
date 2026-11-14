@@ -25,20 +25,39 @@ const FONTS = ['400 34px "PT Sans"', '700 44px "PT Sans"', '400 34px "Old Standa
 let scene = null;     // title | game
 let manifest = null;
 const acts = {};      // загруженные данные актов
+const actLoads = {};  // идущие загрузки: акт → Promise (заблаговременная и настоящая не дублируются)
 let last = 0;
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 function progress(done, total) {
   fill.style.width = `${Math.round((done / Math.max(1, total)) * 100)}%`;
 }
 
+// Игра не загрузилась. До «Играть» сообщение — на карточке загрузки; после неё карточка скрыта,
+// поэтому на титуле оно идёт плашкой, иначе игрок не увидел бы ничего.
 function fail(err) {
   console.error(err);
-  status.textContent = "Не удалось загрузить игру. Обновите страницу.";
+  const msg = "Не удалось загрузить игру. Обновите страницу.";
+  status.textContent = msg;
+  if (scene === title) title.showToast(msg, 8);
 }
 
-async function actData(n) {
-  if (!acts[n]) acts[n] = await (await fetch(`data/act${n}.json`, { cache: "no-cache" })).json();
-  return acts[n];
+// Данные акта. Не загрузились — следующий вызов пробует снова (сбой в памяти не остаётся).
+function actData(n) {
+  if (acts[n]) return Promise.resolve(acts[n]);
+  if (!actLoads[n]) {
+    actLoads[n] = fetch(`data/act${n}.json`, { cache: "no-cache" })
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`акт ${n}: ответ сервера ${r.status}`))))
+      .then((d) => { acts[n] = d; return d; })
+      .finally(() => { delete actLoads[n]; });
+  }
+  return actLoads[n];
+}
+
+// Следующий акт — заранее, пока идёт текущий: переход между актами не должен зависеть от сети в
+// ту самую секунду (на телефоне она пропадает). Не вышло — не беда, на переходе загрузим снова.
+function prefetchAct(n) {
+  if ((manifest.acts || [1]).includes(n)) actData(n).catch(() => {});
 }
 
 // Флаги, которые знает сборка к акту n: накопительно по актам 1..n (GDD §12) — флаг Акта I,
@@ -50,17 +69,34 @@ function flagsOf(n) {
   return s;
 }
 
-// Конец акта → «Дальше»: следующий акт с тем же состоянием (его готовит game.js).
+// Конец акта → следующий акт с тем же состоянием (его готовит game.js). Данные не загрузились —
+// пробуем снова сами, сколько понадобится: игрок на чёрном экране перехода видит строку «ждём
+// сеть» (game.transitStalled), а не вечную темноту. Сохранение уже записано: закрыть игру можно.
 async function nextAct(n, make) {
-  const data = await actData(n);
+  let data = null;
+  for (let wait = 1500; !data; wait = Math.min(wait * 2, 12000)) {
+    try {
+      data = await actData(n);
+    } catch (e) {
+      console.warn(`акт ${n} не загрузился, повтор через ${wait} мс:`, e);
+      game.transitStalled(true);
+      await sleep(wait);
+    }
+  }
   scene = game;
+  prefetchAct(n + 1);
   await game.start(data, make(data), { newAct: true });
 }
 
 async function startGame(opts = {}) {
   let st = null;
   if (opts.continue) {
-    for (const n of manifest.acts || [1]) await actData(n);
+    // нужны акты до сохранённого включительно (флаги копятся по актам); остальные — по ходу игры
+    const upto = Math.max(1, ...["save", "save.bak"].map((k) => {
+      const raw = store.read(k);
+      return raw && typeof raw.act === "number" ? raw.act : 1;
+    }));
+    for (const n of manifest.acts || [1]) if (n <= upto) await actData(n);
     const got = saves.load(flagsOf);
     if (!got) { title.showToast(ui.save_broken); return; }
     st = got.state;
@@ -71,6 +107,7 @@ async function startGame(opts = {}) {
   const n = st ? st.act : (manifest.acts || [1])[0];
   const data = await actData(n);
   scene = game;
+  prefetchAct(n + 1);
   await game.start(data, st);
 }
 
@@ -127,20 +164,34 @@ function start() {
   requestAnimationFrame(frame);
 }
 
+// Следующий кадр заказывается первым: ошибка в одном кадре не должна останавливать игру навсегда
+// (без этого экран замирал бы на последнем кадре до перезагрузки страницы). Ошибка пишется в
+// консоль один раз на каждое новое сообщение — её ловят дымовой тест и автопрохождение.
+let frameError = null;
 function frame(now) {
+  requestAnimationFrame(frame);
   const dt = Math.min(0.1, (now - last) / 1000);
   last = now;
-  touch.update(dt);
-  if (scene && scene.update) scene.update(dt);
-  view.begin();
-  if (scene) scene.draw(now);
-  view.end();
-  drawRing();
-  // «назад» Telegram и браузера — как Esc, пока в игре есть куда возвращаться
-  const inGame = scene === game;
-  platform.setInGame(inGame);
-  platform.setBack(inGame && game.canEscape(), () => { if (scene === game) game.escape(); });
-  requestAnimationFrame(frame);
+  try {
+    touch.update(dt);
+    if (scene && scene.update) scene.update(dt);
+    view.begin();
+    try {
+      if (scene) scene.draw(now);
+    } finally {
+      view.end();   // область отсечения кадра снимается и после ошибки, иначе они копятся
+    }
+    drawRing();
+    // «назад» Telegram и браузера — как Esc, пока в игре есть куда возвращаться
+    const inGame = scene === game;
+    platform.setInGame(inGame);
+    platform.setBack(inGame && game.canEscape(), () => { if (scene === game) game.escape(); });
+  } catch (e) {
+    if (String(e) !== frameError) {
+      frameError = String(e);
+      console.error("ошибка кадра:", e);
+    }
+  }
 }
 
 // Кольцо долгого касания (BJ2 р.25): растёт вокруг пальца, после срабатывания замкнуто.
