@@ -18,7 +18,7 @@ const fs = require("fs");
 const path = require("path");
 
 const URL = process.argv[2] || "http://127.0.0.1:8766/";
-const OUT = process.argv[3] || "work/autoplay";
+const OUT = process.argv[3] || "work/verify/autoplay";   // work/verify/ — в .gitignore: прогон не трогает репозиторий
 fs.mkdirSync(OUT, { recursive: true });
 
 const fails = [];
@@ -45,7 +45,24 @@ function check(ok, msg) {
   const page = await ctx.newPage();
   const errors = [];
   page.on("pageerror", (e) => errors.push(String(e)));
-  page.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
+  // Сеть пропала на границе Актов I и II (ревью 11.11.2026): данные Акта II не отдаются, пока игра
+  // не покажет на чёрном экране перехода, что ждёт сеть; потом отдаются — и игра продолжает сама.
+  // Заблаговременная загрузка Акта II до перехода тоже не проходит. Сообщения браузера об этих
+  // нарочно оборванных запросах ошибками страницы не считаются.
+  const ACT2 = "data/act2.json";
+  let netStalledSeen = false;
+  let act2Blocked = 0;
+  await page.route("**/" + ACT2, async (route) => {
+    if (!netStalledSeen) {
+      const stalled = await page.evaluate(() => { const s = window.__bj3 && window.__bj3.game(); return !!(s && s.stalled); }).catch(() => false);
+      if (!stalled) { act2Blocked += 1; await route.abort("internetdisconnected"); return; }
+      netStalledSeen = true;
+    }
+    await route.continue();
+  });
+  page.on("console", (m) => {
+    if (m.type() === "error" && !String(m.location().url || "").includes(ACT2)) errors.push(m.text());
+  });
 
   const g = () => page.evaluate(() => window.__bj3.game());
   // точка мира → точка окна: через саму игру (кадр «лёжа» на вертикальном телефоне учтён)
@@ -324,6 +341,8 @@ function check(ok, msg) {
   if (s.act !== 2) { await page.waitForFunction(() => window.__bj3.game() && window.__bj3.game().act === 2, null, { timeout: 30000 }); s = await settle(); }
   check(!s.ended && s.log.indexOf("END.act1") >= 0 && s.log.indexOf("END.act1") < s.log.indexOf("OPEN.counter"),
     "конец Акта I (END.act1) — и сразу Акт II, без заставки и кнопок");
+  check(netStalledSeen && act2Blocked >= 1 && !s.stalled,
+    `сеть пропала на границе актов: игра показала, что ждёт сеть, и продолжила сама (оборвано запросов: ${act2Blocked})`);
   check(s.log.indexOf("END.anc") >= 0 && s.log.indexOf("TALK.iz.exit") < s.log.indexOf("END.anc") && s.log.indexOf("END.anc") < s.log.indexOf("END.act1"),
     "слово Предка в конце Акта I: после Изольды, перед итогом (END.anc)");
   check(["trolley_service_side", "shock_report_known", "iz_rules_all_shown", "w3_open", "w4_open"].every((f) => has(s, f)), "цели Акта I выполнены");

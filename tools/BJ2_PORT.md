@@ -13,7 +13,7 @@
 | ~~`src/json.lua`~~ | удалён 11.11.2026: движок Б на JS, Lua в BJ3 не исполняется |
 | ~~`src/touch.lua`, `tools/test_touch.lua`~~ | удалены 11.11.2026: распознаватель касаний переписан на JS — `game/js/touch.js`, тест `tools/web/test_touch.mjs` |
 | `tools/check_fonts.py` | design/*.json необязательны; обязательный набор `REQUIRED` (ѣ, ъ, і, типографика) проверяется всегда |
-| `tools/gen_texts_dump.py` | без изменений; заработает с появлением `design/texts.json` |
+| ~~`tools/gen_texts_dump.py`~~ | удалён 11.11.2026: читал `design/texts.json`, которого в BJ3 нет и не будет (тексты — `texts/act*/ACT*_TEXTS_FINAL.md`, весь слой одним файлом — `texts/TEXT_LAYER.md`) |
 | `assets/fonts/` (PT Sans Regular/Bold; Neucha — выведена 06.10.2026 в `work/orig_fonts/`, рукопись — Caveat) | без изменений; лицензия OFL |
 
 ## Переносится на этапе GDD (с вычисткой BJ2)

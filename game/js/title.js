@@ -44,12 +44,16 @@ export function init(uiTexts, handlers) {
   onSettingsChange = handlers.onSettings || onSettingsChange;
   onSettingsChange(settings);
   audio.applySettings(settings);
-  document.addEventListener("fullscreenchange", () => { /* подпись кнопки сменится в draw */ });
 }
+
+// Есть ли сохранение — узнаём при входе на титул, а не в каждом кадре: проверка читает и разбирает
+// всю партию из хранилища. Пока игрок на титуле, сохранение не меняется.
+let saved = false;
 
 export function enter() {
   mode = "title";
   focus = -1;
+  saved = store.hasSave();
   audio.music("bgm_title");
 }
 
@@ -71,7 +75,7 @@ function toggleFullscreen() {
 function layoutTitle() {
   const items = [
     { id: "start", t: T.title_start, enabled: true },
-    { id: "cont", t: T.title_continue, enabled: store.hasSave() },
+    { id: "cont", t: T.title_continue, enabled: saved },
     { id: "settings", t: T.title_settings, enabled: true },
     { id: "fullscreen", t: isFullscreen() ? T.title_windowed : T.title_fullscreen, enabled: fsSupported() },
   ];
@@ -295,7 +299,7 @@ function activate(b) {
   audio.sfx("ui_click");
   switch (b.id) {
     case "start":
-      if (store.hasSave()) { mode = "confirm"; focus = -1; hover = null; }
+      if (saved) { mode = "confirm"; focus = -1; hover = null; }
       else onStart();
       break;
     case "yes":
