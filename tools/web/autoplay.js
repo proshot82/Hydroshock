@@ -83,9 +83,18 @@ function check(ok, msg) {
   }
   const reachChecked = new Set();
   async function zonesReachable() {
-    const s = await g();
+    let s = await g();
     if (s.frame || reachChecked.has(s.view)) return;
     reachChecked.add(s.view);
+    // Зона-слой щёлкается, когда её картинка загружена. По настоящей сети слои догружаются через
+    // секунду-другую после входа на экран — это не «перекрыта»: ждём до 8 с (релиз 4, 14.11.2026:
+    // по живому адресу проверка сработала раньше загрузки трёх слоёв Z04).
+    const view = s.view;
+    for (let i = 0; i < 80 && s.view === view && !s.frame && s.zones.some((z) => !z.at); i++) {
+      await page.waitForTimeout(100);
+      s = await g();
+    }
+    if (s.view !== view || s.frame) return;
     const bad = s.zones.filter((z) => !z.at).map((z) => z.id);
     check(bad.length === 0, `вид ${s.view}: каждую зону можно щёлкнуть${bad.length ? " — перекрыты: " + bad.join(", ") : ""}`);
   }
